@@ -1,0 +1,1449 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<!--
+  DIRECTION CONTRACT — seed e89ed262, position 5/7
+
+  THESIS: This surface presents Maralto as an architect would present to a private client —
+  dark-ground precision that lets the renders burn bright. It refuses the category's scrolling
+  photo gallery with sidebar specs and competing popups.
+
+  OWN-WORLD: Deep charcoal ground (#0E1318), warm parchment text (#EDE8E0), thin ruled lines
+  (#1F2830) as structural elements, sand-gold (#C4A97D) for the MARALTO wordmark, teal (#2D6A7A)
+  for CTA. Typography: Sora geometric sans — tracked wide for display, tight for body.
+
+  STORY: Visitor opens the link → MARALTO over the sweeping architecture → scroll into the building:
+  entrance, interiors, terraces, twilight pool → at the natural pause, the form appears →
+  one action, no friction.
+
+  FIRST VIEWPORT: Full-viewport dark ground. MARALTO in large tracked sand-gold, centered.
+  ESTEPONA below in parchment. Thin ruled border frames the viewport. Main exterior render
+  occupies the lower two-thirds. Scroll indicator.
+
+  FORM: Blueprint / plan table (the architect's folio), position 5/7, seed key e89ed262.
+  Staging: direct presentation. Form vocabulary: ruled lines, annotation-style labels, generous space.
+-->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Maralto Estepona — INVESTINSPAIN.BE</title>
+<meta name="description" content="Maralto Estepona: Moderne appartementen met panoramisch zee- en bergzicht aan de Costa del Sol. Vanaf €460.000.">
+<meta property="og:title" content="Maralto Estepona — Moderne Appartementen">
+<meta property="og:description" content="Ontdek Maralto: resort-style wonen in Estepona met panoramisch uitzicht, zwembaden, spa en meer. Vanaf €460.000.">
+<meta property="og:image" content="https://investinspain.be/wp-content/uploads/2025/08/Maralto-Estepona-9.png">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root {
+  --bg: #0E1318;
+  --bg-el: #131920;
+  --text: #EDE8E0;
+  --text-muted: #8A96A3;
+  --gold: #C4A97D;
+  --gold-dim: #9E8968;
+  --line: #1F2830;
+  --line-light: #2A3644;
+  --cta: #2D6A7A;
+  --cta-hover: #387F91;
+  --white: #FEFCF9;
+  --font: 'Sora', system-ui, -apple-system, sans-serif;
+  --ease: cubic-bezier(0.16, 1, 0.3, 1);
+}
+html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+body {
+  font-family: var(--font);
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.65;
+  font-weight: 300;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+img { display: block; max-width: 100%; height: auto; }
+a { color: inherit; text-decoration: none; }
+button { font-family: inherit; cursor: pointer; border: none; background: none; }
+
+/* ── Thin border frame ── */
+.frame {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 100;
+  border: 1px solid var(--line);
+  opacity: 0;
+  animation: frame-in 1.5s var(--ease) 0.8s forwards;
+}
+@keyframes frame-in { to { opacity: 1; } }
+
+/* ── Hero ── */
+.hero {
+  position: relative;
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+.hero__bg {
+  position: absolute;
+  inset: 0;
+  background: url('https://investinspain.be/wp-content/uploads/2025/08/Maralto-Estepona-9.png') center 60% / cover no-repeat;
+  opacity: 0;
+  transform: scale(1.06);
+  animation: hero-bg 2s var(--ease) 0.3s forwards;
+}
+.hero__bg::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    var(--bg) 0%,
+    rgba(14,19,24,0.7) 25%,
+    rgba(14,19,24,0.25) 55%,
+    rgba(14,19,24,0.5) 80%,
+    var(--bg) 100%
+  );
+}
+@keyframes hero-bg {
+  to { opacity: 1; transform: scale(1); }
+}
+.hero__content {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  padding: 0 1.5rem;
+}
+.hero__price {
+  font-size: 0.7rem;
+  letter-spacing: 0.15em;
+  color: var(--text-muted);
+  margin-bottom: 1.5rem;
+  opacity: 0;
+  animation: fade-up 1s var(--ease) 1s forwards;
+}
+.hero__name {
+  font-size: clamp(2.8rem, 10vw, 7rem);
+  font-weight: 300;
+  letter-spacing: 0.25em;
+  color: var(--gold);
+  line-height: 1;
+  opacity: 0;
+  animation: fade-up 1.2s var(--ease) 0.5s forwards;
+}
+.hero__location {
+  font-size: clamp(0.75rem, 2vw, 1rem);
+  letter-spacing: 0.35em;
+  color: var(--text);
+  margin-top: 1rem;
+  font-weight: 300;
+  opacity: 0;
+  animation: fade-up 1s var(--ease) 0.9s forwards;
+}
+.hero__line {
+  width: 1px;
+  height: 60px;
+  background: var(--gold-dim);
+  margin: 2rem auto 0;
+  opacity: 0;
+  transform-origin: top;
+  animation: line-draw 1s var(--ease) 1.4s forwards;
+}
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes line-draw {
+  from { opacity: 0; transform: scaleY(0); }
+  to { opacity: 1; transform: scaleY(1); }
+}
+.hero__scroll {
+  position: absolute;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.65rem;
+  letter-spacing: 0.2em;
+  color: var(--text-muted);
+  writing-mode: vertical-rl;
+  opacity: 0;
+  animation: fade-up 1s var(--ease) 2s forwards;
+}
+
+/* ── Sections ── */
+section { position: relative; }
+
+.spacer { height: clamp(4rem, 10vw, 8rem); }
+.spacer--sm { height: clamp(2rem, 5vw, 4rem); }
+.spacer--lg { height: clamp(6rem, 14vw, 12rem); }
+
+/* ── Full bleed image ── */
+.full-image {
+  width: 100%;
+  overflow: hidden;
+}
+.full-image img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+}
+.full-image--tall img {
+  height: clamp(50vh, 70vw, 80vh);
+  object-fit: cover;
+}
+
+/* ── Content blocks ── */
+.content {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 0 clamp(1.5rem, 5vw, 3rem);
+}
+.content--wide {
+  max-width: 1100px;
+}
+
+/* ── Section label (architectural annotation) ── */
+.label {
+  font-size: 0.6rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--gold-dim);
+  margin-bottom: 1.5rem;
+  position: relative;
+  padding-left: 2rem;
+}
+.label::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: 1.2rem;
+  height: 1px;
+  background: var(--gold-dim);
+}
+
+/* ── Headings ── */
+.heading {
+  font-size: clamp(1.6rem, 4vw, 2.8rem);
+  font-weight: 300;
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+  margin-bottom: 1.5rem;
+}
+.heading em {
+  font-style: normal;
+  color: var(--gold);
+}
+
+/* ── Body text ── */
+.body-text {
+  font-size: clamp(0.9rem, 1.8vw, 1.05rem);
+  color: var(--text-muted);
+  line-height: 1.75;
+  max-width: 60ch;
+}
+
+/* ── Rule line ── */
+.rule {
+  height: 1px;
+  background: var(--line);
+  margin: 0 clamp(1.5rem, 5vw, 3rem);
+}
+.rule--gold {
+  background: var(--gold-dim);
+  max-width: 60px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* ── Two-column image pair ── */
+.image-pair {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2px;
+  padding: 0;
+}
+@media (min-width: 768px) {
+  .image-pair { grid-template-columns: 1fr 1fr; }
+}
+.image-pair img {
+  width: 100%;
+  height: clamp(250px, 40vw, 500px);
+  object-fit: cover;
+}
+
+/* ── Amenities ── */
+.amenities-list {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0;
+}
+@media (min-width: 600px) {
+  .amenities-list { grid-template-columns: 1fr 1fr; }
+}
+.amenity-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid var(--line);
+}
+.amenity-item svg {
+  width: 16px;
+  height: 16px;
+  stroke: var(--gold);
+  stroke-width: 1.5;
+  fill: none;
+  flex-shrink: 0;
+}
+.amenity-item span {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+/* ── Stats row ── */
+.stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  background: var(--line);
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+}
+.stat {
+  background: var(--bg);
+  padding: clamp(1.5rem, 3vw, 2.5rem);
+  text-align: center;
+}
+.stat__value {
+  font-size: clamp(1.4rem, 3.5vw, 2.2rem);
+  font-weight: 400;
+  color: var(--text);
+  letter-spacing: -0.02em;
+}
+.stat__label {
+  font-size: 0.6rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-top: 0.3rem;
+}
+
+/* ── Location ── */
+.location-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: clamp(2rem, 5vw, 4rem);
+  align-items: start;
+}
+@media (min-width: 768px) {
+  .location-grid { grid-template-columns: 1fr 1fr; }
+}
+.location-fact {
+  display: flex;
+  align-items: baseline;
+  gap: 0.75rem;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid var(--line);
+}
+.location-fact__dist {
+  font-size: 0.65rem;
+  letter-spacing: 0.1em;
+  color: var(--gold);
+  white-space: nowrap;
+  min-width: 4rem;
+}
+.location-fact__name {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+/* ── Contact section ── */
+.contact {
+  background: var(--bg-el);
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+}
+.contact__inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: clamp(3rem, 8vw, 6rem) clamp(1.5rem, 5vw, 3rem);
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: clamp(3rem, 6vw, 5rem);
+}
+@media (min-width: 768px) {
+  .contact__inner { grid-template-columns: 1fr 1fr; gap: 4rem; }
+}
+
+.form-group {
+  position: relative;
+  margin-bottom: 1.5rem;
+}
+.form-group input {
+  width: 100%;
+  padding: 0.9rem 0;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid var(--line-light);
+  color: var(--text);
+  font-family: var(--font);
+  font-size: 0.9rem;
+  font-weight: 300;
+  outline: none;
+  transition: border-color 0.3s;
+}
+.form-group input::placeholder {
+  color: var(--text-muted);
+  opacity: 0.6;
+}
+.form-group input:focus {
+  border-bottom-color: var(--gold);
+}
+.form-group label {
+  position: absolute;
+  top: 0.9rem;
+  left: 0;
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  color: var(--text-muted);
+  pointer-events: none;
+  transition: all 0.3s var(--ease);
+}
+.form-group input:focus + label,
+.form-group input:not(:placeholder-shown) + label {
+  top: -0.6rem;
+  font-size: 0.6rem;
+  color: var(--gold);
+  letter-spacing: 0.15em;
+}
+
+.phone-group {
+  display: flex;
+  align-items: end;
+  gap: 0.75rem;
+}
+.phone-prefix {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  padding-bottom: 0.9rem;
+  border-bottom: 1px solid var(--line-light);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.phone-group .form-group { flex: 1; margin-bottom: 0; }
+
+.consent {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  margin: 1.5rem 0;
+}
+.consent input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 16px;
+  height: 16px;
+  border: 1px solid var(--line-light);
+  border-radius: 2px;
+  flex-shrink: 0;
+  margin-top: 2px;
+  cursor: pointer;
+  position: relative;
+  transition: all 0.2s;
+}
+.consent input[type="checkbox"]:checked {
+  background: var(--gold);
+  border-color: var(--gold);
+}
+.consent input[type="checkbox"]:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 2px;
+}
+.consent input[type="checkbox"]:checked::after {
+  content: '';
+  position: absolute;
+  left: 4px;
+  top: 1px;
+  width: 5px;
+  height: 9px;
+  border: solid var(--bg);
+  border-width: 0 1.5px 1.5px 0;
+  transform: rotate(45deg);
+}
+.consent label {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  line-height: 1.5;
+  cursor: pointer;
+}
+.consent a {
+  color: var(--gold-dim);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 1rem 2.5rem;
+  background: var(--cta);
+  color: var(--white);
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  border: none;
+  cursor: pointer;
+  transition: background 0.3s, transform 0.2s;
+}
+.btn:hover { background: var(--cta-hover); }
+.btn:active { transform: scale(0.98); }
+
+.btn--outline {
+  background: transparent;
+  border: 1px solid var(--line-light);
+  color: var(--text);
+}
+.btn--outline:hover {
+  border-color: var(--gold-dim);
+  background: transparent;
+}
+
+/* ── Agent card ── */
+.agent {
+  padding-top: 1rem;
+}
+.agent__photo {
+  width: clamp(90px, 15vw, 120px);
+  height: clamp(90px, 15vw, 120px);
+  border-radius: 50%;
+  object-fit: cover;
+  object-position: center top;
+  border: 2px solid var(--line-light);
+  margin-bottom: 1.25rem;
+}
+.agent__name {
+  font-size: 1.1rem;
+  font-weight: 400;
+  margin-bottom: 0.25rem;
+}
+.agent__role {
+  font-size: 0.7rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 2rem;
+}
+.agent__detail {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid var(--line);
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  transition: color 0.2s;
+}
+.agent__detail:hover { color: var(--text); }
+.agent__detail svg {
+  width: 16px;
+  height: 16px;
+  stroke: var(--gold-dim);
+  stroke-width: 1.5;
+  fill: none;
+  flex-shrink: 0;
+}
+.agent__trust {
+  margin-top: 2.5rem;
+  padding: 1.25rem;
+  border: 1px solid var(--line);
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+.agent__trust svg {
+  width: 20px;
+  height: 20px;
+  stroke: var(--gold);
+  stroke-width: 1.5;
+  fill: none;
+  flex-shrink: 0;
+}
+.agent__trust span {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+
+/* ── IIS badge ── */
+.iis-bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 1rem;
+}
+.iis-logo {
+  height: clamp(120px, 20vw, 160px);
+  width: auto;
+  opacity: 0.7;
+  transition: opacity 0.3s;
+}
+.iis-logo:hover { opacity: 1; }
+
+/* ── Map ── */
+.map-wrap {
+  position: relative;
+  width: 100%;
+  height: clamp(280px, 40vw, 420px);
+  overflow: hidden;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+}
+.map-wrap iframe {
+  width: 100%;
+  height: 100%;
+  border: 0;
+  filter: invert(92%) hue-rotate(180deg) brightness(0.75) contrast(1.1) saturate(0.3);
+}
+
+/* ── Footer ── */
+footer {
+  padding: clamp(2rem, 4vw, 3rem) clamp(1.5rem, 5vw, 3rem);
+  text-align: center;
+  font-size: 0.6rem;
+  color: var(--text-muted);
+  letter-spacing: 0.05em;
+  line-height: 2;
+}
+footer a {
+  color: var(--gold-dim);
+  text-underline-offset: 2px;
+}
+
+/* ── Reveal animation ── */
+.reveal {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.9s var(--ease), transform 0.9s var(--ease);
+}
+.reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.reveal-image {
+  opacity: 0;
+  transform: scale(1.04);
+  filter: blur(4px);
+  transition: opacity 1.2s var(--ease), transform 1.2s var(--ease), filter 1.2s var(--ease);
+}
+.reveal-image.is-visible {
+  opacity: 1;
+  transform: scale(1);
+  filter: blur(0);
+}
+
+/* ── Form success ── */
+.form-success {
+  display: none;
+  text-align: center;
+  padding: 3rem 1rem;
+}
+.form-success.is-active { display: block; }
+.form-success svg {
+  width: 48px;
+  height: 48px;
+  stroke: var(--gold);
+  stroke-width: 1;
+  fill: none;
+  margin: 0 auto 1.5rem;
+}
+.form-success h3 {
+  font-size: 1.2rem;
+  font-weight: 400;
+  margin-bottom: 0.75rem;
+}
+.form-success p {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  max-width: 40ch;
+  margin: 0 auto;
+}
+
+.form-error {
+  font-size: 0.65rem;
+  color: #c0392b;
+  margin-top: 0.4rem;
+  letter-spacing: 0.05em;
+  display: none;
+}
+.form-error.is-active { display: block; }
+
+/* ── Sticky CTA bar ── */
+.sticky-cta {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 80;
+  background: var(--bg-el);
+  border-top: 1px solid var(--line);
+  padding: 0.75rem clamp(1rem, 3vw, 2rem);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  transform: translateY(100%);
+  transition: transform 0.5s var(--ease);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+.sticky-cta.is-visible { transform: translateY(0); }
+.sticky-cta__text {
+  font-size: 0.8rem;
+  color: var(--text);
+  white-space: nowrap;
+}
+.sticky-cta__text span {
+  color: var(--gold);
+  font-weight: 400;
+}
+.sticky-cta .btn {
+  padding: 0.65rem 1.5rem;
+  font-size: 0.65rem;
+  flex-shrink: 0;
+}
+
+/* ── In-content CTA ── */
+.inline-cta {
+  background: var(--bg-el);
+  border: 1px solid var(--line);
+  padding: clamp(2rem, 5vw, 3.5rem) clamp(1.5rem, 5vw, 3rem);
+  text-align: center;
+  max-width: 720px;
+  margin: 0 auto;
+}
+.inline-cta h3 {
+  font-size: clamp(1.2rem, 3vw, 1.6rem);
+  font-weight: 300;
+  margin-bottom: 0.75rem;
+}
+.inline-cta h3 em {
+  font-style: normal;
+  color: var(--gold);
+}
+.inline-cta p {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  margin-bottom: 1.5rem;
+  max-width: 45ch;
+  margin-left: auto;
+  margin-right: auto;
+}
+.inline-cta .btn { margin: 0 auto; }
+
+/* ── Modal pop-up ── */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  background: rgba(0,0,0,0.7);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s var(--ease);
+}
+.modal-overlay.is-active {
+  opacity: 1;
+  pointer-events: auto;
+}
+.modal {
+  background: var(--bg-el);
+  border: 1px solid var(--line);
+  max-width: 440px;
+  width: 100%;
+  padding: clamp(2rem, 5vw, 3rem);
+  position: relative;
+  transform: translateY(20px) scale(0.97);
+  transition: transform 0.4s var(--ease);
+}
+.modal-overlay.is-active .modal {
+  transform: translateY(0) scale(1);
+}
+.modal__close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-muted);
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: color 0.2s;
+  background: none;
+  border: none;
+  font-family: var(--font);
+}
+.modal__close:hover { color: var(--text); }
+.modal h3 {
+  font-size: 1.3rem;
+  font-weight: 300;
+  margin-bottom: 0.5rem;
+}
+.modal h3 em {
+  font-style: normal;
+  color: var(--gold);
+}
+.modal > p {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  margin-bottom: 1.5rem;
+  line-height: 1.6;
+}
+.modal .form-group { margin-bottom: 1.25rem; }
+.modal .consent { margin: 1rem 0; }
+
+.form-wrapper { transition: opacity 0.4s; }
+.form-wrapper.is-hidden { opacity: 0; pointer-events: none; position: absolute; }
+
+/* ── WhatsApp FAB ── */
+.wa-fab {
+  position: fixed;
+  bottom: 1.5rem;
+  right: 1.5rem;
+  transition: bottom 0.5s var(--ease), transform 0.2s;
+  z-index: 90;
+  width: 52px;
+  height: 52px;
+  background: #25D366;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+  opacity: 0;
+  animation: fade-up 0.6s var(--ease) 2.5s forwards;
+}
+.wa-fab.is-raised { bottom: calc(1.5rem + 56px); }
+.wa-fab:hover { transform: scale(1.08); }
+.wa-fab svg { width: 26px; height: 26px; fill: white; }
+</style>
+</head>
+<body>
+
+<div class="frame" aria-hidden="true"></div>
+
+<!-- ═══════════ HERO ═══════════ -->
+<section class="hero">
+  <div class="hero__bg" role="img" aria-label="Maralto Estepona — moderne architectuur met gebogen balkons en mediterrane tuinen"></div>
+  <div class="hero__content">
+    <p class="hero__price">Vanaf € 460.000</p>
+    <h1 class="hero__name">MARALTO</h1>
+    <p class="hero__location">ESTEPONA</p>
+    <div class="hero__line" aria-hidden="true"></div>
+  </div>
+  <span class="hero__scroll" aria-hidden="true">Ontdek</span>
+</section>
+
+<!-- ═══════════ INTRO ═══════════ -->
+<div class="spacer"></div>
+
+<div class="content reveal">
+  <p class="label">Het project</p>
+  <h2 class="heading">Moderne architectuur in perfecte<br> harmonie met <em>zee en bergen</em></h2>
+  <p class="body-text">Maralto Estepona staat voor een nieuw hoofdstuk in mediterraan wonen. De gebogen architectuur omarmt het landschap, terwijl panoramische terrassen u verbinden met de Middellandse Zee en de bergen van Andalusië.</p>
+</div>
+
+<div class="spacer"></div>
+
+<!-- ═══════════ ENTRANCE ═══════════ -->
+<div class="full-image full-image--tall reveal-image">
+  <img src="https://investinspain.be/wp-content/uploads/2025/08/Maralto-Estepona.png"
+       alt="De ingang van Maralto Estepona met houten panelen en weelderige tuinen"
+       loading="lazy" width="1110" height="623">
+</div>
+
+<div class="spacer"></div>
+
+<!-- ═══════════ RESIDENCE ═══════════ -->
+<div class="content reveal">
+  <p class="label">De residentie</p>
+  <h2 class="heading">Lichte ruimtes,<br><em>hoogwaardige</em> afwerking</h2>
+  <p class="body-text">Woningen met 1, 2 of 3 slaapkamers, elk ontworpen rond licht en ruimte. Open leefruimtes vloeien naadloos over in royale terrassen. Elegante keukens, stijlvolle badkamers en premium materialen doorheen het hele interieur.</p>
+</div>
+
+<div class="spacer--sm"></div>
+
+<div class="stats reveal">
+  <div class="stat">
+    <div class="stat__value">1 – 3</div>
+    <div class="stat__label">Slaapkamers</div>
+  </div>
+  <div class="stat">
+    <div class="stat__value">70 – 175</div>
+    <div class="stat__label">m² woonoppervlak</div>
+  </div>
+  <div class="stat">
+    <div class="stat__value">20 – 110</div>
+    <div class="stat__label">m² terras</div>
+  </div>
+</div>
+
+<div class="spacer"></div>
+
+<!-- ═══════════ INTERIORS ═══════════ -->
+<div class="image-pair">
+  <img class="reveal-image" src="https://investinspain.be/wp-content/uploads/2025/08/Maralto-Estepona-1.png"
+       alt="Open leefruimte met spiraalvormige trap en natuurlijk licht"
+       loading="lazy" width="1110" height="623">
+  <img class="reveal-image" src="https://investinspain.be/wp-content/uploads/2025/08/Maralto-Estepona-8.png"
+       alt="Ruime woonkamer met marmeren keukeneiland en zeezicht"
+       loading="lazy" width="1110" height="623">
+</div>
+
+<div class="spacer"></div>
+
+<div class="full-image full-image--tall reveal-image">
+  <img src="https://investinspain.be/wp-content/uploads/2025/08/Maralto-Estepona-4.png"
+       alt="Minimalistische slaapkamer met houten lamellen hoofdeinde en toegang tot het terras"
+       loading="lazy" width="1110" height="623">
+</div>
+
+<div class="spacer"></div>
+
+<!-- ═══════════ THE VIEW ═══════════ -->
+<div class="content reveal">
+  <p class="label">Het uitzicht</p>
+  <h2 class="heading">Panoramisch uitzicht<br>op <em>zee en bergen</em></h2>
+  <p class="body-text">Elk terras is een verlengstuk van de leefruimte. Onder de pergola ontvouwt zich een panorama van de Middellandse Zee tot aan de kust van Afrika, met de bergen van Andalusië als achtergrond.</p>
+</div>
+
+<div class="spacer--sm"></div>
+
+<div class="image-pair">
+  <img class="reveal-image" src="https://investinspain.be/wp-content/uploads/2025/08/Maralto-Estepona-3.png"
+       alt="Terras met panoramisch zeezicht en outdoor loungeset"
+       loading="lazy" width="1110" height="623">
+  <img class="reveal-image" src="https://investinspain.be/wp-content/uploads/2025/08/Maralto-Estepona-2.png"
+       alt="Terras met bergzicht onder pergola met schaduwlijnen"
+       loading="lazy" width="1110" height="623">
+</div>
+
+<div class="spacer--sm"></div>
+
+<div class="full-image full-image--tall reveal-image">
+  <img src="https://investinspain.be/wp-content/uploads/2025/08/Maralto-Estepona-7.png"
+       alt="Terras bij zonsondergang met uitzicht op zee en de kust van Afrika"
+       loading="lazy" width="1110" height="623">
+</div>
+
+<div class="spacer"></div>
+
+<!-- ═══════════ AMENITIES ═══════════ -->
+<div class="content reveal">
+  <p class="label">Faciliteiten</p>
+  <h2 class="heading">Resort-waardige <em>voorzieningen</em></h2>
+  <p class="body-text">Alles binnen een afgesloten en veilige omgeving, met prachtig aangelegde tuinen als verbindend element.</p>
+</div>
+
+<div class="spacer--sm"></div>
+
+<div class="content reveal">
+  <div class="amenities-list">
+    <div class="amenity-item">
+      <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+      <span>Buitenzwembad</span>
+    </div>
+    <div class="amenity-item">
+      <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+      <span>Spa & Wellness</span>
+    </div>
+    <div class="amenity-item">
+      <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+      <span>Fitnessruimte</span>
+    </div>
+    <div class="amenity-item">
+      <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+      <span>Ondergrondse parking</span>
+    </div>
+    <div class="amenity-item">
+      <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+      <span>Gemeenschappelijke tuinen</span>
+    </div>
+    <div class="amenity-item">
+      <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+      <span>Privéberging</span>
+    </div>
+    <div class="amenity-item">
+      <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+      <span>Calisthenics zone</span>
+    </div>
+    <div class="amenity-item">
+      <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+      <span>Autowasplaats</span>
+    </div>
+    <div class="amenity-item">
+      <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+      <span>Berg- en zeezicht</span>
+    </div>
+  </div>
+</div>
+
+<div class="spacer"></div>
+
+<!-- ═══════════ POOL TWILIGHT ═══════════ -->
+<div class="full-image full-image--tall reveal-image">
+  <img src="https://investinspain.be/wp-content/uploads/2025/08/Maralto-Estepona-5.png"
+       alt="Infinity zwembad bij schemering met bergen op de achtergrond en warme verlichting"
+       loading="lazy" width="1110" height="623">
+</div>
+
+<div class="spacer"></div>
+
+<!-- ═══════════ SPA ═══════════ -->
+<div class="full-image reveal-image">
+  <img src="https://investinspain.be/wp-content/uploads/2025/08/Maralto-Estepona-6.png"
+       alt="Indoor spa met verlicht zwembad, betonnen plafond en Maralto-logo"
+       loading="lazy" width="1110" height="623">
+</div>
+
+<div class="spacer"></div>
+
+<!-- ═══════════ INLINE CTA ═══════════ -->
+<div class="inline-cta reveal">
+  <h3>Interesse in <em>Maralto</em>?</h3>
+  <p>Ontvang de volledige brochure met prijzen, plattegronden en beschikbaarheid.</p>
+  <a href="#contact" class="btn">Ontvang de brochure</a>
+</div>
+
+<div class="spacer"></div>
+
+<!-- ═══════════ LOCATION ═══════════ -->
+<div class="content reveal">
+  <p class="label">Locatie</p>
+  <h2 class="heading">In het hart van <em>Estepona</em></h2>
+  <p class="body-text">Gelegen in de gewilde wijk Las Mesas, op wandelafstand van strand, jachthaven en voorzieningen. Maralto combineert rust en comfort met de levendige sfeer van Estepona en de luxe van Marbella en Sotogrande op korte afstand.</p>
+</div>
+
+<div class="spacer--sm"></div>
+
+<div class="content reveal">
+  <div class="location-grid">
+    <div>
+      <div class="location-fact">
+        <span class="location-fact__dist">5 min</span>
+        <span class="location-fact__name">Strand & jachthaven</span>
+      </div>
+      <div class="location-fact">
+        <span class="location-fact__dist">3 min</span>
+        <span class="location-fact__name">Centrum Estepona</span>
+      </div>
+      <div class="location-fact">
+        <span class="location-fact__dist">15 min</span>
+        <span class="location-fact__name">Marbella</span>
+      </div>
+    </div>
+    <div>
+      <div class="location-fact">
+        <span class="location-fact__dist">25 min</span>
+        <span class="location-fact__name">Puerto Banús</span>
+      </div>
+      <div class="location-fact">
+        <span class="location-fact__dist">45 min</span>
+        <span class="location-fact__name">Málaga luchthaven</span>
+      </div>
+      <div class="location-fact">
+        <span class="location-fact__dist">35 min</span>
+        <span class="location-fact__name">Gibraltar luchthaven</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="spacer"></div>
+
+<div class="map-wrap reveal">
+  <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3221.5!2d-5.1626803!3d36.425704!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd0cd700567f383f%3A0x641859dd361cceb7!2sMARALTO!5e0!3m2!1snl!2sbe!4v1" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="Locatie Maralto Estepona"></iframe>
+</div>
+
+<div class="spacer--lg"></div>
+<div class="rule--gold" aria-hidden="true"></div>
+<div class="spacer--lg"></div>
+
+<!-- ═══════════ CONTACT ═══════════ -->
+<section class="contact" id="contact">
+  <div class="contact__inner">
+    <div>
+      <p class="label">Contact</p>
+      <h2 class="heading" style="margin-bottom:0.75rem">Ontvang prijzen &<br><em>beschikbaarheid</em></h2>
+      <p class="body-text" style="margin-bottom:2.5rem">Vul uw gegevens in en ontvang alle projectinformatie rechtstreeks in uw inbox.</p>
+
+      <div class="form-wrapper" id="formWrapper">
+        <form id="contactForm" novalidate>
+          <div class="form-group">
+            <input type="text" id="fname" name="fname" placeholder=" " required autocomplete="given-name">
+            <label for="fname">Voornaam</label>
+          </div>
+          <div class="form-group">
+            <input type="text" id="lname" name="lname" placeholder=" " required autocomplete="family-name">
+            <label for="lname">Achternaam</label>
+          </div>
+          <div class="phone-group">
+            <span class="phone-prefix">🇧🇪 +32</span>
+            <div class="form-group">
+              <input type="tel" id="phone" name="phone" placeholder=" " required autocomplete="tel-national">
+              <label for="phone">GSM-nummer</label>
+            </div>
+          </div>
+          <div class="form-group" style="margin-top:1.5rem">
+            <input type="email" id="email" name="email" placeholder=" " required autocomplete="email">
+            <label for="email">E-mailadres</label>
+          </div>
+          <div class="consent">
+            <input type="checkbox" id="consent" required>
+            <label for="consent">Ja, ik ga akkoord met het <a href="https://investinspain.be/privacy-policy/" target="_blank" rel="noopener">privacybeleid</a> en de <a href="https://investinspain.be/algemene-voorwaarden/" target="_blank" rel="noopener">algemene voorwaarden</a>.</label>
+          </div>
+          <button type="submit" class="btn">Verzenden</button>
+        </form>
+      </div>
+
+      <div class="form-success" id="formSuccess">
+        <svg viewBox="0 0 48 48"><circle cx="24" cy="24" r="20"/><polyline points="15 25 21 31 33 19"/></svg>
+        <h3>Bedankt voor uw interesse</h3>
+        <p>U ontvangt binnenkort alle informatie over Maralto in uw inbox.</p>
+      </div>
+    </div>
+
+    <div class="agent">
+      <div class="label">Uw contactpersoon</div>
+      <img src="https://investinspain.be/wp-content/uploads/2020/01/Gunther-De-Vleeschouwer-INVESTINSPAIN.jpg" alt="Gunther De Vleeschouwer" class="agent__photo" loading="lazy" width="600" height="450">
+      <h3 class="agent__name">Gunther De Vleeschouwer</h3>
+      <p class="agent__role">Real estate associate</p>
+
+      <a href="tel:+32496571397" class="agent__detail">
+        <svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.362 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.338 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+        +32 496 57 13 97
+      </a>
+      <a href="mailto:gunther@investinspain.be" class="agent__detail">
+        <svg viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><polyline points="22 4 12 13 2 4"/></svg>
+        gunther@investinspain.be
+      </a>
+      <a href="tel:+3215257310" class="agent__detail">
+        <svg viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 18 0 9 9 0 0 0-18 0z"/><path d="M3 12h18"/><path d="M12 3c2.8 3.1 4.4 6.5 4.4 9s-1.6 5.9-4.4 9"/><path d="M12 3c-2.8 3.1-4.4 6.5-4.4 9s1.6 5.9 4.4 9"/></svg>
+        Kantoor: +32 15 25 73 10
+      </a>
+
+      <div class="agent__trust">
+        <svg viewBox="0 0 24 24"><path d="M12 2L3 7v5c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V7l-9-5z"/><polyline points="9 12 11 14 15 10"/></svg>
+        <span>Uw inspectiereis naar Estepona wordt 100% vergoed door ons.</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ IIS BAR ═══════════ -->
+<div class="iis-bar">
+  <img src="https://investinspain.be/wp-content/uploads/2026/05/Logo-investinspain.png" alt="INVESTINSPAIN.BE logo" class="iis-logo">
+</div>
+
+<!-- ═══════════ FOOTER ═══════════ -->
+<footer>
+  <p>&copy; INVESTINSPAIN.BE 2026 &mdash; Alle rechten voorbehouden</p>
+  <p>BA en borgstelling via NV AXA Belgium (polisnr. 730.390.160)</p>
+  <p><a href="https://investinspain.be/privacy-policy/" target="_blank" rel="noopener">Privacybeleid</a> &middot; <a href="https://investinspain.be/algemene-voorwaarden/" target="_blank" rel="noopener">Algemene voorwaarden</a></p>
+</footer>
+
+<!-- ═══════════ WHATSAPP FAB ═══════════ -->
+<a href="https://wa.me/32496571397?text=Hallo%2C%20ik%20heb%20interesse%20in%20Maralto%20Estepona.%20Kan%20ik%20meer%20informatie%20ontvangen%3F"
+   target="_blank" rel="noopener" class="wa-fab" aria-label="Contact via WhatsApp">
+  <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.625.846 5.059 2.284 7.034L.789 23.492a.5.5 0 00.612.638l4.67-1.404A11.945 11.945 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-2.24 0-4.31-.726-5.993-1.955l-.348-.262-3.278.986.93-3.156-.28-.373A9.935 9.935 0 012 12C2 6.486 6.486 2 12 2s10 4.486 10 10-4.486 10-10 10z"/></svg>
+</a>
+
+<!-- ═══════════ STICKY CTA BAR ═══════════ -->
+<div class="sticky-cta" id="stickyCta">
+  <div class="sticky-cta__text">Vanaf <span>€ 460.000</span></div>
+  <a href="#contact" class="btn">Ontvang info</a>
+</div>
+
+<!-- ═══════════ MODAL POP-UP ═══════════ -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal">
+    <button class="modal__close" id="modalClose" aria-label="Sluiten">&times;</button>
+    <h3>Ontvang prijzen &<br><em>beschikbaarheid</em></h3>
+    <p>Laat uw gegevens achter en ontvang alle projectinformatie over Maralto rechtstreeks in uw inbox.</p>
+    <form id="modalForm" novalidate>
+      <div class="form-group">
+        <input type="text" id="m-fname" name="fname" placeholder=" " required autocomplete="given-name">
+        <label for="m-fname">Voornaam</label>
+      </div>
+      <div class="form-group">
+        <input type="email" id="m-email" name="email" placeholder=" " required autocomplete="email">
+        <label for="m-email">E-mailadres</label>
+      </div>
+      <div class="phone-group">
+        <span class="phone-prefix">🇧🇪 +32</span>
+        <div class="form-group">
+          <input type="tel" id="m-phone" name="phone" placeholder=" " required autocomplete="tel-national">
+          <label for="m-phone">GSM-nummer</label>
+        </div>
+      </div>
+      <div class="consent" style="margin-top:1rem">
+        <input type="checkbox" id="m-consent" required>
+        <label for="m-consent">Ja, ik ga akkoord met het <a href="https://investinspain.be/privacy-policy/" target="_blank" rel="noopener">privacybeleid</a> en de <a href="https://investinspain.be/algemene-voorwaarden/" target="_blank" rel="noopener">algemene voorwaarden</a>.</label>
+      </div>
+      <button type="submit" class="btn" style="width:100%;justify-content:center">Verzenden</button>
+    </form>
+  </div>
+</div>
+
+<script>
+(function(){
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('is-visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+  document.querySelectorAll('.reveal, .reveal-image').forEach(el => observer.observe(el));
+
+  const form = document.getElementById('contactForm');
+  const wrapper = document.getElementById('formWrapper');
+  const success = document.getElementById('formSuccess');
+
+  function clearError(el) {
+    var err = el.parentElement.querySelector('.form-error');
+    if (err) err.classList.remove('is-active');
+    el.style.borderBottomColor = '';
+    el.style.borderColor = '';
+  }
+  function showError(el, msg) {
+    var parent = el.closest('.form-group') || el.parentElement;
+    var err = parent.querySelector('.form-error');
+    if (!err) {
+      err = document.createElement('p');
+      err.className = 'form-error';
+      err.setAttribute('role', 'alert');
+      parent.appendChild(err);
+    }
+    err.textContent = msg;
+    err.classList.add('is-active');
+    if (el.type === 'checkbox') el.style.borderColor = '#c0392b';
+    else el.style.borderBottomColor = '#c0392b';
+  }
+
+  form.querySelectorAll('input').forEach(function(input) {
+    input.addEventListener('input', function() { clearError(input); });
+  });
+  document.getElementById('consent').addEventListener('change', function() {
+    this.style.borderColor = '';
+    var err = this.closest('.consent').nextElementSibling;
+    if (err && err.classList.contains('form-error')) err.classList.remove('is-active');
+  });
+
+  form.addEventListener('submit', function(e) {
+    e.preventDefault();
+    var valid = true;
+    var errorMsg = 'Dit veld is verplicht';
+
+    form.querySelectorAll('.form-error').forEach(function(el) { el.classList.remove('is-active'); });
+    form.querySelectorAll('input').forEach(function(el) { el.style.borderBottomColor = ''; el.style.borderColor = ''; });
+
+    var inputs = form.querySelectorAll('input[required]:not([type="checkbox"])');
+    inputs.forEach(function(input) {
+      if (!input.value.trim()) { valid = false; showError(input, errorMsg); }
+      else if (input.type === 'email' && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(input.value)) {
+        valid = false; showError(input, 'Ongeldig e-mailadres');
+      }
+    });
+
+    var checkbox = document.getElementById('consent');
+    if (!checkbox.checked) {
+      valid = false;
+      var consentWrap = checkbox.closest('.consent');
+      var err = consentWrap.querySelector('.form-error');
+      if (!err) {
+        err = document.createElement('p');
+        err.className = 'form-error';
+        err.setAttribute('role', 'alert');
+        consentWrap.after(err);
+      }
+      err.textContent = 'U moet akkoord gaan om verder te gaan';
+      err.classList.add('is-active');
+      checkbox.style.borderColor = '#c0392b';
+    }
+
+    if (valid) {
+      var data = new FormData(form);
+      var body = 'Nieuwe aanvraag Maralto Estepona%0A%0A'
+        + 'Naam: ' + encodeURIComponent(data.get('fname') + ' ' + data.get('lname')) + '%0A'
+        + 'Telefoon: +32 ' + encodeURIComponent(data.get('phone')) + '%0A'
+        + 'Email: ' + encodeURIComponent(data.get('email'));
+      window.open('mailto:gunther@investinspain.be?subject=' + encodeURIComponent('Aanvraag Maralto Estepona — ' + data.get('fname') + ' ' + data.get('lname')) + '&body=' + body, '_self');
+      wrapper.classList.add('is-hidden');
+      setTimeout(function() { success.classList.add('is-active'); }, 400);
+    }
+  });
+
+  /* ═══════════ LEAD CAPTURE LOGIC ═══════════ */
+
+  var stickyBar = document.getElementById('stickyCta');
+  var modalOverlay = document.getElementById('modalOverlay');
+  var modalClose = document.getElementById('modalClose');
+  var modalForm = document.getElementById('modalForm');
+  var waFab = document.querySelector('.wa-fab');
+  var hero = document.querySelector('.hero');
+
+  var MODAL_KEY = 'maralto_modal_shown';
+  var modalShown = false;
+
+  function hasSeenModal() {
+    try { return localStorage.getItem(MODAL_KEY) === '1'; } catch(e) { return false; }
+  }
+  function markModalSeen() {
+    try { localStorage.setItem(MODAL_KEY, '1'); } catch(e) {}
+    modalShown = true;
+  }
+
+  // 1. Sticky CTA bar — show after scrolling past hero
+  var heroObserver = new IntersectionObserver(function(entries) {
+    var heroVisible = entries[0].isIntersecting;
+    if (!heroVisible) {
+      stickyBar.classList.add('is-visible');
+      if (waFab) waFab.classList.add('is-raised');
+    } else {
+      stickyBar.classList.remove('is-visible');
+      if (waFab) waFab.classList.remove('is-raised');
+    }
+  }, { threshold: 0.05 });
+  if (hero) heroObserver.observe(hero);
+
+  // Smooth scroll for sticky CTA and inline CTA links
+  document.querySelectorAll('.sticky-cta .btn, .inline-cta .btn').forEach(function(link) {
+    link.addEventListener('click', function(e) {
+      var target = document.querySelector(link.getAttribute('href'));
+      if (target) {
+        e.preventDefault();
+        target.scrollIntoView({ behavior: 'smooth' });
+      }
+    });
+  });
+
+  // 2. & 3. Modal — scroll trigger (60% page) OR timer (30s), whichever first
+  function openModal() {
+    if (modalShown || hasSeenModal()) return;
+    modalOverlay.classList.add('is-active');
+    document.body.style.overflow = 'hidden';
+    markModalSeen();
+  }
+  function closeModal() {
+    modalOverlay.classList.remove('is-active');
+    document.body.style.overflow = '';
+  }
+
+  // Scroll trigger: open at 60% scroll depth
+  function checkScrollDepth() {
+    var scrollPct = (window.scrollY + window.innerHeight) / document.documentElement.scrollHeight;
+    if (scrollPct > 0.6 && !modalShown && !hasSeenModal()) {
+      openModal();
+      window.removeEventListener('scroll', checkScrollDepth);
+    }
+  }
+  if (!hasSeenModal()) {
+    window.addEventListener('scroll', checkScrollDepth, { passive: true });
+  }
+
+  // Timer trigger: open after 30s
+  if (!hasSeenModal()) {
+    setTimeout(function() {
+      if (!modalShown) openModal();
+    }, 30000);
+  }
+
+  // 4. Exit-intent (desktop only)
+  if (!('ontouchstart' in window) && !hasSeenModal()) {
+    document.addEventListener('mouseout', function(e) {
+      if (e.clientY <= 0 && !modalShown && !hasSeenModal()) {
+        openModal();
+      }
+    });
+  }
+
+  // Close modal
+  modalClose.addEventListener('click', closeModal);
+  modalOverlay.addEventListener('click', function(e) {
+    if (e.target === modalOverlay) closeModal();
+  });
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape' && modalOverlay.classList.contains('is-active')) closeModal();
+  });
+
+  // Modal form validation & submit
+  modalForm.querySelectorAll('input:not([type="checkbox"])').forEach(function(input) {
+    input.addEventListener('input', function() { clearError(input); });
+  });
+  document.getElementById('m-consent').addEventListener('change', function() {
+    this.style.borderColor = '';
+    var err = this.closest('.consent').querySelector('.form-error');
+    if (err) err.classList.remove('is-active');
+  });
+
+  modalForm.addEventListener('submit', function(e) {
+    e.preventDefault();
+    var valid = true;
+    var errorMsg = 'Dit veld is verplicht';
+
+    modalForm.querySelectorAll('.form-error').forEach(function(el) { el.classList.remove('is-active'); });
+    modalForm.querySelectorAll('input').forEach(function(el) { el.style.borderBottomColor = ''; el.style.borderColor = ''; });
+
+    var inputs = modalForm.querySelectorAll('input[required]:not([type="checkbox"])');
+    inputs.forEach(function(input) {
+      if (!input.value.trim()) { valid = false; showError(input, errorMsg); }
+      else if (input.type === 'email' && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(input.value)) {
+        valid = false; showError(input, 'Ongeldig e-mailadres');
+      }
+    });
+
+    var mConsent = document.getElementById('m-consent');
+    if (!mConsent.checked) {
+      valid = false;
+      var consentWrap = mConsent.closest('.consent');
+      var err = consentWrap.querySelector('.form-error');
+      if (!err) {
+        err = document.createElement('p');
+        err.className = 'form-error';
+        err.setAttribute('role', 'alert');
+        consentWrap.appendChild(err);
+      }
+      err.textContent = 'U moet akkoord gaan om verder te gaan';
+      err.classList.add('is-active');
+      mConsent.style.borderColor = '#c0392b';
+    }
+
+    if (valid) {
+      var data = new FormData(modalForm);
+      var body = 'Nieuwe aanvraag Maralto Estepona (pop-up)%0A%0A'
+        + 'Email: ' + encodeURIComponent(data.get('email')) + '%0A'
+        + 'Telefoon: +32 ' + encodeURIComponent(data.get('phone'));
+      window.open('mailto:gunther@investinspain.be?subject=' + encodeURIComponent('Aanvraag Maralto Estepona — ' + data.get('fname')) + '&body=' + body, '_self');
+      closeModal();
+    }
+  });
+})();
+</script>
+</body>
+</html>
