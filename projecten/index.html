@@ -204,6 +204,45 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   box-shadow: 0 0 0 2px var(--gold-dim);
 }
 
+/* ── Filters (locatie + prijs) ── */
+.filter-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem 1.5rem;
+  justify-content: center;
+  margin-bottom: 2rem;
+}
+.filter-select select {
+  appearance: none;
+  -webkit-appearance: none;
+  background-color: var(--bg-el);
+  border: 1px solid var(--line-light);
+  color: var(--text);
+  font-family: var(--font);
+  font-size: 0.75rem;
+  letter-spacing: 0.05em;
+  padding: 0.8rem 2.3rem 0.8rem 1.15rem;
+  min-width: 210px;
+  cursor: pointer;
+  transition: border-color 0.3s, color 0.3s;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' fill='none' stroke='%238A96A3' stroke-width='1.2'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 1.1rem center;
+  background-size: 9px 6px;
+}
+.filter-select select:hover { border-color: var(--gold-dim); }
+.filter-select select:focus { outline: none; border-color: var(--gold); }
+.filter-select select option { background: var(--bg-el); color: var(--text); }
+.filter-empty {
+  display: none;
+  text-align: center;
+  padding: 3.5rem 1rem;
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  letter-spacing: 0.02em;
+}
+.filter-empty.is-active { display: block; }
+
 /* ── Projectenraster ── */
 .project-grid {
   display: grid;
@@ -503,8 +542,33 @@ footer a { color: var(--gold-dim); text-underline-offset: 2px; }
 <div class="spacer--sm"></div>
 
 <div class="content--wide reveal">
-  <div class="project-grid">
-    <a class="project-card" href="/">
+  <div class="filter-bar">
+    <div class="filter-select">
+      <select id="filterLocation" aria-label="Filter op locatie">
+        <option value="">Alle locaties</option>
+        <option value="Benahavís">Benahavís</option>
+        <option value="Cancelada">Cancelada</option>
+        <option value="Elviria">Elviria</option>
+        <option value="Estepona">Estepona</option>
+        <option value="Manilva">Manilva</option>
+        <option value="Marbella">Marbella</option>
+        <option value="Mijas">Mijas</option>
+        <option value="Real de la Quinta">Real de la Quinta</option>
+        <option value="San Pedro de Alcántara">San Pedro de Alcántara</option>
+      </select>
+    </div>
+    <div class="filter-select">
+      <select id="filterPrice" aria-label="Filter op prijs">
+        <option value="">Alle prijzen</option>
+        <option value="tot-500k">Tot € 500.000</option>
+        <option value="500k-1m">€ 500.000 – € 1.000.000</option>
+        <option value="1m-2m">€ 1.000.000 – € 2.000.000</option>
+        <option value="2m-plus">€ 2.000.000 en meer</option>
+      </select>
+    </div>
+  </div>
+  <div class="project-grid" id="projectGrid">
+    <a class="project-card" href="/" data-location="Estepona" data-price-band="tot-500k">
       <div class="project-card__img-wrap">
         <img class="project-card__img" src="https://investinspain.be/wp-content/uploads/2025/08/Maralto-Estepona-9.png" alt="Maralto" loading="lazy">
       </div>
@@ -514,7 +578,7 @@ footer a { color: var(--gold-dim); text-underline-offset: 2px; }
         <div class="project-card__price">Vanaf € 460.000</div>
       </div>
     </a>
-    <a class="project-card" href="/360/">
+    <a class="project-card" href="/360/" data-location="Mijas" data-price-band="tot-500k">
       <div class="project-card__img-wrap">
         <img class="project-card__img" src="https://investinspain.be/wp-content/uploads/2025/08/360-20-1110x623.jpg" alt="360°" loading="lazy">
       </div>
@@ -524,7 +588,7 @@ footer a { color: var(--gold-dim); text-underline-offset: 2px; }
         <div class="project-card__price">Vanaf € 400.000</div>
       </div>
     </a>
-    <a class="project-card" href="/adagio/">
+    <a class="project-card" href="/adagio/" data-location="Cancelada" data-price-band="500k-1m">
       <div class="project-card__img-wrap">
         <img class="project-card__img" src="https://investinspain.be/wp-content/uploads/2025/04/Adagio-Cancelada-6.jpg" alt="Adagio" loading="lazy">
       </div>
@@ -534,7 +598,7 @@ footer a { color: var(--gold-dim); text-underline-offset: 2px; }
         <div class="project-card__price">Vanaf € 512.000</div>
       </div>
     </a>
-    <a class="project-card" href="/altezza-suites/">
+    <a class="project-card" href="/altezza-suites/" data-location="Estepona" data-price-band="500k-1m">
       <div class="project-card__img-wrap">
         <img class="project-card__img" src="https://investinspain.be/wp-content/uploads/2024/10/02-Altezza-Suites-Estepona-1110x623.jpg" alt="Altezza Suites" loading="lazy">
       </div>
@@ -544,7 +608,7 @@ footer a { color: var(--gold-dim); text-underline-offset: 2px; }
         <div class="project-card__price">Vanaf € 795.000</div>
       </div>
     </a>
-    <a class="project-card" href="/birdie-hills/">
+    <a class="project-card" href="/birdie-hills/" data-location="Estepona" data-price-band="tot-500k">
       <div class="project-card__img-wrap">
         <img class="project-card__img" src="https://investinspain.be/wp-content/uploads/2025/06/Birdie-Hills-Estepona_208_INFOGRAFIAS-ANTEPROYECTO-2-5-1.jpg" alt="Birdie Hills" loading="lazy">
       </div>
@@ -554,7 +618,7 @@ footer a { color: var(--gold-dim); text-underline-offset: 2px; }
         <div class="project-card__price">Vanaf € 320.000</div>
       </div>
     </a>
-    <a class="project-card" href="/dunique/">
+    <a class="project-card" href="/dunique/" data-location="Marbella" data-price-band="2m-plus">
       <div class="project-card__img-wrap">
         <img class="project-card__img" src="https://investinspain.be/wp-content/uploads/2022/02/DUNIQUE-VISTA-DESDE-PISCINA-VOLADA-min-scaled.jpg" alt="Dunique" loading="lazy">
       </div>
@@ -564,7 +628,7 @@ footer a { color: var(--gold-dim); text-underline-offset: 2px; }
         <div class="project-card__price">Vanaf € 3.350.000</div>
       </div>
     </a>
-    <a class="project-card" href="/essence-residence/">
+    <a class="project-card" href="/essence-residence/" data-location="Estepona" data-price-band="500k-1m">
       <div class="project-card__img-wrap">
         <img class="project-card__img" src="https://investinspain.be/wp-content/uploads/2025/02/Essence-Residence-Estepona_31_post-topaz-denoise-1110x623.jpg" alt="Essence Residence" loading="lazy">
       </div>
@@ -574,7 +638,7 @@ footer a { color: var(--gold-dim); text-underline-offset: 2px; }
         <div class="project-card__price">Vanaf € 754.000</div>
       </div>
     </a>
-    <a class="project-card" href="/ikkil-bay/">
+    <a class="project-card" href="/ikkil-bay/" data-location="Estepona" data-price-band="2m-plus">
       <div class="project-card__img-wrap">
         <img class="project-card__img" src="https://investinspain.be/wp-content/uploads/2020/07/Ikkil-Bay-Showflat3.jpg" alt="Ikkil Bay" loading="lazy">
       </div>
@@ -584,7 +648,7 @@ footer a { color: var(--gold-dim); text-underline-offset: 2px; }
         <div class="project-card__price">Vanaf € 3.003.000</div>
       </div>
     </a>
-    <a class="project-card" href="/las-mesas-blue-horizon/">
+    <a class="project-card" href="/las-mesas-blue-horizon/" data-location="Estepona" data-price-band="500k-1m">
       <div class="project-card__img-wrap">
         <img class="project-card__img" src="https://investinspain.be/wp-content/uploads/2024/09/4_Las-Mesas-Blue-Horizon_Estepona-1110x623.jpg" alt="Las Mesas Blue Horizon" loading="lazy">
       </div>
@@ -594,7 +658,7 @@ footer a { color: var(--gold-dim); text-underline-offset: 2px; }
         <div class="project-card__price">Vanaf € 705.000</div>
       </div>
     </a>
-    <a class="project-card" href="/marine-hills/">
+    <a class="project-card" href="/marine-hills/" data-location="Estepona" data-price-band="tot-500k">
       <div class="project-card__img-wrap">
         <img class="project-card__img" src="https://investinspain.be/wp-content/uploads/2024/06/Marine-Hills-INVESTINSPAIN.jpg" alt="Marine Hills" loading="lazy">
       </div>
@@ -604,7 +668,7 @@ footer a { color: var(--gold-dim); text-underline-offset: 2px; }
         <div class="project-card__price">Vanaf € 464.000</div>
       </div>
     </a>
-    <a class="project-card" href="/nubay/">
+    <a class="project-card" href="/nubay/" data-location="Manilva" data-price-band="1m-2m">
       <div class="project-card__img-wrap">
         <img class="project-card__img" src="https://investinspain.be/wp-content/uploads/2024/07/Nubay_Frontline-beach_Manilva_307.jpg" alt="Nubay" loading="lazy">
       </div>
@@ -614,7 +678,7 @@ footer a { color: var(--gold-dim); text-underline-offset: 2px; }
         <div class="project-card__price">Vanaf € 1.050.000</div>
       </div>
     </a>
-    <a class="project-card" href="/romero/">
+    <a class="project-card" href="/romero/" data-location="Real de la Quinta" data-price-band="1m-2m">
       <div class="project-card__img-wrap">
         <img class="project-card__img" src="https://investinspain.be/wp-content/uploads/2025/05/Romero-Real-de-la-Quinta_012.Aerial-View.render-1110x623.jpg" alt="Romero" loading="lazy">
       </div>
@@ -624,7 +688,7 @@ footer a { color: var(--gold-dim); text-underline-offset: 2px; }
         <div class="project-card__price">Vanaf € 1.150.000</div>
       </div>
     </a>
-    <a class="project-card" href="/santa-clara-homes/">
+    <a class="project-card" href="/santa-clara-homes/" data-location="Marbella" data-price-band="1m-2m">
       <div class="project-card__img-wrap">
         <img class="project-card__img" src="https://investinspain.be/wp-content/uploads/2023/05/Santa-clara-5-min.jpg" alt="Santa Clara Homes" loading="lazy">
       </div>
@@ -634,7 +698,7 @@ footer a { color: var(--gold-dim); text-underline-offset: 2px; }
         <div class="project-card__price">Vanaf € 1.345.000</div>
       </div>
     </a>
-    <a class="project-card" href="/solenne/">
+    <a class="project-card" href="/solenne/" data-location="Benahavís" data-price-band="500k-1m">
       <div class="project-card__img-wrap">
         <img class="project-card__img" src="https://investinspain.be/wp-content/uploads/2026/01/SOLENNE-004.jpg" alt="Solenne" loading="lazy">
       </div>
@@ -644,7 +708,7 @@ footer a { color: var(--gold-dim); text-underline-offset: 2px; }
         <div class="project-card__price">Vanaf € 990.000</div>
       </div>
     </a>
-    <a class="project-card" href="/the-grove/">
+    <a class="project-card" href="/the-grove/" data-location="San Pedro de Alcántara" data-price-band="tot-500k">
       <div class="project-card__img-wrap">
         <img class="project-card__img" src="https://investinspain.be/wp-content/uploads/2026/01/06-The-Grove-1110x623.png" alt="The Grove" loading="lazy">
       </div>
@@ -654,7 +718,7 @@ footer a { color: var(--gold-dim); text-underline-offset: 2px; }
         <div class="project-card__price">Vanaf € 390.000</div>
       </div>
     </a>
-    <a class="project-card" href="/the-kove/">
+    <a class="project-card" href="/the-kove/" data-location="Mijas" data-price-band="tot-500k">
       <div class="project-card__img-wrap">
         <img class="project-card__img" src="https://investinspain.be/wp-content/uploads/2025/06/1748445724_thekoveokkkllll-1110x623.jpg" alt="The Kove" loading="lazy">
       </div>
@@ -664,7 +728,7 @@ footer a { color: var(--gold-dim); text-underline-offset: 2px; }
         <div class="project-card__price">Vanaf € 410.000</div>
       </div>
     </a>
-    <a class="project-card" href="/the-sky-marbella/">
+    <a class="project-card" href="/the-sky-marbella/" data-location="Benahavís" data-price-band="1m-2m">
       <div class="project-card__img-wrap">
         <img class="project-card__img" src="https://investinspain.be/wp-content/uploads/2023/10/The-Sky-Marbella-Villas-main-exterior-render-1110x623.jpeg" alt="The Sky Marbella" loading="lazy">
       </div>
@@ -674,7 +738,7 @@ footer a { color: var(--gold-dim); text-underline-offset: 2px; }
         <div class="project-card__price">Vanaf € 1.495.000</div>
       </div>
     </a>
-    <a class="project-card" href="/the-view/">
+    <a class="project-card" href="/the-view/" data-location="Benahavís" data-price-band="500k-1m">
       <div class="project-card__img-wrap">
         <img class="project-card__img" src="https://homeinspain.be/wp-content/uploads/2026/07/Block-7-scaled.jpg" alt="The View Marbella" loading="lazy">
       </div>
@@ -684,7 +748,7 @@ footer a { color: var(--gold-dim); text-underline-offset: 2px; }
         <div class="project-card__price">Vanaf € 899.000</div>
       </div>
     </a>
-    <a class="project-card" href="/vesta-mare/">
+    <a class="project-card" href="/vesta-mare/" data-location="Manilva" data-price-band="tot-500k">
       <div class="project-card__img-wrap">
         <img class="project-card__img" src="https://investinspain.be/wp-content/uploads/2026/04/Vesta-Mare-Manilva-1110x623.jpg" alt="Vesta Mare" loading="lazy">
       </div>
@@ -694,7 +758,7 @@ footer a { color: var(--gold-dim); text-underline-offset: 2px; }
         <div class="project-card__price">Vanaf € 435.000</div>
       </div>
     </a>
-    <a class="project-card" href="/zenity-azure/">
+    <a class="project-card" href="/zenity-azure/" data-location="Estepona" data-price-band="500k-1m">
       <div class="project-card__img-wrap">
         <img class="project-card__img" src="https://investinspain.be/wp-content/uploads/2022/09/INVESTINSPAIN-Azure_Cam02-1-scaled.jpg" alt="Zenity Azure" loading="lazy">
       </div>
@@ -704,7 +768,7 @@ footer a { color: var(--gold-dim); text-underline-offset: 2px; }
         <div class="project-card__price">Vanaf € 550.000</div>
       </div>
     </a>
-    <a class="project-card" href="/zew-elviria/">
+    <a class="project-card" href="/zew-elviria/" data-location="Elviria" data-price-band="500k-1m">
       <div class="project-card__img-wrap">
         <img class="project-card__img" src="https://investinspain.be/wp-content/uploads/2026/07/Concept_Homes_acceso_hd.0000-scaled-1.jpg" alt="ZEW Elviria" loading="lazy">
       </div>
@@ -715,6 +779,7 @@ footer a { color: var(--gold-dim); text-underline-offset: 2px; }
       </div>
     </a>
   </div>
+  <p class="filter-empty" id="filterEmpty">Geen projecten gevonden binnen deze selectie.</p>
 </div>
 
 <div class="spacer"></div>
@@ -863,6 +928,28 @@ footer a { color: var(--gold-dim); text-underline-offset: 2px; }
       slideEls[current].classList.add('is-active');
     }, 5000);
   }
+
+  /* ═══════════ FILTERS (locatie + prijs) ═══════════ */
+  var filterLocation = document.getElementById('filterLocation');
+  var filterPrice = document.getElementById('filterPrice');
+  var filterEmpty = document.getElementById('filterEmpty');
+  var cards = Array.prototype.slice.call(document.querySelectorAll('.project-card'));
+
+  function applyFilters() {
+    var loc = filterLocation.value;
+    var band = filterPrice.value;
+    var visibleCount = 0;
+    cards.forEach(function(card){
+      var matchLoc = !loc || card.getAttribute('data-location') === loc;
+      var matchPrice = !band || card.getAttribute('data-price-band') === band;
+      var show = matchLoc && matchPrice;
+      card.style.display = show ? '' : 'none';
+      if (show) visibleCount++;
+    });
+    filterEmpty.classList.toggle('is-active', visibleCount === 0);
+  }
+  filterLocation.addEventListener('change', applyFilters);
+  filterPrice.addEventListener('change', applyFilters);
 
   var projects = [{"name": "Maralto", "location": "Estepona", "price": "Vanaf € 460.000", "href": "/", "lat": 36.425704, "lng": -5.1626803}, {"name": "360°", "location": "Mijas", "price": "Vanaf € 400.000", "href": "/360/", "lat": 36.5269758, "lng": -4.6646297}, {"name": "Adagio", "location": "Cancelada", "price": "Vanaf € 512.000", "href": "/adagio/", "lat": 36.4651772, "lng": -5.0599806}, {"name": "Altezza Suites", "location": "Estepona", "price": "Vanaf € 795.000", "href": "/altezza-suites/", "lat": 36.4770737, "lng": -5.0765539}, {"name": "Birdie Hills", "location": "Estepona", "price": "Vanaf € 320.000", "href": "/birdie-hills/", "lat": 36.408795614625, "lng": -5.2107139740973}, {"name": "Dunique", "location": "Marbella", "price": "Vanaf € 3.350.000", "href": "/dunique/", "lat": 36.5006105, "lng": -4.8113747}, {"name": "Essence Residence", "location": "Estepona", "price": "Vanaf € 754.000", "href": "/essence-residence/", "lat": 36.4680914, "lng": -5.0495274}, {"name": "Ikkil Bay", "location": "Estepona", "price": "Vanaf € 3.003.000", "href": "/ikkil-bay/", "lat": 36.417125823855, "lng": -5.1652550752558}, {"name": "Las Mesas Blue Horizon", "location": "Estepona", "price": "Vanaf € 705.000", "href": "/las-mesas-blue-horizon/", "lat": 36.4262544, "lng": -5.1578951}, {"name": "Marine Hills", "location": "Estepona", "price": "Vanaf € 464.000", "href": "/marine-hills/", "lat": 36.4603322, "lng": -5.0854119}, {"name": "Nubay", "location": "Manilva", "price": "Vanaf € 1.050.000", "href": "/nubay/", "lat": 36.368092531788, "lng": -5.22610050921}, {"name": "Romero", "location": "Real de la Quinta", "price": "Vanaf € 1.150.000", "href": "/romero/", "lat": 36.5353281, "lng": -4.9791269}, {"name": "Santa Clara Homes", "location": "Marbella", "price": "Vanaf € 1.345.000", "href": "/santa-clara-homes/", "lat": 36.510965152537, "lng": -4.8326216557053}, {"name": "Solenne", "location": "Benahavís", "price": "Vanaf € 990.000", "href": "/solenne/", "lat": 36.505856521457, "lng": -5.0096572906735}, {"name": "The Grove", "location": "San Pedro de Alcántara", "price": "Vanaf € 390.000", "href": "/the-grove/", "lat": 36.4873997, "lng": -4.9843947}, {"name": "The Kove", "location": "Mijas", "price": "Vanaf € 410.000", "href": "/the-kove/", "lat": 36.5208373, "lng": -4.6509914}, {"name": "The Sky Marbella", "location": "Benahavís", "price": "Vanaf € 1.495.000", "href": "/the-sky-marbella/", "lat": 36.5226179, "lng": -4.9993343}, {"name": "The View Marbella", "location": "Benahavís", "price": "Vanaf € 899.000", "href": "/the-view/", "lat": 36.4666272, "lng": -5.0836161}, {"name": "Vesta Mare", "location": "Manilva", "price": "Vanaf € 435.000", "href": "/vesta-mare/", "lat": 36.3518754, "lng": -5.2332776}, {"name": "Zenity Azure", "location": "Estepona", "price": "Vanaf € 550.000", "href": "/zenity-azure/", "lat": 36.4139368, "lng": -5.1836025}, {"name": "ZEW Elviria", "location": "Elviria", "price": "Vanaf € 770.000", "href": "/zew-elviria/", "lat": 36.5075665, "lng": -4.787271}];
 

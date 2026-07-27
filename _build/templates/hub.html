@@ -204,6 +204,45 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   box-shadow: 0 0 0 2px var(--gold-dim);
 }
 
+/* ── Filters (locatie + prijs) ── */
+.filter-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem 1.5rem;
+  justify-content: center;
+  margin-bottom: 2rem;
+}
+.filter-select select {
+  appearance: none;
+  -webkit-appearance: none;
+  background-color: var(--bg-el);
+  border: 1px solid var(--line-light);
+  color: var(--text);
+  font-family: var(--font);
+  font-size: 0.75rem;
+  letter-spacing: 0.05em;
+  padding: 0.8rem 2.3rem 0.8rem 1.15rem;
+  min-width: 210px;
+  cursor: pointer;
+  transition: border-color 0.3s, color 0.3s;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' fill='none' stroke='%238A96A3' stroke-width='1.2'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 1.1rem center;
+  background-size: 9px 6px;
+}
+.filter-select select:hover { border-color: var(--gold-dim); }
+.filter-select select:focus { outline: none; border-color: var(--gold); }
+.filter-select select option { background: var(--bg-el); color: var(--text); }
+.filter-empty {
+  display: none;
+  text-align: center;
+  padding: 3.5rem 1rem;
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  letter-spacing: 0.02em;
+}
+.filter-empty.is-active { display: block; }
+
 /* ── Projectenraster ── */
 .project-grid {
   display: grid;
@@ -503,9 +542,24 @@ footer a { color: var(--gold-dim); text-underline-offset: 2px; }
 <div class="spacer--sm"></div>
 
 <div class="content--wide reveal">
-  <div class="project-grid">
+  <div class="filter-bar">
+    <div class="filter-select">
+      <select id="filterLocation" aria-label="Filter op locatie">
+        <option value="">Alle locaties</option>
+__LOCATION_OPTIONS__
+      </select>
+    </div>
+    <div class="filter-select">
+      <select id="filterPrice" aria-label="Filter op prijs">
+        <option value="">Alle prijzen</option>
+__PRICE_OPTIONS__
+      </select>
+    </div>
+  </div>
+  <div class="project-grid" id="projectGrid">
 __PROJECT_CARDS__
   </div>
+  <p class="filter-empty" id="filterEmpty">Geen projecten gevonden binnen deze selectie.</p>
 </div>
 
 <div class="spacer"></div>
@@ -654,6 +708,28 @@ __PROJECT_CARDS__
       slideEls[current].classList.add('is-active');
     }, 5000);
   }
+
+  /* ═══════════ FILTERS (locatie + prijs) ═══════════ */
+  var filterLocation = document.getElementById('filterLocation');
+  var filterPrice = document.getElementById('filterPrice');
+  var filterEmpty = document.getElementById('filterEmpty');
+  var cards = Array.prototype.slice.call(document.querySelectorAll('.project-card'));
+
+  function applyFilters() {
+    var loc = filterLocation.value;
+    var band = filterPrice.value;
+    var visibleCount = 0;
+    cards.forEach(function(card){
+      var matchLoc = !loc || card.getAttribute('data-location') === loc;
+      var matchPrice = !band || card.getAttribute('data-price-band') === band;
+      var show = matchLoc && matchPrice;
+      card.style.display = show ? '' : 'none';
+      if (show) visibleCount++;
+    });
+    filterEmpty.classList.toggle('is-active', visibleCount === 0);
+  }
+  filterLocation.addEventListener('change', applyFilters);
+  filterPrice.addEventListener('change', applyFilters);
 
   var projects = __MAP_MARKERS_JSON__;
 

@@ -10,6 +10,7 @@ import html
 import importlib.util
 import json
 import os
+import re
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 TEMPLATES = os.path.join(ROOT, "_build", "templates")
@@ -32,6 +33,34 @@ CHRONOLOGICAL = [
     "birdie-hills",
 ]
 HERO_ROTATION_COUNT = 5
+
+# Prijsbanden voor de filter op /projecten/. Grenzen in euro; de bovengrens
+# van elke band is exclusief (net als de "max" hieronder aangeeft).
+PRICE_BANDS = [
+    ("tot-500k", "Tot € 500.000", None, 500_000),
+    ("500k-1m", "€ 500.000 – € 1.000.000", 500_000, 1_000_000),
+    ("1m-2m", "€ 1.000.000 – € 2.000.000", 1_000_000, 2_000_000),
+    ("2m-plus", "€ 2.000.000 en meer", 2_000_000, None),
+]
+
+
+def parse_price_number(price_str):
+    """Haalt het eerste bedrag uit een prijstekst zoals 'Vanaf € 990.000' of
+    '€ 995.000 (Excl. meubels)' en geeft het terug als geheel getal in euro."""
+    match = re.search(r"([\d.,]+)", price_str)
+    if not match:
+        return None
+    digits = re.sub(r"[.,]", "", match.group(1))
+    return int(digits) if digits else None
+
+
+def price_band_id(price_num):
+    if price_num is None:
+        return ""
+    for band_id, _label, lo, hi in PRICE_BANDS:
+        if (lo is None or price_num >= lo) and (hi is None or price_num < hi):
+            return band_id
+    return ""
 
 
 def load_hub_entries_by_slug():
@@ -65,7 +94,9 @@ def last_n_chronological(entries, n):
 
 
 def render_card(entry):
-    return f"""    <a class="project-card" href="{entry['HREF']}">
+    price_num = parse_price_number(entry["PRICE"])
+    band_id = price_band_id(price_num)
+    return f"""    <a class="project-card" href="{entry['HREF']}" data-location="{html.escape(entry['LOCATION'])}" data-price-band="{band_id}">
       <div class="project-card__img-wrap">
         <img class="project-card__img" src="{entry['THUMB']}" alt="{html.escape(entry['NAME'])}" loading="lazy">
       </div>
@@ -75,6 +106,21 @@ def render_card(entry):
         <div class="project-card__price">{html.escape(entry['PRICE'])}</div>
       </div>
     </a>"""
+
+
+def render_location_options(entries):
+    locations = sorted({e["LOCATION"] for e in entries})
+    return "\n".join(
+        f'        <option value="{html.escape(loc)}">{html.escape(loc)}</option>'
+        for loc in locations
+    )
+
+
+def render_price_options():
+    return "\n".join(
+        f'        <option value="{band_id}">{html.escape(label)}</option>'
+        for band_id, label, _lo, _hi in PRICE_BANDS
+    )
 
 
 def main():
@@ -106,6 +152,8 @@ def main():
         page = f.read()
 
     page = page.replace("__PROJECT_CARDS__", cards_html)
+    page = page.replace("__LOCATION_OPTIONS__", render_location_options(entries))
+    page = page.replace("__PRICE_OPTIONS__", render_price_options())
     page = page.replace("__MAP_MARKERS_JSON__", json.dumps(markers, ensure_ascii=False))
     page = page.replace("__HERO_ROTATION_JSON__", json.dumps(hero_rotation, ensure_ascii=False))
 
