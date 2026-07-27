@@ -1536,12 +1536,18 @@ footer a {
   });
 
   // 2. & 3. Modal — scroll trigger (60% page) OR timer (30s), whichever first
+  // Geeft true terug als de modal daadwerkelijk opende
   function openModal() {
-    if (modalShown || hasSeenModal()) return;
+    if (modalShown || hasSeenModal()) return false;
+    // Alleen als de bezoeker het zijpaneel zelf heeft weggeklikt. Staat het nog
+    // open, dan toont het al hetzelfde formulier en zou de modal dubbelop zijn.
+    if (!dockDismissed) return false;
+    // Korte adempauze zodat de modal niet meteen op het wegklikken volgt
+    if (Date.now() - dockClosedAt < 10000) return false;
     modalOverlay.classList.add('is-active');
     document.body.style.overflow = 'hidden';
-    collapseDock();
     markModalSeen();
+    return true;
   }
   function closeModal() {
     modalOverlay.classList.remove('is-active');
@@ -1550,9 +1556,11 @@ footer a {
 
   // Scroll trigger: open at 60% scroll depth
   function checkScrollDepth() {
+    if (hasSeenModal()) { window.removeEventListener('scroll', checkScrollDepth); return; }
     var scrollPct = (window.scrollY + window.innerHeight) / document.documentElement.scrollHeight;
-    if (scrollPct > 0.6 && !modalShown && !hasSeenModal()) {
-      openModal();
+    // Blijft luisteren zolang het paneel openstaat, zodat de modal alsnog
+    // kan komen wanneer de bezoeker het wegklikt
+    if (scrollPct > 0.6 && openModal()) {
       window.removeEventListener('scroll', checkScrollDepth);
     }
   }
@@ -1654,9 +1662,22 @@ footer a {
   var dockOpen = isWide;
   var dockSettled = isWide;  // true zodra de gebruiker of de pagina de staat bepaald heeft
   var dockReady = false;     // pas tonen na de hero-animatie
+  var dockDismissed = false; // heeft de bezoeker het paneel zelf weggeklikt?
+  var dockClosedAt = 0;      // wanneer dat gebeurde
 
-  function openDock() { dockOpen = true; dockSettled = true; updateDock(); }
-  function collapseDock() { dockOpen = false; dockSettled = true; updateDock(); }
+  function openDock() {
+    dockOpen = true;
+    dockSettled = true;
+    dockDismissed = false;
+    updateDock();
+  }
+  function collapseDock() {
+    dockOpen = false;
+    dockSettled = true;
+    dockDismissed = true;
+    dockClosedAt = Date.now();
+    updateDock();
+  }
 
   // Zichtbaar vanaf de header, weg bij de contactsectie (daar staat al een formulier)
   function updateDock() {
