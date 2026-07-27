@@ -19,8 +19,15 @@ PROJECTS_DIR = os.path.join(ROOT, "_build", "projects")
 # niet in staan, komen automatisch achteraan (alfabetisch) terecht.
 ORDER = ["maralto"]
 
+# Volgorde waarin projecten zijn toegevoegd (oudste eerst) - bepaalt welke 5
+# in de roterende hero komen. Voeg een nieuwe slug toe aan het EINDE zodra
+# er een project bijkomt; vergeten mag ook, die komen dan automatisch
+# (alfabetisch) achteraan terecht en tellen dus als "oudst".
+CHRONOLOGICAL = ["maralto", "adagio", "the-view", "zew-elviria"]
+HERO_ROTATION_COUNT = 5
 
-def load_hub_entries():
+
+def load_hub_entries_by_slug():
     entries = {}
     for fname in sorted(os.listdir(PROJECTS_DIR)):
         if not fname.endswith(".py"):
@@ -33,10 +40,21 @@ def load_hub_entries():
             entry = dict(mod.HUB)
             entry["SLUG"] = slug
             entries[slug] = entry
+    return entries
 
+
+def display_order(entries):
     ordered_slugs = [s for s in ORDER if s in entries]
     ordered_slugs += sorted(s for s in entries if s not in ORDER)
     return [entries[s] for s in ordered_slugs]
+
+
+def last_n_chronological(entries, n):
+    slugs = [s for s in CHRONOLOGICAL if s in entries]
+    slugs += sorted(s for s in entries if s not in CHRONOLOGICAL)
+    last = slugs[-n:]
+    last.reverse()  # nieuwste eerst in de rotatie
+    return [entries[s] for s in last]
 
 
 def render_card(entry):
@@ -53,9 +71,12 @@ def render_card(entry):
 
 
 def main():
-    entries = load_hub_entries()
-    if not entries:
+    by_slug = load_hub_entries_by_slug()
+    if not by_slug:
         raise SystemExit("Geen enkel project-bestand met een HUB-dict gevonden.")
+
+    entries = display_order(by_slug)
+    hero_entries = last_n_chronological(by_slug, HERO_ROTATION_COUNT)
 
     cards_html = "\n".join(render_card(e) for e in entries)
     markers = [
@@ -69,12 +90,17 @@ def main():
         }
         for e in entries
     ]
+    hero_rotation = [
+        {"name": e["NAME"], "thumb": e["THUMB"], "href": e["HREF"]}
+        for e in hero_entries
+    ]
 
     with open(os.path.join(TEMPLATES, "hub.html"), encoding="utf-8") as f:
         page = f.read()
 
     page = page.replace("__PROJECT_CARDS__", cards_html)
     page = page.replace("__MAP_MARKERS_JSON__", json.dumps(markers, ensure_ascii=False))
+    page = page.replace("__HERO_ROTATION_JSON__", json.dumps(hero_rotation, ensure_ascii=False))
 
     out_dir = os.path.join(ROOT, "projecten")
     os.makedirs(out_dir, exist_ok=True)

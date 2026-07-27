@@ -60,16 +60,39 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 
 /* ── Page header (lichter dan een projecthero: geen achtergrondfoto) ── */
 .page-header {
-  padding: clamp(4rem, 12vw, 7rem) clamp(1.5rem, 5vw, 3rem) clamp(3rem, 7vw, 5rem);
+  position: relative;
+  min-height: 100svh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(1.5rem, 5vw, 3rem);
   text-align: center;
+  overflow: hidden;
 }
-.page-header__mark {
-  width: 42px;
-  height: auto;
-  margin: 0 auto 1.5rem;
+.hero-rotator { position: absolute; inset: 0; z-index: 0; }
+.hero-rotator__slide {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center 55%;
   opacity: 0;
-  animation: fade-up 0.8s var(--ease) 0.2s forwards;
+  transition: opacity 1.8s var(--ease);
 }
+.hero-rotator__slide.is-active { opacity: 1; }
+.hero-rotator::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    var(--bg) 0%,
+    rgba(14,19,24,0.55) 28%,
+    rgba(14,19,24,0.4) 55%,
+    rgba(14,19,24,0.7) 85%,
+    var(--bg) 100%
+  );
+}
+.page-header__content { position: relative; z-index: 2; }
 .page-header__title {
   font-size: clamp(2.2rem, 7vw, 4rem);
   font-weight: 300;
@@ -448,12 +471,11 @@ footer a { color: var(--gold-dim); text-underline-offset: 2px; }
 <div class="frame" aria-hidden="true"></div>
 
 <div class="page-header">
-  <svg class="page-header__mark" viewBox="0 0 100 100" fill="none" stroke="#C4A97D" stroke-width="2" aria-hidden="true">
-    <circle cx="30" cy="30" r="10"/><line x1="37" y1="37" x2="70" y2="70"/>
-    <circle cx="30" cy="70" r="10" transform="rotate(0 30 70)"/><line x1="37" y1="63" x2="70" y2="30"/>
-  </svg>
-  <h1 class="page-header__title">PROJECTEN</h1>
-  <p class="page-header__intro">Ontdek onze actuele nieuwbouwprojecten aan de Costa del Sol — op kaart, en op naam.</p>
+  <div class="hero-rotator" id="heroRotator" role="img" aria-label="Sfeerbeelden van onze recentste projecten"></div>
+  <div class="page-header__content">
+    <h1 class="page-header__title">PROJECTEN</h1>
+    <p class="page-header__intro">Ontdek onze actuele nieuwbouwprojecten aan de Costa del Sol — op kaart, en op naam.</p>
+  </div>
 </div>
 
 <div class="map-section content--wide reveal">
@@ -601,6 +623,25 @@ __PROJECT_CARDS__
     });
   }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
   document.querySelectorAll('.reveal').forEach(function(el){ observer.observe(el); });
+
+  /* ═══════════ ROTERENDE HERO (laatste 5 projecten) ═══════════ */
+  var heroSlides = __HERO_ROTATION_JSON__;
+  var rotator = document.getElementById('heroRotator');
+  heroSlides.forEach(function(p, i){
+    var slide = document.createElement('div');
+    slide.className = 'hero-rotator__slide' + (i === 0 ? ' is-active' : '');
+    slide.style.backgroundImage = "url('" + p.thumb + "')";
+    rotator.appendChild(slide);
+  });
+  if (heroSlides.length > 1) {
+    var slideEls = rotator.querySelectorAll('.hero-rotator__slide');
+    var current = 0;
+    setInterval(function(){
+      slideEls[current].classList.remove('is-active');
+      current = (current + 1) % slideEls.length;
+      slideEls[current].classList.add('is-active');
+    }, 5000);
+  }
 
   var projects = __MAP_MARKERS_JSON__;
 
