@@ -15,11 +15,11 @@ TEMPLATES = os.path.join(ROOT, "_build", "templates")
 PROJECTS_DIR = os.path.join(ROOT, "_build", "projects")
 
 
-def load_project(path):
+def load_module(path):
     spec = importlib.util.spec_from_file_location("project", path)
     mod = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(mod)
-    return mod.DATA
+    return mod
 
 
 def fill(template, data):
@@ -30,7 +30,10 @@ def fill(template, data):
 
 
 def build_one(project_file):
-    data = dict(load_project(project_file))
+    mod = load_module(project_file)
+    if not hasattr(mod, "DATA"):
+        return  # bv. maralto.py: levert alleen een HUB-vermelding, geen eigen pagina
+    data = dict(mod.DATA)
     slug = data["SLUG"]
     # De sticky-cta bar heeft alleen het bedrag nodig (zonder "Vanaf "-prefix)
     data.setdefault("PRICE_AMOUNT", data["PRICE_FROM"].replace("Vanaf ", ""))

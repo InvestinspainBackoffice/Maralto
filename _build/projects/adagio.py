@@ -20,3 +20,14 @@ DATA = {
     "WA_TEXT_ENCODED": quote(WA_MESSAGE),
     "PROJECT_NAME": PROJECT_NAME,
 }
+
+# Gebruikt door de /projecten/ overzichtspagina (kaart + kaartjes)
+HUB = {
+    "NAME": PROJECT_NAME,
+    "LOCATION": "Cancelada",
+    "PRICE": PRICE_FROM,
+    "THUMB": "https://investinspain.be/wp-content/uploads/2025/04/Adagio-Cancelada-6.jpg",
+    "LAT": 36.4651772,
+    "LNG": -5.0599806,
+    "HREF": "/adagio/",
+}

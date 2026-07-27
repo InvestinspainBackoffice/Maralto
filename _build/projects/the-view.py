@@ -20,3 +20,14 @@ DATA = {
     "WA_TEXT_ENCODED": quote(WA_MESSAGE),
     "PROJECT_NAME": PROJECT_NAME,
 }
+
+# Gebruikt door de /projecten/ overzichtspagina (kaart + kaartjes)
+HUB = {
+    "NAME": PROJECT_NAME,
+    "LOCATION": "Benahavís",
+    "PRICE": PRICE_FROM,
+    "THUMB": "https://investinspain.be/wp-content/uploads/2020/03/Facade-Close-Up-1110x623.png",
+    "LAT": 36.4666272,
+    "LNG": -5.0836161,
+    "HREF": "/the-view/",
+}

@@ -20,3 +20,14 @@ DATA = {
     "WA_TEXT_ENCODED": quote(WA_MESSAGE),
     "PROJECT_NAME": PROJECT_NAME,
 }
+
+# Gebruikt door de /projecten/ overzichtspagina (kaart + kaartjes)
+HUB = {
+    "NAME": PROJECT_NAME,
+    "LOCATION": "Elviria",
+    "PRICE": PRICE_FROM,
+    "THUMB": "https://investinspain.be/wp-content/uploads/2025/06/ZEW-Elviria-INVESTINSPAIN-1110x623.jpg",
+    "LAT": 36.5075665,
+    "LNG": -4.787271,
+    "HREF": "/zew-elviria/",
+}
