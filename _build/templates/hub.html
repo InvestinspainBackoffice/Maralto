@@ -89,7 +89,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 
 /* ── Content blocks (zelfde als de projectpagina's) ── */
 .content { max-width: 720px; margin: 0 auto; padding: 0 clamp(1.5rem, 5vw, 3rem); }
-.content--wide { max-width: 1200px; }
+.content--wide { max-width: 1200px; margin: 0 auto; }
 .label {
   font-size: 0.6rem;
   letter-spacing: 0.3em;
@@ -249,6 +249,198 @@ footer a { color: var(--gold-dim); text-underline-offset: 2px; }
 
 .reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.9s var(--ease), transform 0.9s var(--ease); }
 .reveal.is-visible { opacity: 1; transform: translateY(0); }
+
+/* ── Formulier (zelfde als de projectpagina's) ── */
+.form-group { position: relative; margin-bottom: 1.5rem; }
+.form-group input {
+  display: block;
+  width: 100%;
+  padding: 0.9rem 0;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid var(--line-light);
+  color: var(--text);
+  font-family: var(--font);
+  font-size: 0.9rem;
+  font-weight: 300;
+  outline: none;
+  transition: border-color 0.3s;
+}
+.form-group input::placeholder { color: var(--text-muted); opacity: 0.6; }
+.form-group input:focus { border-bottom-color: var(--gold); }
+.form-group label {
+  position: absolute;
+  top: 0.9rem; left: 0;
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  color: var(--text-muted);
+  pointer-events: none;
+  transition: all 0.3s var(--ease);
+}
+.form-group input:focus + label,
+.form-group input:not(:placeholder-shown) + label {
+  top: -0.6rem; font-size: 0.6rem; color: var(--gold); letter-spacing: 0.15em;
+}
+.phone-group { display: flex; align-items: end; gap: 0.75rem; }
+.phone-prefix {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  padding: 0 1.1rem 0.9rem 0;
+  border: none;
+  border-bottom: 1px solid var(--line-light);
+  white-space: nowrap;
+  flex-shrink: 0;
+  width: 7.4rem;
+  font-family: var(--font);
+  background: transparent no-repeat right 0.15rem bottom 1.05rem;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' fill='none' stroke='%238A96A3' stroke-width='1.2'/%3E%3C/svg%3E");
+  background-size: 9px 6px;
+  appearance: none;
+  -webkit-appearance: none;
+  cursor: pointer;
+  text-overflow: ellipsis;
+  transition: border-color 0.3s, color 0.3s;
+}
+.phone-prefix:hover { color: var(--text); }
+.phone-prefix:focus { outline: none; border-bottom-color: var(--gold); color: var(--text); }
+.phone-prefix option { background: var(--bg-el); color: var(--text); }
+.phone-prefix optgroup { background: var(--bg); color: var(--text-muted); font-style: normal; }
+.phone-group .form-group { flex: 1; margin-bottom: 0; }
+.lead-dock__card .phone-group .form-group { margin-bottom: 0; }
+
+.consent { display: flex; align-items: flex-start; gap: 0.75rem; margin: 1.5rem 0; }
+.consent input[type="checkbox"] {
+  appearance: none; -webkit-appearance: none;
+  width: 16px; height: 16px;
+  border: 1px solid var(--line-light);
+  border-radius: 2px;
+  flex-shrink: 0;
+  margin-top: 2px;
+  cursor: pointer;
+  position: relative;
+  transition: all 0.2s;
+}
+.consent input[type="checkbox"]:checked { background: var(--gold); border-color: var(--gold); }
+.consent input[type="checkbox"]:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+.consent input[type="checkbox"]:checked::after {
+  content: '';
+  position: absolute;
+  left: 4px; top: 1px;
+  width: 5px; height: 9px;
+  border: solid var(--bg);
+  border-width: 0 1.5px 1.5px 0;
+  transform: rotate(45deg);
+}
+.consent label { font-size: 0.7rem; color: var(--text-muted); line-height: 1.5; cursor: pointer; }
+.consent a { color: var(--gold-dim); text-decoration: underline; text-underline-offset: 2px; }
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 1rem 2.5rem;
+  background: var(--cta);
+  color: var(--white);
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  border: none;
+  cursor: pointer;
+  transition: background 0.3s, transform 0.2s;
+}
+.btn:hover { background: var(--cta-hover); }
+.btn:active { transform: scale(0.98); }
+
+.form-wrapper { transition: opacity 0.4s; }
+.form-wrapper.is-hidden { opacity: 0; pointer-events: none; position: absolute; }
+.form-success { display: none; text-align: center; padding: 3rem 1rem; }
+.form-success.is-active { display: block; }
+.form-success svg { width: 48px; height: 48px; stroke: var(--gold); stroke-width: 1; fill: none; margin: 0 auto 1.5rem; }
+.form-success h3 { font-size: 1.2rem; font-weight: 400; margin-bottom: 0.75rem; }
+.form-success p { font-size: 0.85rem; color: var(--text-muted); max-width: 40ch; margin: 0 auto; }
+.form-error { font-size: 0.65rem; color: #c0392b; margin-top: 0.4rem; letter-spacing: 0.05em; display: none; }
+.form-error.is-active { display: block; }
+
+/* ── Lead dock (meescrollend zijpaneel) ── */
+.lead-dock {
+  position: fixed;
+  right: 1.5rem;
+  bottom: calc(1.5rem + 52px + 0.75rem);
+  z-index: 95;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  opacity: 0;
+  transform: translateY(12px);
+  pointer-events: none;
+  transition: opacity 0.5s var(--ease), transform 0.5s var(--ease);
+}
+.lead-dock.is-visible { opacity: 1; transform: translateY(0); pointer-events: auto; }
+.lead-dock__trigger {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.7rem 1.1rem;
+  background: var(--bg-el);
+  border: 1px solid var(--gold-dim);
+  color: var(--text);
+  font-family: var(--font);
+  font-size: 0.62rem;
+  font-weight: 400;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  cursor: pointer;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.45);
+  transition: border-color 0.25s, color 0.25s;
+}
+.lead-dock__trigger:hover { border-color: var(--gold); color: var(--gold); }
+.lead-dock__trigger svg { width: 13px; height: 13px; stroke: var(--gold); stroke-width: 1.5; fill: none; flex-shrink: 0; }
+.lead-dock.is-open .lead-dock__trigger { display: none; }
+.lead-dock__card {
+  display: none;
+  width: 288px;
+  max-width: calc(100vw - 3rem);
+  background: var(--bg-el);
+  border: 1px solid var(--line);
+  padding: 1.35rem 1.25rem 1.25rem;
+  position: relative;
+  box-shadow: 0 8px 40px rgba(0,0,0,0.55);
+}
+.lead-dock.is-open .lead-dock__card { display: block; animation: dock-in 0.35s var(--ease); }
+@keyframes dock-in {
+  from { opacity: 0; transform: translateY(10px) scale(0.96); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+.lead-dock__close {
+  position: absolute;
+  top: 0.55rem; right: 0.55rem;
+  width: 26px; height: 26px;
+  display: flex; align-items: center; justify-content: center;
+  background: none; border: none;
+  color: var(--text-muted);
+  font-family: var(--font);
+  font-size: 1.15rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+.lead-dock__close:hover { color: var(--text); }
+.lead-dock__card h4 { font-size: 0.9rem; font-weight: 300; line-height: 1.35; margin-bottom: 1rem; padding-right: 1.5rem; }
+.lead-dock__card h4 em { font-style: normal; color: var(--gold); }
+.lead-dock__card .form-group { margin-bottom: 0.7rem; }
+.lead-dock__card .phone-group { margin-bottom: 0.7rem; }
+.lead-dock__card .consent { margin: 0.75rem 0; }
+.lead-dock__card .consent label { font-size: 0.62rem; line-height: 1.5; }
+.lead-dock__card .btn { width: 100%; justify-content: center; }
+.lead-dock__card .form-success { padding: 1.25rem 0.5rem 0.75rem; }
+.lead-dock__card .form-success svg { width: 34px; height: 34px; margin-bottom: 0.9rem; }
+.lead-dock__card .form-success p { font-size: 0.75rem; }
+@media (max-width: 600px) {
+  .lead-dock__trigger { font-size: 0.58rem; padding: 0.6rem 0.9rem; }
+  .lead-dock__card { padding: 1.3rem 1.15rem 1.2rem; }
+}
 </style>
 </head>
 <body>
@@ -296,6 +488,105 @@ __PROJECT_CARDS__
   <img src="https://investinspain.be/wp-content/uploads/2026/07/BIV2.0.png" alt="BIV erkend vastgoedmakelaar" class="biv-logo">
 </footer>
 
+<!-- ═══════════ LEAD DOCK (algemene aanvraag) ═══════════ -->
+<div class="lead-dock" id="leadDock">
+  <button class="lead-dock__trigger" id="dockTrigger" aria-expanded="false" aria-controls="dockCard">
+    <svg viewBox="0 0 24 24"><path d="M4 4h16v16H4z"/><path d="M4 7l8 6 8-6"/></svg>
+    Prijzen aanvragen
+  </button>
+
+  <div class="lead-dock__card" id="dockCard" role="dialog" aria-label="Ontvang projectinformatie">
+    <button class="lead-dock__close" id="dockClose" aria-label="Sluiten">&times;</button>
+    <h4>Interesse in <em>een van onze projecten</em>?</h4>
+
+    <div class="form-wrapper" id="dockWrapper">
+      <form id="dockForm" novalidate>
+        <div class="form-group">
+          <input type="text" id="d-fname" name="fname" placeholder=" " required autocomplete="given-name">
+          <label for="d-fname">Voornaam</label>
+        </div>
+        <div class="form-group">
+          <input type="text" id="d-lname" name="lname" placeholder=" " required autocomplete="family-name">
+          <label for="d-lname">Achternaam</label>
+        </div>
+        <div class="form-group">
+          <input type="email" id="d-email" name="email" placeholder=" " required autocomplete="email">
+          <label for="d-email">E-mailadres</label>
+        </div>
+        <div class="phone-group">
+          <select class="phone-prefix" id="d-country" name="country" required aria-label="Landcode">
+            <optgroup label="Veelgekozen">
+              <option value="+32" data-country="België" selected>🇧🇪 +32</option>
+              <option value="+31" data-country="Nederland">🇳🇱 +31</option>
+              <option value="+352" data-country="Luxemburg">🇱🇺 +352</option>
+              <option value="+34" data-country="Spanje">🇪🇸 +34</option>
+              <option value="+33" data-country="Frankrijk">🇫🇷 +33</option>
+              <option value="+49" data-country="Duitsland">🇩🇪 +49</option>
+              <option value="+44" data-country="Verenigd Koninkrijk">🇬🇧 +44</option>
+            </optgroup>
+            <optgroup label="Alle landen">
+              <option value="+971" data-country="Ver. Arabische Emiraten">🇦🇪 +971</option>
+              <option value="+43" data-country="Oostenrijk">🇦🇹 +43</option>
+              <option value="+61" data-country="Australië">🇦🇺 +61</option>
+              <option value="+359" data-country="Bulgarije">🇧🇬 +359</option>
+              <option value="+55" data-country="Brazilië">🇧🇷 +55</option>
+              <option value="+1" data-country="Canada">🇨🇦 +1</option>
+              <option value="+41" data-country="Zwitserland">🇨🇭 +41</option>
+              <option value="+86" data-country="China">🇨🇳 +86</option>
+              <option value="+357" data-country="Cyprus">🇨🇾 +357</option>
+              <option value="+420" data-country="Tsjechië">🇨🇿 +420</option>
+              <option value="+45" data-country="Denemarken">🇩🇰 +45</option>
+              <option value="+372" data-country="Estland">🇪🇪 +372</option>
+              <option value="+358" data-country="Finland">🇫🇮 +358</option>
+              <option value="+30" data-country="Griekenland">🇬🇷 +30</option>
+              <option value="+385" data-country="Kroatië">🇭🇷 +385</option>
+              <option value="+36" data-country="Hongarije">🇭🇺 +36</option>
+              <option value="+353" data-country="Ierland">🇮🇪 +353</option>
+              <option value="+972" data-country="Israël">🇮🇱 +972</option>
+              <option value="+91" data-country="India">🇮🇳 +91</option>
+              <option value="+354" data-country="IJsland">🇮🇸 +354</option>
+              <option value="+39" data-country="Italië">🇮🇹 +39</option>
+              <option value="+81" data-country="Japan">🇯🇵 +81</option>
+              <option value="+370" data-country="Litouwen">🇱🇹 +370</option>
+              <option value="+371" data-country="Letland">🇱🇻 +371</option>
+              <option value="+212" data-country="Marokko">🇲🇦 +212</option>
+              <option value="+356" data-country="Malta">🇲🇹 +356</option>
+              <option value="+52" data-country="Mexico">🇲🇽 +52</option>
+              <option value="+47" data-country="Noorwegen">🇳🇴 +47</option>
+              <option value="+48" data-country="Polen">🇵🇱 +48</option>
+              <option value="+351" data-country="Portugal">🇵🇹 +351</option>
+              <option value="+40" data-country="Roemenië">🇷🇴 +40</option>
+              <option value="+381" data-country="Servië">🇷🇸 +381</option>
+              <option value="+7" data-country="Rusland">🇷🇺 +7</option>
+              <option value="+46" data-country="Zweden">🇸🇪 +46</option>
+              <option value="+386" data-country="Slovenië">🇸🇮 +386</option>
+              <option value="+421" data-country="Slowakije">🇸🇰 +421</option>
+              <option value="+90" data-country="Turkije">🇹🇷 +90</option>
+              <option value="+380" data-country="Oekraïne">🇺🇦 +380</option>
+              <option value="+1" data-country="Verenigde Staten">🇺🇸 +1</option>
+              <option value="+27" data-country="Zuid-Afrika">🇿🇦 +27</option>
+            </optgroup>
+          </select>
+          <div class="form-group">
+            <input type="tel" id="d-phone" name="phone" placeholder=" " required autocomplete="tel-national">
+            <label for="d-phone">GSM-nummer</label>
+          </div>
+        </div>
+        <div class="consent">
+          <input type="checkbox" id="d-consent" required>
+          <label for="d-consent">Ja, ik ga akkoord met het <a href="https://investinspain.be/privacy-policy/" target="_blank" rel="noopener">privacybeleid</a> en de <a href="https://investinspain.be/algemene-voorwaarden/" target="_blank" rel="noopener">algemene voorwaarden</a>.</label>
+        </div>
+        <button type="submit" class="btn">Verzenden</button>
+      </form>
+    </div>
+
+    <div class="form-success" id="dockSuccess">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+      <p>Bedankt! We nemen snel contact met u op.</p>
+    </div>
+  </div>
+</div>
+
 <a href="https://wa.me/32496571397?text=Hallo%2C%20ik%20heb%20een%20vraag%20over%20jullie%20projecten."
    target="_blank" rel="noopener" class="wa-fab" aria-label="Contact via WhatsApp">
   <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.625.846 5.059 2.284 7.034L.789 23.492a.5.5 0 00.612.638l4.67-1.404A11.945 11.945 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-2.24 0-4.31-.726-5.993-1.955l-.348-.262-3.278.986.93-3.156-.28-.373A9.935 9.935 0 012 12C2 6.486 6.486 2 12 2s10 4.486 10 10-4.486 10-10 10z"/></svg>
@@ -336,6 +627,119 @@ __PROJECT_CARDS__
   } else {
     map.fitBounds(bounds, { padding: [40,40] });
   }
+
+  /* ═══════════ LEAD DOCK (algemene aanvraag, geen specifiek project) ═══════════ */
+
+  function countryOf(form) {
+    var sel = form.querySelector('select[name="country"]');
+    if (!sel) return { code: '+32', name: 'België' };
+    var opt = sel.options[sel.selectedIndex];
+    return { code: sel.value, name: opt ? opt.getAttribute('data-country') : '' };
+  }
+  function errorContainer(el) {
+    return el.closest('.phone-group') || el.closest('.form-group') || el.parentElement;
+  }
+  function clearError(el) {
+    var container = errorContainer(el);
+    var err = container.nextElementSibling;
+    if (err && err.classList && err.classList.contains('form-error')) err.classList.remove('is-active');
+    el.style.borderBottomColor = '';
+    el.style.borderColor = '';
+  }
+  function showError(el, msg) {
+    var container = errorContainer(el);
+    var err = container.nextElementSibling;
+    if (!err || !err.classList.contains('form-error')) {
+      err = document.createElement('p');
+      err.className = 'form-error';
+      err.setAttribute('role', 'alert');
+      container.after(err);
+    }
+    err.textContent = msg;
+    err.classList.add('is-active');
+    if (el.type === 'checkbox') el.style.borderColor = '#c0392b';
+    else el.style.borderBottomColor = '#c0392b';
+  }
+
+  var dock = document.getElementById('leadDock');
+  var dockTrigger = document.getElementById('dockTrigger');
+  var dockClose = document.getElementById('dockClose');
+  var dockForm = document.getElementById('dockForm');
+  var dockWrapper = document.getElementById('dockWrapper');
+  var dockSuccess = document.getElementById('dockSuccess');
+  var dockConsent = document.getElementById('d-consent');
+
+  // Breed scherm: meteen open. Smal scherm: eerst de pil, geen hero om te bedekken hier.
+  var isWide = window.matchMedia('(min-width: 1024px)').matches;
+  var dockOpen = isWide;
+
+  function setDockOpen(open) {
+    dockOpen = open;
+    dock.classList.toggle('is-open', open);
+    dockTrigger.setAttribute('aria-expanded', String(open));
+  }
+  dockTrigger.addEventListener('click', function(){ setDockOpen(true); });
+  dockClose.addEventListener('click', function(){ setDockOpen(false); });
+  document.addEventListener('keydown', function(e){
+    if (e.key === 'Escape' && dock.classList.contains('is-open')) setDockOpen(false);
+  });
+
+  setTimeout(function(){
+    dock.classList.add('is-visible');
+    setDockOpen(dockOpen);
+  }, 1200);
+
+  dockForm.querySelectorAll('input:not([type="checkbox"])').forEach(function(input){
+    input.addEventListener('input', function(){ clearError(input); });
+  });
+  dockConsent.addEventListener('change', function(){
+    this.style.borderColor = '';
+    var err = this.closest('.consent').nextElementSibling;
+    if (err && err.classList.contains('form-error')) err.classList.remove('is-active');
+  });
+
+  dockForm.addEventListener('submit', function(e){
+    e.preventDefault();
+    var valid = true;
+
+    dockForm.querySelectorAll('.form-error').forEach(function(el){ el.classList.remove('is-active'); });
+    dockForm.querySelectorAll('input').forEach(function(el){ el.style.borderBottomColor = ''; el.style.borderColor = ''; });
+
+    dockForm.querySelectorAll('input[required]:not([type="checkbox"])').forEach(function(input){
+      if (!input.value.trim()) { valid = false; showError(input, 'Dit veld is verplicht'); }
+      else if (input.type === 'email' && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(input.value)) {
+        valid = false; showError(input, 'Ongeldig e-mailadres');
+      }
+    });
+
+    if (!dockConsent.checked) {
+      valid = false;
+      var wrap = dockConsent.closest('.consent');
+      var err = wrap.nextElementSibling;
+      if (!err || !err.classList.contains('form-error')) {
+        err = document.createElement('p');
+        err.className = 'form-error';
+        err.setAttribute('role', 'alert');
+        wrap.after(err);
+      }
+      err.textContent = 'U moet akkoord gaan om verder te gaan';
+      err.classList.add('is-active');
+      dockConsent.style.borderColor = '#c0392b';
+    }
+
+    if (valid) {
+      var data = new FormData(dockForm);
+      var land = countryOf(dockForm);
+      var body = 'Algemene aanvraag via projectenoverzicht%0A%0A'
+        + 'Naam: ' + encodeURIComponent(data.get('fname') + ' ' + data.get('lname')) + '%0A'
+        + 'Email: ' + encodeURIComponent(data.get('email')) + '%0A'
+        + 'Land: ' + encodeURIComponent(land.name) + '%0A'
+        + 'Telefoon: ' + encodeURIComponent(land.code + ' ' + data.get('phone'));
+      window.open('mailto:gunther@investinspain.be?subject=' + encodeURIComponent('Algemene aanvraag — ' + data.get('fname') + ' ' + data.get('lname')) + '&body=' + body, '_self');
+      dockWrapper.classList.add('is-hidden');
+      setTimeout(function(){ dockSuccess.classList.add('is-active'); }, 400);
+    }
+  });
 })();
 </script>
 </body>
