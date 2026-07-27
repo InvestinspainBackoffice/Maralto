@@ -689,6 +689,34 @@ __PROJECT_CARDS__
     var opt = sel.options[sel.selectedIndex];
     return { code: sel.value, name: opt ? opt.getAttribute('data-country') : '' };
   }
+
+  // Zelfde Zap-koppeling als op de projectpagina's; hier is er nog geen
+  // gekozen project, dus dat veld blijft leeg zodat dat in de sheet opvalt.
+  var ZAPIER_WEBHOOK_URL = 'https://hooks.zapier.com/hooks/catch/8344712/44ei8hj/';
+  function sendToZapier(form, formBron) {
+    var data = new FormData(form);
+    var land = countryOf(form);
+    var payload = {
+      project: '(nog geen project gekozen)',
+      form_bron: formBron,
+      voornaam: data.get('fname') || '',
+      achternaam: data.get('lname') || '',
+      email: data.get('email') || '',
+      land: land.name,
+      telefoon: land.code + ' ' + (data.get('phone') || ''),
+      pagina_url: window.location.href,
+      tijdstip: new Date().toISOString()
+    };
+    try {
+      fetch(ZAPIER_WEBHOOK_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+    } catch (e) {}
+  }
+
   function errorContainer(el) {
     return el.closest('.phone-group') || el.closest('.form-group') || el.parentElement;
   }
@@ -788,6 +816,7 @@ __PROJECT_CARDS__
         + 'Email: ' + encodeURIComponent(data.get('email')) + '%0A'
         + 'Land: ' + encodeURIComponent(land.name) + '%0A'
         + 'Telefoon: ' + encodeURIComponent(land.code + ' ' + data.get('phone'));
+      sendToZapier(dockForm, 'projectenoverzicht');
       window.open('mailto:gunther@investinspain.be?subject=' + encodeURIComponent('Algemene aanvraag — ' + data.get('fname') + ' ' + data.get('lname')) + '&body=' + body, '_self');
       dockWrapper.classList.add('is-hidden');
       setTimeout(function(){ dockSuccess.classList.add('is-active'); }, 400);

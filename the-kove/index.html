@@ -1543,6 +1543,34 @@ footer a {
     return { code: sel.value, name: opt ? opt.getAttribute('data-country') : '' };
   }
 
+  // Stuurt elke lead ook naar de Zap (-> Google Sheet), naast de mailto-
+  // fallback: die blijft ongewijzigd werken, dit is puur een extra,
+  // betrouwbaarder kanaal dat niet van de mailclient van de bezoeker afhangt.
+  var ZAPIER_WEBHOOK_URL = 'https://hooks.zapier.com/hooks/catch/8344712/44ei8hj/';
+  function sendToZapier(form, formBron) {
+    var data = new FormData(form);
+    var land = countryOf(form);
+    var payload = {
+      project: 'The Kove',
+      form_bron: formBron,
+      voornaam: data.get('fname') || '',
+      achternaam: data.get('lname') || '',
+      email: data.get('email') || '',
+      land: land.name,
+      telefoon: land.code + ' ' + (data.get('phone') || ''),
+      pagina_url: window.location.href,
+      tijdstip: new Date().toISOString()
+    };
+    try {
+      fetch(ZAPIER_WEBHOOK_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+    } catch (e) {}
+  }
+
   // Foutmeldingen voor het telefoonveld staan na de hele .phone-group (niet
   // in de .form-group eromheen), anders duwt de extra tekstregel de
   // land-select omlaag: die rij lijnt uit met align-items: end.
@@ -1620,6 +1648,7 @@ footer a {
         + 'Land: ' + encodeURIComponent(land.name) + '%0A'
         + 'Telefoon: ' + encodeURIComponent(land.code + ' ' + data.get('phone')) + '%0A'
         + 'Email: ' + encodeURIComponent(data.get('email'));
+      sendToZapier(form, 'hoofdformulier');
       window.open('mailto:gunther@investinspain.be?subject=' + encodeURIComponent('Aanvraag The Kove — ' + data.get('fname') + ' ' + data.get('lname')) + '&body=' + body, '_self');
       wrapper.classList.add('is-hidden');
       setTimeout(function() { success.classList.add('is-active'); }, 400);
@@ -1793,6 +1822,7 @@ footer a {
         + 'Email: ' + encodeURIComponent(data.get('email')) + '%0A'
         + 'Land: ' + encodeURIComponent(land.name) + '%0A'
         + 'Telefoon: ' + encodeURIComponent(land.code + ' ' + data.get('phone'));
+      sendToZapier(modalForm, 'pop-up');
       window.open('mailto:gunther@investinspain.be?subject=' + encodeURIComponent('Aanvraag The Kove — ' + data.get('fname') + ' ' + data.get('lname')) + '&body=' + body, '_self');
       closeModal();
     }
@@ -1898,6 +1928,7 @@ footer a {
         + 'Email: ' + encodeURIComponent(data.get('email')) + '%0A'
         + 'Land: ' + encodeURIComponent(land.name) + '%0A'
         + 'Telefoon: ' + encodeURIComponent(land.code + ' ' + data.get('phone'));
+      sendToZapier(dockForm, 'zijpaneel');
       window.open('mailto:gunther@investinspain.be?subject=' + encodeURIComponent('Aanvraag The Kove — ' + data.get('fname') + ' ' + data.get('lname')) + '&body=' + body, '_self');
       dockWrapper.classList.add('is-hidden');
       setTimeout(function() { dockSuccess.classList.add('is-active'); }, 400);
