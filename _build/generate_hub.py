@@ -32,7 +32,7 @@ CHRONOLOGICAL = [
     "romero", "360", "santa-clara-homes", "ikkil-bay", "nubay", "solenne",
     "birdie-hills", "australy-aures", "vivace-villas", "ocean-view-marbella",
     "etherna-homes", "riviera-hill", "nacare", "vanian-park", "skye",
-    "casatalaya", "salvia",
+    "casatalaya", "salvia", "beyond-homes",
 ]
 HERO_ROTATION_COUNT = 5
 
