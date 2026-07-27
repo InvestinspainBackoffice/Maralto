@@ -61,11 +61,11 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 /* ── Page header (lichter dan een projecthero: geen achtergrondfoto) ── */
 .page-header {
   position: relative;
-  min-height: 100svh;
+  min-height: clamp(340px, 56vh, 500px);
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
-  padding: clamp(1.5rem, 5vw, 3rem);
+  padding: clamp(3rem, 9vw, 4.5rem) clamp(1.5rem, 5vw, 3rem) clamp(1.5rem, 4vw, 2.5rem);
   text-align: center;
   overflow: hidden;
 }
