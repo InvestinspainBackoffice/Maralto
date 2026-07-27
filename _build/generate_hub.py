@@ -29,6 +29,7 @@ CHRONOLOGICAL = [
     "dunique", "zenity-azure", "the-kove",
     "essence-residence", "altezza-suites", "las-mesas-blue-horizon", "vesta-mare",
     "romero", "360", "santa-clara-homes", "ikkil-bay", "nubay", "solenne",
+    "birdie-hills",
 ]
 HERO_ROTATION_COUNT = 5
 
