@@ -32,7 +32,7 @@ def fill(template, data):
 def build_one(project_file):
     mod = load_module(project_file)
     if not hasattr(mod, "DATA"):
-        return  # bv. maralto.py: levert alleen een HUB-vermelding, geen eigen pagina
+        return  # projectbestand zonder eigen pagina (alleen een HUB-vermelding)
     data = dict(mod.DATA)
     slug = data["SLUG"]
     # De sticky-cta bar heeft alleen het bedrag nodig (zonder "Vanaf "-prefix)
@@ -58,7 +58,9 @@ def build_one(project_file):
     if leftovers:
         raise SystemExit(f"[{slug}] Niet-ingevulde tokens: {sorted(leftovers)}")
 
-    out_dir = os.path.join(ROOT, slug)
+    # Maralto is het vlaggenschip en leeft op de root van de site ("/"),
+    # niet onder een eigen submap zoals de andere projecten.
+    out_dir = ROOT if slug == "maralto" else os.path.join(ROOT, slug)
     os.makedirs(out_dir, exist_ok=True)
     out_path = os.path.join(out_dir, "index.html")
     with open(out_path, "w", encoding="utf-8") as f:

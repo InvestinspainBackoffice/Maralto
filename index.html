@@ -1,28 +1,6 @@
 <!DOCTYPE html>
 <html lang="nl">
 <head>
-<!--
-  DIRECTION CONTRACT — seed e89ed262, position 5/7
-
-  THESIS: This surface presents Maralto as an architect would present to a private client —
-  dark-ground precision that lets the renders burn bright. It refuses the category's scrolling
-  photo gallery with sidebar specs and competing popups.
-
-  OWN-WORLD: Deep charcoal ground (#0E1318), warm parchment text (#EDE8E0), thin ruled lines
-  (#1F2830) as structural elements, sand-gold (#C4A97D) for the MARALTO wordmark, teal (#2D6A7A)
-  for CTA. Typography: Sora geometric sans — tracked wide for display, tight for body.
-
-  STORY: Visitor opens the link → MARALTO over the sweeping architecture → scroll into the building:
-  entrance, interiors, terraces, twilight pool → at the natural pause, the form appears →
-  one action, no friction.
-
-  FIRST VIEWPORT: Full-viewport dark ground. MARALTO in large tracked sand-gold, centered.
-  ESTEPONA below in parchment. Thin ruled border frames the viewport. Main exterior render
-  occupies the lower two-thirds. Scroll indicator.
-
-  FORM: Blueprint / plan table (the architect's folio), position 5/7, seed key e89ed262.
-  Staging: direct presentation. Form vocabulary: ruled lines, annotation-style labels, generous space.
--->
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Maralto Estepona — INVESTINSPAIN.BE</title>
@@ -1241,7 +1219,6 @@ footer a {
 </div>
 
 <div class="rule--gold" aria-hidden="true"></div>
-
 <!-- ═══════════ CONTACT ═══════════ -->
 <section class="contact" id="contact">
   <div class="contact__inner">
@@ -1601,6 +1578,34 @@ footer a {
     return { code: sel.value, name: opt ? opt.getAttribute('data-country') : '' };
   }
 
+  // Stuurt elke lead ook naar de Zap (-> Google Sheet), naast de mailto-
+  // fallback: die blijft ongewijzigd werken, dit is puur een extra,
+  // betrouwbaarder kanaal dat niet van de mailclient van de bezoeker afhangt.
+  var ZAPIER_WEBHOOK_URL = 'https://hooks.zapier.com/hooks/catch/8344712/44ei8hj/';
+  function sendToZapier(form, formBron) {
+    var data = new FormData(form);
+    var land = countryOf(form);
+    var payload = {
+      project: 'Maralto',
+      form_bron: formBron,
+      voornaam: data.get('fname') || '',
+      achternaam: data.get('lname') || '',
+      email: data.get('email') || '',
+      land: land.name,
+      telefoon: land.code + ' ' + (data.get('phone') || ''),
+      pagina_url: window.location.href,
+      tijdstip: new Date().toISOString()
+    };
+    try {
+      fetch(ZAPIER_WEBHOOK_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+    } catch (e) {}
+  }
+
   // Foutmeldingen voor het telefoonveld staan na de hele .phone-group (niet
   // in de .form-group eromheen), anders duwt de extra tekstregel de
   // land-select omlaag: die rij lijnt uit met align-items: end.
@@ -1673,12 +1678,13 @@ footer a {
     if (valid) {
       var data = new FormData(form);
       var land = countryOf(form);
-      var body = 'Nieuwe aanvraag Maralto Estepona%0A%0A'
+      var body = 'Nieuwe aanvraag Maralto%0A%0A'
         + 'Naam: ' + encodeURIComponent(data.get('fname') + ' ' + data.get('lname')) + '%0A'
         + 'Land: ' + encodeURIComponent(land.name) + '%0A'
         + 'Telefoon: ' + encodeURIComponent(land.code + ' ' + data.get('phone')) + '%0A'
         + 'Email: ' + encodeURIComponent(data.get('email'));
-      window.open('mailto:gunther@investinspain.be?subject=' + encodeURIComponent('Aanvraag Maralto Estepona — ' + data.get('fname') + ' ' + data.get('lname')) + '&body=' + body, '_self');
+      sendToZapier(form, 'hoofdformulier');
+      window.open('mailto:gunther@investinspain.be?subject=' + encodeURIComponent('Aanvraag Maralto — ' + data.get('fname') + ' ' + data.get('lname')) + '&body=' + body, '_self');
       wrapper.classList.add('is-hidden');
       setTimeout(function() { success.classList.add('is-active'); }, 400);
     }
@@ -1846,12 +1852,13 @@ footer a {
     if (valid) {
       var data = new FormData(modalForm);
       var land = countryOf(modalForm);
-      var body = 'Nieuwe aanvraag Maralto Estepona (pop-up)%0A%0A'
+      var body = 'Nieuwe aanvraag Maralto (pop-up)%0A%0A'
         + 'Naam: ' + encodeURIComponent(data.get('fname') + ' ' + data.get('lname')) + '%0A'
         + 'Email: ' + encodeURIComponent(data.get('email')) + '%0A'
         + 'Land: ' + encodeURIComponent(land.name) + '%0A'
         + 'Telefoon: ' + encodeURIComponent(land.code + ' ' + data.get('phone'));
-      window.open('mailto:gunther@investinspain.be?subject=' + encodeURIComponent('Aanvraag Maralto Estepona — ' + data.get('fname') + ' ' + data.get('lname')) + '&body=' + body, '_self');
+      sendToZapier(modalForm, 'pop-up');
+      window.open('mailto:gunther@investinspain.be?subject=' + encodeURIComponent('Aanvraag Maralto — ' + data.get('fname') + ' ' + data.get('lname')) + '&body=' + body, '_self');
       closeModal();
     }
   });
@@ -1951,12 +1958,13 @@ footer a {
     if (valid) {
       var data = new FormData(dockForm);
       var land = countryOf(dockForm);
-      var body = 'Nieuwe aanvraag Maralto Estepona (zijpaneel)%0A%0A'
+      var body = 'Nieuwe aanvraag Maralto (zijpaneel)%0A%0A'
         + 'Naam: ' + encodeURIComponent(data.get('fname') + ' ' + data.get('lname')) + '%0A'
         + 'Email: ' + encodeURIComponent(data.get('email')) + '%0A'
         + 'Land: ' + encodeURIComponent(land.name) + '%0A'
         + 'Telefoon: ' + encodeURIComponent(land.code + ' ' + data.get('phone'));
-      window.open('mailto:gunther@investinspain.be?subject=' + encodeURIComponent('Aanvraag Maralto Estepona — ' + data.get('fname') + ' ' + data.get('lname')) + '&body=' + body, '_self');
+      sendToZapier(dockForm, 'zijpaneel');
+      window.open('mailto:gunther@investinspain.be?subject=' + encodeURIComponent('Aanvraag Maralto — ' + data.get('fname') + ' ' + data.get('lname')) + '&body=' + body, '_self');
       dockWrapper.classList.add('is-hidden');
       setTimeout(function() { dockSuccess.classList.add('is-active'); }, 400);
     }
