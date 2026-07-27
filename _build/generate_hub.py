@@ -27,6 +27,7 @@ CHRONOLOGICAL = [
     "maralto", "adagio", "the-view", "zew-elviria",
     "marine-hills", "the-sky-marbella", "the-grove",
     "dunique", "zenity-azure", "the-kove",
+    "essence-residence", "altezza-suites", "las-mesas-blue-horizon", "vesta-mare",
 ]
 HERO_ROTATION_COUNT = 5
 
