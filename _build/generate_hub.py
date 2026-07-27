@@ -33,6 +33,7 @@ CHRONOLOGICAL = [
     "birdie-hills", "australy-aures", "vivace-villas", "ocean-view-marbella",
     "etherna-homes", "riviera-hill", "nacare", "vanian-park", "skye",
     "casatalaya", "salvia", "beyond-homes", "australy-thera", "tyrian",
+    "haiku-estepona",
 ]
 HERO_ROTATION_COUNT = 5
 
