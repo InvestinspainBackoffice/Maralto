@@ -26,6 +26,7 @@ ORDER = ["maralto"]
 CHRONOLOGICAL = [
     "maralto", "adagio", "the-view", "zew-elviria",
     "marine-hills", "the-sky-marbella", "the-grove",
+    "dunique", "zenity-azure", "the-kove",
 ]
 HERO_ROTATION_COUNT = 5
 

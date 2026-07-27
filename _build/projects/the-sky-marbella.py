@@ -19,6 +19,12 @@ DATA = {
     "PRICE_FROM": PRICE_FROM,
     "WA_TEXT_ENCODED": quote(WA_MESSAGE),
     "PROJECT_NAME": PROJECT_NAME,
+    "AGENT_NAME": "Gunther De Vleeschouwer",
+    "AGENT_PHOTO": "https://investinspain.be/wp-content/uploads/2020/01/Gunther-De-Vleeschouwer-INVESTINSPAIN.jpg",
+    "AGENT_PHONE_TEL": "+32496571397",
+    "AGENT_PHONE_DISPLAY": "+32 496 57 13 97",
+    "AGENT_EMAIL": "gunther@investinspain.be",
+    "WA_NUMBER": "32496571397",
 }
 
 # Gebruikt door de /projecten/ overzichtspagina (kaart + kaartjes)

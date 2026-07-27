@@ -90,6 +90,32 @@ tail = tail.replace(
     'Laat uw gegevens achter en ontvang alle projectinformatie over __PROJECT_NAME__ rechtstreeks in uw inbox.'
 )
 
+# ── TAIL: tokenize de contactpersoon (niet elk project heeft dezelfde makelaar) ──
+tail = tail.replace(
+    'https://investinspain.be/wp-content/uploads/2020/01/Gunther-De-Vleeschouwer-INVESTINSPAIN.jpg',
+    '__AGENT_PHOTO__'
+)
+tail = tail.replace('alt="Gunther De Vleeschouwer"', 'alt="__AGENT_NAME__"')
+tail = tail.replace(
+    '<h3 class="agent__name">Gunther De Vleeschouwer</h3>',
+    '<h3 class="agent__name">__AGENT_NAME__</h3>'
+)
+tail = tail.replace('href="tel:+32496571397"', 'href="tel:__AGENT_PHONE_TEL__"')
+tail = tail.replace(
+    '        +32 496 57 13 97\n      </a>\n      <a href="mailto:gunther@investinspain.be" class="agent__detail">',
+    '        __AGENT_PHONE_DISPLAY__\n      </a>\n      <a href="mailto:__AGENT_EMAIL__" class="agent__detail">'
+)
+tail = tail.replace(
+    '        gunther@investinspain.be\n      </a>\n      <a href="tel:+3215257310"',
+    '        __AGENT_EMAIL__\n      </a>\n      <a href="tel:+3215257310"'
+)
+# WhatsApp FAB en de 3 mailto-handlers in de JS gebruiken hetzelfde nummer/adres
+tail = tail.replace(
+    'href="https://wa.me/32496571397?text=__WA_TEXT_ENCODED__"',
+    'href="https://wa.me/__WA_NUMBER__?text=__WA_TEXT_ENCODED__"'
+)
+tail = tail.replace("mailto:gunther@investinspain.be", "mailto:__AGENT_EMAIL__")
+
 import os
 os.makedirs(OUT_DIR, exist_ok=True)
 with open(f"{OUT_DIR}/head.html", "w", encoding="utf-8") as f:
