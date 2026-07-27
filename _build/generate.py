@@ -35,8 +35,12 @@ def build_one(project_file):
         return  # projectbestand zonder eigen pagina (alleen een HUB-vermelding)
     data = dict(mod.DATA)
     slug = data["SLUG"]
-    # De sticky-cta bar heeft alleen het bedrag nodig (zonder "Vanaf "-prefix)
+    # De sticky-cta bar heeft alleen het bedrag nodig (zonder "Vanaf "-prefix).
+    # Projecten zonder vaste prijs ("Prijs op aanvraag") zetten PRICE_LABEL
+    # en PRICE_AMOUNT expliciet in hun eigen DATA-dict, zodat de tekst er
+    # klopt in plaats van de standaard "Vanaf "-prefix te forceren.
     data.setdefault("PRICE_AMOUNT", data["PRICE_FROM"].replace("Vanaf ", ""))
+    data.setdefault("PRICE_LABEL", "Vanaf")
 
     with open(os.path.join(TEMPLATES, "head.html"), encoding="utf-8") as f:
         head = f.read()

@@ -1,3 +1,1193 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vivace Villas Estepona — INVESTINSPAIN.BE</title>
+<meta name="description" content="Vivace Villas: collectie van 30 exclusieve villa's met 3 of 4 slaapkamers in Valle Romano, Estepona. Drie typologieën, passieve architectuur, privé tuin en zwembad.">
+<meta property="og:title" content="Vivace Villas — Exclusieve Villa's">
+<meta property="og:description" content="Ontdek Vivace Villas: moderne elegantie en de rust van een golfbaan in Valle Romano, met privé tuin, zwembad en berg- en zeezicht.">
+<meta property="og:image" content="https://investinspain.be/wp-content/uploads/2025/06/vivace-villas-T3-3.jpg">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root {
+  --bg: #0E1318;
+  --bg-el: #131920;
+  --text: #EDE8E0;
+  --text-muted: #8A96A3;
+  --gold: #C4A97D;
+  --gold-dim: #9E8968;
+  --line: #1F2830;
+  --line-light: #2A3644;
+  --cta: #2D6A7A;
+  --cta-hover: #387F91;
+  --white: #FEFCF9;
+  --font: 'Sora', system-ui, -apple-system, sans-serif;
+  --ease: cubic-bezier(0.16, 1, 0.3, 1);
+}
+html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+body {
+  font-family: var(--font);
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.65;
+  font-weight: 300;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+img { display: block; max-width: 100%; height: auto; }
+a { color: inherit; text-decoration: none; }
+button { font-family: inherit; cursor: pointer; border: none; background: none; }
+
+/* ── Thin border frame ── */
+.frame {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 100;
+  border: 1px solid var(--line);
+  opacity: 0;
+  animation: frame-in 1.5s var(--ease) 0.8s forwards;
+}
+@keyframes frame-in { to { opacity: 1; } }
+
+/* ── Hero ── */
+.hero {
+  position: relative;
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+.hero__bg {
+  position: absolute;
+  inset: 0;
+  background: url('https://investinspain.be/wp-content/uploads/2025/06/vivace-villas-T3-3.jpg') center 60% / cover no-repeat;
+  opacity: 0;
+  transform: scale(1.06);
+  animation: hero-bg 2s var(--ease) 0.3s forwards;
+}
+.hero__bg::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    var(--bg) 0%,
+    rgba(14,19,24,0.7) 25%,
+    rgba(14,19,24,0.25) 55%,
+    rgba(14,19,24,0.5) 80%,
+    var(--bg) 100%
+  );
+}
+@keyframes hero-bg {
+  to { opacity: 1; transform: scale(1); }
+}
+.hero__content {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  padding: 0 1.5rem;
+}
+.hero__price {
+  font-size: clamp(0.75rem, 2vw, 1rem);
+  letter-spacing: 0.35em;
+  color: var(--text);
+  font-weight: 300;
+  margin-top: 0.75rem;
+  opacity: 0;
+  animation: fade-up 1s var(--ease) 1s forwards;
+}
+.hero__name {
+  font-size: clamp(2.8rem, 10vw, 7rem);
+  font-weight: 300;
+  letter-spacing: 0.25em;
+  color: var(--gold);
+  line-height: 1;
+  opacity: 0;
+  animation: fade-up 1.2s var(--ease) 0.5s forwards;
+}
+.hero__location {
+  font-size: clamp(0.75rem, 2vw, 1rem);
+  letter-spacing: 0.35em;
+  color: var(--text);
+  margin-top: 1rem;
+  font-weight: 300;
+  opacity: 0;
+  animation: fade-up 1s var(--ease) 0.9s forwards;
+}
+.hero__line {
+  width: 1px;
+  height: 60px;
+  background: var(--gold-dim);
+  margin: 2rem auto 0;
+  opacity: 0;
+  transform-origin: top;
+  animation: line-draw 1s var(--ease) 1.4s forwards;
+}
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes line-draw {
+  from { opacity: 0; transform: scaleY(0); }
+  to { opacity: 1; transform: scaleY(1); }
+}
+.hero__scroll {
+  position: absolute;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.65rem;
+  letter-spacing: 0.2em;
+  color: var(--text-muted);
+  writing-mode: vertical-rl;
+  opacity: 0;
+  animation: fade-up 1s var(--ease) 2s forwards;
+}
+
+/* ── Sections ── */
+section { position: relative; }
+
+.spacer { height: clamp(4rem, 10vw, 8rem); }
+.spacer--sm { height: clamp(2rem, 5vw, 4rem); }
+.spacer--lg { height: clamp(6rem, 14vw, 12rem); }
+
+/* ── Full bleed image ── */
+.full-image {
+  width: 100%;
+  overflow: hidden;
+}
+.full-image img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+}
+.full-image--tall img {
+  height: clamp(50vh, 70vw, 80vh);
+  object-fit: cover;
+}
+
+/* ── Content blocks ── */
+.content {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 0 clamp(1.5rem, 5vw, 3rem);
+}
+.content--wide {
+  max-width: 1100px;
+}
+
+/* ── Section label (architectural annotation) ── */
+.label {
+  font-size: 0.6rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--gold-dim);
+  margin-bottom: 1.5rem;
+  position: relative;
+  padding-left: 2rem;
+}
+.label::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: 1.2rem;
+  height: 1px;
+  background: var(--gold-dim);
+}
+
+/* ── Headings ── */
+.heading {
+  font-size: clamp(1.6rem, 4vw, 2.8rem);
+  font-weight: 300;
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+  margin-bottom: 1.5rem;
+}
+.heading em {
+  font-style: normal;
+  color: var(--gold);
+}
+
+/* ── Body text ── */
+.body-text {
+  font-size: clamp(0.9rem, 1.8vw, 1.05rem);
+  color: var(--text-muted);
+  line-height: 1.75;
+  max-width: 60ch;
+}
+
+/* ── Rule line ── */
+.rule {
+  height: 1px;
+  background: var(--line);
+  margin: 0 clamp(1.5rem, 5vw, 3rem);
+}
+.rule--gold {
+  background: var(--gold-dim);
+  max-width: 60px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* ── Two-column image pair ── */
+.image-pair {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1px;
+  background: var(--line);
+  padding: 0;
+}
+@media (min-width: 768px) {
+  .image-pair { grid-template-columns: 1fr 1fr; }
+}
+.image-pair img {
+  width: 100%;
+  height: clamp(250px, 40vw, 500px);
+  object-fit: cover;
+}
+.full-image + .full-image,
+.full-image + .image-pair,
+.image-pair + .full-image,
+.image-pair + .image-pair {
+  border-top: 1px solid var(--line);
+}
+
+/* ── Amenities ── */
+.amenities-list {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0;
+}
+@media (min-width: 600px) {
+  .amenities-list { grid-template-columns: 1fr 1fr; }
+}
+.amenity-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid var(--line);
+}
+.amenity-item svg {
+  width: 16px;
+  height: 16px;
+  stroke: var(--gold);
+  stroke-width: 1.5;
+  fill: none;
+  flex-shrink: 0;
+}
+.amenity-item span {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+/* ── Stats row ── */
+.stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  background: var(--line);
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+}
+.stat {
+  background: var(--bg);
+  padding: clamp(1rem, 3vw, 2.5rem) clamp(0.5rem, 2vw, 2.5rem);
+  text-align: center;
+}
+.stat__value {
+  font-size: clamp(1.1rem, 3.5vw, 2.2rem);
+  font-weight: 400;
+  color: var(--text);
+  letter-spacing: -0.02em;
+  white-space: nowrap;
+}
+.stat__value span {
+  font-size: 0.6em;
+  color: var(--text-muted);
+  font-weight: 300;
+}
+.stat__label {
+  font-size: clamp(0.5rem, 1.5vw, 0.6rem);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-top: 0.3rem;
+}
+
+/* ── Location ── */
+.location-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: clamp(2rem, 5vw, 4rem);
+  align-items: start;
+}
+@media (min-width: 768px) {
+  .location-grid { grid-template-columns: 1fr 1fr; }
+}
+.location-fact {
+  display: flex;
+  align-items: baseline;
+  gap: 0.75rem;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid var(--line);
+}
+.location-fact__dist {
+  font-size: 0.65rem;
+  letter-spacing: 0.1em;
+  color: var(--gold);
+  white-space: nowrap;
+  min-width: 4rem;
+}
+.location-fact__name {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+/* ── Contact section ── */
+.contact {
+  background: var(--bg-el);
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+}
+.contact__inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: clamp(3rem, 8vw, 6rem) clamp(1.5rem, 5vw, 3rem);
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: clamp(3rem, 6vw, 5rem);
+}
+@media (min-width: 768px) {
+  .contact__inner { grid-template-columns: 1fr 1fr; gap: 4rem; }
+}
+
+.form-group {
+  position: relative;
+  margin-bottom: 1.5rem;
+}
+.form-group input {
+  display: block;
+  width: 100%;
+  padding: 0.9rem 0;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid var(--line-light);
+  color: var(--text);
+  font-family: var(--font);
+  font-size: 0.9rem;
+  font-weight: 300;
+  outline: none;
+  transition: border-color 0.3s;
+}
+.form-group input::placeholder {
+  color: var(--text-muted);
+  opacity: 0.6;
+}
+.form-group input:focus {
+  border-bottom-color: var(--gold);
+}
+.form-group label {
+  position: absolute;
+  top: 0.9rem;
+  left: 0;
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  color: var(--text-muted);
+  pointer-events: none;
+  transition: all 0.3s var(--ease);
+}
+.form-group input:focus + label,
+.form-group input:not(:placeholder-shown) + label {
+  top: -0.6rem;
+  font-size: 0.6rem;
+  color: var(--gold);
+  letter-spacing: 0.15em;
+}
+
+.phone-group {
+  display: flex;
+  align-items: end;
+  gap: 0.75rem;
+}
+.phone-prefix {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  padding: 0 1.1rem 0.9rem 0;
+  border: none;
+  border-bottom: 1px solid var(--line-light);
+  white-space: nowrap;
+  flex-shrink: 0;
+  width: 7.4rem;
+  font-family: var(--font);
+  background: transparent no-repeat right 0.15rem bottom 1.05rem;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' fill='none' stroke='%238A96A3' stroke-width='1.2'/%3E%3C/svg%3E");
+  background-size: 9px 6px;
+  appearance: none;
+  -webkit-appearance: none;
+  cursor: pointer;
+  text-overflow: ellipsis;
+  transition: border-color 0.3s, color 0.3s;
+}
+.phone-prefix:hover { color: var(--text); }
+.phone-prefix:focus {
+  outline: none;
+  border-bottom-color: var(--gold);
+  color: var(--text);
+}
+.phone-prefix option {
+  background: var(--bg-el);
+  color: var(--text);
+}
+.phone-prefix optgroup {
+  background: var(--bg);
+  color: var(--text-muted);
+  font-style: normal;
+}
+.phone-group .form-group { flex: 1; margin-bottom: 0; }
+/* De .modal- en .lead-dock-varianten zetten hun eigen marge op elke .form-group;
+   binnen de telefoonrij moet die 0 blijven, anders zakt de landcode scheef. */
+.modal .phone-group .form-group,
+.lead-dock__card .phone-group .form-group { margin-bottom: 0; }
+
+.consent {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  margin: 1.5rem 0;
+}
+.consent input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 16px;
+  height: 16px;
+  border: 1px solid var(--line-light);
+  border-radius: 2px;
+  flex-shrink: 0;
+  margin-top: 2px;
+  cursor: pointer;
+  position: relative;
+  transition: all 0.2s;
+}
+.consent input[type="checkbox"]:checked {
+  background: var(--gold);
+  border-color: var(--gold);
+}
+.consent input[type="checkbox"]:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 2px;
+}
+.consent input[type="checkbox"]:checked::after {
+  content: '';
+  position: absolute;
+  left: 4px;
+  top: 1px;
+  width: 5px;
+  height: 9px;
+  border: solid var(--bg);
+  border-width: 0 1.5px 1.5px 0;
+  transform: rotate(45deg);
+}
+.consent label {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  line-height: 1.5;
+  cursor: pointer;
+}
+.consent a {
+  color: var(--gold-dim);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 1rem 2.5rem;
+  background: var(--cta);
+  color: var(--white);
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  border: none;
+  cursor: pointer;
+  transition: background 0.3s, transform 0.2s;
+}
+.btn:hover { background: var(--cta-hover); }
+.btn:active { transform: scale(0.98); }
+
+.btn--outline {
+  background: transparent;
+  border: 1px solid var(--line-light);
+  color: var(--text);
+}
+.btn--outline:hover {
+  border-color: var(--gold-dim);
+  background: transparent;
+}
+
+/* ── Agent card ── */
+.agent {
+  padding-top: 1rem;
+}
+.agent__photo {
+  width: clamp(90px, 15vw, 120px);
+  height: clamp(90px, 15vw, 120px);
+  border-radius: 50%;
+  object-fit: cover;
+  object-position: center top;
+  border: 2px solid var(--line-light);
+  margin-bottom: 1.25rem;
+}
+.agent__name {
+  font-size: 1.1rem;
+  font-weight: 400;
+  margin-bottom: 0.25rem;
+}
+.agent__role {
+  font-size: 0.7rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 2rem;
+}
+.agent__detail {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid var(--line);
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  transition: color 0.2s;
+}
+.agent__detail:hover { color: var(--text); }
+.agent__detail svg {
+  width: 16px;
+  height: 16px;
+  stroke: var(--gold-dim);
+  stroke-width: 1.5;
+  fill: none;
+  flex-shrink: 0;
+}
+.agent__trust {
+  margin-top: 2.5rem;
+  padding: 1.25rem;
+  border: 1px solid var(--line);
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  text-decoration: none;
+  transition: border-color 0.3s;
+}
+.agent__trust:hover { border-color: var(--gold-dim); }
+.agent__trust svg {
+  width: 20px;
+  height: 20px;
+  stroke: var(--gold);
+  stroke-width: 1.5;
+  fill: none;
+  flex-shrink: 0;
+}
+.agent__trust span {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+.agent__trust strong {
+  color: var(--gold);
+  font-weight: 400;
+}
+
+/* ── IIS badge ── */
+.iis-bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 1rem;
+}
+.iis-logo {
+  height: clamp(120px, 20vw, 160px);
+  width: auto;
+  opacity: 0.7;
+  transition: opacity 0.3s;
+}
+.iis-logo:hover { opacity: 1; }
+
+/* ── Map ── */
+.map-wrap {
+  position: relative;
+  width: 100%;
+  height: clamp(280px, 40vw, 420px);
+  overflow: hidden;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+}
+.map-wrap iframe {
+  width: 100%;
+  height: 100%;
+  border: 0;
+  filter: invert(92%) hue-rotate(180deg) brightness(0.75) contrast(1.1) saturate(0.3);
+}
+
+/* ── Footer ── */
+footer {
+  padding: clamp(2rem, 4vw, 3rem) clamp(1.5rem, 5vw, 3rem);
+  text-align: center;
+  font-size: 0.6rem;
+  color: var(--text-muted);
+  letter-spacing: 0.05em;
+  line-height: 2;
+}
+footer a {
+  color: var(--gold-dim);
+  text-underline-offset: 2px;
+}
+.biv-logo {
+  display: block;
+  height: 40px;
+  margin: 1.5rem auto 0;
+  opacity: 0.7;
+  transition: opacity 0.3s;
+}
+.biv-logo:hover { opacity: 1; }
+
+/* ── Reveal animation ── */
+.reveal {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.9s var(--ease), transform 0.9s var(--ease);
+}
+.reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.reveal-image {
+  opacity: 0;
+  transform: scale(1.04);
+  filter: blur(4px);
+  transition: opacity 1.2s var(--ease), transform 1.2s var(--ease), filter 1.2s var(--ease);
+}
+.reveal-image.is-visible {
+  opacity: 1;
+  transform: scale(1);
+  filter: blur(0);
+}
+
+/* ── Form success ── */
+.form-success {
+  display: none;
+  text-align: center;
+  padding: 3rem 1rem;
+}
+.form-success.is-active { display: block; }
+.form-success svg {
+  width: 48px;
+  height: 48px;
+  stroke: var(--gold);
+  stroke-width: 1;
+  fill: none;
+  margin: 0 auto 1.5rem;
+}
+.form-success h3 {
+  font-size: 1.2rem;
+  font-weight: 400;
+  margin-bottom: 0.75rem;
+}
+.form-success p {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  max-width: 40ch;
+  margin: 0 auto;
+}
+
+.form-error {
+  font-size: 0.65rem;
+  color: #c0392b;
+  margin-top: 0.4rem;
+  letter-spacing: 0.05em;
+  display: none;
+}
+.form-error.is-active { display: block; }
+
+/* ── Sticky CTA bar ── */
+.sticky-cta {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 80;
+  background: var(--bg-el);
+  border-top: 1px solid var(--line);
+  padding: 0.75rem clamp(1rem, 3vw, 2rem);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  transform: translateY(100%);
+  transition: transform 0.5s var(--ease);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+.sticky-cta.is-visible { transform: translateY(0); }
+.sticky-cta__text {
+  font-size: clamp(0.85rem, 2.5vw, 1rem);
+  color: var(--text-muted);
+  white-space: nowrap;
+  letter-spacing: 0.15em;
+  font-weight: 300;
+}
+.sticky-cta__text span {
+  color: var(--text);
+  font-weight: 400;
+}
+.sticky-cta .btn {
+  padding: 0.65rem 1.5rem;
+  font-size: 0.65rem;
+  flex-shrink: 0;
+}
+
+/* ── In-content CTA ── */
+.inline-cta {
+  background: var(--bg-el);
+  border: 1px solid var(--line);
+  padding: clamp(2rem, 5vw, 3.5rem) clamp(1.5rem, 5vw, 3rem);
+  text-align: center;
+  max-width: 720px;
+  margin: 0 auto;
+}
+.inline-cta h3 {
+  font-size: clamp(1.2rem, 3vw, 1.6rem);
+  font-weight: 300;
+  margin-bottom: 0.75rem;
+}
+.inline-cta h3 em {
+  font-style: normal;
+  color: var(--gold);
+}
+.inline-cta p {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  margin-bottom: 1.5rem;
+  max-width: 45ch;
+  margin-left: auto;
+  margin-right: auto;
+}
+.inline-cta .btn { margin: 0 auto; }
+
+/* ── Modal pop-up ── */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  background: rgba(0,0,0,0.7);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s var(--ease);
+}
+.modal-overlay.is-active {
+  opacity: 1;
+  pointer-events: auto;
+}
+.modal {
+  background: var(--bg-el);
+  border: 1px solid var(--line);
+  max-width: 440px;
+  width: 100%;
+  padding: clamp(2rem, 5vw, 3rem);
+  position: relative;
+  transform: translateY(20px) scale(0.97);
+  transition: transform 0.4s var(--ease);
+}
+.modal-overlay.is-active .modal {
+  transform: translateY(0) scale(1);
+}
+.modal__close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-muted);
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: color 0.2s;
+  background: none;
+  border: none;
+  font-family: var(--font);
+}
+.modal__close:hover { color: var(--text); }
+.modal h3 {
+  font-size: 1.3rem;
+  font-weight: 300;
+  margin-bottom: 0.5rem;
+}
+.modal h3 em {
+  font-style: normal;
+  color: var(--gold);
+}
+.modal > p {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  margin-bottom: 1.5rem;
+  line-height: 1.6;
+}
+.modal .form-group { margin-bottom: 1.25rem; }
+.modal .consent { margin: 1rem 0; }
+
+.form-wrapper { transition: opacity 0.4s; }
+.form-wrapper.is-hidden { opacity: 0; pointer-events: none; position: absolute; }
+
+/* ── WhatsApp FAB ── */
+.wa-fab {
+  position: fixed;
+  bottom: 1.5rem;
+  right: 1.5rem;
+  transition: bottom 0.5s var(--ease), transform 0.2s;
+  z-index: 90;
+  width: 52px;
+  height: 52px;
+  background: #25D366;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+  opacity: 0;
+  animation: fade-up 0.6s var(--ease) 2.5s forwards;
+}
+.wa-fab.is-raised { bottom: calc(1.5rem + 56px); }
+.wa-fab:hover { transform: scale(1.08); }
+.wa-fab svg { width: 26px; height: 26px; fill: white; }
+
+/* ── Lead dock (meescrollend zijpaneel) ── */
+.lead-dock {
+  position: fixed;
+  right: 1.5rem;
+  bottom: calc(1.5rem + 52px + 0.75rem);
+  z-index: 95;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  opacity: 0;
+  transform: translateY(12px);
+  pointer-events: none;
+  transition: bottom 0.5s var(--ease), opacity 0.5s var(--ease), transform 0.5s var(--ease);
+}
+/* schuift mee omhoog zodra de sticky balk verschijnt */
+.lead-dock.is-raised { bottom: calc(1.5rem + 56px + 52px + 0.75rem); }
+.lead-dock.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.lead-dock__trigger {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.7rem 1.1rem;
+  background: var(--bg-el);
+  border: 1px solid var(--gold-dim);
+  color: var(--text);
+  font-family: var(--font);
+  font-size: 0.62rem;
+  font-weight: 400;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  cursor: pointer;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.45);
+  transition: border-color 0.25s, color 0.25s;
+}
+.lead-dock__trigger:hover { border-color: var(--gold); color: var(--gold); }
+.lead-dock__trigger svg {
+  width: 13px; height: 13px;
+  stroke: var(--gold); stroke-width: 1.5; fill: none;
+  flex-shrink: 0;
+}
+.lead-dock.is-open .lead-dock__trigger { display: none; }
+
+.lead-dock__card {
+  display: none;
+  width: 288px;
+  max-width: calc(100vw - 3rem);
+  background: var(--bg-el);
+  border: 1px solid var(--line);
+  padding: 1.35rem 1.25rem 1.25rem;
+  position: relative;
+  box-shadow: 0 8px 40px rgba(0,0,0,0.55);
+}
+.lead-dock.is-open .lead-dock__card {
+  display: block;
+  animation: dock-in 0.35s var(--ease);
+}
+@keyframes dock-in {
+  from { opacity: 0; transform: translateY(10px) scale(0.96); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+.lead-dock__close {
+  position: absolute;
+  top: 0.55rem;
+  right: 0.55rem;
+  width: 26px; height: 26px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  font-family: var(--font);
+  font-size: 1.15rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+.lead-dock__close:hover { color: var(--text); }
+.lead-dock__card h4 {
+  font-size: 0.9rem;
+  font-weight: 300;
+  line-height: 1.35;
+  margin-bottom: 1rem;
+  padding-right: 1.5rem;
+}
+.lead-dock__card h4 em { font-style: normal; color: var(--gold); }
+.lead-dock__card .form-group { margin-bottom: 0.7rem; }
+.lead-dock__card .phone-group { margin-bottom: 0.7rem; }
+.lead-dock__card .consent { margin: 0.75rem 0; }
+.lead-dock__card .consent label { font-size: 0.62rem; line-height: 1.5; }
+.lead-dock__card .btn { width: 100%; justify-content: center; }
+.lead-dock__card .form-success { padding: 1.25rem 0.5rem 0.75rem; }
+.lead-dock__card .form-success svg { width: 34px; height: 34px; margin-bottom: 0.9rem; }
+.lead-dock__card .form-success p { font-size: 0.75rem; }
+
+@media (max-width: 600px) {
+  .lead-dock__trigger { font-size: 0.58rem; padding: 0.6rem 0.9rem; }
+  .lead-dock__card { padding: 1.3rem 1.15rem 1.2rem; }
+}
+</style>
+</head>
+<body>
+
+<div class="frame" aria-hidden="true"></div>
+
+<!-- ═══════════ HERO ═══════════ -->
+<section class="hero">
+  <div class="hero__bg" role="img" aria-label="Vivace Villas — infinity zwembad bij schemering met open landschap"></div>
+  <div class="hero__content">
+    <h1 class="hero__name">VIVACE VILLAS</h1>
+    <p class="hero__location">ESTEPONA</p>
+    <p class="hero__price">Prijs op aanvraag</p>
+    <div class="hero__line" aria-hidden="true"></div>
+  </div>
+  <span class="hero__scroll" aria-hidden="true">Ontdek</span>
+</section>
+
+<div class="spacer"></div>
+
+<div class="content reveal">
+  <p class="label">Het project</p>
+  <h2 class="heading">30 villa's in<br><em>Valle Romano</em></h2>
+  <p class="body-text">Te midden van het groene gebied van Valle Romano bieden Vivace Villas een buitengewone mix van modern wonen en natuur. Een exclusieve collectie van 30 villa's waar moderne elegantie en de rust van een golfbaan samenkomen.</p>
+</div>
+
+<div class="spacer"></div>
+
+<div class="full-image full-image--tall reveal-image">
+  <img src="https://investinspain.be/wp-content/uploads/2025/06/vivace-villas-T2-4.jpg"
+       alt="Moderne villa met zwembad en tuin"
+       loading="lazy" width="1110" height="623">
+</div>
+
+<div class="spacer"></div>
+
+<div class="content reveal">
+  <p class="label">De residentie</p>
+  <h2 class="heading">Drie typologieën,<br>elk <em>uniek</em> ontworpen</h2>
+  <p class="body-text">Vivace Villas zijn ontworpen in drie typologieën — Arpeggio, Vibrato en Legato — met 3 of 4 slaapkamers. Elke villa is uniek ontworpen om bij het individuele perceel te passen, met hedendaagse architectuur die het uitzicht maximaliseert en privacy garandeert.</p>
+</div>
+
+<div class="spacer--sm"></div>
+
+<div class="stats reveal" style="grid-template-columns:repeat(2,1fr)">
+  <div class="stat">
+    <div class="stat__value">3 – 4</div>
+    <div class="stat__label">Slaapkamers</div>
+  </div>
+  <div class="stat">
+    <div class="stat__value">30</div>
+    <div class="stat__label">Villa's</div>
+  </div>
+</div>
+
+<div class="spacer"></div>
+
+<div class="image-pair">
+  <img class="reveal-image" src="https://investinspain.be/wp-content/uploads/2025/06/vivace-villas-T1-2.jpg"
+       alt="Lichte woonkamer met terrastoegang"
+       loading="lazy" width="1110" height="623">
+  <img class="reveal-image" src="https://investinspain.be/wp-content/uploads/2025/06/vivace-villas-T3-4.jpg"
+       alt="Woonkamer met bergzicht"
+       loading="lazy" width="1110" height="623">
+</div>
+
+<div class="full-image full-image--tall reveal-image">
+  <img src="https://investinspain.be/wp-content/uploads/2025/06/vivace-villas-T3-7.jpg"
+       alt="Slaapkamer met zicht op zee"
+       loading="lazy" width="1110" height="623">
+</div>
+
+<div class="spacer"></div>
+
+<div class="content reveal">
+  <p class="label">Het uitzicht</p>
+  <h2 class="heading">Berg- en <em>zeezicht</em></h2>
+  <p class="body-text">Elke villa combineert hedendaagse architectuur met het natuurlijke landschap, om het uitzicht op de bergen en de zee optimaal te benutten.</p>
+</div>
+
+<div class="spacer--sm"></div>
+
+<div class="image-pair">
+  <img class="reveal-image" src="https://investinspain.be/wp-content/uploads/2025/06/vivace-villas-T2-5.jpg"
+       alt="Woonruimte met open zicht op de bergen"
+       loading="lazy" width="1110" height="623">
+  <img class="reveal-image" src="https://investinspain.be/wp-content/uploads/2025/06/vivace-villas-T1-3.jpg"
+       alt="Woon- en eetruimte met panoramisch uitzicht"
+       loading="lazy" width="1110" height="623">
+</div>
+
+<div class="full-image reveal-image">
+  <img src="https://investinspain.be/wp-content/uploads/2025/06/vivace-villas-T2-1.jpg"
+       alt="Villa met zwembad bij avondlicht"
+       loading="lazy" width="1110" height="623">
+</div>
+
+<div class="spacer"></div>
+
+<div class="content reveal">
+  <p class="label">Faciliteiten</p>
+  <h2 class="heading">Passieve architectuur,<br><em>duurzaam</em> ontworpen</h2>
+  <p class="body-text">Elke villa beschikt over een privé tuin en zwembad, vloerverwarming en en-suite badkamers. Gebouwd volgens de principes van passieve architectuur, met duurzame materialen en energie-efficiëntie.</p>
+</div>
+
+<div class="spacer--sm"></div>
+
+<div class="content reveal">
+  <div class="amenities-list">
+    <div class="amenity-item">
+      <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+      <span>Privé tuin en zwembad</span>
+    </div>
+    <div class="amenity-item">
+      <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+      <span>Vloerverwarming & airconditioning</span>
+    </div>
+    <div class="amenity-item">
+      <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+      <span>En-suite badkamers</span>
+    </div>
+    <div class="amenity-item">
+      <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+      <span>2 parkeerplaatsen</span>
+    </div>
+    <div class="amenity-item">
+      <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+      <span>Berging & kelder (optioneel)</span>
+    </div>
+    <div class="amenity-item">
+      <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+      <span>Golfbanen in de buurt</span>
+    </div>
+  </div>
+</div>
+
+<div class="spacer"></div>
+
+<div class="image-pair">
+  <img class="reveal-image" src="https://investinspain.be/wp-content/uploads/2025/06/vivace-villas-T2-6.jpg"
+       alt="Slaapkamer met natuurlijke materialen"
+       loading="lazy" width="1110" height="623">
+  <img class="reveal-image" src="https://investinspain.be/wp-content/uploads/2025/06/vivace-villas-T2-8.jpg"
+       alt="Loungeruimte met biljarttafel"
+       loading="lazy" width="1110" height="623">
+</div>
+
+<div class="full-image full-image--tall reveal-image">
+  <img src="https://investinspain.be/wp-content/uploads/2025/06/vivace-villas-T3-5.jpg"
+       alt="Zwembad met panoramisch bergzicht"
+       loading="lazy" width="1110" height="623">
+</div>
+
+<div class="spacer"></div>
+
+<div class="inline-cta reveal">
+  <h3>Interesse in <em>Vivace Villas</em>?</h3>
+  <p>Ontvang de volledige brochure met plattegronden en beschikbaarheid.</p>
+  <a href="#contact" class="btn">Ontvang de brochure</a>
+</div>
+
+<div class="spacer"></div>
+
+<div class="content reveal">
+  <p class="label">Locatie</p>
+  <h2 class="heading">Valle Romano,<br><em>Estepona</em></h2>
+  <p class="body-text">Met meer dan 12 top golfbanen binnen een straal van 15 km is dit een levensstijl ontworpen voor ontspanning en luxe. Geniet van de mediterrane keuken in het charmante Estepona, of ontdek de glamour van Puerto Banús — op slechts 15 minuten van huis.</p>
+</div>
+
+<div class="spacer--sm"></div>
+
+<div class="content reveal">
+  <div class="location-grid">
+    <div>
+      <div class="location-fact">
+        <span class="location-fact__dist">15 min</span>
+        <span class="location-fact__name">Puerto Banús</span>
+      </div>
+      <div class="location-fact">
+        <span class="location-fact__dist">15 km</span>
+        <span class="location-fact__name">12+ golfbanen</span>
+      </div>
+    </div>
+    <div>
+      <div class="location-fact">
+        <span class="location-fact__dist">Nabij</span>
+        <span class="location-fact__name">Centrum Estepona</span>
+      </div>
+      <div class="location-fact">
+        <span class="location-fact__dist">Gelegen in</span>
+        <span class="location-fact__name">Valle Romano</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="spacer"></div>
+
+<div class="map-wrap reveal">
+  <iframe src="https://www.google.com/maps?q=36.423702016702,-5.19424670248&z=15&output=embed" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="Locatie Vivace Villas"></iframe>
+</div>
+
+<div class="rule--gold" aria-hidden="true"></div>
 <!-- ═══════════ CONTACT ═══════════ -->
 <section class="contact" id="contact">
   <div class="contact__inner">
@@ -90,23 +1280,23 @@
       <div class="form-success" id="formSuccess">
         <svg viewBox="0 0 48 48"><circle cx="24" cy="24" r="20"/><polyline points="15 25 21 31 33 19"/></svg>
         <h3>Bedankt voor uw interesse</h3>
-        <p>U ontvangt binnenkort alle informatie over __PROJECT_NAME__ in uw inbox.</p>
+        <p>U ontvangt binnenkort alle informatie over Vivace Villas in uw inbox.</p>
       </div>
     </div>
 
     <div class="agent">
       <div class="label">Uw contactpersoon</div>
-      <img src="__AGENT_PHOTO__" alt="__AGENT_NAME__" class="agent__photo" loading="lazy" width="600" height="450">
-      <h3 class="agent__name">__AGENT_NAME__</h3>
+      <img src="https://investinspain.be/wp-content/uploads/2020/01/Gunther-De-Vleeschouwer-INVESTINSPAIN.jpg" alt="Gunther De Vleeschouwer" class="agent__photo" loading="lazy" width="600" height="450">
+      <h3 class="agent__name">Gunther De Vleeschouwer</h3>
       <p class="agent__role">Real estate associate</p>
 
-      <a href="tel:__AGENT_PHONE_TEL__" class="agent__detail">
+      <a href="tel:+32496571397" class="agent__detail">
         <svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.362 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.338 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-        __AGENT_PHONE_DISPLAY__
+        +32 496 57 13 97
       </a>
-      <a href="mailto:__AGENT_EMAIL__" class="agent__detail">
+      <a href="mailto:gunther@investinspain.be" class="agent__detail">
         <svg viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><polyline points="22 4 12 13 2 4"/></svg>
-        __AGENT_EMAIL__
+        gunther@investinspain.be
       </a>
       <a href="tel:+3215257310" class="agent__detail">
         <svg viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 18 0 9 9 0 0 0-18 0z"/><path d="M3 12h18"/><path d="M12 3c2.8 3.1 4.4 6.5 4.4 9s-1.6 5.9-4.4 9"/><path d="M12 3c-2.8 3.1-4.4 6.5-4.4 9s1.6 5.9 4.4 9"/></svg>
@@ -135,7 +1325,7 @@
 </footer>
 
 <!-- ═══════════ WHATSAPP FAB ═══════════ -->
-<a href="https://wa.me/__WA_NUMBER__?text=__WA_TEXT_ENCODED__"
+<a href="https://wa.me/32496571397?text=Hallo%2C%20ik%20heb%20interesse%20in%20Vivace%20Villas.%20Kan%20ik%20meer%20informatie%20ontvangen%3F"
    target="_blank" rel="noopener" class="wa-fab" aria-label="Contact via WhatsApp">
   <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.625.846 5.059 2.284 7.034L.789 23.492a.5.5 0 00.612.638l4.67-1.404A11.945 11.945 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-2.24 0-4.31-.726-5.993-1.955l-.348-.262-3.278.986.93-3.156-.28-.373A9.935 9.935 0 012 12C2 6.486 6.486 2 12 2s10 4.486 10 10-4.486 10-10 10z"/></svg>
 </a>
@@ -241,7 +1431,7 @@
 
 <!-- ═══════════ STICKY CTA BAR ═══════════ -->
 <div class="sticky-cta" id="stickyCta">
-  <div class="sticky-cta__text">__PRICE_LABEL__ <span>__PRICE_AMOUNT__</span></div>
+  <div class="sticky-cta__text">Prijs <span>op aanvraag</span></div>
   <a href="#contact" class="btn">Ontvang info</a>
 </div>
 
@@ -250,7 +1440,7 @@
   <div class="modal">
     <button class="modal__close" id="modalClose" aria-label="Sluiten">&times;</button>
     <h3>Ontvang prijzen &<br><em>beschikbaarheid</em></h3>
-    <p>Laat uw gegevens achter en ontvang alle projectinformatie over __PROJECT_NAME__ rechtstreeks in uw inbox.</p>
+    <p>Laat uw gegevens achter en ontvang alle projectinformatie over Vivace Villas rechtstreeks in uw inbox.</p>
     <form id="modalForm" novalidate>
       <div class="form-group">
         <input type="text" id="m-fname" name="fname" placeholder=" " required autocomplete="given-name">
@@ -365,7 +1555,7 @@
     var data = new FormData(form);
     var land = countryOf(form);
     var payload = {
-      project: '__PROJECT_NAME__',
+      project: 'Vivace Villas',
       form_bron: formBron,
       voornaam: data.get('fname') || '',
       achternaam: data.get('lname') || '',
@@ -457,13 +1647,13 @@
     if (valid) {
       var data = new FormData(form);
       var land = countryOf(form);
-      var body = 'Nieuwe aanvraag __PROJECT_NAME__%0A%0A'
+      var body = 'Nieuwe aanvraag Vivace Villas%0A%0A'
         + 'Naam: ' + encodeURIComponent(data.get('fname') + ' ' + data.get('lname')) + '%0A'
         + 'Land: ' + encodeURIComponent(land.name) + '%0A'
         + 'Telefoon: ' + encodeURIComponent(land.code + ' ' + data.get('phone')) + '%0A'
         + 'Email: ' + encodeURIComponent(data.get('email'));
       sendToZapier(form, 'hoofdformulier');
-      window.open('mailto:__AGENT_EMAIL__?subject=' + encodeURIComponent('Aanvraag __PROJECT_NAME__ — ' + data.get('fname') + ' ' + data.get('lname')) + '&body=' + body, '_self');
+      window.open('mailto:gunther@investinspain.be?subject=' + encodeURIComponent('Aanvraag Vivace Villas — ' + data.get('fname') + ' ' + data.get('lname')) + '&body=' + body, '_self');
       wrapper.classList.add('is-hidden');
       setTimeout(function() { success.classList.add('is-active'); }, 400);
     }
@@ -478,7 +1668,7 @@
   var waFab = document.querySelector('.wa-fab');
   var hero = document.querySelector('.hero');
 
-  var MODAL_KEY = '__SLUG___modal_shown';
+  var MODAL_KEY = 'vivace-villas_modal_shown';
   var modalShown = false;
 
   function hasSeenModal() {
@@ -631,13 +1821,13 @@
     if (valid) {
       var data = new FormData(modalForm);
       var land = countryOf(modalForm);
-      var body = 'Nieuwe aanvraag __PROJECT_NAME__ (pop-up)%0A%0A'
+      var body = 'Nieuwe aanvraag Vivace Villas (pop-up)%0A%0A'
         + 'Naam: ' + encodeURIComponent(data.get('fname') + ' ' + data.get('lname')) + '%0A'
         + 'Email: ' + encodeURIComponent(data.get('email')) + '%0A'
         + 'Land: ' + encodeURIComponent(land.name) + '%0A'
         + 'Telefoon: ' + encodeURIComponent(land.code + ' ' + data.get('phone'));
       sendToZapier(modalForm, 'pop-up');
-      window.open('mailto:__AGENT_EMAIL__?subject=' + encodeURIComponent('Aanvraag __PROJECT_NAME__ — ' + data.get('fname') + ' ' + data.get('lname')) + '&body=' + body, '_self');
+      window.open('mailto:gunther@investinspain.be?subject=' + encodeURIComponent('Aanvraag Vivace Villas — ' + data.get('fname') + ' ' + data.get('lname')) + '&body=' + body, '_self');
       closeModal();
     }
   });
@@ -737,13 +1927,13 @@
     if (valid) {
       var data = new FormData(dockForm);
       var land = countryOf(dockForm);
-      var body = 'Nieuwe aanvraag __PROJECT_NAME__ (zijpaneel)%0A%0A'
+      var body = 'Nieuwe aanvraag Vivace Villas (zijpaneel)%0A%0A'
         + 'Naam: ' + encodeURIComponent(data.get('fname') + ' ' + data.get('lname')) + '%0A'
         + 'Email: ' + encodeURIComponent(data.get('email')) + '%0A'
         + 'Land: ' + encodeURIComponent(land.name) + '%0A'
         + 'Telefoon: ' + encodeURIComponent(land.code + ' ' + data.get('phone'));
       sendToZapier(dockForm, 'zijpaneel');
-      window.open('mailto:__AGENT_EMAIL__?subject=' + encodeURIComponent('Aanvraag __PROJECT_NAME__ — ' + data.get('fname') + ' ' + data.get('lname')) + '&body=' + body, '_self');
+      window.open('mailto:gunther@investinspain.be?subject=' + encodeURIComponent('Aanvraag Vivace Villas — ' + data.get('fname') + ' ' + data.get('lname')) + '&body=' + body, '_self');
       dockWrapper.classList.add('is-hidden');
       setTimeout(function() { dockSuccess.classList.add('is-active'); }, 400);
     }
