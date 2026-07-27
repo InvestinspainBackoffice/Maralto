@@ -23,7 +23,10 @@ ORDER = ["maralto"]
 # in de roterende hero komen. Voeg een nieuwe slug toe aan het EINDE zodra
 # er een project bijkomt; vergeten mag ook, die komen dan automatisch
 # (alfabetisch) achteraan terecht en tellen dus als "oudst".
-CHRONOLOGICAL = ["maralto", "adagio", "the-view", "zew-elviria"]
+CHRONOLOGICAL = [
+    "maralto", "adagio", "the-view", "zew-elviria",
+    "marine-hills", "the-sky-marbella", "the-grove",
+]
 HERO_ROTATION_COUNT = 5
 
 

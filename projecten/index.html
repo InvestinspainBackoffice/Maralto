@@ -512,6 +512,36 @@ footer a { color: var(--gold-dim); text-underline-offset: 2px; }
         <div class="project-card__price">Vanaf € 512.000</div>
       </div>
     </a>
+    <a class="project-card" href="/marine-hills/">
+      <div class="project-card__img-wrap">
+        <img class="project-card__img" src="https://investinspain.be/wp-content/uploads/2024/06/Marine-Hills-INVESTINSPAIN.jpg" alt="Marine Hills" loading="lazy">
+      </div>
+      <div class="project-card__body">
+        <div class="project-card__name">Marine Hills</div>
+        <div class="project-card__location">Estepona</div>
+        <div class="project-card__price">Vanaf € 464.000</div>
+      </div>
+    </a>
+    <a class="project-card" href="/the-grove/">
+      <div class="project-card__img-wrap">
+        <img class="project-card__img" src="https://investinspain.be/wp-content/uploads/2026/01/06-The-Grove-1110x623.png" alt="The Grove" loading="lazy">
+      </div>
+      <div class="project-card__body">
+        <div class="project-card__name">The Grove</div>
+        <div class="project-card__location">San Pedro de Alcántara</div>
+        <div class="project-card__price">Vanaf € 390.000</div>
+      </div>
+    </a>
+    <a class="project-card" href="/the-sky-marbella/">
+      <div class="project-card__img-wrap">
+        <img class="project-card__img" src="https://investinspain.be/wp-content/uploads/2023/10/The-Sky-Marbella-Villas-main-exterior-render-1110x623.jpeg" alt="The Sky Marbella" loading="lazy">
+      </div>
+      <div class="project-card__body">
+        <div class="project-card__name">The Sky Marbella</div>
+        <div class="project-card__location">Benahavís</div>
+        <div class="project-card__price">Vanaf € 1.495.000</div>
+      </div>
+    </a>
     <a class="project-card" href="/the-view/">
       <div class="project-card__img-wrap">
         <img class="project-card__img" src="https://homeinspain.be/wp-content/uploads/2026/07/Block-7-scaled.jpg" alt="The View Marbella" loading="lazy">
@@ -664,7 +694,7 @@ footer a { color: var(--gold-dim); text-underline-offset: 2px; }
   document.querySelectorAll('.reveal').forEach(function(el){ observer.observe(el); });
 
   /* ═══════════ ROTERENDE HERO (laatste 5 projecten) ═══════════ */
-  var heroSlides = [{"name": "ZEW Elviria", "thumb": "https://investinspain.be/wp-content/uploads/2026/07/Concept_Homes_acceso_hd.0000-scaled-1.jpg", "href": "/zew-elviria/"}, {"name": "The View Marbella", "thumb": "https://homeinspain.be/wp-content/uploads/2026/07/Block-7-scaled.jpg", "href": "/the-view/"}, {"name": "Adagio", "thumb": "https://investinspain.be/wp-content/uploads/2025/04/Adagio-Cancelada-6.jpg", "href": "/adagio/"}, {"name": "Maralto", "thumb": "https://investinspain.be/wp-content/uploads/2025/08/Maralto-Estepona-9.png", "href": "/"}];
+  var heroSlides = [{"name": "The Grove", "thumb": "https://investinspain.be/wp-content/uploads/2026/01/06-The-Grove-1110x623.png", "href": "/the-grove/"}, {"name": "The Sky Marbella", "thumb": "https://investinspain.be/wp-content/uploads/2023/10/The-Sky-Marbella-Villas-main-exterior-render-1110x623.jpeg", "href": "/the-sky-marbella/"}, {"name": "Marine Hills", "thumb": "https://investinspain.be/wp-content/uploads/2024/06/Marine-Hills-INVESTINSPAIN.jpg", "href": "/marine-hills/"}, {"name": "ZEW Elviria", "thumb": "https://investinspain.be/wp-content/uploads/2026/07/Concept_Homes_acceso_hd.0000-scaled-1.jpg", "href": "/zew-elviria/"}, {"name": "The View Marbella", "thumb": "https://homeinspain.be/wp-content/uploads/2026/07/Block-7-scaled.jpg", "href": "/the-view/"}];
   var rotator = document.getElementById('heroRotator');
   heroSlides.forEach(function(p, i){
     var slide = document.createElement('div');
@@ -682,7 +712,7 @@ footer a { color: var(--gold-dim); text-underline-offset: 2px; }
     }, 5000);
   }
 
-  var projects = [{"name": "Maralto", "location": "Estepona", "price": "Vanaf € 460.000", "href": "/", "lat": 36.425704, "lng": -5.1626803}, {"name": "Adagio", "location": "Cancelada", "price": "Vanaf € 512.000", "href": "/adagio/", "lat": 36.4651772, "lng": -5.0599806}, {"name": "The View Marbella", "location": "Benahavís", "price": "Vanaf € 899.000", "href": "/the-view/", "lat": 36.4666272, "lng": -5.0836161}, {"name": "ZEW Elviria", "location": "Elviria", "price": "Vanaf € 770.000", "href": "/zew-elviria/", "lat": 36.5075665, "lng": -4.787271}];
+  var projects = [{"name": "Maralto", "location": "Estepona", "price": "Vanaf € 460.000", "href": "/", "lat": 36.425704, "lng": -5.1626803}, {"name": "Adagio", "location": "Cancelada", "price": "Vanaf € 512.000", "href": "/adagio/", "lat": 36.4651772, "lng": -5.0599806}, {"name": "Marine Hills", "location": "Estepona", "price": "Vanaf € 464.000", "href": "/marine-hills/", "lat": 36.4603322, "lng": -5.0854119}, {"name": "The Grove", "location": "San Pedro de Alcántara", "price": "Vanaf € 390.000", "href": "/the-grove/", "lat": 36.4873997, "lng": -4.9843947}, {"name": "The Sky Marbella", "location": "Benahavís", "price": "Vanaf € 1.495.000", "href": "/the-sky-marbella/", "lat": 36.5226179, "lng": -4.9993343}, {"name": "The View Marbella", "location": "Benahavís", "price": "Vanaf € 899.000", "href": "/the-view/", "lat": 36.4666272, "lng": -5.0836161}, {"name": "ZEW Elviria", "location": "Elviria", "price": "Vanaf € 770.000", "href": "/zew-elviria/", "lat": 36.5075665, "lng": -4.787271}];
 
   var map = L.map('map', { scrollWheelZoom: false, attributionControl: true });
   L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
