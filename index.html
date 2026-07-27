@@ -870,6 +870,112 @@ footer a {
 .wa-fab.is-raised { bottom: calc(1.5rem + 56px); }
 .wa-fab:hover { transform: scale(1.08); }
 .wa-fab svg { width: 26px; height: 26px; fill: white; }
+
+/* ── Lead dock (meescrollend zijpaneel) ── */
+.lead-dock {
+  position: fixed;
+  right: 1.5rem;
+  bottom: calc(1.5rem + 52px + 0.75rem);
+  z-index: 95;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  opacity: 0;
+  transform: translateY(12px);
+  pointer-events: none;
+  transition: bottom 0.5s var(--ease), opacity 0.5s var(--ease), transform 0.5s var(--ease);
+}
+/* schuift mee omhoog zodra de sticky balk verschijnt */
+.lead-dock.is-raised { bottom: calc(1.5rem + 56px + 52px + 0.75rem); }
+.lead-dock.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.lead-dock__trigger {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.7rem 1.1rem;
+  background: var(--bg-el);
+  border: 1px solid var(--gold-dim);
+  color: var(--text);
+  font-family: var(--font);
+  font-size: 0.62rem;
+  font-weight: 400;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  cursor: pointer;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.45);
+  transition: border-color 0.25s, color 0.25s;
+}
+.lead-dock__trigger:hover { border-color: var(--gold); color: var(--gold); }
+.lead-dock__trigger svg {
+  width: 13px; height: 13px;
+  stroke: var(--gold); stroke-width: 1.5; fill: none;
+  flex-shrink: 0;
+}
+.lead-dock.is-open .lead-dock__trigger { display: none; }
+
+.lead-dock__card {
+  display: none;
+  width: 288px;
+  max-width: calc(100vw - 3rem);
+  background: var(--bg-el);
+  border: 1px solid var(--line);
+  padding: 1.35rem 1.25rem 1.25rem;
+  position: relative;
+  box-shadow: 0 8px 40px rgba(0,0,0,0.55);
+}
+.lead-dock.is-open .lead-dock__card {
+  display: block;
+  animation: dock-in 0.35s var(--ease);
+}
+@keyframes dock-in {
+  from { opacity: 0; transform: translateY(10px) scale(0.96); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+.lead-dock__close {
+  position: absolute;
+  top: 0.55rem;
+  right: 0.55rem;
+  width: 26px; height: 26px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  font-family: var(--font);
+  font-size: 1.15rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+.lead-dock__close:hover { color: var(--text); }
+.lead-dock__card h4 {
+  font-size: 0.9rem;
+  font-weight: 300;
+  line-height: 1.35;
+  margin-bottom: 1rem;
+  padding-right: 1.5rem;
+}
+.lead-dock__card h4 em { font-style: normal; color: var(--gold); }
+.lead-dock__card .form-group { margin-bottom: 0.7rem; }
+.lead-dock__card .phone-group { margin-bottom: 0.7rem; }
+.lead-dock__card .consent { margin: 0.75rem 0; }
+.lead-dock__card .consent label { font-size: 0.62rem; line-height: 1.5; }
+.lead-dock__card .btn { width: 100%; justify-content: center; }
+.lead-dock__card .form-success { padding: 1.25rem 0.5rem 0.75rem; }
+.lead-dock__card .form-success svg { width: 34px; height: 34px; margin-bottom: 0.9rem; }
+.lead-dock__card .form-success p { font-size: 0.75rem; }
+
+@media (max-width: 600px) {
+  .lead-dock__trigger { font-size: 0.58rem; padding: 0.6rem 0.9rem; }
+  .lead-dock__card { padding: 1.3rem 1.15rem 1.2rem; }
+}
 </style>
 </head>
 <body>
@@ -1195,6 +1301,49 @@ footer a {
   <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.625.846 5.059 2.284 7.034L.789 23.492a.5.5 0 00.612.638l4.67-1.404A11.945 11.945 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-2.24 0-4.31-.726-5.993-1.955l-.348-.262-3.278.986.93-3.156-.28-.373A9.935 9.935 0 012 12C2 6.486 6.486 2 12 2s10 4.486 10 10-4.486 10-10 10z"/></svg>
 </a>
 
+<!-- ═══════════ LEAD DOCK (meescrollend zijpaneel) ═══════════ -->
+<div class="lead-dock" id="leadDock">
+  <button class="lead-dock__trigger" id="dockTrigger" aria-expanded="false" aria-controls="dockCard">
+    <svg viewBox="0 0 24 24"><path d="M4 4h16v16H4z"/><path d="M4 7l8 6 8-6"/></svg>
+    Prijzen aanvragen
+  </button>
+
+  <div class="lead-dock__card" id="dockCard" role="dialog" aria-label="Ontvang projectinformatie">
+    <button class="lead-dock__close" id="dockClose" aria-label="Sluiten">&times;</button>
+    <h4>Prijzen &amp; <em>beschikbaarheid</em></h4>
+
+    <div class="form-wrapper" id="dockWrapper">
+      <form id="dockForm" novalidate>
+        <div class="form-group">
+          <input type="text" id="d-fname" name="fname" placeholder=" " required autocomplete="given-name">
+          <label for="d-fname">Voornaam</label>
+        </div>
+        <div class="form-group">
+          <input type="email" id="d-email" name="email" placeholder=" " required autocomplete="email">
+          <label for="d-email">E-mailadres</label>
+        </div>
+        <div class="phone-group">
+          <span class="phone-prefix">🇧🇪 +32</span>
+          <div class="form-group">
+            <input type="tel" id="d-phone" name="phone" placeholder=" " required autocomplete="tel-national">
+            <label for="d-phone">GSM-nummer</label>
+          </div>
+        </div>
+        <div class="consent">
+          <input type="checkbox" id="d-consent" required>
+          <label for="d-consent">Ja, ik ga akkoord met het <a href="https://investinspain.be/privacy-policy/" target="_blank" rel="noopener">privacybeleid</a> en de <a href="https://investinspain.be/algemene-voorwaarden/" target="_blank" rel="noopener">algemene voorwaarden</a>.</label>
+        </div>
+        <button type="submit" class="btn">Verzenden</button>
+      </form>
+    </div>
+
+    <div class="form-success" id="dockSuccess">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+      <p>Bedankt! We nemen snel contact met u op.</p>
+    </div>
+  </div>
+</div>
+
 <!-- ═══════════ STICKY CTA BAR ═══════════ -->
 <div class="sticky-cta" id="stickyCta">
   <div class="sticky-cta__text">Vanaf <span>€ 460.000</span></div>
@@ -1356,6 +1505,7 @@ footer a {
       stickyBar.classList.remove('is-visible');
       if (waFab) waFab.classList.remove('is-raised');
     }
+    updateDock();
   }
 
   var heroObserver = new IntersectionObserver(function(entries) {
@@ -1386,6 +1536,7 @@ footer a {
     if (modalShown || hasSeenModal()) return;
     modalOverlay.classList.add('is-active');
     document.body.style.overflow = 'hidden';
+    collapseDock();
     markModalSeen();
   }
   function closeModal() {
@@ -1479,6 +1630,97 @@ footer a {
         + 'Telefoon: +32 ' + encodeURIComponent(data.get('phone'));
       window.open('mailto:gunther@investinspain.be?subject=' + encodeURIComponent('Aanvraag Maralto Estepona — ' + data.get('fname')) + '&body=' + body, '_self');
       closeModal();
+    }
+  });
+
+  /* ═══════════ LEAD DOCK ═══════════ */
+
+  var dock = document.getElementById('leadDock');
+  var dockTrigger = document.getElementById('dockTrigger');
+  var dockClose = document.getElementById('dockClose');
+  var dockCard = document.getElementById('dockCard');
+  var dockForm = document.getElementById('dockForm');
+  var dockWrapper = document.getElementById('dockWrapper');
+  var dockSuccess = document.getElementById('dockSuccess');
+  var dockConsent = document.getElementById('d-consent');
+
+  // Breed scherm: meteen open naast de hero. Smal scherm: eerst de pil,
+  // want een open kaart bedekt daar de hero en de vanaf-prijs.
+  var isWide = window.matchMedia('(min-width: 1024px)').matches;
+  var dockOpen = isWide;
+  var dockSettled = isWide;  // true zodra de gebruiker of de pagina de staat bepaald heeft
+  var dockReady = false;     // pas tonen na de hero-animatie
+
+  function openDock() { dockOpen = true; dockSettled = true; updateDock(); }
+  function collapseDock() { dockOpen = false; dockSettled = true; updateDock(); }
+
+  // Zichtbaar vanaf de header, weg bij de contactsectie (daar staat al een formulier)
+  function updateDock() {
+    var show = dockReady && !atFooter;
+    if (show && !dockSettled && pastHero) { dockOpen = true; dockSettled = true; }
+    dock.classList.toggle('is-visible', show);
+    dock.classList.toggle('is-open', show && dockOpen);
+    dock.classList.toggle('is-raised', pastHero && !atFooter);
+    dockTrigger.setAttribute('aria-expanded', String(show && dockOpen));
+  }
+
+  // Verschijnt mee met de WhatsApp-knop, na de hero-animatie
+  setTimeout(function() { dockReady = true; updateDock(); }, 2500);
+
+  dockTrigger.addEventListener('click', openDock);
+  dockClose.addEventListener('click', collapseDock);
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape' && dock.classList.contains('is-open')) collapseDock();
+  });
+
+  // Validatie & verzenden
+  dockForm.querySelectorAll('input:not([type="checkbox"])').forEach(function(input) {
+    input.addEventListener('input', function() { clearError(input); });
+  });
+  dockConsent.addEventListener('change', function() {
+    this.style.borderColor = '';
+    var err = this.closest('.consent').querySelector('.form-error');
+    if (err) err.classList.remove('is-active');
+  });
+
+  dockForm.addEventListener('submit', function(e) {
+    e.preventDefault();
+    var valid = true;
+
+    dockForm.querySelectorAll('.form-error').forEach(function(el) { el.classList.remove('is-active'); });
+    dockForm.querySelectorAll('input').forEach(function(el) { el.style.borderBottomColor = ''; el.style.borderColor = ''; });
+
+    dockForm.querySelectorAll('input[required]:not([type="checkbox"])').forEach(function(input) {
+      if (!input.value.trim()) { valid = false; showError(input, 'Dit veld is verplicht'); }
+      else if (input.type === 'email' && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(input.value)) {
+        valid = false; showError(input, 'Ongeldig e-mailadres');
+      }
+    });
+
+    if (!dockConsent.checked) {
+      valid = false;
+      var wrap = dockConsent.closest('.consent');
+      var err = wrap.querySelector('.form-error');
+      if (!err) {
+        err = document.createElement('p');
+        err.className = 'form-error';
+        err.setAttribute('role', 'alert');
+        wrap.appendChild(err);
+      }
+      err.textContent = 'U moet akkoord gaan om verder te gaan';
+      err.classList.add('is-active');
+      dockConsent.style.borderColor = '#c0392b';
+    }
+
+    if (valid) {
+      var data = new FormData(dockForm);
+      var body = 'Nieuwe aanvraag Maralto Estepona (zijpaneel)%0A%0A'
+        + 'Naam: ' + encodeURIComponent(data.get('fname')) + '%0A'
+        + 'Email: ' + encodeURIComponent(data.get('email')) + '%0A'
+        + 'Telefoon: +32 ' + encodeURIComponent(data.get('phone'));
+      window.open('mailto:gunther@investinspain.be?subject=' + encodeURIComponent('Aanvraag Maralto Estepona — ' + data.get('fname')) + '&body=' + body, '_self');
+      dockWrapper.classList.add('is-hidden');
+      setTimeout(function() { dockSuccess.classList.add('is-active'); }, 400);
     }
   });
 })();
