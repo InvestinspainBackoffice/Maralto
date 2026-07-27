@@ -1319,6 +1319,10 @@ footer a {
           <label for="d-fname">Voornaam</label>
         </div>
         <div class="form-group">
+          <input type="text" id="d-lname" name="lname" placeholder=" " required autocomplete="family-name">
+          <label for="d-lname">Achternaam</label>
+        </div>
+        <div class="form-group">
           <input type="email" id="d-email" name="email" placeholder=" " required autocomplete="email">
           <label for="d-email">E-mailadres</label>
         </div>
@@ -1715,10 +1719,10 @@ footer a {
     if (valid) {
       var data = new FormData(dockForm);
       var body = 'Nieuwe aanvraag Maralto Estepona (zijpaneel)%0A%0A'
-        + 'Naam: ' + encodeURIComponent(data.get('fname')) + '%0A'
+        + 'Naam: ' + encodeURIComponent(data.get('fname') + ' ' + data.get('lname')) + '%0A'
         + 'Email: ' + encodeURIComponent(data.get('email')) + '%0A'
         + 'Telefoon: +32 ' + encodeURIComponent(data.get('phone'));
-      window.open('mailto:gunther@investinspain.be?subject=' + encodeURIComponent('Aanvraag Maralto Estepona — ' + data.get('fname')) + '&body=' + body, '_self');
+      window.open('mailto:gunther@investinspain.be?subject=' + encodeURIComponent('Aanvraag Maralto Estepona — ' + data.get('fname') + ' ' + data.get('lname')) + '&body=' + body, '_self');
       dockWrapper.classList.add('is-hidden');
       setTimeout(function() { dockSuccess.classList.add('is-active'); }, 400);
     }
