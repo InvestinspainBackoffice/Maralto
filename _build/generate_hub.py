@@ -99,7 +99,12 @@ def last_n_chronological(entries, n):
 def render_card(entry):
     price_num = parse_price_number(entry["PRICE"])
     band_id = price_band_id(price_num)
-    return f"""    <a class="project-card" href="{entry['HREF']}" data-location="{html.escape(entry['LOCATION'])}" data-price-band="{band_id}">
+    # Sommige thumbnails hebben een storende watermerktekst onderaan de
+    # bronfoto; die projecten zetten een SLUG-scoped regel in
+    # __CARD_EXTRA_CSS__ (zie main()) om net dat stukje uit de crop te
+    # croppen zonder de gedeelde kaart-CSS voor alle projecten te raken.
+    slug_class = f" project-card--{entry['SLUG']}" if entry.get("THUMB_EXTRA_CSS") else ""
+    return f"""    <a class="project-card{slug_class}" href="{entry['HREF']}" data-location="{html.escape(entry['LOCATION'])}" data-price-band="{band_id}">
       <div class="project-card__img-wrap">
         <img class="project-card__img" src="{entry['THUMB']}" alt="{html.escape(entry['NAME'])}" loading="lazy">
       </div>
@@ -150,6 +155,11 @@ def main():
         {"name": e["NAME"], "thumb": e["THUMB"], "href": e["HREF"]}
         for e in hero_entries
     ]
+    card_extra_css = "\n".join(
+        f".project-card--{e['SLUG']} .project-card__img {{ {e['THUMB_EXTRA_CSS']} }}"
+        for e in entries
+        if e.get("THUMB_EXTRA_CSS")
+    )
 
     with open(os.path.join(TEMPLATES, "hub.html"), encoding="utf-8") as f:
         page = f.read()
@@ -159,6 +169,7 @@ def main():
     page = page.replace("__PRICE_OPTIONS__", render_price_options())
     page = page.replace("__MAP_MARKERS_JSON__", json.dumps(markers, ensure_ascii=False))
     page = page.replace("__HERO_ROTATION_JSON__", json.dumps(hero_rotation, ensure_ascii=False))
+    page = page.replace("__CARD_EXTRA_CSS__", card_extra_css)
 
     # De projectenpagina is nu de hoofdpagina van de site ("/") - dezelfde
     # content stond al op het hoofddomein investinspain.be, dus deze

@@ -90,7 +90,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 .hero__bg {
   position: absolute;
   inset: 0;
-  background: url('__HERO_BG__') center 60% / cover no-repeat;
+  background: url('__HERO_BG__') center __HERO_BG_POSITION__ / cover no-repeat;
   opacity: 0;
   transform: scale(1.06);
   animation: hero-bg 2s var(--ease) 0.3s forwards;
@@ -999,9 +999,10 @@ footer a {
 @media (max-width: 600px) {
   .cookie-bar { left: 1rem; right: 1rem; bottom: 1rem; max-width: none; padding: 1.25rem; }
 }
+__EXTRA_HEAD_CSS__
 </style>
 </head>
-<body>
+<body class="page-__SLUG__">
 
 <div class="frame" aria-hidden="true"></div>
 

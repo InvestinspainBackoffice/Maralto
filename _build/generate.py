@@ -76,6 +76,13 @@ def build_one(project_file):
     data.setdefault("PRICE_AMOUNT", data["PRICE_FROM"].replace("Vanaf ", ""))
     data.setdefault("PRICE_LABEL", "Vanaf")
     data.setdefault("BUDGET_BUCKET", budget_bucket(parse_price_number(data["PRICE_FROM"])))
+    # Verticale ankerpositie van de hero-achtergrond (CSS background-position).
+    # Projecten met een storende watermerk-tekst onderaan hun herofoto zetten
+    # dit expliciet naar "top" om die tekst buiten beeld te croppen.
+    data.setdefault("HERO_BG_POSITION", "60%")
+    # Kleine per-project CSS-overrides (bv. watermerk uit een herofoto croppen)
+    # die niet elk project aangaan, dus niet in de gedeelde stylesheet horen.
+    data.setdefault("EXTRA_HEAD_CSS", "")
 
     with open(os.path.join(TEMPLATES, "head.html"), encoding="utf-8") as f:
         head = f.read()
