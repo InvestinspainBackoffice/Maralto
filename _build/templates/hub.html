@@ -763,12 +763,14 @@ __PROJECT_CARDS__
   var filterLocation = document.getElementById('filterLocation');
   var filterPrice = document.getElementById('filterPrice');
   var filterEmpty = document.getElementById('filterEmpty');
+  var projectGrid = document.getElementById('projectGrid');
   var cards = Array.prototype.slice.call(document.querySelectorAll('.project-card'));
 
   function applyFilters() {
     var loc = filterLocation.value;
     var band = filterPrice.value;
     var visibleCount = 0;
+    var visibleBounds = [];
     cards.forEach(function(card, i){
       var matchLoc = !loc || card.getAttribute('data-location') === loc;
       var matchPrice = !band || card.getAttribute('data-price-band') === band;
@@ -781,9 +783,33 @@ __PROJECT_CARDS__
         var onMap = map.hasLayer(marker);
         if (show && !onMap) marker.addTo(map);
         else if (!show && onMap) map.removeLayer(marker);
+        if (show) visibleBounds.push([projects[i].lat, projects[i].lng]);
       }
     });
     filterEmpty.classList.toggle('is-active', visibleCount === 0);
+
+    // Bij 1 of 2 resultaten krimpt het raster naar precies dat aantal
+    // kolommen en centreert het, zodat er geen leeg vlak (met de
+    // rasterachtergrond erdoorheen) in de resterende kolom blijft staan.
+    if (visibleCount > 0 && visibleCount < 3) {
+      projectGrid.style.gridTemplateColumns = 'repeat(' + visibleCount + ', minmax(0, min(360px, 90vw)))';
+      projectGrid.style.width = 'fit-content';
+      projectGrid.style.margin = '0 auto';
+    } else {
+      projectGrid.style.gridTemplateColumns = '';
+      projectGrid.style.width = '';
+      projectGrid.style.margin = '';
+    }
+
+    // Zoomt lichtjes in op de gefilterde regio; zonder resultaten of
+    // filters valt de kaart terug op het volledige overzicht.
+    if (visibleBounds.length === 1) {
+      map.flyTo(visibleBounds[0], 13, { duration: 0.6 });
+    } else if (visibleBounds.length > 1) {
+      map.flyToBounds(visibleBounds, { padding: [80,80], maxZoom: 13, duration: 0.6 });
+    } else {
+      map.flyToBounds(bounds, { padding: [80,80], maxZoom: 10, duration: 0.6 });
+    }
   }
   filterLocation.addEventListener('change', applyFilters);
   filterPrice.addEventListener('change', applyFilters);
