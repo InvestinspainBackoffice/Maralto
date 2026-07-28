@@ -1,0 +1,6 @@
+# Interne bouwtools en documentatie - horen niet publiek bereikbaar te zijn.
+# De site zelf (project-mappen, downloads/, bedankt/, index.html) blijft
+# gewoon gedeployed; alleen deze paden worden uitgesloten.
+_build/
+DESIGN.md
+PRODUCT.md
