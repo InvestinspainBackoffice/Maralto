@@ -1541,16 +1541,18 @@ footer a {
   function sendToZapier(form, formBron) {
     var data = new FormData(form);
     var land = countryOf(form);
+    var phoneDigits = data.get('phone') || '';
     var payload = {
-      project: 'Nubay',
-      form_bron: formBron,
-      voornaam: data.get('fname') || '',
-      achternaam: data.get('lname') || '',
+      last_name: data.get('lname') || '',
+      first_name: data.get('fname') || '',
+      mobile_phone: land.code + phoneDigits,
       email: data.get('email') || '',
-      land: land.name,
-      telefoon: land.code + ' ' + (data.get('phone') || ''),
-      pagina_url: window.location.href,
-      tijdstip: new Date().toISOString()
+      utm_source: 'site',
+      lead_source: 'Projectpagina',
+      budget: '',
+      description: 'Nubay — ' + formBron + ' — ' + window.location.href,
+      mobile_phone_unformatted: land.code.replace('+', '') + phoneDigits,
+      timestamp: new Date().toISOString()
     };
     try {
       fetch(ZAPIER_WEBHOOK_URL, {
