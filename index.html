@@ -225,6 +225,17 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   border: 2px solid var(--bg);
   box-shadow: 0 0 0 2px var(--gold-dim);
 }
+.marker-tooltip {
+  background: var(--bg-el) !important;
+  border: 1px solid var(--line-light) !important;
+  border-radius: 0 !important;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.5) !important;
+  color: var(--text) !important;
+  font-family: var(--font);
+  font-size: 0.75rem;
+  padding: 0.4rem 0.7rem !important;
+}
+.marker-tooltip::before { border-top-color: var(--line-light) !important; }
 
 /* ── Filters (locatie + prijs) ── */
 .filter-bar {
@@ -1131,12 +1142,19 @@ footer a { color: var(--gold-dim); text-underline-offset: 2px; }
     var loc = filterLocation.value;
     var band = filterPrice.value;
     var visibleCount = 0;
-    cards.forEach(function(card){
+    cards.forEach(function(card, i){
       var matchLoc = !loc || card.getAttribute('data-location') === loc;
       var matchPrice = !band || card.getAttribute('data-price-band') === band;
       var show = matchLoc && matchPrice;
       card.style.display = show ? '' : 'none';
       if (show) visibleCount++;
+
+      var marker = markers[i];
+      if (marker) {
+        var onMap = map.hasLayer(marker);
+        if (show && !onMap) marker.addTo(map);
+        else if (!show && onMap) map.removeLayer(marker);
+      }
     });
     filterEmpty.classList.toggle('is-active', visibleCount === 0);
   }
@@ -1154,14 +1172,16 @@ footer a { color: var(--gold-dim); text-underline-offset: 2px; }
 
   var icon = L.divIcon({ className: '', html: '<div class="marker-pin"></div>', iconSize: [14,14] });
   var bounds = [];
-  projects.forEach(function(p){
+  var markers = projects.map(function(p){
     var marker = L.marker([p.lat, p.lng], { icon: icon }).addTo(map);
     marker.bindPopup(
       '<div class="map-popup__name">' + p.name + '</div>' +
       '<div class="map-popup__meta">' + p.location + ' &middot; ' + p.price + '</div>' +
       '<a class="map-popup__link" href="' + p.href + '">Bekijk project &rarr;</a>'
     );
+    marker.bindTooltip(p.name, { direction: 'top', offset: [0, -8], className: 'marker-tooltip' });
     bounds.push([p.lat, p.lng]);
+    return marker;
   });
   if (bounds.length === 1) {
     map.setView(bounds[0], 10);
