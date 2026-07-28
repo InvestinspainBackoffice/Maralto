@@ -41,5 +41,5 @@ HUB = {
     "THUMB": "https://investinspain.be/wp-content/uploads/2025/08/Maralto-Estepona-9.png",
     "LAT": 36.425704,
     "LNG": -5.1626803,
-    "HREF": "/",
+    "HREF": "/maralto/",
 }

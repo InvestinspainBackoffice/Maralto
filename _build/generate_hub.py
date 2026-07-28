@@ -160,12 +160,13 @@ def main():
     page = page.replace("__MAP_MARKERS_JSON__", json.dumps(markers, ensure_ascii=False))
     page = page.replace("__HERO_ROTATION_JSON__", json.dumps(hero_rotation, ensure_ascii=False))
 
-    out_dir = os.path.join(ROOT, "projecten")
-    os.makedirs(out_dir, exist_ok=True)
-    out_path = os.path.join(out_dir, "index.html")
+    # De projectenpagina is nu de hoofdpagina van de site ("/") - dezelfde
+    # content stond al op het hoofddomein investinspain.be, dus deze
+    # subdomeinpagina's blijven voorlopig op noindex staan.
+    out_path = os.path.join(ROOT, "index.html")
     with open(out_path, "w", encoding="utf-8") as f:
         f.write(page)
-    print(f"projecten/index.html -> {len(entries)} projecten ({len(page)} chars)")
+    print(f"index.html -> {len(entries)} projecten ({len(page)} chars)")
 
 
 if __name__ == "__main__":
