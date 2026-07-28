@@ -237,6 +237,24 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 }
 .marker-tooltip::before { border-top-color: var(--line-light) !important; }
 
+/* ── Aanraakhint (mobiel): 1 vinger scrollt de pagina, tik om de kaart te bedienen ── */
+.map-touch-hint {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(14,19,24,0.8);
+  color: var(--text);
+  font-size: 0.68rem;
+  letter-spacing: 0.05em;
+  padding: 0.65rem 1.2rem;
+  border: 1px solid var(--line-light);
+  white-space: nowrap;
+  pointer-events: none;
+  z-index: 500;
+  transition: opacity 0.3s;
+}
+
 /* ── Filters (locatie + prijs) ── */
 .filter-bar {
   display: flex;
@@ -817,12 +835,31 @@ __PROJECT_CARDS__
 
   var projects = __MAP_MARKERS_JSON__;
 
-  var map = L.map('map', { scrollWheelZoom: false, attributionControl: true });
+  // Op touch-toestellen zou 1 vinger op de kaart de kaart verslepen i.p.v.
+  // de pagina laten scrollen - dat maakt de kaart een scroll-val. Sleep-
+  // gedrag staat daarom pas aan na een eerste tik; tot dan glijdt een
+  // swipe gewoon door naar de pagina eronder. L.Browser.touch ligt er in
+  // moderne Chrome-versies naast (herkent PointerEvent-steun als "touch",
+  // ook op desktop zonder aanraakscherm) - vandaar de eigen check.
+  var isTouch = ('ontouchstart' in window) || navigator.maxTouchPoints > 0;
+  var map = L.map('map', { scrollWheelZoom: false, attributionControl: true, dragging: !isTouch });
   L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
     subdomains: 'abcd',
     maxZoom: 19
   }).addTo(map);
+
+  if (isTouch) {
+    var mapTouchHint = document.createElement('div');
+    mapTouchHint.className = 'map-touch-hint';
+    mapTouchHint.textContent = 'Tik om de kaart te bedienen';
+    document.getElementById('map').appendChild(mapTouchHint);
+    map.once('click', function() {
+      map.dragging.enable();
+      mapTouchHint.style.opacity = '0';
+      setTimeout(function() { mapTouchHint.remove(); }, 300);
+    });
+  }
 
   var icon = L.divIcon({ className: '', html: '<div class="marker-pin"></div>', iconSize: [14,14] });
   var bounds = [];
