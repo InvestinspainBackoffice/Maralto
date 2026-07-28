@@ -589,7 +589,7 @@ footer a { color: var(--gold-dim); text-underline-offset: 2px; }
 
 <div class="spacer--sm"></div>
 
-<div class="content--wide reveal">
+<div class="content--wide">
   <div class="filter-bar">
     <div class="filter-select">
       <select id="filterLocation" aria-label="Filter op locatie">
@@ -1214,6 +1214,24 @@ footer a { color: var(--gold-dim); text-underline-offset: 2px; }
   } else {
     map.fitBounds(bounds, { padding: [80,80], maxZoom: 10 });
   }
+
+  // Bij een klik op een marker die (op het huidige zoomniveau) tegen
+  // andere markers aan zit, zoomt de kaart lichtjes in zodat ze uit
+  // elkaar getrokken worden. Staat de marker al vrij op zichzelf,
+  // dan blijft de kaart gewoon staan - alleen de popup opent.
+  var CLUSTER_PX = 26;
+  markers.forEach(function(marker){
+    marker.on('click', function(){
+      var point = map.latLngToContainerPoint(marker.getLatLng());
+      var isClustered = markers.some(function(other){
+        if (other === marker || !map.hasLayer(other)) return false;
+        return point.distanceTo(map.latLngToContainerPoint(other.getLatLng())) < CLUSTER_PX;
+      });
+      if (isClustered) {
+        map.flyTo(marker.getLatLng(), Math.min(map.getZoom() + 2, 15), { duration: 0.5 });
+      }
+    });
+  });
 
   /* ═══════════ LEAD DOCK (algemene aanvraag, geen specifiek project) ═══════════ */
 
