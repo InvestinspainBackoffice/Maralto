@@ -1260,15 +1260,7 @@ footer a { color: var(--gold-dim); text-underline-offset: 2px; }
     }
 
     if (valid) {
-      var data = new FormData(dockForm);
-      var land = countryOf(dockForm);
-      var body = 'Algemene aanvraag via projectenoverzicht%0A%0A'
-        + 'Naam: ' + encodeURIComponent(data.get('fname') + ' ' + data.get('lname')) + '%0A'
-        + 'Email: ' + encodeURIComponent(data.get('email')) + '%0A'
-        + 'Land: ' + encodeURIComponent(land.name) + '%0A'
-        + 'Telefoon: ' + encodeURIComponent(land.code + ' ' + data.get('phone'));
       sendToZapier(dockForm, 'projectenoverzicht');
-      window.open('mailto:gunther@investinspain.be?subject=' + encodeURIComponent('Algemene aanvraag — ' + data.get('fname') + ' ' + data.get('lname')) + '&body=' + body, '_self');
       dockWrapper.classList.add('is-hidden');
       setTimeout(function(){ dockSuccess.classList.add('is-active'); }, 400);
     }

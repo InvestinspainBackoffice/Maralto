@@ -1638,15 +1638,7 @@ footer a {
     }
 
     if (valid) {
-      var data = new FormData(form);
-      var land = countryOf(form);
-      var body = 'Nieuwe aanvraag Ocean View Marbella%0A%0A'
-        + 'Naam: ' + encodeURIComponent(data.get('fname') + ' ' + data.get('lname')) + '%0A'
-        + 'Land: ' + encodeURIComponent(land.name) + '%0A'
-        + 'Telefoon: ' + encodeURIComponent(land.code + ' ' + data.get('phone')) + '%0A'
-        + 'Email: ' + encodeURIComponent(data.get('email'));
       sendToZapier(form, 'hoofdformulier');
-      window.open('mailto:gunther@investinspain.be?subject=' + encodeURIComponent('Aanvraag Ocean View Marbella — ' + data.get('fname') + ' ' + data.get('lname')) + '&body=' + body, '_self');
       wrapper.classList.add('is-hidden');
       setTimeout(function() { success.classList.add('is-active'); }, 400);
     }
@@ -1812,15 +1804,7 @@ footer a {
     }
 
     if (valid) {
-      var data = new FormData(modalForm);
-      var land = countryOf(modalForm);
-      var body = 'Nieuwe aanvraag Ocean View Marbella (pop-up)%0A%0A'
-        + 'Naam: ' + encodeURIComponent(data.get('fname') + ' ' + data.get('lname')) + '%0A'
-        + 'Email: ' + encodeURIComponent(data.get('email')) + '%0A'
-        + 'Land: ' + encodeURIComponent(land.name) + '%0A'
-        + 'Telefoon: ' + encodeURIComponent(land.code + ' ' + data.get('phone'));
       sendToZapier(modalForm, 'pop-up');
-      window.open('mailto:gunther@investinspain.be?subject=' + encodeURIComponent('Aanvraag Ocean View Marbella — ' + data.get('fname') + ' ' + data.get('lname')) + '&body=' + body, '_self');
       closeModal();
     }
   });
@@ -1918,15 +1902,7 @@ footer a {
     }
 
     if (valid) {
-      var data = new FormData(dockForm);
-      var land = countryOf(dockForm);
-      var body = 'Nieuwe aanvraag Ocean View Marbella (zijpaneel)%0A%0A'
-        + 'Naam: ' + encodeURIComponent(data.get('fname') + ' ' + data.get('lname')) + '%0A'
-        + 'Email: ' + encodeURIComponent(data.get('email')) + '%0A'
-        + 'Land: ' + encodeURIComponent(land.name) + '%0A'
-        + 'Telefoon: ' + encodeURIComponent(land.code + ' ' + data.get('phone'));
       sendToZapier(dockForm, 'zijpaneel');
-      window.open('mailto:gunther@investinspain.be?subject=' + encodeURIComponent('Aanvraag Ocean View Marbella — ' + data.get('fname') + ' ' + data.get('lname')) + '&body=' + body, '_self');
       dockWrapper.classList.add('is-hidden');
       setTimeout(function() { dockSuccess.classList.add('is-active'); }, 400);
     }
