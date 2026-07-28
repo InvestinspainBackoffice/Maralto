@@ -140,6 +140,15 @@
   <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.625.846 5.059 2.284 7.034L.789 23.492a.5.5 0 00.612.638l4.67-1.404A11.945 11.945 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-2.24 0-4.31-.726-5.993-1.955l-.348-.262-3.278.986.93-3.156-.28-.373A9.935 9.935 0 012 12C2 6.486 6.486 2 12 2s10 4.486 10 10-4.486 10-10 10z"/></svg>
 </a>
 
+<!-- ═══════════ COOKIEBALK ═══════════ -->
+<div class="cookie-bar" id="cookieBar" role="dialog" aria-label="Cookievoorkeuren">
+  <p>We gebruiken cookies om het bezoek van deze website te analyseren via Google Analytics. Meer info in ons <a href="https://investinspain.be/privacy-policy/" target="_blank" rel="noopener">privacybeleid</a>.</p>
+  <div class="cookie-bar__actions">
+    <button type="button" class="btn btn--outline" id="cookieDecline">Weigeren</button>
+    <button type="button" class="btn" id="cookieAccept">Accepteren</button>
+  </div>
+</div>
+
 <!-- ═══════════ LEAD DOCK (meescrollend zijpaneel) ═══════════ -->
 <div class="lead-dock" id="leadDock">
   <button class="lead-dock__trigger" id="dockTrigger" aria-expanded="false" aria-controls="dockCard">
@@ -726,6 +735,30 @@
       dockWrapper.classList.add('is-hidden');
       setTimeout(function() { dockSuccess.classList.add('is-active'); }, 400);
     }
+  });
+
+  /* ═══════════ COOKIEBALK ═══════════ */
+  var cookieBar = document.getElementById('cookieBar');
+  var COOKIE_KEY = 'cookie_consent';
+  function storedConsent() { try { return localStorage.getItem(COOKIE_KEY); } catch (e) { return null; } }
+  if (!storedConsent()) {
+    setTimeout(function() { cookieBar.classList.add('is-visible'); }, 1000);
+  }
+  document.getElementById('cookieAccept').addEventListener('click', function() {
+    try { localStorage.setItem(COOKIE_KEY, 'granted'); } catch (e) {}
+    if (typeof gtag === 'function') {
+      gtag('consent', 'update', {
+        'ad_storage': 'granted',
+        'ad_user_data': 'granted',
+        'ad_personalization': 'granted',
+        'analytics_storage': 'granted'
+      });
+    }
+    cookieBar.classList.remove('is-visible');
+  });
+  document.getElementById('cookieDecline').addEventListener('click', function() {
+    try { localStorage.setItem(COOKIE_KEY, 'denied'); } catch (e) {}
+    cookieBar.classList.remove('is-visible');
   });
 })();
 </script>

@@ -10,6 +10,27 @@
 <meta property="og:image" content="__OG_IMAGE__">
 <meta property="og:type" content="website">
 <meta name="robots" content="noindex, follow">
+<!-- Google tag (gtag.js) - analytics_storage staat pas op 'granted' na akkoord via de cookiebalk -->
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('consent', 'default', {
+    'ad_storage': 'denied',
+    'ad_user_data': 'denied',
+    'ad_personalization': 'denied',
+    'analytics_storage': 'denied'
+  });
+  try {
+    if (localStorage.getItem('cookie_consent') === 'granted') {
+      gtag('consent', 'update', { 'analytics_storage': 'granted' });
+    }
+  } catch (e) {}
+</script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-ZQJ99DP4N5"></script>
+<script>
+  gtag('js', new Date());
+  gtag('config', 'G-ZQJ99DP4N5');
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -985,6 +1006,31 @@ footer a {
 @media (max-width: 600px) {
   .lead-dock__trigger { font-size: 0.58rem; padding: 0.6rem 0.9rem; }
   .lead-dock__card { padding: 1.3rem 1.15rem 1.2rem; }
+}
+
+/* ── Cookiebalk ── */
+.cookie-bar {
+  position: fixed;
+  left: 1.5rem;
+  bottom: 1.5rem;
+  z-index: 300;
+  max-width: 400px;
+  background: var(--bg-el);
+  border: 1px solid var(--line);
+  padding: 1.5rem;
+  box-shadow: 0 8px 40px rgba(0,0,0,0.55);
+  opacity: 0;
+  transform: translateY(12px);
+  pointer-events: none;
+  transition: opacity 0.4s var(--ease), transform 0.4s var(--ease);
+}
+.cookie-bar.is-visible { opacity: 1; transform: translateY(0); pointer-events: auto; }
+.cookie-bar p { font-size: 0.75rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 1.1rem; }
+.cookie-bar p a { color: var(--gold-dim); text-decoration: underline; text-underline-offset: 2px; }
+.cookie-bar__actions { display: flex; gap: 0.75rem; }
+.cookie-bar__actions .btn { padding: 0.6rem 1.1rem; font-size: 0.62rem; flex: 1; justify-content: center; }
+@media (max-width: 600px) {
+  .cookie-bar { left: 1rem; right: 1rem; bottom: 1rem; max-width: none; padding: 1.25rem; }
 }
 </style>
 </head>

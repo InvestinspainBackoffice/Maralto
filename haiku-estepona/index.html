@@ -10,6 +10,27 @@
 <meta property="og:image" content="https://investinspain.be/wp-content/uploads/2025/04/Haiku-Estepona-Image-2025-08-11-at-16.24.34-1.jpeg">
 <meta property="og:type" content="website">
 <meta name="robots" content="noindex, follow">
+<!-- Google tag (gtag.js) - analytics_storage staat pas op 'granted' na akkoord via de cookiebalk -->
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('consent', 'default', {
+    'ad_storage': 'denied',
+    'ad_user_data': 'denied',
+    'ad_personalization': 'denied',
+    'analytics_storage': 'denied'
+  });
+  try {
+    if (localStorage.getItem('cookie_consent') === 'granted') {
+      gtag('consent', 'update', { 'analytics_storage': 'granted' });
+    }
+  } catch (e) {}
+</script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-ZQJ99DP4N5"></script>
+<script>
+  gtag('js', new Date());
+  gtag('config', 'G-ZQJ99DP4N5');
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -986,6 +1007,31 @@ footer a {
   .lead-dock__trigger { font-size: 0.58rem; padding: 0.6rem 0.9rem; }
   .lead-dock__card { padding: 1.3rem 1.15rem 1.2rem; }
 }
+
+/* ── Cookiebalk ── */
+.cookie-bar {
+  position: fixed;
+  left: 1.5rem;
+  bottom: 1.5rem;
+  z-index: 300;
+  max-width: 400px;
+  background: var(--bg-el);
+  border: 1px solid var(--line);
+  padding: 1.5rem;
+  box-shadow: 0 8px 40px rgba(0,0,0,0.55);
+  opacity: 0;
+  transform: translateY(12px);
+  pointer-events: none;
+  transition: opacity 0.4s var(--ease), transform 0.4s var(--ease);
+}
+.cookie-bar.is-visible { opacity: 1; transform: translateY(0); pointer-events: auto; }
+.cookie-bar p { font-size: 0.75rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 1.1rem; }
+.cookie-bar p a { color: var(--gold-dim); text-decoration: underline; text-underline-offset: 2px; }
+.cookie-bar__actions { display: flex; gap: 0.75rem; }
+.cookie-bar__actions .btn { padding: 0.6rem 1.1rem; font-size: 0.62rem; flex: 1; justify-content: center; }
+@media (max-width: 600px) {
+  .cookie-bar { left: 1rem; right: 1rem; bottom: 1rem; max-width: none; padding: 1.25rem; }
+}
 </style>
 </head>
 <body>
@@ -1291,6 +1337,15 @@ footer a {
    target="_blank" rel="noopener" class="wa-fab" aria-label="Contact via WhatsApp">
   <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.625.846 5.059 2.284 7.034L.789 23.492a.5.5 0 00.612.638l4.67-1.404A11.945 11.945 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-2.24 0-4.31-.726-5.993-1.955l-.348-.262-3.278.986.93-3.156-.28-.373A9.935 9.935 0 012 12C2 6.486 6.486 2 12 2s10 4.486 10 10-4.486 10-10 10z"/></svg>
 </a>
+
+<!-- ═══════════ COOKIEBALK ═══════════ -->
+<div class="cookie-bar" id="cookieBar" role="dialog" aria-label="Cookievoorkeuren">
+  <p>We gebruiken cookies om het bezoek van deze website te analyseren via Google Analytics. Meer info in ons <a href="https://investinspain.be/privacy-policy/" target="_blank" rel="noopener">privacybeleid</a>.</p>
+  <div class="cookie-bar__actions">
+    <button type="button" class="btn btn--outline" id="cookieDecline">Weigeren</button>
+    <button type="button" class="btn" id="cookieAccept">Accepteren</button>
+  </div>
+</div>
 
 <!-- ═══════════ LEAD DOCK (meescrollend zijpaneel) ═══════════ -->
 <div class="lead-dock" id="leadDock">
@@ -1878,6 +1933,30 @@ footer a {
       dockWrapper.classList.add('is-hidden');
       setTimeout(function() { dockSuccess.classList.add('is-active'); }, 400);
     }
+  });
+
+  /* ═══════════ COOKIEBALK ═══════════ */
+  var cookieBar = document.getElementById('cookieBar');
+  var COOKIE_KEY = 'cookie_consent';
+  function storedConsent() { try { return localStorage.getItem(COOKIE_KEY); } catch (e) { return null; } }
+  if (!storedConsent()) {
+    setTimeout(function() { cookieBar.classList.add('is-visible'); }, 1000);
+  }
+  document.getElementById('cookieAccept').addEventListener('click', function() {
+    try { localStorage.setItem(COOKIE_KEY, 'granted'); } catch (e) {}
+    if (typeof gtag === 'function') {
+      gtag('consent', 'update', {
+        'ad_storage': 'granted',
+        'ad_user_data': 'granted',
+        'ad_personalization': 'granted',
+        'analytics_storage': 'granted'
+      });
+    }
+    cookieBar.classList.remove('is-visible');
+  });
+  document.getElementById('cookieDecline').addEventListener('click', function() {
+    try { localStorage.setItem(COOKIE_KEY, 'denied'); } catch (e) {}
+    cookieBar.classList.remove('is-visible');
   });
 })();
 </script>
