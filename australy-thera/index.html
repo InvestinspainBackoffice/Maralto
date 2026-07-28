@@ -707,33 +707,6 @@ footer a {
   filter: blur(0);
 }
 
-/* ── Form success ── */
-.form-success {
-  display: none;
-  text-align: center;
-  padding: 3rem 1rem;
-}
-.form-success.is-active { display: block; }
-.form-success svg {
-  width: 48px;
-  height: 48px;
-  stroke: var(--gold);
-  stroke-width: 1;
-  fill: none;
-  margin: 0 auto 1.5rem;
-}
-.form-success h3 {
-  font-size: 1.2rem;
-  font-weight: 400;
-  margin-bottom: 0.75rem;
-}
-.form-success p {
-  font-size: 0.85rem;
-  color: var(--text-muted);
-  max-width: 40ch;
-  margin: 0 auto;
-}
-
 .form-error {
   font-size: 0.65rem;
   color: #c0392b;
@@ -877,9 +850,6 @@ footer a {
 .modal .form-group { margin-bottom: 1.25rem; }
 .modal .consent { margin: 1rem 0; }
 
-.form-wrapper { transition: opacity 0.4s; }
-.form-wrapper.is-hidden { opacity: 0; pointer-events: none; position: absolute; }
-
 /* ── WhatsApp FAB ── */
 .wa-fab {
   position: fixed;
@@ -999,9 +969,6 @@ footer a {
 .lead-dock__card .consent { margin: 0.75rem 0; }
 .lead-dock__card .consent label { font-size: 0.62rem; line-height: 1.5; }
 .lead-dock__card .btn { width: 100%; justify-content: center; }
-.lead-dock__card .form-success { padding: 1.25rem 0.5rem 0.75rem; }
-.lead-dock__card .form-success svg { width: 34px; height: 34px; margin-bottom: 0.9rem; }
-.lead-dock__card .form-success p { font-size: 0.75rem; }
 
 @media (max-width: 600px) {
   .lead-dock__trigger { font-size: 0.58rem; padding: 0.6rem 0.9rem; }
@@ -1200,8 +1167,7 @@ footer a {
       <h2 class="heading" style="margin-bottom:0.75rem">Ontvang prijzen &<br><em>beschikbaarheid</em></h2>
       <p class="body-text" style="margin-bottom:2.5rem">Vul uw gegevens in en ontvang alle projectinformatie rechtstreeks in uw inbox.</p>
 
-      <div class="form-wrapper" id="formWrapper">
-        <form id="contactForm" novalidate>
+      <form id="contactForm" novalidate>
           <div class="form-group">
             <input type="text" id="fname" name="fname" placeholder=" " required autocomplete="given-name">
             <label for="fname">Voornaam</label>
@@ -1279,13 +1245,6 @@ footer a {
           </div>
           <button type="submit" class="btn">Verzenden</button>
         </form>
-      </div>
-
-      <div class="form-success" id="formSuccess">
-        <svg viewBox="0 0 48 48"><circle cx="24" cy="24" r="20"/><polyline points="15 25 21 31 33 19"/></svg>
-        <h3>Bedankt voor uw interesse</h3>
-        <p>U ontvangt binnenkort alle informatie over Australy Thera in uw inbox.</p>
-      </div>
     </div>
 
     <div class="agent">
@@ -1354,7 +1313,6 @@ footer a {
     <button class="lead-dock__close" id="dockClose" aria-label="Sluiten">&times;</button>
     <h4>Prijzen &amp; <em>beschikbaarheid</em></h4>
 
-    <div class="form-wrapper" id="dockWrapper">
       <form id="dockForm" novalidate>
         <div class="form-group">
           <input type="text" id="d-fname" name="fname" placeholder=" " required autocomplete="given-name">
@@ -1433,12 +1391,6 @@ footer a {
         </div>
         <button type="submit" class="btn">Verzenden</button>
       </form>
-    </div>
-
-    <div class="form-success" id="dockSuccess">
-      <svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
-      <p>Bedankt! We nemen snel contact met u op.</p>
-    </div>
   </div>
 </div>
 
@@ -1549,8 +1501,6 @@ footer a {
   document.querySelectorAll('.reveal, .reveal-image').forEach(el => observer.observe(el));
 
   const form = document.getElementById('contactForm');
-  const wrapper = document.getElementById('formWrapper');
-  const success = document.getElementById('formSuccess');
 
   // Landkeuze uit een formulier lezen (code + naam, voor Pardot-herkomst)
   function countryOf(form) {
@@ -1560,9 +1510,8 @@ footer a {
     return { code: sel.value, name: opt ? opt.getAttribute('data-country') : '' };
   }
 
-  // Stuurt elke lead ook naar de Zap (-> Google Sheet), naast de mailto-
-  // fallback: die blijft ongewijzigd werken, dit is puur een extra,
-  // betrouwbaarder kanaal dat niet van de mailclient van de bezoeker afhangt.
+  // Stuurt elke lead naar de Zap (-> Google Sheet / CRM). keepalive zorgt
+  // dat het verzoek de navigatie naar /bedankt/ overleeft.
   var ZAPIER_WEBHOOK_URL = 'https://hooks.zapier.com/hooks/catch/8344712/44ei8hj/';
   function sendToZapier(form, formBron) {
     var data = new FormData(form);
@@ -1585,6 +1534,7 @@ footer a {
       fetch(ZAPIER_WEBHOOK_URL, {
         method: 'POST',
         mode: 'no-cors',
+        keepalive: true,
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)
       });
@@ -1662,8 +1612,7 @@ footer a {
 
     if (valid) {
       sendToZapier(form, 'hoofdformulier');
-      wrapper.classList.add('is-hidden');
-      setTimeout(function() { success.classList.add('is-active'); }, 400);
+      window.location.href = '/bedankt/';
     }
   });
 
@@ -1828,7 +1777,7 @@ footer a {
 
     if (valid) {
       sendToZapier(modalForm, 'pop-up');
-      closeModal();
+      window.location.href = '/bedankt/';
     }
   });
 
@@ -1839,8 +1788,6 @@ footer a {
   var dockClose = document.getElementById('dockClose');
   var dockCard = document.getElementById('dockCard');
   var dockForm = document.getElementById('dockForm');
-  var dockWrapper = document.getElementById('dockWrapper');
-  var dockSuccess = document.getElementById('dockSuccess');
   var dockConsent = document.getElementById('d-consent');
 
   // Breed scherm: meteen open naast de hero. Smal scherm: eerst de pil,
@@ -1926,8 +1873,7 @@ footer a {
 
     if (valid) {
       sendToZapier(dockForm, 'zijpaneel');
-      dockWrapper.classList.add('is-hidden');
-      setTimeout(function() { dockSuccess.classList.add('is-active'); }, 400);
+      window.location.href = '/bedankt/';
     }
   });
 

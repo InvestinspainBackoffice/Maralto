@@ -448,13 +448,6 @@ footer a { color: var(--gold-dim); text-underline-offset: 2px; }
 .btn:hover { background: var(--cta-hover); }
 .btn:active { transform: scale(0.98); }
 
-.form-wrapper { transition: opacity 0.4s; }
-.form-wrapper.is-hidden { opacity: 0; pointer-events: none; position: absolute; }
-.form-success { display: none; text-align: center; padding: 3rem 1rem; }
-.form-success.is-active { display: block; }
-.form-success svg { width: 48px; height: 48px; stroke: var(--gold); stroke-width: 1; fill: none; margin: 0 auto 1.5rem; }
-.form-success h3 { font-size: 1.2rem; font-weight: 400; margin-bottom: 0.75rem; }
-.form-success p { font-size: 0.85rem; color: var(--text-muted); max-width: 40ch; margin: 0 auto; }
 .form-error { font-size: 0.65rem; color: #c0392b; margin-top: 0.4rem; letter-spacing: 0.05em; display: none; }
 .form-error.is-active { display: block; }
 
@@ -530,9 +523,6 @@ footer a { color: var(--gold-dim); text-underline-offset: 2px; }
 .lead-dock__card .consent { margin: 0.75rem 0; }
 .lead-dock__card .consent label { font-size: 0.62rem; line-height: 1.5; }
 .lead-dock__card .btn { width: 100%; justify-content: center; }
-.lead-dock__card .form-success { padding: 1.25rem 0.5rem 0.75rem; }
-.lead-dock__card .form-success svg { width: 34px; height: 34px; margin-bottom: 0.9rem; }
-.lead-dock__card .form-success p { font-size: 0.75rem; }
 @media (max-width: 600px) {
   .lead-dock__trigger { font-size: 0.58rem; padding: 0.6rem 0.9rem; }
   .lead-dock__card { padding: 1.3rem 1.15rem 1.2rem; }
@@ -634,7 +624,6 @@ __PROJECT_CARDS__
     <button class="lead-dock__close" id="dockClose" aria-label="Sluiten">&times;</button>
     <h4>Interesse in <em>een van onze projecten</em>?</h4>
 
-    <div class="form-wrapper" id="dockWrapper">
       <form id="dockForm" novalidate>
         <div class="form-group">
           <input type="text" id="d-fname" name="fname" placeholder=" " required autocomplete="given-name">
@@ -713,12 +702,6 @@ __PROJECT_CARDS__
         </div>
         <button type="submit" class="btn">Verzenden</button>
       </form>
-    </div>
-
-    <div class="form-success" id="dockSuccess">
-      <svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
-      <p>Bedankt! We nemen snel contact met u op.</p>
-    </div>
   </div>
 </div>
 
@@ -846,6 +829,7 @@ __PROJECT_CARDS__
       fetch(ZAPIER_WEBHOOK_URL, {
         method: 'POST',
         mode: 'no-cors',
+        keepalive: true,
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)
       });
@@ -881,8 +865,6 @@ __PROJECT_CARDS__
   var dockTrigger = document.getElementById('dockTrigger');
   var dockClose = document.getElementById('dockClose');
   var dockForm = document.getElementById('dockForm');
-  var dockWrapper = document.getElementById('dockWrapper');
-  var dockSuccess = document.getElementById('dockSuccess');
   var dockConsent = document.getElementById('d-consent');
 
   // Breed scherm: meteen open. Smal scherm: eerst de pil, geen hero om te bedekken hier.
@@ -945,8 +927,7 @@ __PROJECT_CARDS__
 
     if (valid) {
       sendToZapier(dockForm, 'projectenoverzicht');
-      dockWrapper.classList.add('is-hidden');
-      setTimeout(function(){ dockSuccess.classList.add('is-active'); }, 400);
+      window.location.href = '/bedankt/';
     }
   });
 

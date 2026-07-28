@@ -6,8 +6,7 @@
       <h2 class="heading" style="margin-bottom:0.75rem">Ontvang prijzen &<br><em>beschikbaarheid</em></h2>
       <p class="body-text" style="margin-bottom:2.5rem">Vul uw gegevens in en ontvang alle projectinformatie rechtstreeks in uw inbox.</p>
 
-      <div class="form-wrapper" id="formWrapper">
-        <form id="contactForm" novalidate>
+      <form id="contactForm" novalidate>
           <div class="form-group">
             <input type="text" id="fname" name="fname" placeholder=" " required autocomplete="given-name">
             <label for="fname">Voornaam</label>
@@ -85,13 +84,6 @@
           </div>
           <button type="submit" class="btn">Verzenden</button>
         </form>
-      </div>
-
-      <div class="form-success" id="formSuccess">
-        <svg viewBox="0 0 48 48"><circle cx="24" cy="24" r="20"/><polyline points="15 25 21 31 33 19"/></svg>
-        <h3>Bedankt voor uw interesse</h3>
-        <p>U ontvangt binnenkort alle informatie over __PROJECT_NAME__ in uw inbox.</p>
-      </div>
     </div>
 
     <div class="agent">
@@ -160,7 +152,6 @@
     <button class="lead-dock__close" id="dockClose" aria-label="Sluiten">&times;</button>
     <h4>Prijzen &amp; <em>beschikbaarheid</em></h4>
 
-    <div class="form-wrapper" id="dockWrapper">
       <form id="dockForm" novalidate>
         <div class="form-group">
           <input type="text" id="d-fname" name="fname" placeholder=" " required autocomplete="given-name">
@@ -239,12 +230,6 @@
         </div>
         <button type="submit" class="btn">Verzenden</button>
       </form>
-    </div>
-
-    <div class="form-success" id="dockSuccess">
-      <svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
-      <p>Bedankt! We nemen snel contact met u op.</p>
-    </div>
   </div>
 </div>
 
@@ -355,8 +340,6 @@
   document.querySelectorAll('.reveal, .reveal-image').forEach(el => observer.observe(el));
 
   const form = document.getElementById('contactForm');
-  const wrapper = document.getElementById('formWrapper');
-  const success = document.getElementById('formSuccess');
 
   // Landkeuze uit een formulier lezen (code + naam, voor Pardot-herkomst)
   function countryOf(form) {
@@ -366,9 +349,8 @@
     return { code: sel.value, name: opt ? opt.getAttribute('data-country') : '' };
   }
 
-  // Stuurt elke lead ook naar de Zap (-> Google Sheet), naast de mailto-
-  // fallback: die blijft ongewijzigd werken, dit is puur een extra,
-  // betrouwbaarder kanaal dat niet van de mailclient van de bezoeker afhangt.
+  // Stuurt elke lead naar de Zap (-> Google Sheet / CRM). keepalive zorgt
+  // dat het verzoek de navigatie naar /bedankt/ overleeft.
   var ZAPIER_WEBHOOK_URL = 'https://hooks.zapier.com/hooks/catch/8344712/44ei8hj/';
   function sendToZapier(form, formBron) {
     var data = new FormData(form);
@@ -391,6 +373,7 @@
       fetch(ZAPIER_WEBHOOK_URL, {
         method: 'POST',
         mode: 'no-cors',
+        keepalive: true,
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)
       });
@@ -468,8 +451,7 @@
 
     if (valid) {
       sendToZapier(form, 'hoofdformulier');
-      wrapper.classList.add('is-hidden');
-      setTimeout(function() { success.classList.add('is-active'); }, 400);
+      window.location.href = '/bedankt/';
     }
   });
 
@@ -634,7 +616,7 @@
 
     if (valid) {
       sendToZapier(modalForm, 'pop-up');
-      closeModal();
+      window.location.href = '/bedankt/';
     }
   });
 
@@ -645,8 +627,6 @@
   var dockClose = document.getElementById('dockClose');
   var dockCard = document.getElementById('dockCard');
   var dockForm = document.getElementById('dockForm');
-  var dockWrapper = document.getElementById('dockWrapper');
-  var dockSuccess = document.getElementById('dockSuccess');
   var dockConsent = document.getElementById('d-consent');
 
   // Breed scherm: meteen open naast de hero. Smal scherm: eerst de pil,
@@ -732,8 +712,7 @@
 
     if (valid) {
       sendToZapier(dockForm, 'zijpaneel');
-      dockWrapper.classList.add('is-hidden');
-      setTimeout(function() { dockSuccess.classList.add('is-active'); }, 400);
+      window.location.href = '/bedankt/';
     }
   });
 

@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bedankt voor uw aanvraag — INVESTINSPAIN.BE</title>
+<meta name="description" content="Bedankt voor uw aanvraag bij INVESTINSPAIN.BE. Download alvast één van onze gratis gidsen over investeren in nieuwbouw aan de Costa del Sol.">
+<meta property="og:title" content="Bedankt voor uw aanvraag — INVESTINSPAIN.BE">
+<meta property="og:description" content="We nemen snel contact met u op. Download alvast één van onze gratis gidsen.">
+<meta property="og:image" content="https://investinspain.be/wp-content/uploads/2026/05/Logo-investinspain.png">
+<meta property="og:type" content="website">
+<meta name="robots" content="noindex, follow">
+<!-- Google tag (gtag.js) - analytics_storage staat pas op 'granted' na akkoord via de cookiebalk -->
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('consent', 'default', {
+    'ad_storage': 'denied',
+    'ad_user_data': 'denied',
+    'ad_personalization': 'denied',
+    'analytics_storage': 'denied'
+  });
+  try {
+    if (localStorage.getItem('cookie_consent') === 'granted') {
+      gtag('consent', 'update', { 'analytics_storage': 'granted' });
+    }
+  } catch (e) {}
+</script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-ZQJ99DP4N5"></script>
+<script>
+  gtag('js', new Date());
+  gtag('config', 'G-ZQJ99DP4N5');
+  // Conversiepunt: elke bezoeker die hier landt, kwam net via een lead-formulier.
+  gtag('event', 'generate_lead');
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root {
+  --bg: #0E1318;
+  --bg-el: #131920;
+  --text: #EDE8E0;
+  --text-muted: #8A96A3;
+  --gold: #C4A97D;
+  --gold-dim: #9E8968;
+  --line: #1F2830;
+  --line-light: #2A3644;
+  --cta: #2D6A7A;
+  --cta-hover: #387F91;
+  --white: #FEFCF9;
+  --font: 'Sora', system-ui, -apple-system, sans-serif;
+  --ease: cubic-bezier(0.16, 1, 0.3, 1);
+}
+html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+body {
+  font-family: var(--font);
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.65;
+  font-weight: 300;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+img { display: block; max-width: 100%; height: auto; }
+a { color: inherit; text-decoration: none; }
+button { font-family: inherit; cursor: pointer; border: none; background: none; }
+
+.frame {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 100;
+  border: 1px solid var(--line);
+  opacity: 0;
+  animation: frame-in 1.5s var(--ease) 0.8s forwards;
+}
+@keyframes frame-in { to { opacity: 1; } }
+
+section { position: relative; }
+.spacer { height: clamp(4rem, 10vw, 8rem); }
+.spacer--sm { height: clamp(2rem, 5vw, 4rem); }
+
+.content { max-width: 720px; margin: 0 auto; padding: 0 clamp(1.5rem, 5vw, 3rem); }
+.content--wide { max-width: 1100px; }
+
+.label {
+  font-size: 0.6rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--gold-dim);
+  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+.label::before, .label::after {
+  content: '';
+  width: 1.2rem;
+  height: 1px;
+  background: var(--gold-dim);
+}
+
+.heading {
+  font-size: clamp(1.8rem, 4.5vw, 3rem);
+  font-weight: 300;
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+  margin-bottom: 1.5rem;
+}
+.heading em { font-style: normal; color: var(--gold); }
+
+.body-text {
+  font-size: clamp(0.9rem, 1.8vw, 1.05rem);
+  color: var(--text-muted);
+  line-height: 1.75;
+  max-width: 52ch;
+}
+
+.rule--gold {
+  height: 1px;
+  background: var(--gold-dim);
+  max-width: 60px;
+  margin: 0 auto;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 1rem 2.5rem;
+  background: var(--cta);
+  color: var(--white);
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  border: none;
+  cursor: pointer;
+  transition: background 0.3s, transform 0.2s;
+}
+.btn:hover { background: var(--cta-hover); }
+.btn:active { transform: scale(0.98); }
+.btn--outline {
+  background: transparent;
+  border: 1px solid var(--line-light);
+  color: var(--text);
+}
+.btn--outline:hover { border-color: var(--gold-dim); background: transparent; }
+
+/* ── Gidsen ── */
+.guide-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+}
+@media (min-width: 860px) {
+  .guide-grid { grid-template-columns: repeat(3, 1fr); }
+}
+.guide-card {
+  display: flex;
+  flex-direction: column;
+  background: var(--bg-el);
+  border: 1px solid var(--line);
+  overflow: hidden;
+  transition: border-color 0.3s, transform 0.3s;
+}
+.guide-card:hover { border-color: var(--gold-dim); transform: translateY(-4px); }
+.guide-card__img-wrap { aspect-ratio: 4 / 3; overflow: hidden; background: var(--bg); }
+.guide-card__img-wrap img { width: 100%; height: 100%; object-fit: cover; object-position: top; }
+.guide-card__body { padding: 1.5rem; display: flex; flex-direction: column; flex: 1; }
+.guide-card__title { font-size: 1rem; font-weight: 400; color: var(--text); margin-bottom: 0.6rem; }
+.guide-card__desc { font-size: 0.8rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 1.5rem; flex: 1; }
+.guide-card__cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.65rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+.guide-card__cta svg { width: 14px; height: 14px; stroke: var(--gold); stroke-width: 1.5; fill: none; }
+
+/* ── IIS badge ── */
+.iis-bar { display: flex; align-items: center; justify-content: center; padding: 2rem 1rem; }
+.iis-logo { height: clamp(120px, 20vw, 160px); width: auto; opacity: 0.7; transition: opacity 0.3s; }
+.iis-logo:hover { opacity: 1; }
+
+/* ── Footer ── */
+footer {
+  padding: clamp(2rem, 4vw, 3rem) clamp(1.5rem, 5vw, 3rem);
+  text-align: center;
+  font-size: 0.6rem;
+  color: var(--text-muted);
+  letter-spacing: 0.05em;
+  line-height: 2;
+}
+footer a { color: var(--gold-dim); text-underline-offset: 2px; }
+.biv-logo { display: block; height: 40px; margin: 1.5rem auto 0; opacity: 0.7; transition: opacity 0.3s; }
+.biv-logo:hover { opacity: 1; }
+
+/* ── Reveal animation ── */
+.reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.9s var(--ease), transform 0.9s var(--ease); }
+.reveal.is-visible { opacity: 1; transform: translateY(0); }
+
+/* ── WhatsApp FAB ── */
+.wa-fab {
+  position: fixed;
+  bottom: 1.5rem;
+  right: 1.5rem;
+  z-index: 90;
+  width: 52px;
+  height: 52px;
+  background: #25D366;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+  opacity: 0;
+  animation: fade-up 0.6s var(--ease) 1s forwards;
+  transition: transform 0.2s;
+}
+.wa-fab:hover { transform: scale(1.08); }
+.wa-fab svg { width: 26px; height: 26px; fill: white; }
+@keyframes fade-up { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+/* ── Cookiebalk ── */
+.cookie-bar {
+  position: fixed;
+  left: 1.5rem;
+  bottom: 1.5rem;
+  z-index: 300;
+  max-width: 400px;
+  background: var(--bg-el);
+  border: 1px solid var(--line);
+  padding: 1.5rem;
+  box-shadow: 0 8px 40px rgba(0,0,0,0.55);
+  opacity: 0;
+  transform: translateY(12px);
+  pointer-events: none;
+  transition: opacity 0.4s var(--ease), transform 0.4s var(--ease);
+}
+.cookie-bar.is-visible { opacity: 1; transform: translateY(0); pointer-events: auto; }
+.cookie-bar p { font-size: 0.75rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 1.1rem; }
+.cookie-bar p a { color: var(--gold-dim); text-decoration: underline; text-underline-offset: 2px; }
+.cookie-bar__actions { display: flex; gap: 0.75rem; }
+.cookie-bar__actions .btn { padding: 0.6rem 1.1rem; font-size: 0.62rem; flex: 1; justify-content: center; }
+@media (max-width: 600px) {
+  .cookie-bar { left: 1rem; right: 1rem; bottom: 1rem; max-width: none; padding: 1.25rem; }
+}
+</style>
+</head>
+<body>
+
+<div class="frame" aria-hidden="true"></div>
+
+<section style="padding-top:clamp(6rem,14vw,9rem)">
+  <div class="content reveal" style="text-align:center">
+    <svg viewBox="0 0 48 48" style="width:56px;height:56px;stroke:var(--gold);stroke-width:1;fill:none;margin:0 auto 2rem" aria-hidden="true"><circle cx="24" cy="24" r="20"/><polyline points="15 25 21 31 33 19"/></svg>
+    <p class="label" style="justify-content:center">Bedankt</p>
+    <h1 class="heading">Uw aanvraag is <em>verzonden</em></h1>
+    <p class="body-text" style="margin:0 auto">We nemen zo snel mogelijk persoonlijk contact met u op. Terwijl u wacht: download gerust één van onze gratis gidsen hieronder.</p>
+  </div>
+</section>
+
+<div class="spacer--sm"></div>
+<div class="rule--gold" aria-hidden="true"></div>
+<div class="spacer"></div>
+
+<section class="content content--wide reveal">
+  <div class="guide-grid">
+    <a class="guide-card" href="/downloads/investeringschecklist-nl.pdf" download target="_blank" rel="noopener">
+      <div class="guide-card__img-wrap">
+        <img src="/downloads/covers/investeringschecklist-nl.jpg" alt="Investeringschecklist NL" loading="lazy">
+      </div>
+      <div class="guide-card__body">
+        <div class="guide-card__title">Investeringschecklist</div>
+        <p class="guide-card__desc">De ideale nieuwbouwinvestering in Zuid-Spanje: waar u op moet letten voor een goed rendement.</p>
+        <span class="guide-card__cta">Download PDF <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12m0 0l-5-5m5 5l5-5M5 21h14"/></svg></span>
+      </div>
+    </a>
+    <a class="guide-card" href="/downloads/financiele-checklist-nl.pdf" download target="_blank" rel="noopener">
+      <div class="guide-card__img-wrap">
+        <img src="/downloads/covers/financiele-checklist-nl.jpg" alt="Financiële checklist NL" loading="lazy">
+      </div>
+      <div class="guide-card__body">
+        <div class="guide-card__title">Financiële checklist</div>
+        <p class="guide-card__desc">Nieuwbouw kopen in Spanje: alle financiële aspecten op een rij, van belastingen tot financiering.</p>
+        <span class="guide-card__cta">Download PDF <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12m0 0l-5-5m5 5l5-5M5 21h14"/></svg></span>
+      </div>
+    </a>
+    <a class="guide-card" href="/downloads/iis-showcase.pdf" download target="_blank" rel="noopener">
+      <div class="guide-card__img-wrap">
+        <img src="/downloads/covers/iis-showcase.jpg" alt="IIS Showcase" loading="lazy">
+      </div>
+      <div class="guide-card__body">
+        <div class="guide-card__title">IIS Showcase</div>
+        <p class="guide-card__desc">Kopen en inrichten aan de Costa del Sol: ontdek hoe IIS en HIS u van A tot Z begeleiden.</p>
+        <span class="guide-card__cta">Download PDF <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12m0 0l-5-5m5 5l5-5M5 21h14"/></svg></span>
+      </div>
+    </a>
+  </div>
+</section>
+
+<div class="spacer"></div>
+
+<section class="content reveal" style="text-align:center">
+  <a href="/" class="btn btn--outline">Bekijk al onze projecten</a>
+</section>
+
+<div class="spacer"></div>
+
+<div class="iis-bar">
+  <img src="https://investinspain.be/wp-content/uploads/2026/05/Logo-investinspain.png" alt="INVESTINSPAIN.BE logo" class="iis-logo">
+</div>
+
+<footer>
+  <p>&copy; INVESTINSPAIN.BE 2026 &mdash; Alle rechten voorbehouden</p>
+  <p>BA en borgstelling via NV AXA Belgium (polisnr. 730.390.160)</p>
+  <p><a href="https://investinspain.be/privacy-policy/" target="_blank" rel="noopener">Privacybeleid</a> &middot; <a href="https://investinspain.be/algemene-voorwaarden/" target="_blank" rel="noopener">Algemene voorwaarden</a></p>
+  <img src="https://investinspain.be/wp-content/uploads/2026/07/BIV2.0.png" alt="BIV erkend vastgoedmakelaar" class="biv-logo">
+</footer>
+
+<a href="https://wa.me/32496571397?text=Hallo%2C%20ik%20heb%20een%20vraag%20over%20jullie%20projecten."
+   target="_blank" rel="noopener" class="wa-fab" aria-label="Contact via WhatsApp">
+  <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.625.846 5.059 2.284 7.034L.789 23.492a.5.5 0 00.612.638l4.67-1.404A11.945 11.945 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-2.24 0-4.31-.726-5.993-1.955l-.348-.262-3.278.986.93-3.156-.28-.373A9.935 9.935 0 012 12C2 6.486 6.486 2 12 2s10 4.486 10 10-4.486 10-10 10z"/></svg>
+</a>
+
+<!-- ═══════════ COOKIEBALK ═══════════ -->
+<div class="cookie-bar" id="cookieBar" role="dialog" aria-label="Cookievoorkeuren">
+  <p>We gebruiken cookies om het bezoek van deze website te analyseren via Google Analytics. Meer info in ons <a href="https://investinspain.be/privacy-policy/" target="_blank" rel="noopener">privacybeleid</a>.</p>
+  <div class="cookie-bar__actions">
+    <button type="button" class="btn btn--outline" id="cookieDecline">Weigeren</button>
+    <button type="button" class="btn" id="cookieAccept">Accepteren</button>
+  </div>
+</div>
+
+<script>
+(function(){
+  var observer = new IntersectionObserver(function(entries){
+    entries.forEach(function(entry){
+      if (entry.isIntersecting) { entry.target.classList.add('is-visible'); observer.unobserve(entry.target); }
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+  document.querySelectorAll('.reveal').forEach(function(el){ observer.observe(el); });
+
+  /* ═══════════ COOKIEBALK ═══════════ */
+  var cookieBar = document.getElementById('cookieBar');
+  var COOKIE_KEY = 'cookie_consent';
+  function storedConsent() { try { return localStorage.getItem(COOKIE_KEY); } catch (e) { return null; } }
+  if (!storedConsent()) {
+    setTimeout(function() { cookieBar.classList.add('is-visible'); }, 1000);
+  }
+  document.getElementById('cookieAccept').addEventListener('click', function() {
+    try { localStorage.setItem(COOKIE_KEY, 'granted'); } catch (e) {}
+    if (typeof gtag === 'function') {
+      gtag('consent', 'update', {
+        'ad_storage': 'granted',
+        'ad_user_data': 'granted',
+        'ad_personalization': 'granted',
+        'analytics_storage': 'granted'
+      });
+    }
+    cookieBar.classList.remove('is-visible');
+  });
+  document.getElementById('cookieDecline').addEventListener('click', function() {
+    try { localStorage.setItem(COOKIE_KEY, 'denied'); } catch (e) {}
+    cookieBar.classList.remove('is-visible');
+  });
+})();
+</script>
+</body>
+</html>
