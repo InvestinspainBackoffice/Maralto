@@ -1305,6 +1305,9 @@ footer a { color: var(--gold-dim); text-underline-offset: 2px; }
   // Zelfde Zap-koppeling als op de projectpagina's; hier is er nog geen
   // gekozen project, dus dat veld blijft leeg zodat dat in de sheet opvalt.
   var ZAPIER_WEBHOOK_URL = 'https://hooks.zapier.com/hooks/catch/8344712/44ei8hj/';
+  // Zodra een bezoeker via het subdomein binnenkomt, moet de lead source dat
+  // meteen tonen; welke exacte pagina het was, staat toch al in description.
+  var IS_SUBDOMAIN = window.location.hostname === 'projects.investinspain.be';
   function sendToZapier(form, formBron) {
     var data = new FormData(form);
     var land = countryOf(form);
@@ -1316,7 +1319,7 @@ footer a { color: var(--gold-dim); text-underline-offset: 2px; }
       email: data.get('email') || '',
       country: land.name,
       utm_source: 'site',
-      lead_source: 'Projectenoverzicht',
+      lead_source: IS_SUBDOMAIN ? 'Subdomein projecten' : 'Projectenoverzicht',
       budget: '',
       description: '(nog geen project gekozen) — ' + formBron + ' — ' + window.location.href,
       mobile_phone_unformatted: land.code.replace('+', '') + phoneDigits,

@@ -1527,6 +1527,9 @@ footer a {
   // Stuurt elke lead naar de Zap (-> Google Sheet / CRM). keepalive zorgt
   // dat het verzoek de navigatie naar /bedankt/ overleeft.
   var ZAPIER_WEBHOOK_URL = 'https://hooks.zapier.com/hooks/catch/8344712/44ei8hj/';
+  // Zodra een bezoeker via het subdomein binnenkomt, moet de lead source dat
+  // meteen tonen; welke exacte pagina het was, staat toch al in description.
+  var IS_SUBDOMAIN = window.location.hostname === 'projects.investinspain.be';
   function sendToZapier(form, formBron) {
     var data = new FormData(form);
     var land = countryOf(form);
@@ -1538,7 +1541,7 @@ footer a {
       email: data.get('email') || '',
       country: land.name,
       utm_source: 'site',
-      lead_source: 'Projectpagina',
+      lead_source: IS_SUBDOMAIN ? 'Subdomein projecten' : 'Projectpagina',
       budget: '400k-600k',
       description: 'Vanian Park — ' + formBron + ' — ' + window.location.href,
       mobile_phone_unformatted: land.code.replace('+', '') + phoneDigits,
