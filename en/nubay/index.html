@@ -31,6 +31,28 @@
   gtag('js', new Date());
   gtag('config', 'G-ZQJ99DP4N5');
 </script>
+<!-- Meta Pixel Code - laadt pas na akkoord via de cookiebalk -->
+<script>
+  window.metaPixelLoaded = false;
+  function loadMetaPixel() {
+    if (window.metaPixelLoaded) return;
+    window.metaPixelLoaded = true;
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window, document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', '569820826775985');
+    fbq('track', 'PageView');
+  }
+  try {
+    if (localStorage.getItem('cookie_consent') === 'granted') { loadMetaPixel(); }
+  } catch (e) {}
+</script>
+<!-- End Meta Pixel Code -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -1925,6 +1947,7 @@ footer a {
         'analytics_storage': 'granted'
       });
     }
+    if (typeof loadMetaPixel === 'function') { loadMetaPixel(); }
     cookieBar.classList.remove('is-visible');
   });
   document.getElementById('cookieDecline').addEventListener('click', function() {

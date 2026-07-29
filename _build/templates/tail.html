@@ -733,6 +733,7 @@
         'analytics_storage': 'granted'
       });
     }
+    if (typeof loadMetaPixel === 'function') { loadMetaPixel(); }
     cookieBar.classList.remove('is-visible');
   });
   document.getElementById('cookieDecline').addEventListener('click', function() {
