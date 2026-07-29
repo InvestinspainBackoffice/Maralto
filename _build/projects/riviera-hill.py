@@ -27,6 +27,13 @@ DATA = {
     "WA_NUMBER": "32496571397",
 }
 
+DATA_EN = {
+    "META_DESCRIPTION": "Riviera Hill: modern apartments and penthouses with 1, 2 or 3 bedrooms in Riviera del Sol, Mijas Costa. Infinity pools, indoor pool with spa and golf simulator. From €290.000.",
+    "OG_TITLE": f"{PROJECT_NAME} — Apartments & Penthouses",
+    "OG_DESCRIPTION": "Discover Riviera Hill: Mediterranean living with spacious terraces, in a private urbanization with controlled access on the Costa del Sol. From €290.000.",
+    "HERO_BG_ALT": "Riviera Hill — aerial view of the complex overlooking the coast",
+}
+
 # Gebruikt door de /projecten/ overzichtspagina (kaart + kaartjes)
 HUB = {
     "NAME": PROJECT_NAME,

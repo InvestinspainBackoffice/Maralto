@@ -27,6 +27,13 @@ DATA = {
     "WA_NUMBER": "32496571397",
 }
 
+DATA_EN = {
+    "META_DESCRIPTION": "Haiku Estepona: 36 apartments (Haiku Suites) and 15 townhouses (Haiku Residences) in Cancelada, New Golden Mile. Panoramic sea views. From €500,000.",
+    "OG_TITLE": f"{PROJECT_NAME} — Apartments & Townhouses",
+    "OG_DESCRIPTION": "Discover Haiku Estepona: communal swimming pool, shared gardens, lounge, spa and fitness in the exclusive Cancelada neighbourhood, New Golden Mile. From €500,000.",
+    "HERO_BG_ALT": "Haiku Estepona — swimming pool between the buildings",
+}
+
 # Gebruikt door de /projecten/ overzichtspagina (kaart + kaartjes)
 HUB = {
     "NAME": PROJECT_NAME,

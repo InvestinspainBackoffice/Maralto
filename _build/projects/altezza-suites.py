@@ -27,6 +27,13 @@ DATA = {
     "WA_NUMBER": "32496571397",
 }
 
+DATA_EN = {
+    "META_DESCRIPTION": "Altezza Suites: modern apartments with sea views on the New Golden Mile, Estepona. From €795,000.",
+    "OG_TITLE": f"{PROJECT_NAME} — Apartments with sea views",
+    "OG_DESCRIPTION": "Discover Altezza Suites: 72 units with Modulnova kitchens, spa, fitness room and indoor and outdoor swimming pools. From €795,000.",
+    "HERO_BG_ALT": "Altezza Suites — swimming pool surrounded by palm trees and modern architecture",
+}
+
 # Gebruikt door de /projecten/ overzichtspagina (kaart + kaartjes)
 HUB = {
     "NAME": PROJECT_NAME,

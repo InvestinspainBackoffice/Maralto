@@ -27,6 +27,13 @@ DATA = {
     "WA_NUMBER": "32496571397",
 }
 
+DATA_EN = {
+    "META_DESCRIPTION": "The View Marbella: luxury apartments between Marbella and Benahavís with panoramic sea and golf views. From €899,000.",
+    "OG_TITLE": f"{PROJECT_NAME} — Luxury Apartments",
+    "OG_DESCRIPTION": "Discover The View Marbella: boutique complex with 24-hour security, concierge service, spa and indoor and outdoor swimming pools. From €899,000.",
+    "HERO_BG_ALT": "The View Marbella — curved architecture set against the hillside",
+}
+
 # Gebruikt door de /projecten/ overzichtspagina (kaart + kaartjes)
 HUB = {
     "NAME": PROJECT_NAME,

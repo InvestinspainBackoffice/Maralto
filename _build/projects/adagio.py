@@ -27,6 +27,13 @@ DATA = {
     "WA_NUMBER": "32496571397",
 }
 
+DATA_EN = {
+    "META_DESCRIPTION": "Adagio: apartments and penthouses with spacious terraces in Cancelada, New Golden Mile. From €512,000.",
+    "OG_TITLE": f"{PROJECT_NAME} Cancelada — Apartments & Penthouses",
+    "OG_DESCRIPTION": "Discover Adagio: 80 homes surrounded by golf courses on the New Golden Mile, with swimming pool, gym and Zen zone. From €512,000.",
+    "HERO_BG_ALT": "Adagio Cancelada — apartments around a swimming pool with palm trees",
+}
+
 # Gebruikt door de /projecten/ overzichtspagina (kaart + kaartjes)
 HUB = {
     "NAME": PROJECT_NAME,

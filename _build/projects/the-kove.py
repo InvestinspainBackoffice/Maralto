@@ -27,6 +27,13 @@ DATA = {
     "WA_NUMBER": "32496571397",
 }
 
+DATA_EN = {
+    "META_DESCRIPTION": "The Kove: 2-3 bedroom apartments with breathtaking sea views in Mijas. From €410,000.",
+    "OG_TITLE": f"{PROJECT_NAME} — Apartments with Sea Views",
+    "OG_DESCRIPTION": "Discover The Kove: designed by architect Manuel Clave, with swimming pools, spa, gym and coworking space in Mijas. From €410,000.",
+    "HERO_BG_ALT": "The Kove — swimming pool surrounded by the residential complex",
+}
+
 # Gebruikt door de /projecten/ overzichtspagina (kaart + kaartjes)
 HUB = {
     "NAME": PROJECT_NAME,

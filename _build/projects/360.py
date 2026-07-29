@@ -27,6 +27,13 @@ DATA = {
     "WA_NUMBER": "32496571397",
 }
 
+DATA_EN = {
+    "META_DESCRIPTION": "360°: 71 stylish apartments on a hilltop in Mijas, next to Cerrado del Águila Golf. From €400.000.",
+    "OG_TITLE": "360° — Apartments & Penthouses",
+    "OG_DESCRIPTION": "Discover 360°: wellness zone with sauna and hammam, gastrobar, gaming room and panoramic sea views in Mijas. From €400.000.",
+    "HERO_BG_ALT": "360° — residential complex with pool at dusk",
+}
+
 # Gebruikt door de /projecten/ overzichtspagina (kaart + kaartjes)
 HUB = {
     "NAME": PROJECT_NAME,

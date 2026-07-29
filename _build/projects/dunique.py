@@ -27,6 +27,13 @@ DATA = {
     "WA_NUMBER": "32496571397",
 }
 
+DATA_EN = {
+    "META_DESCRIPTION": "Dunique: apartments and townhouses on the beach in Las Chapas, Marbella. From €3,350,000.",
+    "OG_TITLE": f"{PROJECT_NAME} — Apartments & Townhouses",
+    "OG_DESCRIPTION": "Discover Dunique: a private pool in every home, a Social Club with spa, gym and a 40-metre indoor pool. From €3,350,000.",
+    "HERO_BG_ALT": "Dunique — swimming pool with panoramic sea view at sunset",
+}
+
 # Gebruikt door de /projecten/ overzichtspagina (kaart + kaartjes)
 HUB = {
     "NAME": PROJECT_NAME,

@@ -27,6 +27,13 @@ DATA = {
     "WA_NUMBER": "32496571397",
 }
 
+DATA_EN = {
+    "META_DESCRIPTION": "Beyond Homes: 16 modern semi-detached villas with 3 bedrooms, private swimming pool and solarium in Estepona. Within walking distance of the beach. From €1,480,000.",
+    "OG_TITLE": f"{PROJECT_NAME} — Semi-Detached Villas",
+    "OG_DESCRIPTION": "Discover Beyond Homes: contemporary architecture, comfort and privacy in a peaceful, green setting close to Estepona's beach. From €1,480,000.",
+    "HERO_BG_ALT": "Beyond Homes — semi-detached villas with private swimming pool against the hillside",
+}
+
 # Gebruikt door de /projecten/ overzichtspagina (kaart + kaartjes)
 HUB = {
     "NAME": PROJECT_NAME,

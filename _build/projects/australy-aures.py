@@ -27,6 +27,13 @@ DATA = {
     "WA_NUMBER": "32496571397",
 }
 
+DATA_EN = {
+    "META_DESCRIPTION": "Australy Aures: apartments and penthouses with 2, 3 or 4 bedrooms in Estepona. Communal swimming pool, spa, sauna and social club. From €688,000.",
+    "OG_TITLE": f"{PROJECT_NAME} — Apartments & Penthouses",
+    "OG_DESCRIPTION": "Discover Australy Aures: spacious homes with garden or terrace, surrounded by nature, close to Estepona. From €688,000.",
+    "HERO_BG_ALT": "Australy Aures — aerial view of the complex with sea views",
+}
+
 # Gebruikt door de /projecten/ overzichtspagina (kaart + kaartjes)
 HUB = {
     "NAME": PROJECT_NAME,

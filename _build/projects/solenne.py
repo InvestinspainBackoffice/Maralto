@@ -27,6 +27,13 @@ DATA = {
     "WA_NUMBER": "32496571397",
 }
 
+DATA_EN = {
+    "META_DESCRIPTION": "Solenne: elegant boutique project with 21 homes, 2 or 3 bedrooms, in prestigious Benahavís. Golf simulator, covered heated pool and spa. From €990.000.",
+    "OG_TITLE": f"{PROJECT_NAME} — Boutique Apartments",
+    "OG_DESCRIPTION": "Discover Solenne: stylish apartments with spacious terraces, views of the hills and the Mediterranean Sea, in prestigious Benahavís. From €990.000.",
+    "HERO_BG_ALT": "Solenne — infinity pool at sunset overlooking the coast",
+}
+
 # Gebruikt door de /projecten/ overzichtspagina (kaart + kaartjes)
 HUB = {
     "NAME": PROJECT_NAME,

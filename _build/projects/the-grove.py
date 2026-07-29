@@ -27,6 +27,13 @@ DATA = {
     "WA_NUMBER": "32496571397",
 }
 
+DATA_EN = {
+    "META_DESCRIPTION": "The Grove: 1-4 bedroom apartments in San Pedro de Alcántara, with skypool and spa. From €390,000.",
+    "OG_TITLE": f"{PROJECT_NAME} San Pedro — Apartments",
+    "OG_DESCRIPTION": "Discover The Grove: rooftop lounge with skypool, heated indoor pool, gym and spa in San Pedro de Alcántara. From €390,000.",
+    "HERO_BG_ALT": "The Grove — apartment complex with pool and lush gardens",
+}
+
 # Gebruikt door de /projecten/ overzichtspagina (kaart + kaartjes)
 HUB = {
     "NAME": PROJECT_NAME,

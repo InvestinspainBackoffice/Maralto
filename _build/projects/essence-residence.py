@@ -27,6 +27,13 @@ DATA = {
     "WA_NUMBER": "32496571397",
 }
 
+DATA_EN = {
+    "META_DESCRIPTION": "Essence Residence: spacious, modern apartments close to the Villa Padierna resort in Estepona. From €754,000.",
+    "OG_TITLE": f"{PROJECT_NAME} — Apartments & Penthouses",
+    "OG_DESCRIPTION": "Discover Essence Residence: designed by architect Pablo Villarroel, with spa, fitness, co-working and swimming pools. From €754,000.",
+    "HERO_BG_ALT": "Essence Residence — building with swimming pool and palm trees",
+}
+
 # Gebruikt door de /projecten/ overzichtspagina (kaart + kaartjes)
 HUB = {
     "NAME": PROJECT_NAME,

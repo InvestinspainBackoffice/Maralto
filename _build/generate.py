@@ -84,6 +84,16 @@ def build_one(project_file, lang):
         for key, value in list(data.items()):
             if isinstance(value, str) and "Vanaf €" in value:
                 data[key] = value.replace("Vanaf €", "From €")
+        # Bijna elk project gebruikt exact hetzelfde WA-bericht-sjabloon;
+        # dat vertalen we automatisch zodat niet elk project apart een
+        # DATA_EN["WA_MESSAGE"] nodig heeft. Projecten met een afwijkend
+        # bericht (bv. Maralto) zetten dat gewoon zelf in DATA_EN.
+        wa_match = re.match(
+            r"^Hallo, ik heb interesse in (.+)\. Kan ik meer informatie ontvangen\?$",
+            data.get("WA_MESSAGE", ""),
+        )
+        if wa_match:
+            data["WA_MESSAGE"] = f"Hello, I'm interested in {wa_match.group(1)}. Could I receive more information?"
         if hasattr(mod, "DATA_EN"):
             data.update(mod.DATA_EN)
         if "WA_MESSAGE" in data:

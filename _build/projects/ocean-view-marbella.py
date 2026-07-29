@@ -27,6 +27,13 @@ DATA = {
     "WA_NUMBER": "32496571397",
 }
 
+DATA_EN = {
+    "META_DESCRIPTION": "Ocean View Marbella: 44 exclusive homes with 2 or 3 bedrooms and 10 penthouses with private pool, in the hills of Marbella. From €960.000.",
+    "OG_TITLE": f"{PROJECT_NAME} — Apartments & Penthouses",
+    "OG_DESCRIPTION": "Discover Ocean View Marbella: a gated community in the hills, bordering a protected nature reserve, with panoramic sea views. From €960.000.",
+    "HERO_BG_ALT": "Ocean View Marbella — leisure club with swimming pool and panoramic sea view",
+}
+
 # Gebruikt door de /projecten/ overzichtspagina (kaart + kaartjes)
 HUB = {
     "NAME": PROJECT_NAME,

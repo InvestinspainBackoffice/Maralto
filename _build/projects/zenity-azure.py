@@ -27,6 +27,13 @@ DATA = {
     "WA_NUMBER": "32496571397",
 }
 
+DATA_EN = {
+    "META_DESCRIPTION": "Zenity Azure: apartments and townhouses with 2-4 bedrooms close to the beach in Estepona. From €550.000.",
+    "OG_TITLE": f"{PROJECT_NAME} — Apartments & Townhouses",
+    "OG_DESCRIPTION": "Discover Zenity Azure: unrivalled sea views, terraces up to 80m², swimming pools and a social club in Estepona. From €550.000.",
+    "HERO_BG_ALT": "Zenity Azure — residential complex with swimming pool and panoramic sea view",
+}
+
 # Gebruikt door de /projecten/ overzichtspagina (kaart + kaartjes)
 HUB = {
     "NAME": PROJECT_NAME,

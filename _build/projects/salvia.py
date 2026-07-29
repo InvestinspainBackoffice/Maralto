@@ -27,6 +27,13 @@ DATA = {
     "WA_NUMBER": "32496571397",
 }
 
+DATA_EN = {
+    "META_DESCRIPTION": "Salvia: exclusive apartment complex with 2 to 4 bedrooms in San Pedro de Alcántara, within walking distance of the boulevard. From €880.000.",
+    "OG_TITLE": f"{PROJECT_NAME} — Apartments & Penthouses",
+    "OG_DESCRIPTION": "Discover Salvia: spacious terraces with southern sea views and northern mountain views, a heated indoor pool and co-working, in San Pedro de Alcántara. From €880.000.",
+    "HERO_BG_ALT": "Salvia — penthouse terrace with sea views",
+}
+
 # Gebruikt door de /projecten/ overzichtspagina (kaart + kaartjes)
 HUB = {
     "NAME": PROJECT_NAME,

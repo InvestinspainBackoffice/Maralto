@@ -27,6 +27,13 @@ DATA = {
     "WA_NUMBER": "32496571397",
 }
 
+DATA_EN = {
+    "META_DESCRIPTION": "Vesta Mare: 145 apartments and penthouses right on the beach in Manilva. From €435.000.",
+    "OG_TITLE": f"{PROJECT_NAME} — Frontline Apartments",
+    "OG_DESCRIPTION": "Discover Vesta Mare: infinity pool with sea view, fitness room and coworking space right on the beach. From €435.000.",
+    "HERO_BG_ALT": "Vesta Mare — residential complex right on the beach",
+}
+
 # Gebruikt door de /projecten/ overzichtspagina (kaart + kaartjes)
 HUB = {
     "NAME": PROJECT_NAME,

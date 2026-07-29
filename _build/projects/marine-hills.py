@@ -27,6 +27,13 @@ DATA = {
     "WA_NUMBER": "32496571397",
 }
 
+DATA_EN = {
+    "META_DESCRIPTION": "Marine Hills: apartments and villas with up to 4 bedrooms on the New Golden Mile, Estepona. From €464.000.",
+    "OG_TITLE": f"{PROJECT_NAME} — Apartments & Villas",
+    "OG_DESCRIPTION": "Discover Marine Hills: sea views, heated swimming pools, spa, padel court and coworking space on the New Golden Mile. From €464.000.",
+    "HERO_BG_ALT": "Marine Hills — modern architecture surrounded by greenery on the New Golden Mile",
+}
+
 # Gebruikt door de /projecten/ overzichtspagina (kaart + kaartjes)
 HUB = {
     "NAME": PROJECT_NAME,

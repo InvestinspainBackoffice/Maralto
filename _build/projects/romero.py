@@ -36,6 +36,13 @@ DATA = {
     "WA_NUMBER": "32496571397",
 }
 
+DATA_EN = {
+    "META_DESCRIPTION": "Romero: exclusive luxury apartments with sea views in Real de la Quinta, Marbella. From €1.150.000.",
+    "OG_TITLE": f"{PROJECT_NAME} — Luxury Apartments & Penthouses",
+    "OG_DESCRIPTION": "Discover Romero: 28 design homes with a saltwater infinity pool, gym and coworking space in Real de la Quinta. From €1.150.000.",
+    "HERO_BG_ALT": "Romero — aerial view of the exclusive complex in the hills with sea views",
+}
+
 # Gebruikt door de /projecten/ overzichtspagina (kaart + kaartjes)
 HUB = {
     "NAME": PROJECT_NAME,

@@ -27,6 +27,13 @@ DATA = {
     "WA_NUMBER": "32496571397",
 }
 
+DATA_EN = {
+    "META_DESCRIPTION": "Morasol: 151 homes with 2 or 3 bedrooms in Manilva, within walking distance of the beach. Communal pool and Mediterranean gardens. From €351.520.",
+    "OG_TITLE": f"{PROJECT_NAME} — Apartments & Penthouses",
+    "OG_DESCRIPTION": "Discover Morasol: comfort, privacy and quality of life in an exclusive new-build complex in Manilva, with private terraces and sea views. From €351.520.",
+    "HERO_BG_ALT": "Morasol — rooftop terrace with lounge chairs and sea view",
+}
+
 # Gebruikt door de /projecten/ overzichtspagina (kaart + kaartjes)
 HUB = {
     "NAME": PROJECT_NAME,

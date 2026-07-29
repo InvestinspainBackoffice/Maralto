@@ -27,6 +27,13 @@ DATA = {
     "WA_NUMBER": "32496571397",
 }
 
+DATA_EN = {
+    "META_DESCRIPTION": "Tyrian: 40 high-end apartments and penthouses in Estepona, where architecture, design and service come together. Wellness, spa and concierge service. From €3,550,000.",
+    "OG_TITLE": f"{PROJECT_NAME} — High-end Apartments",
+    "OG_DESCRIPTION": "Discover Tyrian: high-rise villas with panoramic sea views, 24-hour security, spa, sauna and concierge service in Estepona. From €3,550,000.",
+    "HERO_BG_ALT": "Tyrian — aerial view of the Estepona coastline at sunrise",
+}
+
 # Gebruikt door de /projecten/ overzichtspagina (kaart + kaartjes)
 HUB = {
     "NAME": PROJECT_NAME,

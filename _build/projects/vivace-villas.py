@@ -29,6 +29,17 @@ DATA = {
     "WA_NUMBER": "32496571397",
 }
 
+DATA_EN = {
+    "META_DESCRIPTION": "Vivace Villas: a collection of 30 exclusive villas with 3 or 4 bedrooms in Valle Romano, Estepona. Three typologies, passive architecture, private garden and pool.",
+    "OG_TITLE": f"{PROJECT_NAME} — Exclusive Villas",
+    "OG_DESCRIPTION": "Discover Vivace Villas: modern elegance and the tranquillity of a golf course in Valle Romano, with private garden, pool and mountain and sea views.",
+    "HERO_BG_ALT": "Vivace Villas — infinity pool at dusk with open landscape",
+    "PRICE_FROM": "Price on request",
+    "HERO_PRICE": "Price on request",
+    "PRICE_LABEL": "Price",
+    "PRICE_AMOUNT": "on request",
+}
+
 # Gebruikt door de /projecten/ overzichtspagina (kaart + kaartjes)
 HUB = {
     "NAME": PROJECT_NAME,

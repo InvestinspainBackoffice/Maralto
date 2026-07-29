@@ -27,6 +27,13 @@ DATA = {
     "WA_NUMBER": "32496571397",
 }
 
+DATA_EN = {
+    "META_DESCRIPTION": "The Sky Marbella: luxury apartments, penthouses and villas above La Quinta, Benahavís. From €1,495,000.",
+    "OG_TITLE": f"{PROJECT_NAME} — Luxury Apartments & Villas",
+    "OG_DESCRIPTION": "Discover The Sky Marbella: panoramic sea and mountain views, 24/7 security and finishes by Gunni & Trentino. From €1,495,000.",
+    "HERO_BG_ALT": "The Sky Marbella — infinity pool at dusk with panoramic views",
+}
+
 # Gebruikt door de /projecten/ overzichtspagina (kaart + kaartjes)
 HUB = {
     "NAME": PROJECT_NAME,

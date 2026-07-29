@@ -27,6 +27,13 @@ DATA = {
     "WA_NUMBER": "32496571397",
 }
 
+DATA_EN = {
+    "META_DESCRIPTION": "Las Mesas Blue Horizon: 36 apartments with panoramic sea views in Estepona. From €705.000.",
+    "OG_TITLE": f"{PROJECT_NAME} — Apartments with Sea Views",
+    "OG_DESCRIPTION": "Discover Las Mesas Blue Horizon: spa, fitness room, coworking space and cinema in the heart of Estepona. From €705.000.",
+    "HERO_BG_ALT": "Las Mesas Blue Horizon — modern architecture with swimming pool",
+}
+
 # Gebruikt door de /projecten/ overzichtspagina (kaart + kaartjes)
 HUB = {
     "NAME": PROJECT_NAME,

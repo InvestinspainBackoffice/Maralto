@@ -27,6 +27,13 @@ DATA = {
     "WA_NUMBER": "32496571397",
 }
 
+DATA_EN = {
+    "META_DESCRIPTION": "SKYE Casares Golf: modern architecture and high-end finishes, amid greenery with the Mediterranean Sea as a backdrop. From €423.000.",
+    "OG_TITLE": f"{PROJECT_NAME} Casares Golf — Modern Architecture",
+    "OG_DESCRIPTION": "Discover SKYE Casares Golf: infinity pool, sea views and the perfect combination of tranquility and refinement. From €423.000.",
+    "HERO_BG_ALT": "SKYE Casares Golf — aerial view of the complex overlooking the sea",
+}
+
 # Gebruikt door de /projecten/ overzichtspagina (kaart + kaartjes)
 HUB = {
     "NAME": PROJECT_NAME,

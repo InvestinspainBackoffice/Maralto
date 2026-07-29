@@ -27,6 +27,13 @@ DATA = {
     "WA_NUMBER": "32496571397",
 }
 
+DATA_EN = {
+    "META_DESCRIPTION": "Nubay: apartments, penthouses and villas with 2 to 4 bedrooms, frontline on the beach in Manilva. Infinity pool and lush gardens. From €1.050.000.",
+    "OG_TITLE": f"{PROJECT_NAME} — Apartments, Penthouses & Villas",
+    "OG_DESCRIPTION": "Discover Nubay: the new sanctuary on the Costa del Sol, with panoramic sea views, an infinity pool and villas next to a protected nature reserve in Manilva. From €1.050.000.",
+    "HERO_BG_ALT": "Nubay — aerial view of the complex with pool and garden in evening light",
+}
+
 # Gebruikt door de /projecten/ overzichtspagina (kaart + kaartjes)
 HUB = {
     "NAME": PROJECT_NAME,

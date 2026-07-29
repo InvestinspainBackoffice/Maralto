@@ -27,6 +27,13 @@ DATA = {
     "WA_NUMBER": "32496571397",
 }
 
+DATA_EN = {
+    "META_DESCRIPTION": "ZEW Elviria: duplex apartments surrounded by nature in Elviria Hill, East Marbella. From €770.000.",
+    "OG_TITLE": f"{PROJECT_NAME} — Duplex Apartments",
+    "OG_DESCRIPTION": "Discover ZEW Elviria: 88 duplex apartments in the pine forests of Elviria Hill, with 4 swimming pools, coworking space and gym. From €770.000.",
+    "HERO_BG_ALT": "ZEW Elviria — entrance with natural stone accents and lush garden",
+}
+
 # Gebruikt door de /projecten/ overzichtspagina (kaart + kaartjes)
 HUB = {
     "NAME": PROJECT_NAME,

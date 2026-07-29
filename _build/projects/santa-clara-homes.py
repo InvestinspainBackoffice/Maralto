@@ -27,6 +27,13 @@ DATA = {
     "WA_NUMBER": "32496571397",
 }
 
+DATA_EN = {
+    "META_DESCRIPTION": "Santa Clara Homes: 104 luxurious apartments and penthouses with private pool, next to a golf course and within walking distance of the beach in Marbella. From €1.345.000.",
+    "OG_TITLE": f"{PROJECT_NAME} — Apartments & Penthouses",
+    "OG_DESCRIPTION": "Discover Santa Clara Homes: low-density living with private pool, gym & spa, next to the golf course and close to Los Monteros beach in Marbella. From €1.345.000.",
+    "HERO_BG_ALT": "Santa Clara Homes — aerial view of the complex between the golf course and the sea",
+}
+
 # Gebruikt door de /projecten/ overzichtspagina (kaart + kaartjes)
 HUB = {
     "NAME": PROJECT_NAME,

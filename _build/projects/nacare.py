@@ -27,6 +27,13 @@ DATA = {
     "WA_NUMBER": "32496571397",
 }
 
+DATA_EN = {
+    "META_DESCRIPTION": "Nacaré: 20 exclusive apartments with 3 or 4 bedrooms in Estepona, with panoramic sea views and a private Owners Club. From €2.500.000.",
+    "OG_TITLE": f"{PROJECT_NAME} — Exclusive Apartments",
+    "OG_DESCRIPTION": "Discover Nacaré: architecture, design and experience come together in this new-build project in Estepona, with a private Owners Club full of wellness and sports facilities. From €2.500.000.",
+    "HERO_BG_ALT": "Nacaré — aerial view of the Estepona coastline",
+}
+
 # Gebruikt door de /projecten/ overzichtspagina (kaart + kaartjes)
 HUB = {
     "NAME": PROJECT_NAME,

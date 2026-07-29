@@ -29,6 +29,17 @@ DATA = {
     "WA_NUMBER": "32496571397",
 }
 
+DATA_EN = {
+    "META_DESCRIPTION": "Australy Thera: apartments and duplex homes with 2, 3 or 4 bedrooms next to Selwo Park in Estepona. Social club, gym and swimming pools. Coming soon.",
+    "OG_TITLE": f"{PROJECT_NAME} — Apartments & Duplex Homes",
+    "OG_DESCRIPTION": "Discover Australy Thera: modern living with sea views next to Selwo Park, just minutes from Estepona's beach. Coming soon.",
+    "HERO_BG_ALT": "Australy Thera — infinity swimming pool with sea view",
+    "PRICE_FROM": "Coming soon",
+    "HERO_PRICE": "Coming soon",
+    "PRICE_LABEL": "Coming",
+    "PRICE_AMOUNT": "soon",
+}
+
 # Gebruikt door de /projecten/ overzichtspagina (kaart + kaartjes)
 HUB = {
     "NAME": PROJECT_NAME,

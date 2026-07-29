@@ -27,6 +27,13 @@ DATA = {
     "WA_NUMBER": "32496571397",
 }
 
+DATA_EN = {
+    "META_DESCRIPTION": "Casatalaya: an exclusive boutique complex with 28 apartments and penthouses in Torremuelle, Benalmádena. Unobstructed sea views from every home. From €900,000.",
+    "OG_TITLE": f"{PROJECT_NAME} — Apartments & Penthouses",
+    "OG_DESCRIPTION": "Discover Casatalaya: a boutique complex with direct beach access, indoor and outdoor swimming pools, and a social lounge in Torremuelle. From €900,000.",
+    "HERO_BG_ALT": "Casatalaya — infinity pool with sea view",
+}
+
 # Gebruikt door de /projecten/ overzichtspagina (kaart + kaartjes)
 HUB = {
     "NAME": PROJECT_NAME,

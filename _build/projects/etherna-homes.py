@@ -27,6 +27,13 @@ DATA = {
     "WA_NUMBER": "32496571397",
 }
 
+DATA_EN = {
+    "META_DESCRIPTION": "Etherna Homes: 135 homes with 1, 2 or 3 bedrooms next to Valle Romano Golf Club in Estepona. Swimming pool with solarium and fitness room. From €302,000.",
+    "OG_TITLE": f"{PROJECT_NAME} — Apartments & Penthouses",
+    "OG_DESCRIPTION": "Discover Etherna Homes: contemporary living next to Valle Romano Golf Club, with ground-floor homes with garden and penthouses with solarium. From €302,000.",
+    "HERO_BG_ALT": "Etherna Homes — residential complex with swimming pool next to the golf course",
+}
+
 # Gebruikt door de /projecten/ overzichtspagina (kaart + kaartjes)
 HUB = {
     "NAME": PROJECT_NAME,

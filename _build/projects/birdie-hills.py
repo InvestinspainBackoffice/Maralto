@@ -27,6 +27,13 @@ DATA = {
     "WA_NUMBER": "32496571397",
 }
 
+DATA_EN = {
+    "META_DESCRIPTION": "Birdie Hills: 68 new homes with 1 to 3 bedrooms, in the golf enclave of Estepona. Outdoor swimming pool, solarium pool and social club. From €320,000.",
+    "OG_TITLE": f"{PROJECT_NAME} — Apartments & Penthouses",
+    "OG_DESCRIPTION": "Discover Birdie Hills: modern living with panoramic golf views, spacious terraces and a social club, on Estepona's golf course. From €320,000.",
+    "HERO_BG_ALT": "Birdie Hills — modern residential complex on Estepona's golf course",
+}
+
 # Gebruikt door de /projecten/ overzichtspagina (kaart + kaartjes)
 HUB = {
     "NAME": PROJECT_NAME,

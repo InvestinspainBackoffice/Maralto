@@ -142,7 +142,13 @@ def entry_for_lang(entry, lang):
     if lang != "en":
         return entry
     out = dict(entry)
-    out["PRICE"] = out["PRICE"].replace("Vanaf €", "From €")
+    price_translations = {
+        "Prijs op aanvraag": "Price on request",
+        "Binnenkort beschikbaar": "Coming soon",
+    }
+    out["PRICE"] = price_translations.get(
+        out["PRICE"], out["PRICE"].replace("Vanaf €", "From €")
+    )
     out["HREF"] = f"/en{out['HREF']}"
     return out
 

@@ -27,6 +27,13 @@ DATA = {
     "WA_NUMBER": "32496571397",
 }
 
+DATA_EN = {
+    "META_DESCRIPTION": "Ikkil Bay: 9 villa-apartments and 1 duplex penthouse, frontline beach on Playa del Cristo in Estepona. Heated indoor pool, sauna and direct beach access. From €3,003,000.",
+    "OG_TITLE": f"{PROJECT_NAME} — Villa-apartments & Penthouse",
+    "OG_DESCRIPTION": "Discover Ikkil Bay: frontline beach living with a private pool, breathtaking sea views and direct beach access in Estepona. From €3,003,000.",
+    "HERO_BG_ALT": "Ikkil Bay — terrace with lounge seating and panoramic sea view",
+}
+
 # Gebruikt door de /projecten/ overzichtspagina (kaart + kaartjes)
 HUB = {
     "NAME": PROJECT_NAME,

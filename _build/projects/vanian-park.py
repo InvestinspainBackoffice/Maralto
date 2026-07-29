@@ -27,6 +27,13 @@ DATA = {
     "WA_NUMBER": "32496571397",
 }
 
+DATA_EN = {
+    "META_DESCRIPTION": "Vanian Park: an exclusive residence of 50 high-quality homes in Estepona, designed for comfort, design and nature. From €469,000.",
+    "OG_TITLE": f"{PROJECT_NAME} — Modern Homes",
+    "OG_DESCRIPTION": "Discover Vanian Park: modern architecture amid nature, with water-saving gardens, pool and fitness room in Estepona. From €469,000.",
+    "HERO_BG_ALT": "Vanian Park — modern buildings amid green gardens",
+}
+
 # Gebruikt door de /projecten/ overzichtspagina (kaart + kaartjes)
 HUB = {
     "NAME": PROJECT_NAME,
