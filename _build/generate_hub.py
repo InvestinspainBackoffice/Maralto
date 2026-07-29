@@ -11,10 +11,29 @@ import importlib.util
 import json
 import os
 import re
+import sys
+
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import i18n  # noqa: E402
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 TEMPLATES = os.path.join(ROOT, "_build", "templates")
 PROJECTS_DIR = os.path.join(ROOT, "_build", "projects")
+
+LANGUAGES = ["nl", "en"]
+
+HUB_TEXT = {
+    "nl": {
+        "TITLE": "Onze projecten — INVESTINSPAIN.BE",
+        "META_DESCRIPTION": "Ontdek de actuele nieuwbouwprojecten van INVESTINSPAIN.BE aan de Costa del Sol, op kaart en op naam.",
+        "OG_DESCRIPTION": "Ontdek de actuele nieuwbouwprojecten van INVESTINSPAIN.BE aan de Costa del Sol.",
+    },
+    "en": {
+        "TITLE": "Our projects — INVESTINSPAIN.BE",
+        "META_DESCRIPTION": "Discover INVESTINSPAIN.BE's current new-build projects on the Costa del Sol, by map and by name.",
+        "OG_DESCRIPTION": "Discover INVESTINSPAIN.BE's current new-build projects on the Costa del Sol.",
+    },
+}
 
 # Maralto eerst (vlaggenschip), daarna alfabetisch. Nieuwe projecten die hier
 # niet in staan, komen automatisch achteraan (alfabetisch) terecht.
@@ -116,6 +135,18 @@ def render_card(entry):
     </a>"""
 
 
+def entry_for_lang(entry, lang):
+    """Geeft een kopie van een HUB-entry terug met de prijs vertaald en de
+    HREF naar de juiste taalversie - enkel relevant zolang niet elk project
+    al een Engelse pagina heeft."""
+    if lang != "en":
+        return entry
+    out = dict(entry)
+    out["PRICE"] = out["PRICE"].replace("Vanaf €", "From €")
+    out["HREF"] = f"/en{out['HREF']}"
+    return out
+
+
 def render_location_options(entries):
     locations = sorted({e["LOCATION"] for e in entries})
     return "\n".join(
@@ -131,13 +162,25 @@ def render_price_options():
     )
 
 
-def main():
+def build(lang):
     by_slug = load_hub_entries_by_slug()
     if not by_slug:
         raise SystemExit("Geen enkel project-bestand met een HUB-dict gevonden.")
 
-    entries = display_order(by_slug)
-    hero_entries = last_n_chronological(by_slug, HERO_ROTATION_COUNT)
+    if lang == "en":
+        # Zolang niet elk project een Engelse pagina heeft, toont de Engelse
+        # hub enkel kaartjes voor projecten die er al één hebben - anders
+        # linkt hij naar pagina's die niet bestaan.
+        by_slug = {
+            slug: e for slug, e in by_slug.items()
+            if os.path.exists(os.path.join(ROOT, "en", slug, "index.html"))
+        }
+        if not by_slug:
+            print("index.html (en) overgeslagen: nog geen enkel project heeft een Engelse pagina")
+            return
+
+    entries = [entry_for_lang(e, lang) for e in display_order(by_slug)]
+    hero_entries = [entry_for_lang(e, lang) for e in last_n_chronological(by_slug, HERO_ROTATION_COUNT)]
 
     cards_html = "\n".join(render_card(e) for e in entries)
     markers = [
@@ -171,13 +214,34 @@ def main():
     page = page.replace("__HERO_ROTATION_JSON__", json.dumps(hero_rotation, ensure_ascii=False))
     page = page.replace("__CARD_EXTRA_CSS__", card_extra_css)
 
+    text = HUB_TEXT[lang]
+    page = page.replace("__HUB_TITLE__", text["TITLE"])
+    page = page.replace("__HUB_META_DESCRIPTION__", text["META_DESCRIPTION"])
+    page = page.replace("__HUB_OG_DESCRIPTION__", text["OG_DESCRIPTION"])
+    for key, value in i18n.strings_for(lang).items():
+        page = page.replace(f"__I_{key}__", value)
+    page = page.replace("__LANG_SWITCH_HREF__", "/" if lang == "en" else "/en/")
+    page = page.replace("__THANKS_HREF__", "/en/thank-you/" if lang == "en" else "/bedankt/")
+
+    leftovers = set(re.findall(r"__[A-Z0-9_]+__", page))
+    if leftovers:
+        raise SystemExit(f"index.html ({lang}) Niet-ingevulde tokens: {sorted(leftovers)}")
+
     # De projectenpagina is nu de hoofdpagina van de site ("/") - dezelfde
     # content stond al op het hoofddomein investinspain.be, dus deze
-    # subdomeinpagina's blijven voorlopig op noindex staan.
-    out_path = os.path.join(ROOT, "index.html")
+    # subdomeinpagina's blijven voorlopig op noindex staan. De Engelse
+    # versie spiegelt dezelfde structuur onder /en/.
+    out_dir = os.path.join(ROOT, "en") if lang == "en" else ROOT
+    os.makedirs(out_dir, exist_ok=True)
+    out_path = os.path.join(out_dir, "index.html")
     with open(out_path, "w", encoding="utf-8") as f:
         f.write(page)
-    print(f"index.html -> {len(entries)} projecten ({len(page)} chars)")
+    print(f"index.html ({lang}) -> {len(entries)} projecten ({len(page)} chars)")
+
+
+def main():
+    for lang in LANGUAGES:
+        build(lang)
 
 
 if __name__ == "__main__":

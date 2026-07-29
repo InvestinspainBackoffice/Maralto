@@ -1,19 +1,26 @@
 """
-Bouwt <slug>/index.html voor elk project in _build/projects/*.py, door
-head.html + hero.html + het handgeschreven body-fragment + tail.html samen
-te voegen en de __TOKEN__-placeholders in te vullen.
+Bouwt <slug>/index.html (NL) en en/<slug>/index.html (EN) voor elk project
+in _build/projects/*.py, door head.html + hero.html + het handgeschreven
+body-fragment + tail.html samen te voegen en de __TOKEN__-placeholders in
+te vullen.
 
-Gebruik:  python3 _build/generate.py            (alle projecten)
-          python3 _build/generate.py adagio      (één project)
+Gebruik:  python3 _build/generate.py            (alle projecten, beide talen)
+          python3 _build/generate.py adagio      (één project, beide talen)
 """
 import importlib.util
 import os
 import re
 import sys
+from urllib.parse import quote
+
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import i18n  # noqa: E402
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 TEMPLATES = os.path.join(ROOT, "_build", "templates")
 PROJECTS_DIR = os.path.join(ROOT, "_build", "projects")
+
+LANGUAGES = ["nl", "en"]
 
 # Budgetcategorieën voor de Zapier-lead ("budget"-veld in de master sheet /
 # CRM). We vragen dit nooit rechtstreeks aan de bezoeker - elke projectpagina
@@ -63,18 +70,33 @@ def fill(template, data):
     return out
 
 
-def build_one(project_file):
+def build_one(project_file, lang):
     mod = load_module(project_file)
     if not hasattr(mod, "DATA"):
         return  # projectbestand zonder eigen pagina (alleen een HUB-vermelding)
     data = dict(mod.DATA)
     slug = data["SLUG"]
+
+    if lang == "en":
+        # Automatische vertaling van de vanaf-prijs (komt in meerdere velden
+        # voor: PRICE_FROM, HERO_PRICE, vaak ook in de meta/OG-omschrijving).
+        # Projecten met een echte Engelse tekst per veld (DATA_EN) overriden
+        # dit hieronder gewoon weer.
+        for key, value in list(data.items()):
+            if isinstance(value, str) and "Vanaf €" in value:
+                data[key] = value.replace("Vanaf €", "From €")
+        if hasattr(mod, "DATA_EN"):
+            data.update(mod.DATA_EN)
+        if "WA_MESSAGE" in data:
+            data["WA_TEXT_ENCODED"] = quote(data["WA_MESSAGE"])
+
     # De sticky-cta bar heeft alleen het bedrag nodig (zonder "Vanaf "-prefix).
     # Projecten zonder vaste prijs ("Prijs op aanvraag") zetten PRICE_LABEL
     # en PRICE_AMOUNT expliciet in hun eigen DATA-dict, zodat de tekst er
     # klopt in plaats van de standaard "Vanaf "-prefix te forceren.
-    data.setdefault("PRICE_AMOUNT", data["PRICE_FROM"].replace("Vanaf ", ""))
-    data.setdefault("PRICE_LABEL", "Vanaf")
+    price_prefix = "Vanaf " if lang == "nl" else "From "
+    data.setdefault("PRICE_AMOUNT", data["PRICE_FROM"].replace(price_prefix, ""))
+    data.setdefault("PRICE_LABEL", "Vanaf" if lang == "nl" else "From")
     data.setdefault("BUDGET_BUCKET", budget_bucket(parse_price_number(data["PRICE_FROM"])))
     # Verticale ankerpositie van de hero-achtergrond (CSS background-position).
     # Projecten met een storende watermerk-tekst onderaan hun herofoto zetten
@@ -84,6 +106,17 @@ def build_one(project_file):
     # die niet elk project aangaan, dus niet in de gedeelde stylesheet horen.
     data.setdefault("EXTRA_HEAD_CSS", "")
 
+    # Vaste UI-teksten (labels, knoppen, foutmeldingen) per taal - één
+    # aanpassing in _build/i18n.py of in de gedeelde templates geldt
+    # automatisch voor zowel de NL- als de EN-versie van elke pagina.
+    for key, value in i18n.strings_for(lang).items():
+        data[f"I_{key}"] = value
+
+    # Taalwissel-link: verwijst naar dezelfde pagina in de andere taal.
+    data["LANG_SWITCH_HREF"] = f"/{slug}/" if lang == "en" else f"/en/{slug}/"
+    # Waar het leadformulier na een geslaagde inzending naartoe stuurt.
+    data["THANKS_HREF"] = "/en/thank-you/" if lang == "en" else "/bedankt/"
+
     with open(os.path.join(TEMPLATES, "head.html"), encoding="utf-8") as f:
         head = f.read()
     with open(os.path.join(TEMPLATES, "hero.html"), encoding="utf-8") as f:
@@ -91,27 +124,32 @@ def build_one(project_file):
     with open(os.path.join(TEMPLATES, "tail.html"), encoding="utf-8") as f:
         tail = f.read()
 
-    body_path = os.path.join(PROJECTS_DIR, f"{slug}_body.html")
+    body_suffix = "_body.html" if lang == "nl" else "_body_en.html"
+    body_path = os.path.join(PROJECTS_DIR, f"{slug}{body_suffix}")
+    if lang == "en" and not os.path.exists(body_path):
+        print(f"[{slug}] (en) overgeslagen: {slug}_body_en.html bestaat nog niet")
+        return
     with open(body_path, encoding="utf-8") as f:
         body = f.read()
 
     page = fill(head, data) + fill(hero, data) + body + fill(tail, data)
+    # Tweede pas: sommige data-waarden (bv. I_MODAL_INTRO) bevatten zelf nog
+    # een __TOKEN__ (__PROJECT_NAME__) - die is pas na de eerste pas ontstaan.
+    page = fill(page, data)
 
-    remaining = [tok for tok in page.split("__") if tok.isupper() and "_" in tok]
-    # Grove check: als er nog __IETS_MET_HOOFDLETTERS__ overblijft, is er een token vergeten
-    import re
-    leftovers = set(re.findall(r"__[A-Z_]+__", page))
+    leftovers = set(re.findall(r"__[A-Z0-9_]+__", page))
     if leftovers:
-        raise SystemExit(f"[{slug}] Niet-ingevulde tokens: {sorted(leftovers)}")
+        raise SystemExit(f"[{slug}] ({lang}) Niet-ingevulde tokens: {sorted(leftovers)}")
 
     # De projectenpagina (hub) leeft op de root van de site ("/"); elk
-    # project, inclusief Maralto, krijgt zijn eigen submap.
-    out_dir = os.path.join(ROOT, slug)
+    # project, inclusief Maralto, krijgt zijn eigen submap. De Engelse
+    # versie spiegelt dezelfde structuur onder /en/.
+    out_dir = os.path.join(ROOT, "en", slug) if lang == "en" else os.path.join(ROOT, slug)
     os.makedirs(out_dir, exist_ok=True)
     out_path = os.path.join(out_dir, "index.html")
     with open(out_path, "w", encoding="utf-8") as f:
         f.write(page)
-    print(f"[{slug}] -> {out_path} ({len(page)} chars)")
+    print(f"[{slug}] ({lang}) -> {out_path} ({len(page)} chars)")
 
 
 def main():
@@ -122,7 +160,8 @@ def main():
         if not files:
             raise SystemExit(f"Geen project-databestand gevonden voor '{only}'")
     for f in files:
-        build_one(os.path.join(PROJECTS_DIR, f))
+        for lang in LANGUAGES:
+            build_one(os.path.join(PROJECTS_DIR, f), lang)
 
 
 if __name__ == "__main__":

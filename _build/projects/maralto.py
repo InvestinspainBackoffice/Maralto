@@ -33,6 +33,17 @@ DATA = {
     "WA_NUMBER": "32496571397",
 }
 
+# Engelse overrides - enkel de velden die echt vertaald moeten worden.
+# Alles wat hier niet in staat (afbeeldingen, prijs, coördinaten, agent-
+# gegevens, ...) wordt gewoon van DATA overgenomen.
+DATA_EN = {
+    "META_DESCRIPTION": "Maralto Estepona: Modern apartments with panoramic sea and mountain views on the Costa del Sol. From €460.000.",
+    "OG_TITLE": "Maralto Estepona — Modern Apartments",
+    "OG_DESCRIPTION": "Discover Maralto: resort-style living in Estepona with panoramic views, swimming pools, spa and more. From €460.000.",
+    "HERO_BG_ALT": "Maralto Estepona — modern architecture with curved balconies and Mediterranean gardens",
+    "WA_MESSAGE": "Hello, I'm interested in Maralto Estepona. Could I receive more information?",
+}
+
 # Gebruikt door de /projecten/ overzichtspagina (kaart + kaartjes)
 HUB = {
     "NAME": PROJECT_NAME,

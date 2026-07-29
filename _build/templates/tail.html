@@ -2,22 +2,22 @@
 <section class="contact" id="contact">
   <div class="contact__inner">
     <div>
-      <p class="label">Contact</p>
-      <h2 class="heading" style="margin-bottom:0.75rem">Ontvang prijzen &<br><em>beschikbaarheid</em></h2>
-      <p class="body-text" style="margin-bottom:2.5rem">Vul uw gegevens in en ontvang alle projectinformatie rechtstreeks in uw inbox.</p>
+      <p class="label">__I_CONTACT_LABEL__</p>
+      <h2 class="heading" style="margin-bottom:0.75rem">__I_CONTACT_HEADING_PRE__<br><em>__I_CONTACT_HEADING_EM__</em></h2>
+      <p class="body-text" style="margin-bottom:2.5rem">__I_CONTACT_INTRO__</p>
 
       <form id="contactForm" novalidate>
           <div class="form-group">
             <input type="text" id="fname" name="fname" placeholder=" " required autocomplete="given-name">
-            <label for="fname">Voornaam</label>
+            <label for="fname">__I_FORM_VOORNAAM__</label>
           </div>
           <div class="form-group">
             <input type="text" id="lname" name="lname" placeholder=" " required autocomplete="family-name">
-            <label for="lname">Achternaam</label>
+            <label for="lname">__I_FORM_ACHTERNAAM__</label>
           </div>
           <div class="phone-group">
-            <select class="phone-prefix" id="c-country" name="country" required aria-label="Landcode">
-              <optgroup label="Veelgekozen">
+            <select class="phone-prefix" id="c-country" name="country" required aria-label="__I_FORM_LANDCODE_ARIA__">
+              <optgroup label="__I_PHONE_POPULAR__">
                 <option value="+32" data-country="België" selected>🇧🇪 +32</option>
                 <option value="+31" data-country="Nederland">🇳🇱 +31</option>
                 <option value="+352" data-country="Luxemburg">🇱🇺 +352</option>
@@ -26,7 +26,7 @@
                 <option value="+49" data-country="Duitsland">🇩🇪 +49</option>
                 <option value="+44" data-country="Verenigd Koninkrijk">🇬🇧 +44</option>
               </optgroup>
-              <optgroup label="Alle landen">
+              <optgroup label="__I_PHONE_ALL_COUNTRIES__">
                 <option value="+971" data-country="Ver. Arabische Emiraten">🇦🇪 +971</option>
                 <option value="+43" data-country="Oostenrijk">🇦🇹 +43</option>
                 <option value="+61" data-country="Australië">🇦🇺 +61</option>
@@ -71,26 +71,26 @@
             </select>
             <div class="form-group">
               <input type="tel" id="phone" name="phone" placeholder=" " required autocomplete="tel-national">
-              <label for="phone">GSM-nummer</label>
+              <label for="phone">__I_FORM_GSM__</label>
             </div>
           </div>
           <div class="form-group" style="margin-top:1.5rem">
             <input type="email" id="email" name="email" placeholder=" " required autocomplete="email">
-            <label for="email">E-mailadres</label>
+            <label for="email">__I_FORM_EMAIL__</label>
           </div>
           <div class="consent">
             <input type="checkbox" id="consent" required>
-            <label for="consent">Ja, ik ga akkoord met het <a href="https://investinspain.be/privacy-policy/" target="_blank" rel="noopener">privacybeleid</a> en de <a href="https://investinspain.be/algemene-voorwaarden/" target="_blank" rel="noopener">algemene voorwaarden</a>.</label>
+            <label for="consent">__I_FORM_CONSENT_PRE__ <a href="https://investinspain.be/privacy-policy/" target="_blank" rel="noopener">__I_FORM_CONSENT_PRIVACY__</a> __I_FORM_CONSENT_MID__ <a href="https://investinspain.be/algemene-voorwaarden/" target="_blank" rel="noopener">__I_FORM_CONSENT_TERMS__</a>.</label>
           </div>
-          <button type="submit" class="btn">Verzenden</button>
+          <button type="submit" class="btn">__I_FORM_SEND__</button>
         </form>
     </div>
 
     <div class="agent">
-      <div class="label">Uw contactpersoon</div>
+      <div class="label">__I_AGENT_LABEL__</div>
       <img src="__AGENT_PHOTO__" alt="__AGENT_NAME__" class="agent__photo" loading="lazy" width="600" height="450">
       <h3 class="agent__name">__AGENT_NAME__</h3>
-      <p class="agent__role">Real estate associate</p>
+      <p class="agent__role">__I_AGENT_ROLE__</p>
 
       <a href="tel:__AGENT_PHONE_TEL__" class="agent__detail">
         <svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.362 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.338 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
@@ -102,12 +102,12 @@
       </a>
       <a href="tel:+3215257310" class="agent__detail">
         <svg viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 18 0 9 9 0 0 0-18 0z"/><path d="M3 12h18"/><path d="M12 3c2.8 3.1 4.4 6.5 4.4 9s-1.6 5.9-4.4 9"/><path d="M12 3c-2.8 3.1-4.4 6.5-4.4 9s1.6 5.9 4.4 9"/></svg>
-        Kantoor: +32 15 25 73 10
+        __I_OFFICE_LABEL__: +32 15 25 73 10
       </a>
 
       <a href="https://investinspain.be/voorwaarden-inspectiereis/" target="_blank" rel="noopener" class="agent__trust">
         <svg viewBox="0 0 24 24"><path d="M12 2L3 7v5c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V7l-9-5z"/><polyline points="9 12 11 14 15 10"/></svg>
-        <span>Uw inspectiereis naar Spanje wordt 100% vergoed door ons. <strong>Ontdek de voorwaarden →</strong></span>
+        <span>__I_AGENT_TRUST__ <strong>__I_AGENT_TRUST_CTA__</strong></span>
       </a>
     </div>
   </div>
@@ -115,29 +115,29 @@
 
 <!-- ═══════════ IIS BAR ═══════════ -->
 <div class="iis-bar">
-  <img src="https://investinspain.be/wp-content/uploads/2026/05/Logo-investinspain.png" alt="INVESTINSPAIN.BE logo" class="iis-logo">
+  <img src="https://investinspain.be/wp-content/uploads/2026/05/Logo-investinspain.png" alt="__I_IIS_LOGO_ALT__" class="iis-logo">
 </div>
 
 <!-- ═══════════ FOOTER ═══════════ -->
 <footer>
-  <p>&copy; INVESTINSPAIN.BE 2026 &mdash; Alle rechten voorbehouden</p>
-  <p>BA en borgstelling via NV AXA Belgium (polisnr. 730.390.160)</p>
-  <p><a href="https://investinspain.be/privacy-policy/" target="_blank" rel="noopener">Privacybeleid</a> &middot; <a href="https://investinspain.be/algemene-voorwaarden/" target="_blank" rel="noopener">Algemene voorwaarden</a></p>
-  <img src="https://investinspain.be/wp-content/uploads/2026/07/BIV2.0.png" alt="BIV erkend vastgoedmakelaar" class="biv-logo">
+  <p>__I_FOOTER_COPYRIGHT__</p>
+  <p>__I_FOOTER_BA__</p>
+  <p><a href="https://investinspain.be/privacy-policy/" target="_blank" rel="noopener">__I_FOOTER_PRIVACY__</a> &middot; <a href="https://investinspain.be/algemene-voorwaarden/" target="_blank" rel="noopener">__I_FOOTER_TERMS__</a> &middot; <a href="__LANG_SWITCH_HREF__">__I_LANG_SWITCH_LABEL__</a></p>
+  <img src="https://investinspain.be/wp-content/uploads/2026/07/BIV2.0.png" alt="__I_BIV_ALT__" class="biv-logo">
 </footer>
 
 <!-- ═══════════ WHATSAPP FAB ═══════════ -->
 <a href="https://wa.me/__WA_NUMBER__?text=__WA_TEXT_ENCODED__"
-   target="_blank" rel="noopener" class="wa-fab" aria-label="Contact via WhatsApp">
+   target="_blank" rel="noopener" class="wa-fab" aria-label="__I_WA_ARIA__">
   <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.625.846 5.059 2.284 7.034L.789 23.492a.5.5 0 00.612.638l4.67-1.404A11.945 11.945 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-2.24 0-4.31-.726-5.993-1.955l-.348-.262-3.278.986.93-3.156-.28-.373A9.935 9.935 0 012 12C2 6.486 6.486 2 12 2s10 4.486 10 10-4.486 10-10 10z"/></svg>
 </a>
 
 <!-- ═══════════ COOKIEBALK ═══════════ -->
-<div class="cookie-bar" id="cookieBar" role="dialog" aria-label="Cookievoorkeuren">
-  <p>We gebruiken cookies om het bezoek van deze website te analyseren via Google Analytics. Meer info in ons <a href="https://investinspain.be/privacy-policy/" target="_blank" rel="noopener">privacybeleid</a>.</p>
+<div class="cookie-bar" id="cookieBar" role="dialog" aria-label="__I_COOKIE_ARIA__">
+  <p>__I_COOKIE_TEXT_PRE__ <a href="https://investinspain.be/privacy-policy/" target="_blank" rel="noopener">__I_COOKIE_PRIVACY__</a>.</p>
   <div class="cookie-bar__actions">
-    <button type="button" class="btn btn--outline" id="cookieDecline">Weigeren</button>
-    <button type="button" class="btn" id="cookieAccept">Accepteren</button>
+    <button type="button" class="btn btn--outline" id="cookieDecline">__I_COOKIE_DECLINE__</button>
+    <button type="button" class="btn" id="cookieAccept">__I_COOKIE_ACCEPT__</button>
   </div>
 </div>
 
@@ -145,29 +145,29 @@
 <div class="lead-dock" id="leadDock">
   <button class="lead-dock__trigger" id="dockTrigger" aria-expanded="false" aria-controls="dockCard">
     <svg viewBox="0 0 24 24"><path d="M4 4h16v16H4z"/><path d="M4 7l8 6 8-6"/></svg>
-    Prijzen aanvragen
+    __I_DOCK_TRIGGER__
   </button>
 
-  <div class="lead-dock__card" id="dockCard" role="dialog" aria-label="Ontvang projectinformatie">
-    <button class="lead-dock__close" id="dockClose" aria-label="Sluiten">&times;</button>
-    <h4>Prijzen &amp; <em>beschikbaarheid</em></h4>
+  <div class="lead-dock__card" id="dockCard" role="dialog" aria-label="__I_DOCK_ARIA__">
+    <button class="lead-dock__close" id="dockClose" aria-label="__I_DOCK_CLOSE_ARIA__">&times;</button>
+    <h4>__I_DOCK_HEADING_PRE__ <em>__I_DOCK_HEADING_EM__</em></h4>
 
       <form id="dockForm" novalidate>
         <div class="form-group">
           <input type="text" id="d-fname" name="fname" placeholder=" " required autocomplete="given-name">
-          <label for="d-fname">Voornaam</label>
+          <label for="d-fname">__I_FORM_VOORNAAM__</label>
         </div>
         <div class="form-group">
           <input type="text" id="d-lname" name="lname" placeholder=" " required autocomplete="family-name">
-          <label for="d-lname">Achternaam</label>
+          <label for="d-lname">__I_FORM_ACHTERNAAM__</label>
         </div>
         <div class="form-group">
           <input type="email" id="d-email" name="email" placeholder=" " required autocomplete="email">
-          <label for="d-email">E-mailadres</label>
+          <label for="d-email">__I_FORM_EMAIL__</label>
         </div>
         <div class="phone-group">
-          <select class="phone-prefix" id="d-country" name="country" required aria-label="Landcode">
-            <optgroup label="Veelgekozen">
+          <select class="phone-prefix" id="d-country" name="country" required aria-label="__I_FORM_LANDCODE_ARIA__">
+            <optgroup label="__I_PHONE_POPULAR__">
               <option value="+32" data-country="België" selected>🇧🇪 +32</option>
               <option value="+31" data-country="Nederland">🇳🇱 +31</option>
               <option value="+352" data-country="Luxemburg">🇱🇺 +352</option>
@@ -176,7 +176,7 @@
               <option value="+49" data-country="Duitsland">🇩🇪 +49</option>
               <option value="+44" data-country="Verenigd Koninkrijk">🇬🇧 +44</option>
             </optgroup>
-            <optgroup label="Alle landen">
+            <optgroup label="__I_PHONE_ALL_COUNTRIES__">
               <option value="+971" data-country="Ver. Arabische Emiraten">🇦🇪 +971</option>
               <option value="+43" data-country="Oostenrijk">🇦🇹 +43</option>
               <option value="+61" data-country="Australië">🇦🇺 +61</option>
@@ -221,14 +221,14 @@
           </select>
           <div class="form-group">
             <input type="tel" id="d-phone" name="phone" placeholder=" " required autocomplete="tel-national">
-            <label for="d-phone">GSM-nummer</label>
+            <label for="d-phone">__I_FORM_GSM__</label>
           </div>
         </div>
         <div class="consent">
           <input type="checkbox" id="d-consent" required>
-          <label for="d-consent">Ja, ik ga akkoord met het <a href="https://investinspain.be/privacy-policy/" target="_blank" rel="noopener">privacybeleid</a> en de <a href="https://investinspain.be/algemene-voorwaarden/" target="_blank" rel="noopener">algemene voorwaarden</a>.</label>
+          <label for="d-consent">__I_FORM_CONSENT_PRE__ <a href="https://investinspain.be/privacy-policy/" target="_blank" rel="noopener">__I_FORM_CONSENT_PRIVACY__</a> __I_FORM_CONSENT_MID__ <a href="https://investinspain.be/algemene-voorwaarden/" target="_blank" rel="noopener">__I_FORM_CONSENT_TERMS__</a>.</label>
         </div>
-        <button type="submit" class="btn">Verzenden</button>
+        <button type="submit" class="btn">__I_FORM_SEND__</button>
       </form>
   </div>
 </div>
@@ -236,31 +236,31 @@
 <!-- ═══════════ STICKY CTA BAR ═══════════ -->
 <div class="sticky-cta" id="stickyCta">
   <div class="sticky-cta__text">__PRICE_LABEL__ <span>__PRICE_AMOUNT__</span></div>
-  <a href="#contact" class="btn">Ontvang info</a>
+  <a href="#contact" class="btn">__I_STICKY_CTA_BTN__</a>
 </div>
 
 <!-- ═══════════ MODAL POP-UP ═══════════ -->
 <div class="modal-overlay" id="modalOverlay">
   <div class="modal">
-    <button class="modal__close" id="modalClose" aria-label="Sluiten">&times;</button>
-    <h3>Ontvang prijzen &<br><em>beschikbaarheid</em></h3>
-    <p>Laat uw gegevens achter en ontvang alle projectinformatie over __PROJECT_NAME__ rechtstreeks in uw inbox.</p>
+    <button class="modal__close" id="modalClose" aria-label="__I_DOCK_CLOSE_ARIA__">&times;</button>
+    <h3>__I_MODAL_HEADING_PRE__<br><em>__I_MODAL_HEADING_EM__</em></h3>
+    <p>__I_MODAL_INTRO__</p>
     <form id="modalForm" novalidate>
       <div class="form-group">
         <input type="text" id="m-fname" name="fname" placeholder=" " required autocomplete="given-name">
-        <label for="m-fname">Voornaam</label>
+        <label for="m-fname">__I_FORM_VOORNAAM__</label>
       </div>
       <div class="form-group">
         <input type="text" id="m-lname" name="lname" placeholder=" " required autocomplete="family-name">
-        <label for="m-lname">Achternaam</label>
+        <label for="m-lname">__I_FORM_ACHTERNAAM__</label>
       </div>
       <div class="form-group">
         <input type="email" id="m-email" name="email" placeholder=" " required autocomplete="email">
-        <label for="m-email">E-mailadres</label>
+        <label for="m-email">__I_FORM_EMAIL__</label>
       </div>
       <div class="phone-group">
-        <select class="phone-prefix" id="m-country" name="country" required aria-label="Landcode">
-          <optgroup label="Veelgekozen">
+        <select class="phone-prefix" id="m-country" name="country" required aria-label="__I_FORM_LANDCODE_ARIA__">
+          <optgroup label="__I_PHONE_POPULAR__">
             <option value="+32" data-country="België" selected>🇧🇪 +32</option>
             <option value="+31" data-country="Nederland">🇳🇱 +31</option>
             <option value="+352" data-country="Luxemburg">🇱🇺 +352</option>
@@ -269,7 +269,7 @@
             <option value="+49" data-country="Duitsland">🇩🇪 +49</option>
             <option value="+44" data-country="Verenigd Koninkrijk">🇬🇧 +44</option>
           </optgroup>
-          <optgroup label="Alle landen">
+          <optgroup label="__I_PHONE_ALL_COUNTRIES__">
             <option value="+971" data-country="Ver. Arabische Emiraten">🇦🇪 +971</option>
             <option value="+43" data-country="Oostenrijk">🇦🇹 +43</option>
             <option value="+61" data-country="Australië">🇦🇺 +61</option>
@@ -314,14 +314,14 @@
         </select>
         <div class="form-group">
           <input type="tel" id="m-phone" name="phone" placeholder=" " required autocomplete="tel-national">
-          <label for="m-phone">GSM-nummer</label>
+          <label for="m-phone">__I_FORM_GSM__</label>
         </div>
       </div>
       <div class="consent" style="margin-top:1rem">
         <input type="checkbox" id="m-consent" required>
-        <label for="m-consent">Ja, ik ga akkoord met het <a href="https://investinspain.be/privacy-policy/" target="_blank" rel="noopener">privacybeleid</a> en de <a href="https://investinspain.be/algemene-voorwaarden/" target="_blank" rel="noopener">algemene voorwaarden</a>.</label>
+        <label for="m-consent">__I_FORM_CONSENT_PRE__ <a href="https://investinspain.be/privacy-policy/" target="_blank" rel="noopener">__I_FORM_CONSENT_PRIVACY__</a> __I_FORM_CONSENT_MID__ <a href="https://investinspain.be/algemene-voorwaarden/" target="_blank" rel="noopener">__I_FORM_CONSENT_TERMS__</a>.</label>
       </div>
-      <button type="submit" class="btn" style="width:100%;justify-content:center">Verzenden</button>
+      <button type="submit" class="btn" style="width:100%;justify-content:center">__I_FORM_SEND__</button>
     </form>
   </div>
 </div>
@@ -420,7 +420,7 @@
   form.addEventListener('submit', function(e) {
     e.preventDefault();
     var valid = true;
-    var errorMsg = 'Dit veld is verplicht';
+    var errorMsg = '__I_ERR_REQUIRED__';
 
     form.querySelectorAll('.form-error').forEach(function(el) { el.classList.remove('is-active'); });
     form.querySelectorAll('input').forEach(function(el) { el.style.borderBottomColor = ''; el.style.borderColor = ''; });
@@ -429,7 +429,7 @@
     inputs.forEach(function(input) {
       if (!input.value.trim()) { valid = false; showError(input, errorMsg); }
       else if (input.type === 'email' && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(input.value)) {
-        valid = false; showError(input, 'Ongeldig e-mailadres');
+        valid = false; showError(input, '__I_ERR_EMAIL__');
       }
     });
 
@@ -444,14 +444,14 @@
         err.setAttribute('role', 'alert');
         consentWrap.after(err);
       }
-      err.textContent = 'U moet akkoord gaan om verder te gaan';
+      err.textContent = '__I_ERR_CONSENT__';
       err.classList.add('is-active');
       checkbox.style.borderColor = '#c0392b';
     }
 
     if (valid) {
       sendToZapier(form, 'hoofdformulier');
-      window.location.href = '/bedankt/';
+      window.location.href = '__THANKS_HREF__';
     }
   });
 
@@ -585,7 +585,7 @@
   modalForm.addEventListener('submit', function(e) {
     e.preventDefault();
     var valid = true;
-    var errorMsg = 'Dit veld is verplicht';
+    var errorMsg = '__I_ERR_REQUIRED__';
 
     modalForm.querySelectorAll('.form-error').forEach(function(el) { el.classList.remove('is-active'); });
     modalForm.querySelectorAll('input').forEach(function(el) { el.style.borderBottomColor = ''; el.style.borderColor = ''; });
@@ -594,7 +594,7 @@
     inputs.forEach(function(input) {
       if (!input.value.trim()) { valid = false; showError(input, errorMsg); }
       else if (input.type === 'email' && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(input.value)) {
-        valid = false; showError(input, 'Ongeldig e-mailadres');
+        valid = false; showError(input, '__I_ERR_EMAIL__');
       }
     });
 
@@ -609,14 +609,14 @@
         err.setAttribute('role', 'alert');
         consentWrap.after(err);
       }
-      err.textContent = 'U moet akkoord gaan om verder te gaan';
+      err.textContent = '__I_ERR_CONSENT__';
       err.classList.add('is-active');
       mConsent.style.borderColor = '#c0392b';
     }
 
     if (valid) {
       sendToZapier(modalForm, 'pop-up');
-      window.location.href = '/bedankt/';
+      window.location.href = '__THANKS_HREF__';
     }
   });
 
@@ -689,9 +689,9 @@
     dockForm.querySelectorAll('input').forEach(function(el) { el.style.borderBottomColor = ''; el.style.borderColor = ''; });
 
     dockForm.querySelectorAll('input[required]:not([type="checkbox"])').forEach(function(input) {
-      if (!input.value.trim()) { valid = false; showError(input, 'Dit veld is verplicht'); }
+      if (!input.value.trim()) { valid = false; showError(input, '__I_ERR_REQUIRED__'); }
       else if (input.type === 'email' && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(input.value)) {
-        valid = false; showError(input, 'Ongeldig e-mailadres');
+        valid = false; showError(input, '__I_ERR_EMAIL__');
       }
     });
 
@@ -705,14 +705,14 @@
         err.setAttribute('role', 'alert');
         wrap.after(err);
       }
-      err.textContent = 'U moet akkoord gaan om verder te gaan';
+      err.textContent = '__I_ERR_CONSENT__';
       err.classList.add('is-active');
       dockConsent.style.borderColor = '#c0392b';
     }
 
     if (valid) {
       sendToZapier(dockForm, 'zijpaneel');
-      window.location.href = '/bedankt/';
+      window.location.href = '__THANKS_HREF__';
     }
   });
 
