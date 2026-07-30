@@ -11,8 +11,8 @@ DATA = {
     "OG_TITLE": f"{PROJECT_NAME} Casares Golf — Moderne Architectuur",
     "OG_DESCRIPTION": "Ontdek SKYE Casares Golf: infinity zwembad, zeezicht en een perfecte combinatie van rust en verfijning. Vanaf €423.000.",
     "OG_IMAGE": "https://investinspain.be/wp-content/uploads/2025/08/Skye-2.jpg",
-    "HERO_BG": "https://investinspain.be/wp-content/uploads/2025/08/Skye-2.jpg",
-    "HERO_BG_ALT": "SKYE Casares Golf — luchtfoto van het complex met zicht op zee",
+    "HERO_BG": "https://investinspain.be/wp-content/uploads/2025/08/Skye-11.jpg",
+    "HERO_BG_ALT": "SKYE Casares Golf — zwembad met ligbedden en zeezicht",
     "HERO_NAME": "SKYE",
     "HERO_LOCATION": "CASARES GOLF",
     "HERO_PRICE": PRICE_FROM,
@@ -31,7 +31,7 @@ DATA_EN = {
     "META_DESCRIPTION": "SKYE Casares Golf: modern architecture and high-end finishes, amid greenery with the Mediterranean Sea as a backdrop. From €423.000.",
     "OG_TITLE": f"{PROJECT_NAME} Casares Golf — Modern Architecture",
     "OG_DESCRIPTION": "Discover SKYE Casares Golf: infinity pool, sea views and the perfect combination of tranquility and refinement. From €423.000.",
-    "HERO_BG_ALT": "SKYE Casares Golf — aerial view of the complex overlooking the sea",
+    "HERO_BG_ALT": "SKYE Casares Golf — pool with sun loungers and sea views",
 }
 
 # Gebruikt door de /projecten/ overzichtspagina (kaart + kaartjes)
@@ -39,7 +39,7 @@ HUB = {
     "NAME": PROJECT_NAME,
     "LOCATION": "Casares",
     "PRICE": PRICE_FROM,
-    "THUMB": "https://investinspain.be/wp-content/uploads/2025/08/Skye-2.jpg",
+    "THUMB": "https://investinspain.be/wp-content/uploads/2025/08/Skye-11.jpg",
     "LAT": 36.395767123581,
     "LNG": -5.2269923686981,
     "HREF": "/skye/",
