@@ -11,8 +11,8 @@ DATA = {
     "OG_TITLE": f"{PROJECT_NAME} — Luxe Appartementen & Penthouses",
     "OG_DESCRIPTION": "Ontdek Romero: 28 designwoningen met zoutwater infinity pool, gym en coworkingruimte in Real de la Quinta. Vanaf €1.150.000.",
     "OG_IMAGE": "https://investinspain.be/wp-content/uploads/2026/07/Romero-Real-de-la-Quinta_012.Aerial-View.render.jpg",
-    "HERO_BG": "https://investinspain.be/wp-content/uploads/2026/07/Romero-Real-de-la-Quinta_012.Aerial-View.render.jpg",
-    "HERO_BG_ALT": "Romero — luchtfoto van het exclusieve complex in de heuvels met zeezicht",
+    "HERO_BG": "https://investinspain.be/wp-content/uploads/2026/07/Romero-Real-de-la-Quinta_101.Pedestrian-entrance-Communal-Swimming-Pool-Block-3-4.render.jpg",
+    "HERO_BG_ALT": "Romero — voetgangersentree bij het gemeenschappelijke zwembad",
     "HERO_BG_POSITION": "top",
     # De herofoto heeft een storende watermerktekst in de rechterbenedenhoek;
     # op smalle/mobiele schermen (geen verticale crop) blijft die anders
@@ -40,7 +40,7 @@ DATA_EN = {
     "META_DESCRIPTION": "Romero: exclusive luxury apartments with sea views in Real de la Quinta, Marbella. From €1.150.000.",
     "OG_TITLE": f"{PROJECT_NAME} — Luxury Apartments & Penthouses",
     "OG_DESCRIPTION": "Discover Romero: 28 design homes with a saltwater infinity pool, gym and coworking space in Real de la Quinta. From €1.150.000.",
-    "HERO_BG_ALT": "Romero — aerial view of the exclusive complex in the hills with sea views",
+    "HERO_BG_ALT": "Romero — pedestrian entrance by the communal swimming pool",
 }
 
 # Gebruikt door de /projecten/ overzichtspagina (kaart + kaartjes)
