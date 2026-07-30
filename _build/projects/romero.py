@@ -48,13 +48,7 @@ HUB = {
     "NAME": PROJECT_NAME,
     "LOCATION": "Real de la Quinta",
     "PRICE": PRICE_FROM,
-    "THUMB": "https://investinspain.be/wp-content/uploads/2026/07/Romero-Real-de-la-Quinta_012.Aerial-View.render.jpg",
-    # De kaart-crop is smaller dan de foto's eigen verhouding, waardoor er
-    # standaard links/rechts (niet boven/onder) wordt bijgesneden - de
-    # watermerktekst onderaan blijft dus gewoon zichtbaar. Duwt de foto
-    # daarom zelf wat naar boven uit, vast (!important wint van de
-    # hover-zoom van .project-card, die hierdoor voor dit kaartje vervalt).
-    "THUMB_EXTRA_CSS": "transform: scale(1.18) !important; transform-origin: center top;",
+    "THUMB": "https://investinspain.be/wp-content/uploads/2026/07/Romero-Real-de-la-Quinta_101.Pedestrian-entrance-Communal-Swimming-Pool-Block-3-4.render.jpg",
     "LAT": 36.5353281,
     "LNG": -4.9791269,
     "HREF": "/romero/",
