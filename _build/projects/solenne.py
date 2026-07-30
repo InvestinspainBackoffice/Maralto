@@ -10,9 +10,9 @@ DATA = {
     "META_DESCRIPTION": "Solenne: elegant boutique-project met 21 woningen, 2 of 3 slaapkamers, in het prestigieuze Benahavís. Golfsimulator, overdekt verwarmd zwembad en spa. Vanaf €990.000.",
     "OG_TITLE": f"{PROJECT_NAME} — Boutique-appartementen",
     "OG_DESCRIPTION": "Ontdek Solenne: stijlvolle appartementen met ruime terrassen, uitzicht op heuvels en de Middellandse Zee, in het prestigieuze Benahavís. Vanaf €990.000.",
-    "OG_IMAGE": "https://investinspain.be/wp-content/uploads/2026/01/SOLENNE-004.jpg",
-    "HERO_BG": "https://investinspain.be/wp-content/uploads/2026/01/SOLENNE-004.jpg",
-    "HERO_BG_ALT": "Solenne — infinity pool bij zonsondergang met zicht over de kust",
+    "OG_IMAGE": "https://investinspain.be/wp-content/uploads/2026/07/SOLENNE-001-scaled.jpg",
+    "HERO_BG": "https://investinspain.be/wp-content/uploads/2026/07/SOLENNE-001-scaled.jpg",
+    "HERO_BG_ALT": "Solenne — luchtfoto van het complex met zwembad bij schemering",
     "HERO_NAME": "SOLENNE",
     "HERO_LOCATION": "BENAHAVÍS",
     "HERO_PRICE": PRICE_FROM,
@@ -31,7 +31,7 @@ DATA_EN = {
     "META_DESCRIPTION": "Solenne: elegant boutique project with 21 homes, 2 or 3 bedrooms, in prestigious Benahavís. Golf simulator, covered heated pool and spa. From €990.000.",
     "OG_TITLE": f"{PROJECT_NAME} — Boutique Apartments",
     "OG_DESCRIPTION": "Discover Solenne: stylish apartments with spacious terraces, views of the hills and the Mediterranean Sea, in prestigious Benahavís. From €990.000.",
-    "HERO_BG_ALT": "Solenne — infinity pool at sunset overlooking the coast",
+    "HERO_BG_ALT": "Solenne — aerial view of the complex with pool at dusk",
 }
 
 # Gebruikt door de /projecten/ overzichtspagina (kaart + kaartjes)
@@ -39,7 +39,7 @@ HUB = {
     "NAME": PROJECT_NAME,
     "LOCATION": "Benahavís",
     "PRICE": PRICE_FROM,
-    "THUMB": "https://investinspain.be/wp-content/uploads/2026/01/SOLENNE-004.jpg",
+    "THUMB": "https://investinspain.be/wp-content/uploads/2026/07/SOLENNE-001-scaled.jpg",
     "LAT": 36.505856521457,
     "LNG": -5.0096572906735,
     "HREF": "/solenne/",

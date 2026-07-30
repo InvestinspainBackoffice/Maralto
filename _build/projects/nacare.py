@@ -10,9 +10,9 @@ DATA = {
     "META_DESCRIPTION": "Nacaré: 20 exclusieve appartementen met 3 of 4 slaapkamers in Estepona, met panoramisch zeezicht en een private Owners Club. Vanaf €2.500.000.",
     "OG_TITLE": f"{PROJECT_NAME} — Exclusieve Appartementen",
     "OG_DESCRIPTION": "Ontdek Nacaré: architectuur, design en beleving komen samen in dit nieuwbouwproject in Estepona, met een private Owners Club vol wellness en sportvoorzieningen. Vanaf €2.500.000.",
-    "OG_IMAGE": "https://investinspain.be/wp-content/uploads/2026/04/NA-001.jpg",
-    "HERO_BG": "https://investinspain.be/wp-content/uploads/2026/04/NA-001.jpg",
-    "HERO_BG_ALT": "Nacaré — luchtfoto van de kust van Estepona",
+    "OG_IMAGE": "https://investinspain.be/wp-content/uploads/2026/04/NA-003.jpg",
+    "HERO_BG": "https://investinspain.be/wp-content/uploads/2026/04/NA-003.jpg",
+    "HERO_BG_ALT": "Nacaré — gevel van het gebouw tussen het groen",
     "HERO_NAME": "NACARÉ",
     "HERO_LOCATION": "ESTEPONA",
     "HERO_PRICE": PRICE_FROM,
@@ -31,7 +31,7 @@ DATA_EN = {
     "META_DESCRIPTION": "Nacaré: 20 exclusive apartments with 3 or 4 bedrooms in Estepona, with panoramic sea views and a private Owners Club. From €2.500.000.",
     "OG_TITLE": f"{PROJECT_NAME} — Exclusive Apartments",
     "OG_DESCRIPTION": "Discover Nacaré: architecture, design and experience come together in this new-build project in Estepona, with a private Owners Club full of wellness and sports facilities. From €2.500.000.",
-    "HERO_BG_ALT": "Nacaré — aerial view of the Estepona coastline",
+    "HERO_BG_ALT": "Nacaré — facade of the building amid greenery",
 }
 
 # Gebruikt door de /projecten/ overzichtspagina (kaart + kaartjes)
@@ -39,7 +39,7 @@ HUB = {
     "NAME": PROJECT_NAME,
     "LOCATION": "Estepona",
     "PRICE": PRICE_FROM,
-    "THUMB": "https://investinspain.be/wp-content/uploads/2026/04/NA-001.jpg",
+    "THUMB": "https://investinspain.be/wp-content/uploads/2026/04/NA-003.jpg",
     "LAT": 36.42980056060396,
     "LNG": -5.134549942285611,
     "HREF": "/nacare/",
