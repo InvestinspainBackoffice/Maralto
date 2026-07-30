@@ -49,6 +49,11 @@ HUB = {
     "LOCATION": "Real de la Quinta",
     "PRICE": PRICE_FROM,
     "THUMB": "https://investinspain.be/wp-content/uploads/2026/07/Romero-Real-de-la-Quinta_101.Pedestrian-entrance-Communal-Swimming-Pool-Block-3-4.render.jpg",
+    # Deze render heeft een disclaimer-tekststrook onderaan ("The furniture
+    # shown is illustrative..."); de kaart-crop is breder dan de foto zelf,
+    # dus er wordt enkel links/rechts bijgesneden en de tekst blijft anders
+    # gewoon zichtbaar. Duwt de foto daarom zelf wat naar boven uit, vast.
+    "THUMB_EXTRA_CSS": "transform: scale(1.2) !important; transform-origin: center top;",
     "LAT": 36.5353281,
     "LNG": -4.9791269,
     "HREF": "/romero/",
