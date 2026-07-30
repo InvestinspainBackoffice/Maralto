@@ -10,9 +10,9 @@ DATA = {
     "META_DESCRIPTION": "Ikkil Bay: 9 villa-appartementen en 1 duplex penthouse, frontline beach aan Playa del Cristo in Estepona. Verwarmd binnenzwembad, sauna en directe strandtoegang. Vanaf €3.003.000.",
     "OG_TITLE": f"{PROJECT_NAME} — Villa-appartementen & Penthouse",
     "OG_DESCRIPTION": "Ontdek Ikkil Bay: frontline beach wonen met privézwembad, adembenemend zeezicht en directe toegang tot het strand in Estepona. Vanaf €3.003.000.",
-    "OG_IMAGE": "https://investinspain.be/wp-content/uploads/2020/07/Ikkil-Bay-Showflat3.jpg",
-    "HERO_BG": "https://investinspain.be/wp-content/uploads/2020/07/Ikkil-Bay-Showflat3.jpg",
-    "HERO_BG_ALT": "Ikkil Bay — terras met loungebank en panoramisch zeezicht",
+    "OG_IMAGE": "https://investinspain.be/wp-content/uploads/2026/07/FACHADA-PRINCIPAL.Ikkil-Bay-scaled.jpg",
+    "HERO_BG": "https://investinspain.be/wp-content/uploads/2026/07/FACHADA-PRINCIPAL.Ikkil-Bay-scaled.jpg",
+    "HERO_BG_ALT": "Ikkil Bay — hoofdgevel van de villa bij avondlicht",
     "HERO_NAME": "IKKIL BAY",
     "HERO_LOCATION": "ESTEPONA",
     "HERO_PRICE": PRICE_FROM,
@@ -31,7 +31,7 @@ DATA_EN = {
     "META_DESCRIPTION": "Ikkil Bay: 9 villa-apartments and 1 duplex penthouse, frontline beach on Playa del Cristo in Estepona. Heated indoor pool, sauna and direct beach access. From €3,003,000.",
     "OG_TITLE": f"{PROJECT_NAME} — Villa-apartments & Penthouse",
     "OG_DESCRIPTION": "Discover Ikkil Bay: frontline beach living with a private pool, breathtaking sea views and direct beach access in Estepona. From €3,003,000.",
-    "HERO_BG_ALT": "Ikkil Bay — terrace with lounge seating and panoramic sea view",
+    "HERO_BG_ALT": "Ikkil Bay — main facade of the villa at dusk",
 }
 
 # Gebruikt door de /projecten/ overzichtspagina (kaart + kaartjes)
@@ -39,7 +39,7 @@ HUB = {
     "NAME": PROJECT_NAME,
     "LOCATION": "Estepona",
     "PRICE": PRICE_FROM,
-    "THUMB": "https://investinspain.be/wp-content/uploads/2020/07/Ikkil-Bay-Showflat3.jpg",
+    "THUMB": "https://investinspain.be/wp-content/uploads/2026/07/FACHADA-PRINCIPAL.Ikkil-Bay-scaled.jpg",
     "LAT": 36.417125823855,
     "LNG": -5.1652550752558,
     "HREF": "/ikkil-bay/",

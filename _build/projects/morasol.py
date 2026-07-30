@@ -10,9 +10,9 @@ DATA = {
     "META_DESCRIPTION": "Morasol: 151 woningen met 2 of 3 slaapkamers in Manilva, op wandelafstand van het strand. Gemeenschappelijk zwembad en mediterrane tuinen. Vanaf €351.520.",
     "OG_TITLE": f"{PROJECT_NAME} — Appartementen & Penthouses",
     "OG_DESCRIPTION": "Ontdek Morasol: comfort, privacy en levenskwaliteit in een exclusief nieuwbouwcomplex in Manilva, met privéterrassen en zeezicht. Vanaf €351.520.",
-    "OG_IMAGE": "https://investinspain.be/wp-content/uploads/2025/10/Morasol-Manilva-INVESTINSPAIN-1.jpg",
-    "HERO_BG": "https://investinspain.be/wp-content/uploads/2025/10/Morasol-Manilva-INVESTINSPAIN-1.jpg",
-    "HERO_BG_ALT": "Morasol — dakterras met loungezetels en zicht op zee",
+    "OG_IMAGE": "https://investinspain.be/wp-content/uploads/2025/10/Morasol-Manilva-INVESTINSPAIN-2.jpg",
+    "HERO_BG": "https://investinspain.be/wp-content/uploads/2025/10/Morasol-Manilva-INVESTINSPAIN-2.jpg",
+    "HERO_BG_ALT": "Morasol — gemeenschappelijk zwembad bij schemering met zicht op zee",
     "HERO_NAME": "MORASOL",
     "HERO_LOCATION": "MANILVA",
     "HERO_PRICE": PRICE_FROM,
@@ -31,7 +31,7 @@ DATA_EN = {
     "META_DESCRIPTION": "Morasol: 151 homes with 2 or 3 bedrooms in Manilva, within walking distance of the beach. Communal pool and Mediterranean gardens. From €351.520.",
     "OG_TITLE": f"{PROJECT_NAME} — Apartments & Penthouses",
     "OG_DESCRIPTION": "Discover Morasol: comfort, privacy and quality of life in an exclusive new-build complex in Manilva, with private terraces and sea views. From €351.520.",
-    "HERO_BG_ALT": "Morasol — rooftop terrace with lounge chairs and sea view",
+    "HERO_BG_ALT": "Morasol — communal swimming pool at dusk with sea view",
 }
 
 # Gebruikt door de /projecten/ overzichtspagina (kaart + kaartjes)
@@ -39,7 +39,7 @@ HUB = {
     "NAME": PROJECT_NAME,
     "LOCATION": "Manilva",
     "PRICE": PRICE_FROM,
-    "THUMB": "https://investinspain.be/wp-content/uploads/2025/10/Morasol-Manilva-INVESTINSPAIN-1.jpg",
+    "THUMB": "https://investinspain.be/wp-content/uploads/2025/10/Morasol-Manilva-INVESTINSPAIN-2.jpg",
     "LAT": 36.321681748191,
     "LNG": -5.2482868359576,
     "HREF": "/morasol/",
