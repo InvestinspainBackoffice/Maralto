@@ -7,9 +7,9 @@ WA_MESSAGE = f"Hallo, ik heb interesse in {PROJECT_NAME}. Kan ik meer informatie
 DATA = {
     "SLUG": "the-view",
     "TITLE": f"{PROJECT_NAME} — INVESTINSPAIN.BE",
-    "META_DESCRIPTION": "The View Marbella: luxe appartementen tussen Marbella en Benahavís met panoramisch zee- en golfzicht. Vanaf €899.000.",
-    "OG_TITLE": f"{PROJECT_NAME} — Luxe Appartementen",
-    "OG_DESCRIPTION": "Ontdek The View Marbella: boutique complex met 24u beveiliging, conciërgedienst, spa en binnen- en buitenzwembaden. Vanaf €899.000.",
+    "META_DESCRIPTION": "The View Marbella Fase II & III: 58 luxe appartementen en penthouses met 2, 3 of 4 slaapkamers in Las Colinas de Marbella, tussen Marbella en Benahavís. Vanaf €899.000.",
+    "OG_TITLE": f"{PROJECT_NAME} — Fase II & III: Luxe Appartementen & Penthouses",
+    "OG_DESCRIPTION": "Ontdek Fase II & III van The View Marbella: privézwembaden, wellness club, business center met golfsimulator en panoramisch zee- en golfzicht. Vanaf €899.000.",
     "OG_IMAGE": "https://homeinspain.be/wp-content/uploads/2026/07/Block-7-scaled.jpg",
     "HERO_BG": "https://homeinspain.be/wp-content/uploads/2026/07/Block-7-scaled.jpg",
     "HERO_BG_ALT": "The View Marbella — gebogen architectuur tegen de heuvel",
@@ -28,9 +28,9 @@ DATA = {
 }
 
 DATA_EN = {
-    "META_DESCRIPTION": "The View Marbella: luxury apartments between Marbella and Benahavís with panoramic sea and golf views. From €899,000.",
-    "OG_TITLE": f"{PROJECT_NAME} — Luxury Apartments",
-    "OG_DESCRIPTION": "Discover The View Marbella: boutique complex with 24-hour security, concierge service, spa and indoor and outdoor swimming pools. From €899,000.",
+    "META_DESCRIPTION": "The View Marbella Phase II & III: 58 luxury apartments and penthouses with 2, 3 or 4 bedrooms in Las Colinas de Marbella, between Marbella and Benahavís. From €899,000.",
+    "OG_TITLE": f"{PROJECT_NAME} — Phase II & III: Luxury Apartments & Penthouses",
+    "OG_DESCRIPTION": "Discover Phase II & III of The View Marbella: private pools, a wellness club, a business centre with golf simulator and panoramic sea and golf views. From €899,000.",
     "HERO_BG_ALT": "The View Marbella — curved architecture set against the hillside",
 }
 
