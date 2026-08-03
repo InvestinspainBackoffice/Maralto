@@ -10,9 +10,9 @@ DATA = {
     "META_DESCRIPTION": "The Sky Marbella: luxe appartementen, penthouses en villa's boven La Quinta, Benahavís. Vanaf €1.495.000.",
     "OG_TITLE": f"{PROJECT_NAME} — Luxe Appartementen & Villa's",
     "OG_DESCRIPTION": "Ontdek The Sky Marbella: panoramisch zee- en bergzicht, 24/7 security en afwerkingen van Gunni & Trentino. Vanaf €1.495.000.",
-    "OG_IMAGE": "https://investinspain.be/wp-content/uploads/2023/10/The-Sky-Marbella-Villas-main-exterior-render.jpeg",
-    "HERO_BG": "https://investinspain.be/wp-content/uploads/2023/10/The-Sky-Marbella-Villas-main-exterior-render.jpeg",
-    "HERO_BG_ALT": "The Sky Marbella — infinity zwembad bij schemering met panoramisch uitzicht",
+    "OG_IMAGE": "https://investinspain.be/wp-content/uploads/2026/08/The-Sky-scaled.jpeg",
+    "HERO_BG": "https://investinspain.be/wp-content/uploads/2026/08/The-Sky-scaled.jpeg",
+    "HERO_BG_ALT": "The Sky Marbella — gebogen gevel met zwembad en bergzicht",
     "HERO_NAME": "THE SKY",
     "HERO_LOCATION": "BENAHAVÍS",
     "HERO_PRICE": PRICE_FROM,
@@ -31,7 +31,7 @@ DATA_EN = {
     "META_DESCRIPTION": "The Sky Marbella: luxury apartments, penthouses and villas above La Quinta, Benahavís. From €1,495,000.",
     "OG_TITLE": f"{PROJECT_NAME} — Luxury Apartments & Villas",
     "OG_DESCRIPTION": "Discover The Sky Marbella: panoramic sea and mountain views, 24/7 security and finishes by Gunni & Trentino. From €1,495,000.",
-    "HERO_BG_ALT": "The Sky Marbella — infinity pool at dusk with panoramic views",
+    "HERO_BG_ALT": "The Sky Marbella — curved facade with pool and mountain views",
 }
 
 # Gebruikt door de /projecten/ overzichtspagina (kaart + kaartjes)
@@ -39,7 +39,7 @@ HUB = {
     "NAME": PROJECT_NAME,
     "LOCATION": "Benahavís",
     "PRICE": PRICE_FROM,
-    "THUMB": "https://investinspain.be/wp-content/uploads/2023/10/The-Sky-Marbella-Villas-main-exterior-render.jpeg",
+    "THUMB": "https://investinspain.be/wp-content/uploads/2026/08/The-Sky-scaled.jpeg",
     "LAT": 36.5226179,
     "LNG": -4.9993343,
     "HREF": "/the-sky-marbella/",
