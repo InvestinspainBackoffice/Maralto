@@ -54,6 +54,10 @@ HUB = {
     # dus er wordt enkel links/rechts bijgesneden en de tekst blijft anders
     # gewoon zichtbaar. Duwt de foto daarom zelf wat naar boven uit, vast.
     "THUMB_EXTRA_CSS": "transform: scale(1.2) !important; transform-origin: center top;",
+    # Zonder deze hover-variant zou de !important hierboven de normale
+    # hover-zoom van .project-card:hover overschrijven, waardoor dit
+    # kaartje als enige geen animatie toont.
+    "THUMB_HOVER_EXTRA_CSS": "transform: scale(1.26) !important; transform-origin: center top;",
     "LAT": 36.5353281,
     "LNG": -4.9791269,
     "HREF": "/romero/",

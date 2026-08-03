@@ -206,11 +206,17 @@ def build(lang):
         {"name": e["NAME"], "thumb": e["THUMB"], "href": e["HREF"]}
         for e in hero_entries
     ]
-    card_extra_css = "\n".join(
-        f".project-card--{e['SLUG']} .project-card__img {{ {e['THUMB_EXTRA_CSS']} }}"
-        for e in entries
-        if e.get("THUMB_EXTRA_CSS")
-    )
+    card_extra_css_parts = []
+    for e in entries:
+        if e.get("THUMB_EXTRA_CSS"):
+            card_extra_css_parts.append(
+                f".project-card--{e['SLUG']} .project-card__img {{ {e['THUMB_EXTRA_CSS']} }}"
+            )
+        if e.get("THUMB_HOVER_EXTRA_CSS"):
+            card_extra_css_parts.append(
+                f".project-card--{e['SLUG']}:hover .project-card__img {{ {e['THUMB_HOVER_EXTRA_CSS']} }}"
+            )
+    card_extra_css = "\n".join(card_extra_css_parts)
 
     with open(os.path.join(TEMPLATES, "hub.html"), encoding="utf-8") as f:
         page = f.read()
