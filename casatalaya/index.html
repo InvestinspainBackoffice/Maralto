@@ -1538,6 +1538,22 @@ footer a {
 
 <script>
 (function(){
+  // Landkeuze in de telefoonvelden voorinvullen op basis van het land van
+  // de bezoeker (IP-detectie), i.p.v. altijd standaard België. Faalt de
+  // lookup (netwerk, rate limit, ...), dan blijft gewoon België staan.
+  fetch('https://ipapi.co/json/')
+    .then(function(r){ return r.json(); })
+    .then(function(data){
+      var code = data && data.country_calling_code;
+      if (!code) return;
+      document.querySelectorAll('.phone-prefix').forEach(function(sel){
+        if (sel.querySelector('option[value="' + code + '"]')) sel.value = code;
+      });
+    })
+    .catch(function(){});
+})();
+
+(function(){
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
