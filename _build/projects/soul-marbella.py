@@ -32,6 +32,7 @@ DATA_EN = {
     "OG_TITLE": f"{PROJECT_NAME} — Apartments, Penthouses & Villas",
     "OG_DESCRIPTION": "Discover Soul Marbella: carefully designed homes full of natural light, with a shared pool, gym, sauna and social club near Santa Clara Golf. From €1,500,000.",
     "HERO_BG_ALT": "Soul Marbella — shared pool with cabanas and palm trees",
+    "HERO_LOCATION": "EAST MARBELLA",
 }
 
 # Gebruikt door de /projecten/ overzichtspagina (kaart + kaartjes)
