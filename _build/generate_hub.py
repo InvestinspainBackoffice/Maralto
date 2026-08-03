@@ -147,6 +147,7 @@ def entry_for_lang(entry, lang):
     price_translations = {
         "Prijs op aanvraag": "Price on request",
         "Binnenkort beschikbaar": "Coming soon",
+        "Uitverkocht": "Sold out",
     }
     out["PRICE"] = price_translations.get(
         out["PRICE"], out["PRICE"].replace("Vanaf €", "From €")
