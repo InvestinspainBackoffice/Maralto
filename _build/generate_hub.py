@@ -22,6 +22,8 @@ PROJECTS_DIR = os.path.join(ROOT, "_build", "projects")
 
 LANGUAGES = ["nl", "en"]
 
+HUB_OG_IMAGE = "https://investinspain.be/wp-content/uploads/2026/07/SOLENNE-001-scaled.jpg"
+
 HUB_TEXT = {
     "nl": {
         "TITLE": "Onze projecten — INVESTINSPAIN.BE",
@@ -224,6 +226,7 @@ def build(lang):
     page = page.replace("__HUB_TITLE__", text["TITLE"])
     page = page.replace("__HUB_META_DESCRIPTION__", text["META_DESCRIPTION"])
     page = page.replace("__HUB_OG_DESCRIPTION__", text["OG_DESCRIPTION"])
+    page = page.replace("__HUB_OG_IMAGE__", HUB_OG_IMAGE)
     for key, value in i18n.strings_for(lang).items():
         page = page.replace(f"__I_{key}__", value)
     page = page.replace("__LANG_SWITCH_HREF__", "/" if lang == "en" else "/en/")
