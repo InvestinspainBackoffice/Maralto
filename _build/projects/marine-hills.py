@@ -10,9 +10,9 @@ DATA = {
     "META_DESCRIPTION": "Marine Hills: appartementen en villa's tot 4 slaapkamers op de New Golden Mile, Estepona. Vanaf €464.000.",
     "OG_TITLE": f"{PROJECT_NAME} — Appartementen & Villa's",
     "OG_DESCRIPTION": "Ontdek Marine Hills: zeezicht, verwarmde zwembaden, spa, padelbaan en co-working ruimte op de New Golden Mile. Vanaf €464.000.",
-    "OG_IMAGE": "https://investinspain.be/wp-content/uploads/2024/06/Marine-Hills-INVESTINSPAIN.jpg",
-    "HERO_BG": "https://investinspain.be/wp-content/uploads/2024/06/Marine-Hills-INVESTINSPAIN.jpg",
-    "HERO_BG_ALT": "Marine Hills — moderne architectuur omgeven door groen op de New Golden Mile",
+    "OG_IMAGE": "https://homeinspain.be/wp-content/uploads/2026/07/Marine-Hills.jpg",
+    "HERO_BG": "https://homeinspain.be/wp-content/uploads/2026/07/Marine-Hills.jpg",
+    "HERO_BG_ALT": "Marine Hills — terras met loungezetels, zwembad en zeezicht",
     "HERO_NAME": "MARINE HILLS",
     "HERO_LOCATION": "ESTEPONA",
     "HERO_PRICE": PRICE_FROM,
@@ -31,7 +31,7 @@ DATA_EN = {
     "META_DESCRIPTION": "Marine Hills: apartments and villas with up to 4 bedrooms on the New Golden Mile, Estepona. From €464.000.",
     "OG_TITLE": f"{PROJECT_NAME} — Apartments & Villas",
     "OG_DESCRIPTION": "Discover Marine Hills: sea views, heated swimming pools, spa, padel court and coworking space on the New Golden Mile. From €464.000.",
-    "HERO_BG_ALT": "Marine Hills — modern architecture surrounded by greenery on the New Golden Mile",
+    "HERO_BG_ALT": "Marine Hills — terrace with lounge seating, pool and sea view",
 }
 
 # Gebruikt door de /projecten/ overzichtspagina (kaart + kaartjes)
@@ -39,7 +39,7 @@ HUB = {
     "NAME": PROJECT_NAME,
     "LOCATION": "Estepona",
     "PRICE": PRICE_FROM,
-    "THUMB": "https://investinspain.be/wp-content/uploads/2024/06/Marine-Hills-INVESTINSPAIN.jpg",
+    "THUMB": "https://homeinspain.be/wp-content/uploads/2026/07/Marine-Hills.jpg",
     "LAT": 36.4603322,
     "LNG": -5.0854119,
     "HREF": "/marine-hills/",
