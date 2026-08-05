@@ -39,7 +39,7 @@ HUB = {
     "NAME": PROJECT_NAME,
     "LOCATION": "Estepona",
     "PRICE": PRICE_FROM,
-    "THUMB": "https://investinspain.be/images/birdie-hills/thumb.webp",
+    "THUMB": "https://projects.investinspain.be/images/birdie-hills/thumb.webp",
     "LAT": 36.408795614625,
     "LNG": -5.2107139740973,
     "HREF": "/birdie-hills/",

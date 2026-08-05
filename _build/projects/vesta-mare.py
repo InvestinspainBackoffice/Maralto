@@ -39,7 +39,7 @@ HUB = {
     "NAME": PROJECT_NAME,
     "LOCATION": "Manilva",
     "PRICE": PRICE_FROM,
-    "THUMB": "https://investinspain.be/images/vesta-mare/thumb.webp",
+    "THUMB": "https://projects.investinspain.be/images/vesta-mare/thumb.webp",
     "LAT": 36.3518754,
     "LNG": -5.2332776,
     "HREF": "/vesta-mare/",

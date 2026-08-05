@@ -39,7 +39,7 @@ HUB = {
     "NAME": PROJECT_NAME,
     "LOCATION": "Estepona",
     "PRICE": PRICE_FROM,
-    "THUMB": "https://investinspain.be/images/altezza-suites/thumb.webp",
+    "THUMB": "https://projects.investinspain.be/images/altezza-suites/thumb.webp",
     "LAT": 36.4770737,
     "LNG": -5.0765539,
     "HREF": "/altezza-suites/",

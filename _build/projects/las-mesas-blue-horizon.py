@@ -39,7 +39,7 @@ HUB = {
     "NAME": PROJECT_NAME,
     "LOCATION": "Estepona",
     "PRICE": PRICE_FROM,
-    "THUMB": "https://investinspain.be/images/las-mesas-blue-horizon/thumb.webp",
+    "THUMB": "https://projects.investinspain.be/images/las-mesas-blue-horizon/thumb.webp",
     "LAT": 36.4262544,
     "LNG": -5.1578951,
     "HREF": "/las-mesas-blue-horizon/",

@@ -45,7 +45,7 @@ HUB = {
     "NAME": PROJECT_NAME,
     "LOCATION": "Estepona",
     "PRICE": PRICE_FROM,
-    "THUMB": "https://investinspain.be/images/vivace-villas/thumb.webp",
+    "THUMB": "https://projects.investinspain.be/images/vivace-villas/thumb.webp",
     "LAT": 36.423702016702,
     "LNG": -5.19424670248,
     "HREF": "/vivace-villas/",

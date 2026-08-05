@@ -39,7 +39,7 @@ HUB = {
     "NAME": PROJECT_NAME,
     "LOCATION": "Benahavís",
     "PRICE": PRICE_FROM,
-    "THUMB": "https://investinspain.be/images/the-sky-marbella/thumb.webp",
+    "THUMB": "https://projects.investinspain.be/images/the-sky-marbella/thumb.webp",
     "LAT": 36.5226179,
     "LNG": -4.9993343,
     "HREF": "/the-sky-marbella/",

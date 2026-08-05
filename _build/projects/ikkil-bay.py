@@ -39,7 +39,7 @@ HUB = {
     "NAME": PROJECT_NAME,
     "LOCATION": "Estepona",
     "PRICE": PRICE_FROM,
-    "THUMB": "https://investinspain.be/images/ikkil-bay/thumb.webp",
+    "THUMB": "https://projects.investinspain.be/images/ikkil-bay/thumb.webp",
     "LAT": 36.417125823855,
     "LNG": -5.1652550752558,
     "HREF": "/ikkil-bay/",

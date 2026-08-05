@@ -39,7 +39,7 @@ HUB = {
     "NAME": PROJECT_NAME,
     "LOCATION": "Estepona",
     "PRICE": PRICE_FROM,
-    "THUMB": "https://investinspain.be/images/sierra-blanca-by-the-sea/thumb.webp",
+    "THUMB": "https://projects.investinspain.be/images/sierra-blanca-by-the-sea/thumb.webp",
     "LAT": 36.430101,
     "LNG": -5.123605,
     "HREF": "/sierra-blanca-by-the-sea/",

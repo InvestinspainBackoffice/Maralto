@@ -39,7 +39,7 @@ HUB = {
     "NAME": PROJECT_NAME,
     "LOCATION": "Estepona",
     "PRICE": PRICE_FROM,
-    "THUMB": "https://investinspain.be/images/nacare/thumb.webp",
+    "THUMB": "https://projects.investinspain.be/images/nacare/thumb.webp",
     "LAT": 36.42980056060396,
     "LNG": -5.134549942285611,
     "HREF": "/nacare/",
