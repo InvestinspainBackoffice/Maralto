@@ -39,7 +39,7 @@ HUB = {
     "NAME": PROJECT_NAME,
     "LOCATION": "Casares",
     "PRICE": PRICE_FROM,
-    "THUMB": "https://investinspain.be/wp-content/uploads/2025/08/Skye-11.jpg",
+    "THUMB": "https://investinspain.be/images/skye/thumb.webp",
     "LAT": 36.395767123581,
     "LNG": -5.2269923686981,
     "HREF": "/skye/",

@@ -39,7 +39,7 @@ HUB = {
     "NAME": PROJECT_NAME,
     "LOCATION": "Estepona",
     "PRICE": PRICE_FROM,
-    "THUMB": "https://homeinspain.be/wp-content/uploads/2026/07/Marine-Hills.jpg",
+    "THUMB": "https://investinspain.be/images/marine-hills/thumb.webp",
     "LAT": 36.4603322,
     "LNG": -5.0854119,
     "HREF": "/marine-hills/",

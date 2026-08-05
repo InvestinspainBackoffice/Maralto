@@ -39,7 +39,7 @@ HUB = {
     "NAME": PROJECT_NAME,
     "LOCATION": "Mijas Costa",
     "PRICE": PRICE_FROM,
-    "THUMB": "https://investinspain.be/wp-content/uploads/2026/02/ENTRADA-PRINCIPAL_Riviera-Hill.jpg",
+    "THUMB": "https://investinspain.be/images/riviera-hill/thumb.webp",
     "LAT": 36.50408526137212,
     "LNG": -4.713392670308849,
     "HREF": "/riviera-hill/",

@@ -39,7 +39,7 @@ HUB = {
     "NAME": PROJECT_NAME,
     "LOCATION": "Cancelada",
     "PRICE": PRICE_FROM,
-    "THUMB": "https://investinspain.be/wp-content/uploads/2025/04/Adagio-Cancelada-6.jpg",
+    "THUMB": "https://investinspain.be/images/adagio/thumb.webp",
     "LAT": 36.4651772,
     "LNG": -5.0599806,
     "HREF": "/adagio/",

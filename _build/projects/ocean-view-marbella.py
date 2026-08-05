@@ -39,7 +39,7 @@ HUB = {
     "NAME": PROJECT_NAME,
     "LOCATION": "Marbella",
     "PRICE": PRICE_FROM,
-    "THUMB": "https://investinspain.be/wp-content/uploads/2022/03/Leisure-club-front.INVESTINSPAIN-Ocean-View-Marbella.jpg",
+    "THUMB": "https://investinspain.be/images/ocean-view-marbella/thumb.webp",
     "LAT": 36.522046516712,
     "LNG": -4.7387156894166,
     "HREF": "/ocean-view-marbella/",

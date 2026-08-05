@@ -39,7 +39,7 @@ HUB = {
     "NAME": PROJECT_NAME,
     "LOCATION": "Benahavís",
     "PRICE": PRICE_FROM,
-    "THUMB": "https://homeinspain.be/wp-content/uploads/2026/07/Block-7-scaled.jpg",
+    "THUMB": "https://investinspain.be/images/the-view/thumb.webp",
     "LAT": 36.4666272,
     "LNG": -5.0836161,
     "HREF": "/the-view/",

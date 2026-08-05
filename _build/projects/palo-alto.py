@@ -39,7 +39,7 @@ HUB = {
     "NAME": PROJECT_NAME,
     "LOCATION": "Ojén",
     "PRICE": PRICE_FROM,
-    "THUMB": "https://paloalto.immo/wp-content/uploads/2021/08/POOL-VIEW_12000PIX.-background-modified-2.jpg",
+    "THUMB": "https://investinspain.be/images/palo-alto/thumb.webp",
     "LAT": 36.5450,
     "LNG": -4.8950,
     "HREF": "/palo-alto/",

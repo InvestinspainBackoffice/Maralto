@@ -39,7 +39,7 @@ HUB = {
     "NAME": PROJECT_NAME,
     "LOCATION": "Estepona",
     "PRICE": PRICE_FROM,
-    "THUMB": "https://investinspain.be/wp-content/uploads/2023/08/AURES-EXTERIOR-3-min.jpg",
+    "THUMB": "https://investinspain.be/images/australy-aures/thumb.webp",
     "LAT": 36.46162316773,
     "LNG": -5.0828572014322,
     "HREF": "/australy-aures/",

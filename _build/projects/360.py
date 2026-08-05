@@ -39,7 +39,7 @@ HUB = {
     "NAME": PROJECT_NAME,
     "LOCATION": "Mijas",
     "PRICE": PRICE_FROM,
-    "THUMB": "https://investinspain.be/wp-content/uploads/2025/08/360-20.jpg",
+    "THUMB": "https://investinspain.be/images/360/thumb.webp",
     "LAT": 36.5269758,
     "LNG": -4.6646297,
     "HREF": "/360/",

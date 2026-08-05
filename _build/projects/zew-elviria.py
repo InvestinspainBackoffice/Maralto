@@ -39,7 +39,7 @@ HUB = {
     "NAME": PROJECT_NAME,
     "LOCATION": "Elviria",
     "PRICE": PRICE_FROM,
-    "THUMB": "https://investinspain.be/wp-content/uploads/2026/07/Concept_Homes_acceso_hd.0000-scaled-1.jpg",
+    "THUMB": "https://investinspain.be/images/zew-elviria/thumb.webp",
     "LAT": 36.5075665,
     "LNG": -4.787271,
     "HREF": "/zew-elviria/",

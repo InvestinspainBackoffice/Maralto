@@ -127,7 +127,7 @@ def render_card(entry):
     slug_class = f" project-card--{entry['SLUG']}" if entry.get("THUMB_EXTRA_CSS") else ""
     return f"""    <a class="project-card{slug_class}" href="{entry['HREF']}" data-location="{html.escape(entry['LOCATION'])}" data-price-band="{band_id}">
       <div class="project-card__img-wrap">
-        <img class="project-card__img" src="{entry['THUMB']}" alt="{html.escape(entry['NAME'])}" loading="lazy">
+        <img class="project-card__img" src="{entry['THUMB']}" alt="{html.escape(entry['NAME'])}" loading="lazy" decoding="async">
       </div>
       <div class="project-card__body">
         <div class="project-card__name">{html.escape(entry['NAME'])}</div>

@@ -39,7 +39,7 @@ HUB = {
     "NAME": PROJECT_NAME,
     "LOCATION": "Nueva Andalucía",
     "PRICE": PRICE_FROM,
-    "THUMB": "https://marbellaprestige.realestate/wp-content/uploads/2025/09/Exterior-Villa-1_Ocho-de-Oro.webp",
+    "THUMB": "https://investinspain.be/images/ocho-de-oro/thumb.webp",
     "LAT": 36.5238841,
     "LNG": -4.9696537,
     "HREF": "/ocho-de-oro/",

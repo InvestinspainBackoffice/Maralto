@@ -39,7 +39,7 @@ HUB = {
     "NAME": PROJECT_NAME,
     "LOCATION": "Marbella",
     "PRICE": PRICE_FROM,
-    "THUMB": "https://investinspain.be/wp-content/uploads/2022/02/INVESTINSPAIN-Dunique-EXTERIORES-02-LR.jpg",
+    "THUMB": "https://investinspain.be/images/dunique/thumb.webp",
     "LAT": 36.5006105,
     "LNG": -4.8113747,
     "HREF": "/dunique/",

@@ -39,7 +39,7 @@ HUB = {
     "NAME": PROJECT_NAME,
     "LOCATION": "Mijas",
     "PRICE": PRICE_FROM,
-    "THUMB": "https://investinspain.be/wp-content/uploads/2025/06/1748445724_thekoveokkkllll.jpg",
+    "THUMB": "https://investinspain.be/images/the-kove/thumb.webp",
     "LAT": 36.5208373,
     "LNG": -4.6509914,
     "HREF": "/the-kove/",

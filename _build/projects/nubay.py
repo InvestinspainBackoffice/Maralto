@@ -39,7 +39,7 @@ HUB = {
     "NAME": PROJECT_NAME,
     "LOCATION": "Manilva",
     "PRICE": PRICE_FROM,
-    "THUMB": "https://investinspain.be/wp-content/uploads/2026/07/14.-NUBAY-Costa-del-Sol-Manilva-NVOGA-Developments-Villa-scaled.jpg",
+    "THUMB": "https://investinspain.be/images/nubay/thumb.webp",
     "LAT": 36.368092531788,
     "LNG": -5.22610050921,
     "HREF": "/nubay/",

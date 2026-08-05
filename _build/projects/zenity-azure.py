@@ -39,7 +39,7 @@ HUB = {
     "NAME": PROJECT_NAME,
     "LOCATION": "Estepona",
     "PRICE": PRICE_FROM,
-    "THUMB": "https://investinspain.be/wp-content/uploads/2022/09/INVESTINSPAIN-Azure_Cam02-1-scaled.jpg",
+    "THUMB": "https://investinspain.be/images/zenity-azure/thumb.webp",
     "LAT": 36.4139368,
     "LNG": -5.1836025,
     "HREF": "/zenity-azure/",

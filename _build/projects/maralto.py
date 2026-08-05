@@ -49,7 +49,7 @@ HUB = {
     "NAME": PROJECT_NAME,
     "LOCATION": "Estepona",
     "PRICE": PRICE_FROM,
-    "THUMB": "https://investinspain.be/wp-content/uploads/2026/08/Maralto-Estepona-9.webp",
+    "THUMB": "https://investinspain.be/images/maralto/thumb.webp",
     "LAT": 36.425704,
     "LNG": -5.1626803,
     "HREF": "/maralto/",

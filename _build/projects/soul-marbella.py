@@ -40,7 +40,7 @@ HUB = {
     "NAME": PROJECT_NAME,
     "LOCATION": "Marbella",
     "PRICE": PRICE_FROM,
-    "THUMB": "https://investinspain.be/wp-content/uploads/2020/03/V3_day.jpg",
+    "THUMB": "https://investinspain.be/images/soul-marbella/thumb.webp",
     "LAT": 36.5124,
     "LNG": -4.8300,
     "HREF": "/soul-marbella/",
