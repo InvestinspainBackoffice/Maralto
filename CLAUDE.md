@@ -16,9 +16,14 @@ _build/fetch_image.sh <bron-url> <project-slug> <output-naam>
 
 Dit zet de foto om naar WebP (kwaliteit 88, zelfde resolutie - visueel
 lossless) en bewaart ze in `images/<slug>/<naam>.webp`. Vercel serveert de
-hele repo statisch, dus verwijs in `_build/projects/<slug>.py` gewoon naar
-`https://investinspain.be/images/<slug>/<naam>.webp` (of het projects-
-subdomein-equivalent).
+hele repo statisch op **`projects.investinspain.be`** (niet op
+`investinspain.be` zelf - dat is de losstaande WordPress-site). Verwijs in
+`_build/projects/<slug>.py` dus naar
+`https://projects.investinspain.be/images/<slug>/<naam>.webp`.
+
+⚠️ Test na het regenereren altijd even met `curl -sI` of het pad ook
+écht 200 teruggeeft op `projects.investinspain.be` - een verkeerde host
+hier heeft eerder alle kaartjes op de projectenpagina gebroken.
 
 Reden: hotlinken naar externe sites levert vaak zware PNG's/ongecomprimeerde
 JPEG's op (trage FCP/LCP, zie Vercel Speed Insights) en is kwetsbaar als de
