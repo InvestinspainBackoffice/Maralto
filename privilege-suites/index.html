@@ -1161,6 +1161,26 @@ html.ai-chat-on .lead-dock { display: none; }
 .chat-typing i:nth-child(3) { animation-delay: 0.4s; }
 @keyframes chat-blink { 0%, 60%, 100% { opacity: 0.25; } 30% { opacity: 1; } }
 
+/* ── "Liever met een verkoper spreken" ── */
+.chat-talk-btn {
+  display: block;
+  width: calc(100% - 2.5rem);
+  margin: 0 1.25rem 0.6rem;
+  padding: 0.55rem 0.75rem;
+  background: transparent;
+  border: 1px solid var(--line-light);
+  color: var(--text-muted);
+  font-family: var(--font);
+  font-size: 0.68rem;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-align: center;
+  cursor: pointer;
+  transition: border-color 0.3s, color 0.3s;
+  flex-shrink: 0;
+}
+.chat-talk-btn:hover { border-color: var(--gold-dim); color: var(--gold); }
+
 /* ── Invoer ── */
 .chat-foot { border-top: 1px solid var(--line); padding: 0.5rem 1.25rem 0.9rem; }
 .chat-form { display: flex; align-items: flex-end; gap: 0.6rem; }
@@ -1519,19 +1539,21 @@ html.ai-chat-on .lead-dock { display: none; }
 <button type="button" class="chat-fab" id="chatFab" aria-label="Chat over dit project"
         aria-expanded="false" aria-controls="chatPanel">
   <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.4 8.4 0 0 1-3.8-.9L3 21l1.9-5.7a8.4 8.4 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.4 8.4 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
-  Stel een vraag
+  Chat met ons
 </button>
 
 <div class="chat-panel" id="chatPanel" role="dialog" aria-label="Chat over dit project">
   <div class="chat-panel__head">
     <div>
-      <p class="chat-panel__title">Vraag het ons</p>
+      <p class="chat-panel__title">Uw persoonlijke AI</p>
       <p class="chat-panel__sub">Antwoord binnen enkele seconden</p>
     </div>
     <button type="button" class="chat-panel__close" id="chatClose" aria-label="Chat sluiten">&times;</button>
   </div>
 
   <div class="chat-log" id="chatLog" role="log" aria-live="polite"></div>
+
+  <button type="button" class="chat-talk-btn" id="chatTalkToAgent">Liever met een verkoper spreken</button>
 
   <div class="chat-foot">
     <form class="chat-form" id="chatForm" novalidate>
@@ -2200,10 +2222,11 @@ var USE_AI_CHAT = true;
   var input = document.getElementById('chatInput');
   var sendBtn = document.getElementById('chatSend');
   var closeBtn = document.getElementById('chatClose');
+  var talkToAgentBtn = document.getElementById('chatTalkToAgent');
 
   var SLUG = 'privilege-suites';
   var LANG = 'nl';
-  var GREETING = "Goeiedag. Ik help u graag met vragen over Privilege Suites — prijzen, ligging, faciliteiten of het aankoopproces in Spanje. Waar kan ik u mee helpen?";
+  var GREETING = "Hoi, ik ben uw persoonlijke AI. Waarmee kan ik u vandaag helpen?";
   var THINKING = 'Aan het typen';
   var ERROR_TEXT = 'Er ging iets mis. Probeer het opnieuw of bel Gunther op +32 496 57 13 97.';
 
@@ -2268,6 +2291,17 @@ var USE_AI_CHAT = true;
   document.addEventListener('keydown', function(e) {
     if (e.key === 'Escape' && panel.classList.contains('is-open')) closePanel();
   });
+
+  // "Liever met een verkoper spreken" - stuurt door naar het bestaande,
+  // al gevalideerde contactformulier (het meescrollende zijpaneel) in
+  // plaats van een tweede, eigen formulier te bouwen.
+  if (talkToAgentBtn) {
+    talkToAgentBtn.addEventListener('click', function() {
+      closePanel();
+      var trigger = document.getElementById('dockTrigger');
+      if (trigger) trigger.click();
+    });
+  }
 
   // Invoerveld groeit mee met de tekst
   input.addEventListener('input', function() {

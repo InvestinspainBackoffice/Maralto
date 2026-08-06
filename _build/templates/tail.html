@@ -150,6 +150,8 @@
 
   <div class="chat-log" id="chatLog" role="log" aria-live="polite"></div>
 
+  <button type="button" class="chat-talk-btn" id="chatTalkToAgent">__I_CHAT_TALK_TO_AGENT__</button>
+
   <div class="chat-foot">
     <form class="chat-form" id="chatForm" novalidate>
       <textarea id="chatInput" rows="1" maxlength="1500"
@@ -817,6 +819,7 @@ var USE_AI_CHAT = true;
   var input = document.getElementById('chatInput');
   var sendBtn = document.getElementById('chatSend');
   var closeBtn = document.getElementById('chatClose');
+  var talkToAgentBtn = document.getElementById('chatTalkToAgent');
 
   var SLUG = '__SLUG__';
   var LANG = '__I_LANG__';
@@ -885,6 +888,17 @@ var USE_AI_CHAT = true;
   document.addEventListener('keydown', function(e) {
     if (e.key === 'Escape' && panel.classList.contains('is-open')) closePanel();
   });
+
+  // "Liever met een verkoper spreken" - stuurt door naar het bestaande,
+  // al gevalideerde contactformulier (het meescrollende zijpaneel) in
+  // plaats van een tweede, eigen formulier te bouwen.
+  if (talkToAgentBtn) {
+    talkToAgentBtn.addEventListener('click', function() {
+      closePanel();
+      var trigger = document.getElementById('dockTrigger');
+      if (trigger) trigger.click();
+    });
+  }
 
   // Invoerveld groeit mee met de tekst
   input.addEventListener('input', function() {
