@@ -71,6 +71,22 @@ STRINGS = {
         "DOCK_CLOSE_ARIA": "Sluiten",
         "DOCK_ARIA": "Ontvang projectinformatie",
 
+        "CHAT_TRIGGER": "Stel een vraag",
+        "CHAT_ARIA": "Chat over dit project",
+        "CHAT_TITLE": "Vraag het ons",
+        "CHAT_SUBTITLE": "Antwoord binnen enkele seconden",
+        "CHAT_CLOSE_ARIA": "Chat sluiten",
+        # Let op: deze tekst gaat via JS door escapeHtml() heen (net als elk
+        # modelantwoord), dus hier letterlijke tekens gebruiken en geen
+        # HTML-entities - die zouden als &mdash; in beeld komen.
+        "CHAT_GREETING": "Goeiedag. Ik help u graag met vragen over __PROJECT_NAME__ — prijzen, ligging, faciliteiten of het aankoopproces in Spanje. Waar kan ik u mee helpen?",
+        "CHAT_PLACEHOLDER": "Typ uw vraag&hellip;",
+        "CHAT_SEND_ARIA": "Versturen",
+        "CHAT_THINKING": "Aan het typen",
+        "CHAT_ERROR": "Er ging iets mis. Probeer het opnieuw of bel Gunther op +32 496 57 13 97.",
+        "CHAT_DISCLAIMER": "AI-assistent &mdash; gesprekken worden bewaard om onze dienstverlening te verbeteren.",
+        "CHAT_WA": "Liever WhatsApp?",
+
         "HUB_HERO_TITLE": "PROJECTEN",
         "HUB_HERO_INTRO": "Ontdek onze actuele nieuwbouwprojecten aan de Costa del Sol &mdash; op kaart, en op naam.",
         "HUB_ROTATOR_ARIA": "Sfeerbeelden van onze recentste projecten",
@@ -157,6 +173,20 @@ STRINGS = {
         "DOCK_HEADING_EM": "availability",
         "DOCK_CLOSE_ARIA": "Close",
         "DOCK_ARIA": "Receive project information",
+
+        "CHAT_TRIGGER": "Ask a question",
+        "CHAT_ARIA": "Chat about this project",
+        "CHAT_TITLE": "Ask us",
+        "CHAT_SUBTITLE": "Answers within seconds",
+        "CHAT_CLOSE_ARIA": "Close chat",
+        # Zie de NL-variant: gaat door escapeHtml(), dus geen HTML-entities.
+        "CHAT_GREETING": "Hello. I'm happy to help with questions about __PROJECT_NAME__ — prices, location, amenities or the buying process in Spain. What would you like to know?",
+        "CHAT_PLACEHOLDER": "Type your question&hellip;",
+        "CHAT_SEND_ARIA": "Send",
+        "CHAT_THINKING": "Typing",
+        "CHAT_ERROR": "Something went wrong. Please try again or call Gunther on +32 496 57 13 97.",
+        "CHAT_DISCLAIMER": "AI assistant &mdash; conversations are stored to help us improve our service.",
+        "CHAT_WA": "Prefer WhatsApp?",
 
         "HUB_HERO_TITLE": "PROJECTS",
         "HUB_HERO_INTRO": "Discover our current new-build projects on the Costa del Sol &mdash; by map, and by name.",

@@ -2,10 +2,10 @@
   "version": "0.0.1",
   "configurations": [
     {
-      "name": "maralto-dev",
-      "runtimeExecutable": "python3",
-      "runtimeArgs": ["-m", "http.server", "8091"],
-      "port": 8091
+      "name": "site",
+      "runtimeExecutable": "node",
+      "runtimeArgs": ["_build/devserver.js"],
+      "port": 4321
     }
   ]
 }
