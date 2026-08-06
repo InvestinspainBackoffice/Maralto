@@ -61,6 +61,7 @@ function projectContext(slug, lang) {
   const lines = [
     `Project: ${p.name}`,
     `Locatie: ${p.location}`,
+    `Type: ${p.types && p.types.length ? p.types.join(', ') : 'onbekend'}`,
     `Prijs: ${p.price}`,
     `Pagina: ${p.url}`,
   ];
@@ -89,9 +90,10 @@ function projectIndex(lang, rich) {
   for (const entry of Object.values(DATA.projects)) {
     const p = entry[lang] || entry.nl;
     if (!p) continue;
+    const types = p.types && p.types.length ? p.types.join('/') : '?';
     rows.push(rich
-      ? `${p.name} | ${p.location} | ${p.price} | ${p.url}\n   ${p.summary}`
-      : `${p.name} | ${p.location} | ${p.price} | ${p.url}`);
+      ? `${p.name} | ${p.location} | ${types} | ${p.price} | ${p.url}\n   ${p.summary}`
+      : `${p.name} | ${p.location} | ${types} | ${p.price} | ${p.url}`);
   }
   rows.sort();
   indexCache[key] = rows.join('\n');
@@ -130,16 +132,22 @@ STIJL
 - Stel per beurt hooguit één gerichte vervolgvraag.
 
 GESPREKSOPBOUW (max. 3 kwalificatievragen, dan pas aanbevelen)
-Voor je specifieke projecten, prijzen of links toont, ken je minstens: (1) de regio die
-de bezoeker zoekt, (2) het type woning (appartement/villa/penthouse), en (3) een
-budgetorde van grootte. Ontbreekt dat, stel dan open kwalificatievragen — kies uit
-of vul aan met:
+Voor je specifieke projecten, prijzen of links toont, ken je minstens: (1) het BUDGET —
+dit is de belangrijkste vraag, vraag die het eerst of het vroegst, (2) de regio die de
+bezoeker zoekt, en (3) het type woning (appartement/villa/penthouse). Ontbreekt dat,
+stel dan open kwalificatievragen — kies uit of vul aan met:
 ${pb.qualifyingQuestions.map((q) => `- ${q}`).join('\n')}
-Zodra je genoeg weet: stel een vrijblijvend online gesprek met een verkoper voor.
+Zodra je die drie kent: stel een vrijblijvend online gesprek met een verkoper voor.
 Voelt de bezoeker daar nog niet klaar voor, bied dan aan hem/haar op de hoogte te
-houden (nieuwsbrief/nieuwe projecten) in plaats van aan te dringen. In beide gevallen
-verzamel je op een natuurlijke manier voornaam, achternaam, e-mailadres en telefoon —
-nooit als een formulier, gewoon als onderdeel van het gesprek.
+houden (nieuwsbrief/nieuwe projecten) in plaats van aan te dringen.
+
+CONTACTGEGEVENS NATUURLIJK VERZAMELEN
+Je hebt uiteindelijk voornaam, achternaam, e-mailadres en telefoonnummer nodig — maar
+nooit als een lijstje of formulier, en nooit alle vier tegelijk in één vraag. Weef het
+in het gesprek, bijvoorbeeld: "Zal ik dit voor u laten opsturen? Aan wie mag ik het
+richten?" — dan pas naam vragen, dan pas telefoon/e-mail ("En op welk nummer of
+e-mailadres bereiken we u het best?"). Het moet aanvoelen als een assistent die
+opvolgt, niet als een intakeformulier.
 
 WAT JE ZEKER WEET
 Alleen wat hieronder staat, plus het bedrijfsprofiel. Verzin nooit prijzen, oppervlaktes,
@@ -150,11 +158,16 @@ ${pb.noPlansUpfront}
 ${context ? `ANDERE PROJECTEN
 Past dit project niet bij wat iemand zoekt, verwijs dan naar een passend project
 uit de lijst onderaan, met naam, locatie, vanaf-prijs en link. Doe dat hooguit
-twee of drie projecten tegelijk.` : `HELPEN KIEZEN
+twee of drie projecten tegelijk.` : `AANBEVELEN ZODRA JE GENOEG WEET
 Toon nooit een project, prijs of link voordat je regio, type en budgetorde kent (zie
-GESPREKSOPBOUW hierboven). Stel daarna hooguit twee of drie passende projecten voor,
-telkens met naam, locatie, vanaf-prijs, link en één zin waarom het past. Som nooit de
-hele lijst op.`}
+GESPREKSOPBOUW hierboven). Zodra je die drie kent: doorzoek de volledige aanbodlijst
+onderaan en selecteer daaruit zelf ongeveer 3 projecten die tegelijk qua locatie, type
+én budget het best aansluiten — niet zomaar de eerste 3 uit de lijst. Presenteer ze
+gerangschikt van beste naar minder goede match, telkens met naam, locatie, type,
+vanaf-prijs, link en één korte zin waarom precies dit project past bij wat de bezoeker
+zocht. Is er geen enkele goede match binnen het budget, zeg dat eerlijk en toon dan het
+dichtstbijzijnde alternatief met uitleg waarom het net niet past (bv. iets hoger budget).
+Som nooit de hele lijst op.`}
 
 KOPEN IN SPANJE
 Je mag algemene oriëntatie geven over het aankoopproces: NIE-nummer, notaris,
@@ -173,9 +186,12 @@ BEDRIJFSPROFIEL
 ${pb.company}
 
 NOOIT VERMELDEN
-Vermeld nooit de naam "Welex" of eender welke andere partner- of leveranciersnaam.
-Presenteer alle diensten (juridisch advies, vertalingen, inrichting, ...) alsof
-INVESTINSPAIN.BE die zelf rechtstreeks levert.
+- Vermeld nooit de naam "Welex" of eender welke andere partner- of leveranciersnaam.
+  Presenteer alle diensten (juridisch advies, vertalingen, inrichting, ...) alsof
+  INVESTINSPAIN.BE die zelf rechtstreeks levert.
+- Vermeld nooit hoeveel projecten er in totaal in het aanbod zitten, ook niet als
+  ernaar gevraagd wordt. Wijk uit met iets als "we hebben een ruim aanbod nieuwbouw
+  aan de Costa del Sol" en ga meteen door met kwalificeren.
 
 LEADS
 Roep capture_lead pas aan zodra je voornaam, achternaam, e-mailadres én telefoonnummer
@@ -185,7 +201,7 @@ het knopje "Liever met een verkoper spreken" hierboven in de chat, of rechtstree
 Gunther op +32 496 57 13 97.
 
 ${context ? `═══ HUIDIGE PROJECTPAGINA ═══\n${context}\n` : ''}
-═══ VOLLEDIG AANBOD (naam | locatie | vanaf-prijs | link) ═══
+═══ VOLLEDIG AANBOD (naam | locatie | type(s) | vanaf-prijs | link — "?" = type onbekend) ═══
 ${projectIndex(lang, !context)}`;
 }
 
@@ -285,21 +301,29 @@ function mockReply(messages, slug, lang) {
   const turns = messages.filter((m) => m.role === 'user').length;
   const nl = lang !== 'en';
 
-  // Hub: geen huidig project, dus tonen we wat voorbeelden uit het aanbod.
+  // Hub: geen huidig project. Bootst de echte gespreksopbouw na - eerst
+  // kwalificeren (geen projectnamen/prijzen), pas vanaf de 3e beurt een
+  // aanbeveling. Zo test je in mock-modus hetzelfde gedrag als straks live.
   if (!p) {
+    if (turns === 1) {
+      return nl
+        ? '[mock] Hoi, ik help u graag het juiste project vinden. In welke regio zoekt u, en wat voor type woning - appartement, villa of penthouse?'
+        : "[mock] Hi, I'm happy to help you find the right project. Which region are you looking in, and what type of property - apartment, villa or penthouse?";
+    }
+    if (turns === 2) {
+      return nl
+        ? '[mock] Genoteerd. En in welke ordegrootte van budget zoekt u?'
+        : '[mock] Noted. And what is your approximate budget range?';
+    }
     const sample = Object.values(DATA.projects)
       .map((e) => e[lang] || e.nl)
       .filter(Boolean)
       .slice(0, 3)
-      .map((x) => `${x.name} (${x.location}, ${x.price.toLowerCase()})`)
-      .join(', ');
+      .map((x) => `${x.name} (${x.location}, ${(x.types || []).join('/') || '?'}, ${x.price.toLowerCase()})`)
+      .join(' — ');
     return nl
-      ? `[mock] Ik help u graag het juiste project vinden. Er zijn er ${
-          Object.keys(DATA.projects).length} — bijvoorbeeld ${sample}. ` +
-        'Wat is uw budget en welke streek heeft uw voorkeur?'
-      : `[mock] I'm happy to help you find the right project. There are ${
-          Object.keys(DATA.projects).length} — for instance ${sample}. ` +
-        'What is your budget and which area do you prefer?';
+      ? `[mock] Op basis daarvan passen deze het best: ${sample}. Zal ik een van deze verder toelichten, of stel ik een gesprek met een verkoper voor?`
+      : `[mock] Based on that, these fit best: ${sample}. Shall I go into more detail on one of these, or would you like to arrange a chat with a sales agent?`;
   }
   if (turns >= 3) {
     return nl

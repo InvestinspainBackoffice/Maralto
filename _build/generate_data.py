@@ -91,6 +91,40 @@ def parse_body(body):
     }
 
 
+TYPE_KEYWORDS = {
+    "nl": {
+        "appartement": "appartement",
+        "villa": "villa",
+        "penthouse": "penthouse",
+        "townhouse": "townhouse",
+        "duplex": "duplex",
+    },
+    "en": {
+        "apartment": "apartment",
+        "villa": "villa",
+        "penthouse": "penthouse",
+        "townhouse": "townhouse",
+        "duplex": "duplex",
+    },
+}
+
+
+def detect_types(text, lang):
+    """Herleidt het woningtype (appartement/villa/penthouse/...) uit de
+    beschrijvende tekst. Er is geen los "type"-veld in de bronsite of onze
+    DATA-dicts, maar elk project vermeldt dit expliciet in zijn omschrijving
+    (bv. "39 luxe appartementen en duplex penthouses"), dus keyword-matching
+    op de al aanwezige tekst is betrouwbaarder dan een nieuw veld handmatig
+    bijhouden voor 127 projecten.
+    """
+    lower = text.lower()
+    found = []
+    for stem, canonical in TYPE_KEYWORDS.get(lang, {}).items():
+        if re.search(rf"{stem}\w*", lower) and canonical not in found:
+            found.append(canonical)
+    return found
+
+
 def data_for_lang(mod, lang):
     """Reproduceert de taalafhankelijke DATA-samenstelling uit generate.py."""
     data = dict(mod.DATA)
@@ -126,11 +160,16 @@ def build_project(project_file):
             parsed = parse_body(f.read())
 
         data = data_for_lang(mod, lang)
+        summary = data.get("META_DESCRIPTION", "")
+        all_text = " ".join(
+            [summary] + [s["heading"] + " " + s["text"] for s in parsed["sections"]]
+        )
         entry[lang] = {
             "name": data.get("HERO_NAME", data.get("PROJECT_NAME", "")),
             "location": data.get("HERO_LOCATION", ""),
             "price": data.get("PRICE_FROM", ""),
-            "summary": data.get("META_DESCRIPTION", ""),
+            "summary": summary,
+            "types": detect_types(all_text, lang),
             "url": f"{BASE_URL}/{slug}/" if lang == "nl" else f"{BASE_URL}/en/{slug}/",
             **parsed,
         }

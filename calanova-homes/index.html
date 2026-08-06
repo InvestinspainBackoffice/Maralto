@@ -1131,16 +1131,29 @@ html.ai-chat-on .lead-dock { display: none; }
 .chat-log::-webkit-scrollbar { width: 4px; }
 .chat-log::-webkit-scrollbar-thumb { background: var(--line-light); }
 
+.chat-msg-row {
+  display: flex;
+  align-items: flex-end;
+  gap: 0.5rem;
+  max-width: 92%;
+  animation: fade-up 0.4s var(--ease) forwards;
+}
+.chat-msg-row--bot { align-self: flex-start; }
+.chat-avatar {
+  width: 24px; height: 24px; border-radius: 50%;
+  object-fit: cover; flex-shrink: 0;
+  border: 1px solid var(--line-light);
+}
 .chat-msg {
   font-size: 0.82rem; font-weight: 300; line-height: 1.65;
   padding: 0.7rem 0.9rem; max-width: 88%;
   animation: fade-up 0.4s var(--ease) forwards;
 }
+.chat-msg-row .chat-msg { max-width: 100%; animation: none; }
 .chat-msg--bot {
   background: var(--chat-block);
   border-left: 2px solid var(--gold-dim);
   color: var(--text);
-  align-self: flex-start;
 }
 .chat-msg--user {
   background: rgba(45,106,122,0.22);
@@ -1151,8 +1164,8 @@ html.ai-chat-on .lead-dock { display: none; }
 .chat-msg a { color: var(--gold); text-decoration: underline; text-underline-offset: 2px; }
 .chat-msg--error { border-left-color: #B4544A; color: var(--text-muted); }
 
+.chat-typing-row { display: flex; align-items: center; gap: 0.5rem; align-self: flex-start; }
 .chat-typing {
-  align-self: flex-start;
   font-size: 0.6rem; letter-spacing: 0.2em; text-transform: uppercase;
   color: var(--text-muted); padding: 0.4rem 0;
 }
@@ -2226,6 +2239,7 @@ var USE_AI_CHAT = true;
 
   var SLUG = 'calanova-homes';
   var LANG = 'nl';
+  var AGENT_PHOTO = 'https://investinspain.be/wp-content/uploads/2020/01/Gunther-De-Vleeschouwer-INVESTINSPAIN.jpg';
   var GREETING = "Hoi, ik ben uw persoonlijke AI. Waarmee kan ik u vandaag helpen?";
   var THINKING = 'Aan het typen';
   var ERROR_TEXT = 'Er ging iets mis. Probeer het opnieuw of bel Gunther op +32 496 57 13 97.';
@@ -2247,20 +2261,45 @@ var USE_AI_CHAT = true;
   }
 
   function addMessage(text, who, isError) {
-    var el = document.createElement('div');
-    el.className = 'chat-msg chat-msg--' + who + (isError ? ' chat-msg--error' : '');
-    el.innerHTML = render(text);
-    log.appendChild(el);
+    var bubble = document.createElement('div');
+    bubble.className = 'chat-msg chat-msg--' + who + (isError ? ' chat-msg--error' : '');
+    bubble.innerHTML = render(text);
+
+    if (who === 'bot') {
+      // Bot-berichten krijgen Gunthers foto als avatar - versterkt "uw
+      // persoonlijke AI" i.p.v. een anonieme bot te voelen.
+      var row = document.createElement('div');
+      row.className = 'chat-msg-row chat-msg-row--bot';
+      var avatar = document.createElement('img');
+      avatar.className = 'chat-avatar';
+      avatar.src = AGENT_PHOTO;
+      avatar.alt = '';
+      avatar.loading = 'lazy';
+      row.appendChild(avatar);
+      row.appendChild(bubble);
+      log.appendChild(row);
+    } else {
+      log.appendChild(bubble);
+    }
     log.scrollTop = log.scrollHeight;
-    return el;
+    return bubble;
   }
 
   function showTyping() {
+    var row = document.createElement('div');
+    row.className = 'chat-typing-row';
+    row.id = 'chatTyping';
+    var avatar = document.createElement('img');
+    avatar.className = 'chat-avatar';
+    avatar.src = AGENT_PHOTO;
+    avatar.alt = '';
+    avatar.loading = 'lazy';
     var el = document.createElement('div');
     el.className = 'chat-typing';
-    el.id = 'chatTyping';
     el.innerHTML = THINKING + ' <i>.</i><i>.</i><i>.</i>';
-    log.appendChild(el);
+    row.appendChild(avatar);
+    row.appendChild(el);
+    log.appendChild(row);
     log.scrollTop = log.scrollHeight;
   }
   function hideTyping() {
