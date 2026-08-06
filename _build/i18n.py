@@ -86,6 +86,11 @@ STRINGS = {
         "CHAT_ERROR": "Er ging iets mis. Probeer het opnieuw of bel Gunther op +32 496 57 13 97.",
         "CHAT_DISCLAIMER": "AI-assistent &mdash; gesprekken worden bewaard om onze dienstverlening te verbeteren.",
         "CHAT_WA": "Liever WhatsApp?",
+        # Hub: geen huidig project, dus een begroeting gericht op kiezen.
+        # Ook deze gaat door escapeHtml(): geen HTML-entities gebruiken.
+        "CHAT_HUB_TITLE": "Zoek mee",
+        "CHAT_HUB_SUBTITLE": "Vind het project dat bij u past",
+        "CHAT_HUB_GREETING": "Goeiedag. Er staan meer dan honderd projecten aan de Costa del Sol op deze site. Vertel me waar u naar zoekt — streek, budget, eigen gebruik of verhuur — en ik zet de passende projecten voor u op een rij.",
 
         "HUB_HERO_TITLE": "PROJECTEN",
         "HUB_HERO_INTRO": "Ontdek onze actuele nieuwbouwprojecten aan de Costa del Sol &mdash; op kaart, en op naam.",
@@ -187,6 +192,10 @@ STRINGS = {
         "CHAT_ERROR": "Something went wrong. Please try again or call Gunther on +32 496 57 13 97.",
         "CHAT_DISCLAIMER": "AI assistant &mdash; conversations are stored to help us improve our service.",
         "CHAT_WA": "Prefer WhatsApp?",
+        # Zie de NL-variant: hub-begroeting, gaat door escapeHtml().
+        "CHAT_HUB_TITLE": "Find yours",
+        "CHAT_HUB_SUBTITLE": "Find the project that suits you",
+        "CHAT_HUB_GREETING": "Hello. There are over a hundred projects on the Costa del Sol on this site. Tell me what you're looking for — area, budget, own use or rental — and I'll line up the ones that fit.",
 
         "HUB_HERO_TITLE": "PROJECTS",
         "HUB_HERO_INTRO": "Discover our current new-build projects on the Costa del Sol &mdash; by map, and by name.",

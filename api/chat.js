@@ -17,10 +17,10 @@
  * te bouwen en te beoordelen is.
  */
 const DATA = require('./_projects.json');
+const { forwardToZapier } = require('./_zapier.js');
 
 const GATEWAY_URL = 'https://ai-gateway.vercel.sh/v1/chat/completions';
 const MODEL = process.env.AI_MODEL || 'anthropic/claude-haiku-4.5';
-const ZAPIER_LEAD_URL = 'https://hooks.zapier.com/hooks/catch/8344712/44ei8hj/';
 // Optioneel: aparte Zap voor gesprekslogging. Niet gezet = geen logging.
 const ZAPIER_CHATLOG_URL = process.env.ZAPIER_CHATLOG_URL || '';
 
@@ -72,22 +72,29 @@ function projectContext(slug, lang) {
   return lines.join('\n');
 }
 
-/* Compacte index van het hele aanbod, zodat de bot kan doorverwijzen naar een
-   ander project ("goedkoper", "wel met zeezicht"). Eén regel per project houdt
-   dit rond de 2k tokens - klein genoeg om bij elk gesprek mee te sturen. */
-let indexCache = null;
+/* Index van het hele aanbod, zodat de bot kan doorverwijzen naar een ander
+   project ("goedkoper", "wel met zeezicht").
+   Twee varianten: op een projectpagina volstaat één regel per project (~2k
+   tokens), want de diepgang zit daar al in de context hierboven. Op de hub is
+   er geen huidig project en moet de bot juist helpen kiezen - daar gaat de
+   korte omschrijving mee, zodat hij op meer kan adviseren dan prijs en plaats.
+   Beide zijn identiek bij elk gesprek en dus goed cachebaar. */
+const indexCache = {};
 
-function projectIndex(lang) {
-  if (indexCache && indexCache.lang === lang) return indexCache.text;
+function projectIndex(lang, rich) {
+  const key = lang + (rich ? ':rich' : '');
+  if (indexCache[key]) return indexCache[key];
   const rows = [];
   for (const entry of Object.values(DATA.projects)) {
     const p = entry[lang] || entry.nl;
-    if (p) rows.push(`${p.name} | ${p.location} | ${p.price} | ${p.url}`);
+    if (!p) continue;
+    rows.push(rich
+      ? `${p.name} | ${p.location} | ${p.price} | ${p.url}\n   ${p.summary}`
+      : `${p.name} | ${p.location} | ${p.price} | ${p.url}`);
   }
   rows.sort();
-  const text = rows.join('\n');
-  indexCache = { lang, text };
-  return text;
+  indexCache[key] = rows.join('\n');
+  return indexCache[key];
 }
 
 /* ── Systeemprompt ───────────────────────────────────────────────────── */
@@ -96,9 +103,17 @@ function systemPrompt(slug, lang) {
   const context = projectContext(slug, lang);
   const taal = lang === 'en' ? 'English' : 'Nederlands';
 
+  // Zonder geldige slug staat de bezoeker op de projectenoverzichtspagina.
+  // Daar is er geen huidig project en verschuift de opdracht van "alles weten
+  // over dit project" naar "helpen het juiste project te vinden".
+  const positie = context
+    ? 'Je staat op de projectpagina hieronder en helpt bezoekers die overwegen te kopen.'
+    : 'Je staat op de projectenoverzichtspagina. Er is dus geen huidig project: ' +
+      'jouw taak is de bezoeker helpen het juiste project te vinden uit het volledige aanbod.';
+
   return `Je bent de digitale assistent van INVESTINSPAIN.BE, een Belgisch
 makelaarskantoor gespecialiseerd in nieuwbouwvastgoed aan de Spaanse Costa del Sol.
-Je staat op de projectpagina hieronder en helpt bezoekers die overwegen te kopen.
+${positie}
 
 ANTWOORD ALTIJD IN HET ${taal.toUpperCase()}.
 
@@ -112,10 +127,14 @@ Alleen wat hieronder staat. Verzin nooit prijzen, oppervlaktes, opleverdata,
 beschikbaarheid of aantallen die er niet staan. Weet je iets niet, zeg dat dan
 en bied aan dat Gunther het uitzoekt. Dat is altijd een beter antwoord dan gokken.
 
-ANDERE PROJECTEN
+${context ? `ANDERE PROJECTEN
 Past dit project niet bij wat iemand zoekt, verwijs dan naar een passend project
 uit de lijst onderaan, met naam, locatie, vanaf-prijs en link. Doe dat hooguit
-twee of drie projecten tegelijk.
+twee of drie projecten tegelijk.` : `HELPEN KIEZEN
+Vraag eerst kort waar de bezoeker op let - budget, streek, en of het om eigen
+gebruik of verhuur gaat. Stel daarna hooguit twee of drie passende projecten
+voor, telkens met naam, locatie, vanaf-prijs, link en één zin waarom het past.
+Som nooit de hele lijst op. Weet je te weinig om te kiezen, vraag dan door.`}
 
 KOPEN IN SPANJE
 Je mag algemene oriëntatie geven over het aankoopproces: NIE-nummer, notaris,
@@ -132,11 +151,9 @@ opsturen. Vraag voornaam, achternaam, e-mailadres en telefoonnummer, en roep dan
 capture_lead aan. Vraag dit nooit in het eerste bericht en nooit twee keer.
 Wil iemand liever direct contact: Gunther De Vleeschouwer, +32 496 57 13 97.
 
-═══ HUIDIGE PROJECTPAGINA ═══
-${context}
-
+${context ? `═══ HUIDIGE PROJECTPAGINA ═══\n${context}\n` : ''}
 ═══ VOLLEDIG AANBOD (naam | locatie | vanaf-prijs | link) ═══
-${projectIndex(lang)}`;
+${projectIndex(lang, !context)}`;
 }
 
 const LEAD_TOOL = {
@@ -191,18 +208,10 @@ async function sendLead(args, slug, lang, pageUrl) {
     timestamp: new Date().toISOString(),
   };
 
-  try {
-    await fetch(ZAPIER_LEAD_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload),
-    });
-    return true;
-  } catch (e) {
-    // Een mislukte Zap mag het gesprek niet laten crashen; de bezoeker merkt
-    // er niets van en we hebben het antwoord al.
-    return false;
-  }
+  // forwardToZapier vangt zijn eigen fouten af; een mislukte Zap mag het
+  // gesprek niet laten crashen - de bezoeker merkt er niets van en we
+  // hebben het antwoord al.
+  return forwardToZapier(payload);
 }
 
 async function logConversation(messages, slug, lang) {
@@ -234,10 +243,21 @@ function mockReply(messages, slug, lang) {
   const turns = messages.filter((m) => m.role === 'user').length;
   const nl = lang !== 'en';
 
+  // Hub: geen huidig project, dus tonen we wat voorbeelden uit het aanbod.
   if (!p) {
+    const sample = Object.values(DATA.projects)
+      .map((e) => e[lang] || e.nl)
+      .filter(Boolean)
+      .slice(0, 3)
+      .map((x) => `${x.name} (${x.location}, ${x.price.toLowerCase()})`)
+      .join(', ');
     return nl
-      ? '[mock] Ik heb voor deze pagina nog geen projectgegevens.'
-      : '[mock] I have no project data for this page yet.';
+      ? `[mock] Ik help u graag het juiste project vinden. Er zijn er ${
+          Object.keys(DATA.projects).length} — bijvoorbeeld ${sample}. ` +
+        'Wat is uw budget en welke streek heeft uw voorkeur?'
+      : `[mock] I'm happy to help you find the right project. There are ${
+          Object.keys(DATA.projects).length} — for instance ${sample}. ` +
+        'What is your budget and which area do you prefer?';
   }
   if (turns >= 3) {
     return nl

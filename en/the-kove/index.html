@@ -1810,9 +1810,11 @@ html.ai-chat-on .lead-dock { display: none; }
     return { code: sel.value, name: opt ? opt.getAttribute('data-country') : '' };
   }
 
-  // Stuurt elke lead naar de Zap (-> Google Sheet / CRM). keepalive zorgt
-  // dat het verzoek de navigatie naar /bedankt/ overleeft.
-  var ZAPIER_WEBHOOK_URL = 'https://hooks.zapier.com/hooks/catch/8344712/44ei8hj/';
+  // Stuurt elke lead naar ons eigen /api/lead, dat hem pas server-side
+  // doorstuurt naar de Zap (-> Google Sheet / CRM). Niet rechtstreeks naar
+  // Zapier: die webhook-URL zou dan in de paginabron staan, zichtbaar voor
+  // iedereen en zonder rate limiting aan te roepen. keepalive zorgt dat het
+  // verzoek de navigatie naar /bedankt/ overleeft.
   // Zodra een bezoeker via het subdomein binnenkomt, moet de lead source dat
   // meteen tonen; welke exacte pagina het was, staat toch al in description.
   var IS_SUBDOMAIN = window.location.hostname === 'projects.investinspain.be';
@@ -1824,19 +1826,18 @@ html.ai-chat-on .lead-dock { display: none; }
       last_name: data.get('lname') || '',
       first_name: data.get('fname') || '',
       mobile_phone: land.code + phoneDigits,
+      mobile_phone_unformatted: land.code.replace('+', '') + phoneDigits,
       email: data.get('email') || '',
       country: land.name,
-      utm_source: 'site',
       lead_source: IS_SUBDOMAIN ? 'Subdomein projecten' : 'Projectpagina',
       budget: '400k-600k',
-      description: 'The Kove — ' + formBron + ' — ' + window.location.href,
-      mobile_phone_unformatted: land.code.replace('+', '') + phoneDigits,
-      timestamp: new Date().toISOString()
+      form_source: formBron,
+      project_name: 'The Kove',
+      page_url: window.location.href
     };
     try {
-      fetch(ZAPIER_WEBHOOK_URL, {
+      fetch('/api/lead', {
         method: 'POST',
-        mode: 'no-cors',
         keepalive: true,
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)
