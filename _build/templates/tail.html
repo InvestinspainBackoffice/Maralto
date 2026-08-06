@@ -132,6 +132,39 @@
   <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.625.846 5.059 2.284 7.034L.789 23.492a.5.5 0 00.612.638l4.67-1.404A11.945 11.945 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-2.24 0-4.31-.726-5.993-1.955l-.348-.262-3.278.986.93-3.156-.28-.373A9.935 9.935 0 012 12C2 6.486 6.486 2 12 2s10 4.486 10 10-4.486 10-10 10z"/></svg>
 </a>
 
+<!-- ═══════════ AI-CHATWIDGET ═══════════ -->
+<button type="button" class="chat-fab" id="chatFab" aria-label="__I_CHAT_ARIA__"
+        aria-expanded="false" aria-controls="chatPanel">
+  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.4 8.4 0 0 1-3.8-.9L3 21l1.9-5.7a8.4 8.4 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.4 8.4 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+  __I_CHAT_TRIGGER__
+</button>
+
+<div class="chat-panel" id="chatPanel" role="dialog" aria-label="__I_CHAT_ARIA__">
+  <div class="chat-panel__head">
+    <div>
+      <p class="chat-panel__title">__I_CHAT_TITLE__</p>
+      <p class="chat-panel__sub">__I_CHAT_SUBTITLE__</p>
+    </div>
+    <button type="button" class="chat-panel__close" id="chatClose" aria-label="__I_CHAT_CLOSE_ARIA__">&times;</button>
+  </div>
+
+  <div class="chat-log" id="chatLog" role="log" aria-live="polite"></div>
+
+  <div class="chat-foot">
+    <form class="chat-form" id="chatForm" novalidate>
+      <textarea id="chatInput" rows="1" maxlength="1500"
+                placeholder="__I_CHAT_PLACEHOLDER__" aria-label="__I_CHAT_PLACEHOLDER__"></textarea>
+      <button type="submit" class="chat-send" id="chatSend" aria-label="__I_CHAT_SEND_ARIA__">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22 2 11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>
+      </button>
+    </form>
+    <div class="chat-foot__meta">
+      <p>__I_CHAT_DISCLAIMER__</p>
+      <a href="https://wa.me/__WA_NUMBER__?text=__WA_TEXT_ENCODED__" target="_blank" rel="noopener">__I_CHAT_WA__</a>
+    </div>
+  </div>
+</div>
+
 <!-- ═══════════ COOKIEBALK ═══════════ -->
 <div class="cookie-bar" id="cookieBar" role="dialog" aria-label="__I_COOKIE_ARIA__">
   <p>__I_COOKIE_TEXT_PRE__ <a href="https://investinspain.be/privacy-policy/" target="_blank" rel="noopener">__I_COOKIE_PRIVACY__</a>.</p>
@@ -500,13 +533,17 @@
   var pastHero = false;
   var atFooter = false;
 
+  var chatFabEl = document.getElementById('chatFab');
+
   function updateStickyBar() {
     if (pastHero && !atFooter) {
       stickyBar.classList.add('is-visible');
       if (waFab) waFab.classList.add('is-raised');
+      if (chatFabEl) chatFabEl.classList.add('is-raised');
     } else {
       stickyBar.classList.remove('is-visible');
       if (waFab) waFab.classList.remove('is-raised');
+      if (chatFabEl) chatFabEl.classList.remove('is-raised');
     }
     updateDock();
   }
@@ -759,6 +796,157 @@
   document.getElementById('cookieDecline').addEventListener('click', function() {
     try { localStorage.setItem(COOKIE_KEY, 'denied'); } catch (e) {}
     cookieBar.classList.remove('is-visible');
+  });
+})();
+
+/* ═══════════ AI-CHATWIDGET ═══════════
+   Op false zetten schakelt de chat uit en zet de lead-dock terug; de markup
+   van beide blijft staan, zodat terugschakelen één regel is. */
+var USE_AI_CHAT = true;
+
+(function() {
+  var fab = document.getElementById('chatFab');
+  var panel = document.getElementById('chatPanel');
+  if (!fab || !panel) return;
+
+  if (!USE_AI_CHAT) { fab.remove(); panel.remove(); return; }
+  document.documentElement.classList.add('ai-chat-on');
+
+  var log = document.getElementById('chatLog');
+  var form = document.getElementById('chatForm');
+  var input = document.getElementById('chatInput');
+  var sendBtn = document.getElementById('chatSend');
+  var closeBtn = document.getElementById('chatClose');
+
+  var SLUG = '__SLUG__';
+  var LANG = '__I_LANG__';
+  var GREETING = "__I_CHAT_GREETING__";
+  var THINKING = '__I_CHAT_THINKING__';
+  var ERROR_TEXT = '__I_CHAT_ERROR__';
+
+  var history = [];   // wat er naar de API gaat
+  var busy = false;
+  var opened = false;
+
+  /* Modelantwoorden nooit als HTML invoegen. We escapen alles en maken
+     daarna alleen echte http(s)-links klikbaar. */
+  function escapeHtml(str) {
+    return str.replace(/[&<>"']/g, function(c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+    });
+  }
+  function render(text) {
+    return escapeHtml(text).replace(/(https?:\/\/[^\s<]+[^\s<.,;:!?)])/g,
+      '<a href="$1" target="_blank" rel="noopener">$1</a>');
+  }
+
+  function addMessage(text, who, isError) {
+    var el = document.createElement('div');
+    el.className = 'chat-msg chat-msg--' + who + (isError ? ' chat-msg--error' : '');
+    el.innerHTML = render(text);
+    log.appendChild(el);
+    log.scrollTop = log.scrollHeight;
+    return el;
+  }
+
+  function showTyping() {
+    var el = document.createElement('div');
+    el.className = 'chat-typing';
+    el.id = 'chatTyping';
+    el.innerHTML = THINKING + ' <i>.</i><i>.</i><i>.</i>';
+    log.appendChild(el);
+    log.scrollTop = log.scrollHeight;
+  }
+  function hideTyping() {
+    var el = document.getElementById('chatTyping');
+    if (el) el.remove();
+  }
+
+  function openPanel() {
+    panel.classList.add('is-open');
+    fab.classList.add('is-hidden');
+    fab.setAttribute('aria-expanded', 'true');
+    if (!opened) {
+      opened = true;
+      // Begroeting staat alleen in beeld, niet in de history: scheelt tokens
+      // en het model kent de context al uit de systeemprompt.
+      addMessage(GREETING, 'bot');
+    }
+    setTimeout(function() { input.focus(); }, 350);
+  }
+  function closePanel() {
+    panel.classList.remove('is-open');
+    fab.classList.remove('is-hidden');
+    fab.setAttribute('aria-expanded', 'false');
+  }
+
+  fab.addEventListener('click', openPanel);
+  closeBtn.addEventListener('click', closePanel);
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape' && panel.classList.contains('is-open')) closePanel();
+  });
+
+  // Invoerveld groeit mee met de tekst
+  input.addEventListener('input', function() {
+    input.style.height = 'auto';
+    input.style.height = Math.min(input.scrollHeight, 100) + 'px';
+  });
+  input.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      form.requestSubmit ? form.requestSubmit() : form.dispatchEvent(new Event('submit'));
+    }
+  });
+
+  form.addEventListener('submit', function(e) {
+    e.preventDefault();
+    var text = input.value.trim();
+    if (!text || busy) return;
+
+    addMessage(text, 'user');
+    history.push({ role: 'user', content: text });
+    input.value = '';
+    input.style.height = 'auto';
+
+    busy = true;
+    sendBtn.disabled = true;
+    showTyping();
+
+    fetch('/api/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        slug: SLUG, lang: LANG, url: window.location.href, messages: history
+      })
+    })
+      .then(function(r) { return r.json().then(function(d) { return { ok: r.ok, data: d }; }); })
+      .then(function(res) {
+        hideTyping();
+        var reply = (res.data && res.data.reply) || '';
+        if (!reply) { addMessage(ERROR_TEXT, 'bot', true); return; }
+
+        addMessage(reply, 'bot', !res.ok);
+        if (res.ok) history.push({ role: 'assistant', content: reply });
+
+        // Lead ging server-side al naar Zapier; hier alleen nog het GA4-event,
+        // zodat chatleads in dezelfde rapportage vallen als de formulieren.
+        if (res.data.lead_captured && typeof gtag === 'function') {
+          gtag('event', 'generate_lead', {
+            currency: 'EUR',
+            lead_source: 'AI-chat',
+            project: '__PROJECT_NAME__'
+          });
+        }
+      })
+      .catch(function() {
+        hideTyping();
+        addMessage(ERROR_TEXT, 'bot', true);
+      })
+      .finally(function() {
+        busy = false;
+        sendBtn.disabled = false;
+        input.focus();
+      });
   });
 })();
 </script>
