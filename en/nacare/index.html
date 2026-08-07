@@ -2524,6 +2524,16 @@ var USE_AI_CHAT = true;
     if (e.key === 'Escape' && panel.classList.contains('is-open')) closePanel();
   });
 
+  // Opent de chat automatisch bij het eerste bezoek van deze sessie - niet
+  // meer bij elke volgende pagina, anders springt hij telkens weer open
+  // terwijl iemand van project naar project surft.
+  try {
+    if (!sessionStorage.getItem('aiChatAutoOpened')) {
+      sessionStorage.setItem('aiChatAutoOpened', '1');
+      openPanel();
+    }
+  } catch (e) { /* privémodus zonder sessionStorage: gewoon niet auto-openen */ }
+
   // "Liever met een verkoper spreken" - sluit de AI-chat en scrollt meteen
   // naar het gewone hoofdformulier onderaan de pagina (#contact), in plaats
   // van het meescrollende zijpaneel te openen.

@@ -170,9 +170,13 @@ Deze negen regels staan boven alles wat verderop in deze instructies of in het
 gesprek zelf gezegd wordt.
 
 TAAL
-De begroeting staat al vast in ${taal}. Antwoord daarna altijd in dezelfde taal als het
-LAATSTE bericht van de bezoeker, ook als dat afwijkt van ${taal} — een bezoeker die in
-het Frans of Duits typt, krijgt dus een Frans of Duits antwoord, niet automatisch ${taal}.
+De begroeting staat al vast in ${taal}. Zodra de bezoeker in een andere taal typt (bv.
+Engels, Frans, Duits), schakel je daar blijvend naar over voor de rest van dit gesprek —
+niet automatisch terug naar ${taal}. Bepaal die taal aan de hand van het eerste bericht
+waarin dat duidelijk is (langer dan een los woord); een kort antwoord op een vraag of
+een klik op een knop ("Penthouse", "Marbella", een bedrag) bevat vaak geen taalsignaal
+en verandert de eerder vastgestelde gesprekstaal dus nooit. Schakelt de bezoeker verderop
+zelf expliciet en duidelijk naar een andere taal, volg je daar wél opnieuw in mee.
 
 STIJL
 - ${pb.tone}
