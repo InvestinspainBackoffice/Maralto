@@ -745,6 +745,22 @@ html.ai-chat-on .lead-dock { display: none; }
 .chat-msg a { color: var(--gold); text-decoration: underline; text-underline-offset: 2px; }
 .chat-msg--error { border-left-color: #B4544A; color: var(--text-muted); }
 
+.chat-msg-col { display: flex; flex-direction: column; gap: 0.4rem; max-width: 100%; }
+.chat-chips { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+.chat-chip {
+  padding: 0.4rem 0.75rem;
+  background: transparent;
+  border: 1px solid var(--line-light);
+  color: var(--text);
+  font-family: var(--font);
+  font-size: 0.72rem; font-weight: 400;
+  letter-spacing: 0.01em;
+  cursor: pointer;
+  transition: border-color 0.3s, color 0.3s, background 0.3s;
+}
+.chat-chip:hover { border-color: var(--gold-dim); color: var(--gold); background: var(--chat-block); }
+.chat-chip:disabled { opacity: 0.4; cursor: default; }
+
 .chat-typing-row { display: flex; align-items: center; gap: 0.5rem; align-self: flex-start; }
 .chat-typing {
   font-size: 0.6rem; letter-spacing: 0.2em; text-transform: uppercase;
@@ -1401,7 +1417,31 @@ var USE_AI_CHAT = true;
       '<a href="$1" target="_blank" rel="noopener">$1</a>');
   }
 
+  // De bot mag een antwoord afsluiten met een eigen regel "OPTIES: a | b | c"
+  // om budget/regio/type als klikbare snelkeuzes aan te bieden i.p.v. de
+  // bezoeker te laten typen. Die regel wordt hier eruit gehaald en nooit
+  // als tekst getoond.
+  function extractOptions(text) {
+    var match = text.match(/\n?OPTIES:\s*(.+)\s*$/i);
+    if (!match) return { clean: text, options: [] };
+    var options = match[1].split('|').map(function(s) { return s.trim(); }).filter(Boolean).slice(0, 4);
+    return { clean: text.slice(0, match.index).trim(), options: options };
+  }
+
+  function sendQuick(text) {
+    if (busy || !text) return;
+    input.value = text;
+    form.requestSubmit ? form.requestSubmit() : form.dispatchEvent(new Event('submit'));
+  }
+
   function addMessage(text, who, isError) {
+    var options = [];
+    if (who === 'bot' && !isError) {
+      var parsed = extractOptions(text);
+      text = parsed.clean;
+      options = parsed.options;
+    }
+
     var bubble = document.createElement('div');
     bubble.className = 'chat-msg chat-msg--' + who + (isError ? ' chat-msg--error' : '');
     bubble.innerHTML = render(text);
@@ -1415,7 +1455,29 @@ var USE_AI_CHAT = true;
       avatar.alt = '';
       avatar.loading = 'lazy';
       row.appendChild(avatar);
-      row.appendChild(bubble);
+
+      var col = document.createElement('div');
+      col.className = 'chat-msg-col';
+      col.appendChild(bubble);
+
+      if (options.length) {
+        var chips = document.createElement('div');
+        chips.className = 'chat-chips';
+        options.forEach(function(opt) {
+          var chip = document.createElement('button');
+          chip.type = 'button';
+          chip.className = 'chat-chip';
+          chip.textContent = opt;
+          chip.addEventListener('click', function() {
+            Array.prototype.forEach.call(chips.querySelectorAll('.chat-chip'), function(b) { b.disabled = true; });
+            sendQuick(opt);
+          });
+          chips.appendChild(chip);
+        });
+        col.appendChild(chips);
+      }
+
+      row.appendChild(col);
       log.appendChild(row);
     } else {
       log.appendChild(bubble);
