@@ -15,6 +15,12 @@
  * Zonder AI_GATEWAY_API_KEY draait alles in mock-modus: dan antwoordt de
  * functie met echte projectdata maar zonder model, zodat de widget gratis
  * te bouwen en te beoordelen is.
+ *
+ * Voor algemene vragen over het aankoopproces (NIE, notaris, belastingen, ...)
+ * mag het model live de open WordPress-zoek-API van een partnerkantoor
+ * doorzoeken (search_buying_process_info hieronder) - puur als achtergrond-
+ * research, nooit als bron die aan de bezoeker getoond wordt. Zie de "NOOIT
+ * VERMELDEN"-sectie in systemPrompt(): de naam van die partner mag nooit vallen.
  */
 const DATA = require('./_projects.json');
 const { forwardToZapier } = require('./_zapier.js');
@@ -24,6 +30,9 @@ const GATEWAY_URL = 'https://ai-gateway.vercel.sh/v1/chat/completions';
 const MODEL = process.env.AI_MODEL || 'anthropic/claude-haiku-4.5';
 // Optioneel: aparte Zap voor gesprekslogging. Niet gezet = geen logging.
 const ZAPIER_CHATLOG_URL = process.env.ZAPIER_CHATLOG_URL || '';
+// Publieke, niet-geauthenticeerde WordPress REST API - geen eigen key nodig.
+const LEGAL_SEARCH_URL = 'https://www.welex.es/wp-json/wp/v2/posts';
+const LEGAL_SEARCH_TIMEOUT_MS = 5000;
 
 const MAX_MESSAGES = 24;      // ~12 beurten, daarna vriendelijk afronden
 const MAX_CHARS = 1500;       // per bericht
@@ -249,6 +258,24 @@ waardestijging. Bij dat soort vragen verwijs je door naar Gunther.
 Nuttige feiten die je wel mag delen:
 ${pb.facts.map((f) => `- ${f}`).join('\n')}
 
+Weet je bij zo'n vraag over het aankoopproces, belastingen, NIE-nummer, notariaat
+of gerelateerde juridische/fiscale onderwerpen niet genoeg om een nuttig, actueel
+antwoord te geven, roep dan de tool search_buying_process_info aan met een korte
+Engelse zoekterm. Dat doorzoekt achtergrondartikelen over exact dit soort thema's.
+Gebruik dit NOOIT voor iets over de projecten zelf (prijs, oplevering, ...) — daar
+staat alles al hierboven en in de aanbodlijst. Krijg je resultaten terug: dit is een
+ruwe zoekopdracht en de titels/samenvattingen noemen vaak letterlijk de kantoornaam
+van de bron of gaan over iets net iets anders dan gevraagd — negeer resultaten die
+niet echt aansluiten bij de vraag, en herschrijf wat wél bruikbaar is in je eigen
+woorden, kort en algemeen, precies zoals de rest van deze sectie. Vermeld nooit de
+bron, de kantoornaam die erin voorkomt of een link ernaar (zie NOOIT VERMELDEN
+hieronder), ook niet terloops of als voetnoot. Blijf hoe dan ook bij de regel
+hierboven: nooit als vaststaand feit voor de persoonlijke situatie van de bezoeker,
+altijd doorverwijzen naar Gunther voor iets specifieks. Levert de zoekopdracht niets
+bruikbaars op, val dan gewoon terug op de feiten hierboven en bied aan dat Gunther
+het verder uitzoekt — zeg nooit dat je iets
+"opgezocht" hebt of dat er geen resultaten waren.
+
 WAAROM INVESTINSPAIN (gebruik dit alleen als het relevant is, niet als opsomming)
 ${pb.usps.map((u) => `- ${u}`).join('\n')}
 
@@ -322,6 +349,66 @@ const LEAD_TOOL = {
     },
   },
 };
+
+const SEARCH_TOOL = {
+  type: 'function',
+  function: {
+    name: 'search_buying_process_info',
+    description:
+      'Doorzoekt achtergrondartikelen over het aankoopproces in Spanje: NIE-nummer, ' +
+      'notariaat, belastingen, overdracht, gerelateerde juridische/fiscale onderwerpen. ' +
+      'Gebruik dit nooit voor iets over de projecten zelf.',
+    parameters: {
+      type: 'object',
+      properties: {
+        query: {
+          type: 'string',
+          description:
+            'Korte zoekterm in het Engels voor de beste dekking, bv. "NIE number", ' +
+            '"notary costs", "property transfer tax non-resident".',
+        },
+      },
+      required: ['query'],
+    },
+  },
+};
+
+/* ── Achtergrondzoekopdracht (aankoopproces) ────────────────────────────
+   Publieke WordPress-zoek-API van een partnerkantoor, puur als research -
+   de naam van de bron komt nooit in de chat terecht (zie systemPrompt). */
+function stripHtml(html) {
+  return String(html || '')
+    .replace(/<[^>]+>/g, ' ')
+    .replace(/&hellip;/g, '…')
+    .replace(/&nbsp;/g, ' ')
+    .replace(/&amp;/g, '&')
+    .replace(/&#8217;|&rsquo;/g, '’')
+    .replace(/&#8220;|&ldquo;/g, '“')
+    .replace(/&#8221;|&rdquo;/g, '”')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+async function searchLegalInfo(query) {
+  const q = String(query || '').trim().slice(0, 100);
+  if (!q) return { results: [] };
+  try {
+    const url = `${LEGAL_SEARCH_URL}?search=${encodeURIComponent(q)}&per_page=3&_fields=title,excerpt`;
+    const res = await fetch(url, { signal: AbortSignal.timeout(LEGAL_SEARCH_TIMEOUT_MS) });
+    if (!res.ok) return { results: [] };
+    const posts = await res.json();
+    if (!Array.isArray(posts)) return { results: [] };
+    const results = posts.slice(0, 3).map((post) => ({
+      title: stripHtml(post.title && post.title.rendered),
+      summary: stripHtml(post.excerpt && post.excerpt.rendered).slice(0, 500),
+    })).filter((r) => r.title || r.summary);
+    return { results };
+  } catch (e) {
+    // Netwerkfout of timeout mag het gesprek nooit breken - het model valt
+    // terug op de statische feiten in de systeemprompt.
+    return { results: [] };
+  }
+}
 
 /* ── Lead & logging ──────────────────────────────────────────────────── */
 
@@ -539,29 +626,35 @@ module.exports = async (req, res) => {
       model: MODEL,
       max_tokens: MAX_TOKENS,
       messages: [{ role: 'system', content: systemPrompt(slug, lang) }, ...messages],
-      tools: [LEAD_TOOL],
+      tools: [LEAD_TOOL, SEARCH_TOOL],
     };
 
     let data = await callModel(request);
     let choice = data.choices && data.choices[0];
     let leadCaptured = false;
 
-    // Eén ronde tool-afhandeling volstaat: capture_lead is het enige tool en
-    // daarna hoeft het model alleen nog te bevestigen.
+    // Eén ronde tool-afhandeling volstaat: na de toolresultaten hoeft het
+    // model alleen nog te antwoorden, niet nog een tool aan te roepen.
     const calls = choice && choice.message && choice.message.tool_calls;
     if (calls && calls.length) {
       request.messages.push(choice.message);
       for (const call of calls) {
         let args = {};
         try { args = JSON.parse(call.function.arguments || '{}'); } catch (e) {}
-        const ok = call.function.name === 'capture_lead'
-          ? await sendLead(args, slug, lang, pageUrl)
-          : false;
-        if (ok) leadCaptured = true;
+        let toolResult;
+        if (call.function.name === 'capture_lead') {
+          const ok = await sendLead(args, slug, lang, pageUrl);
+          if (ok) leadCaptured = true;
+          toolResult = { success: ok };
+        } else if (call.function.name === 'search_buying_process_info') {
+          toolResult = await searchLegalInfo(args.query);
+        } else {
+          toolResult = { error: 'unknown_tool' };
+        }
         request.messages.push({
           role: 'tool',
           tool_call_id: call.id,
-          content: JSON.stringify({ success: ok }),
+          content: JSON.stringify(toolResult),
         });
       }
       data = await callModel(request);
