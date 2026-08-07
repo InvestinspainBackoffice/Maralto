@@ -2540,13 +2540,15 @@ var USE_AI_CHAT = true;
     if (e.key === 'Escape' && panel.classList.contains('is-open')) closePanel();
   });
 
-  // Opent de chat automatisch bij het eerste bezoek van deze sessie - niet
-  // meer bij elke volgende pagina, anders springt hij telkens weer open
-  // terwijl iemand van project naar project surft.
+  // Opent de chat automatisch bij het eerste bezoek van deze sessie, met
+  // een korte vertraging zodat de pagina eerst even kan "landen" en het niet
+  // aanvoelt als een pop-up die meteen in het gezicht springt. Niet meer bij
+  // elke volgende pagina, anders springt hij telkens weer open terwijl
+  // iemand van project naar project surft.
   try {
     if (!sessionStorage.getItem('aiChatAutoOpened')) {
       sessionStorage.setItem('aiChatAutoOpened', '1');
-      openPanel();
+      setTimeout(openPanel, 4000);
     }
   } catch (e) { /* privémodus zonder sessionStorage: gewoon niet auto-openen */ }
 
