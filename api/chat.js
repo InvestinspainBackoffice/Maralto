@@ -176,11 +176,16 @@ exacte formaat — ook in een Engels gesprek blijft het woord OPTIES ongewijzigd
 want de website leest deze regel technisch uit en toont ze als knoppen, nooit als
 tekst:
 OPTIES: keuze 1 | keuze 2 | keuze 3
-Maximaal 4 korte keuzes (1 à 3 woorden elk), aansluitend bij die ene vraag, bv. bij
-budget "Tot € 300.000 | € 300.000 - 600.000 | € 600.000 - 1.000.000 | Meer dan
-€ 1.000.000", bij regio "Marbella | Estepona | San Pedro | Andere", bij type
+Bij regio: kies uit "Marbella | Estepona | San Pedro | Andere". Bij type: kies uit
 "Appartement | Villa | Penthouse". Gebruik deze regel nooit bij open vragen
 (timeline, wensen, contactgegevens) — daar typt de bezoeker gewoon vrij.
+
+Bij BUDGET gebruik je altijd letterlijk deze zes keuzes, in deze volgorde en exacte
+bewoording (dit zijn dezelfde budgetcategorieën als in Salesforce/CRM — zo komt de
+lead straks correct binnen, ongeacht welk project uiteindelijk aanbevolen wordt):
+OPTIES: Tot € 200.000 | € 200.000 - 400.000 | € 400.000 - 600.000 | € 600.000 - 1.000.000 | € 1.000.000 - 3.000.000 | Meer dan € 3.000.000
+In het Engels vertaal je alleen de bewoording, nooit de bedragen of grenzen:
+OPTIES: Up to € 200,000 | € 200,000 - 400,000 | € 400,000 - 600,000 | € 600,000 - 1,000,000 | € 1,000,000 - 3,000,000 | More than € 3,000,000
 
 CONTACTGEGEVENS NATUURLIJK VERZAMELEN
 Je hebt uiteindelijk voornaam, achternaam, e-mailadres en telefoonnummer nodig — maar
@@ -269,6 +274,16 @@ const LEAD_TOOL = {
           description:
             'Eén zin over waar deze bezoeker naar op zoek is, in zijn eigen woorden.',
         },
+        budget: {
+          type: 'string',
+          enum: ['<200k', '200k-400k', '400k-600k', '600k-1m', '1m - 3m', '3m+'],
+          description:
+            'De budgetcategorie die de bezoeker zelf tijdens het gesprek opgaf ' +
+            '(niet de prijs van het aanbevolen project). Zet dit altijd om naar ' +
+            'exact een van deze zes codes, dezelfde categorieën als in het CRM: ' +
+            '<200k = tot € 200.000, 200k-400k, 400k-600k, 600k-1m, ' +
+            '1m - 3m = € 1.000.000 tot € 3.000.000, 3m+ = meer dan € 3.000.000.',
+        },
         intent: {
           type: 'string',
           enum: ['meeting', 'stay_informed'],
@@ -279,7 +294,7 @@ const LEAD_TOOL = {
             'afspraak te willen.',
         },
       },
-      required: ['first_name', 'last_name', 'email', 'phone', 'intent'],
+      required: ['first_name', 'last_name', 'email', 'phone', 'budget', 'intent'],
     },
   },
 };
@@ -302,7 +317,11 @@ async function sendLead(args, slug, lang, pageUrl) {
     // Eigen bron zodat je in de sheet kunt zien wat de chatbot oplevert
     // tegenover de formulieren.
     lead_source: 'AI-chat projecten',
-    budget: entry ? entry.budget : '',
+    // Het budget dat de bezoeker zelf in het gesprek aangaf weegt zwaarder dan
+    // de prijscategorie van het uiteindelijk aanbevolen project - anders komt
+    // bv. een 600k-1m-koper die interesse toont in een instapproject verkeerd
+    // gecategoriseerd binnen. Dezelfde codes als BUDGET_BUCKETS in generate.py.
+    budget: args.budget || (entry ? entry.budget : ''),
     description: `${p ? p.name : slug} — AI-chat (${args.intent === 'stay_informed' ? 'wil op de hoogte blijven' : 'wil gesprek'}) — ${args.interest || ''} — ${pageUrl || ''}`,
     timestamp: new Date().toISOString(),
   };
@@ -348,8 +367,8 @@ function mockReply(messages, slug, lang) {
   if (!p) {
     if (turns === 1) {
       return nl
-        ? '[mock] Hoi, ik help u graag het juiste project vinden. Wat is uw budget?\nOPTIES: Tot € 300.000 | € 300.000 - 600.000 | € 600.000 - 1.000.000 | Meer dan € 1.000.000'
-        : "[mock] Hi, I'm happy to help you find the right project. What is your budget?\nOPTIES: Up to € 300,000 | € 300,000 - 600,000 | € 600,000 - 1,000,000 | More than € 1,000,000";
+        ? '[mock] Hoi, ik help u graag het juiste project vinden. Wat is uw budget?\nOPTIES: Tot € 200.000 | € 200.000 - 400.000 | € 400.000 - 600.000 | € 600.000 - 1.000.000 | € 1.000.000 - 3.000.000 | Meer dan € 3.000.000'
+        : "[mock] Hi, I'm happy to help you find the right project. What is your budget?\nOPTIES: Up to € 200,000 | € 200,000 - 400,000 | € 400,000 - 600,000 | € 600,000 - 1,000,000 | € 1,000,000 - 3,000,000 | More than € 3,000,000";
     }
     if (turns === 2) {
       return nl

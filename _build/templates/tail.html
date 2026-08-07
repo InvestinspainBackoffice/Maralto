@@ -851,7 +851,7 @@ var USE_AI_CHAT = true;
   function extractOptions(text) {
     var match = text.match(/\n?OPTIES:\s*(.+)\s*$/i);
     if (!match) return { clean: text, options: [] };
-    var options = match[1].split('|').map(function(s) { return s.trim(); }).filter(Boolean).slice(0, 4);
+    var options = match[1].split('|').map(function(s) { return s.trim(); }).filter(Boolean).slice(0, 6);
     return { clean: text.slice(0, match.index).trim(), options: options };
   }
 
