@@ -1302,6 +1302,9 @@ html.ai-chat-on .lead-dock { display: none; }
     right: 0.75rem; left: 0.75rem; bottom: 0.75rem;
     width: auto; max-width: none;
     height: min(78vh, calc(100vh - 1.5rem));
+    /* dvh volgt de écht zichtbare hoogte (min. het toetsenbord meegerekend);
+       browsers zonder dvh-steun vallen terug op de vh-regel hierboven. */
+    height: min(78dvh, calc(100dvh - 1.5rem));
   }
 }
 @media (prefers-reduced-motion: reduce) {
@@ -2512,7 +2515,13 @@ var USE_AI_CHAT = true;
       // en het model kent de context al uit de systeemprompt.
       addMessage(GREETING, 'bot');
     }
-    setTimeout(function() { input.focus(); }, 350);
+    // Alleen automatisch focussen op toestellen zonder virtueel toetsenbord:
+    // op mobiel duwt het meteen opduikende toetsenbord de zichtbare hoogte
+    // samen en schuift het begin van het gesprek uit beeld. Op mobiel tikt
+    // de bezoeker zelf op het invoerveld wanneer die wil typen.
+    if (window.matchMedia && window.matchMedia('(min-width: 601px)').matches) {
+      setTimeout(function() { input.focus(); }, 350);
+    }
   }
   function closePanel() {
     panel.classList.remove('is-open');
@@ -2526,14 +2535,18 @@ var USE_AI_CHAT = true;
     if (e.key === 'Escape' && panel.classList.contains('is-open')) closePanel();
   });
 
-  // "Liever met een verkoper spreken" - stuurt door naar het bestaande,
-  // al gevalideerde contactformulier (het meescrollende zijpaneel) in
-  // plaats van een tweede, eigen formulier te bouwen.
+  // "Liever met een verkoper spreken" - sluit de AI-chat en scrollt meteen
+  // naar het gewone hoofdformulier onderaan de pagina (#contact), in plaats
+  // van het meescrollende zijpaneel te openen.
   if (talkToAgentBtn) {
     talkToAgentBtn.addEventListener('click', function() {
       closePanel();
-      var trigger = document.getElementById('dockTrigger');
-      if (trigger) trigger.click();
+      var contactSection = document.getElementById('contact');
+      if (contactSection) {
+        contactSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        var firstField = document.getElementById('fname');
+        if (firstField) setTimeout(function() { firstField.focus(); }, 450);
+      }
     });
   }
 

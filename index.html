@@ -883,6 +883,7 @@ html.ai-chat-on .lead-dock { display: none; }
     right: 0.75rem; left: 0.75rem; bottom: 0.75rem;
     width: auto; max-width: none;
     height: min(78vh, calc(100vh - 1.5rem));
+    height: min(78dvh, calc(100dvh - 1.5rem));
   }
 }
 @media (prefers-reduced-motion: reduce) {
@@ -2071,7 +2072,12 @@ var USE_AI_CHAT = true;
     fab.classList.add('is-hidden');
     fab.setAttribute('aria-expanded', 'true');
     if (!opened) { opened = true; addMessage(GREETING, 'bot'); }
-    setTimeout(function() { input.focus(); }, 350);
+    // Alleen automatisch focussen zonder virtueel toetsenbord (zie tail.html
+    // voor de uitleg) - op mobiel schuift dat anders het begin van het
+    // gesprek uit beeld.
+    if (window.matchMedia && window.matchMedia('(min-width: 601px)').matches) {
+      setTimeout(function() { input.focus(); }, 350);
+    }
   }
   function closePanel() {
     panel.classList.remove('is-open');
