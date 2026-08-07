@@ -87,6 +87,10 @@ STRINGS = {
         "CHAT_DISCLAIMER": "AI-assistent &mdash; gesprekken worden bewaard om onze dienstverlening te verbeteren.",
         "CHAT_WA": "Liever WhatsApp?",
         "CHAT_TALK_TO_AGENT": "Liever met een verkoper spreken",
+        # Meerkeuze-snelkeuzes (bv. regio): iemand die nog niet weet waar hij
+        # wil zoeken, moet meerdere gebieden kunnen aanduiden.
+        "CHAT_MULTI_HINT": "Meerdere mogelijk",
+        "CHAT_MULTI_CONFIRM": "Verder",
         # Hub: geen huidig project, maar dezelfde begroeting (consistent met
         # de projectpagina's, op vraag van het team). Ook deze gaat door
         # escapeHtml(): geen HTML-entities gebruiken.
@@ -195,6 +199,8 @@ STRINGS = {
         "CHAT_DISCLAIMER": "AI assistant &mdash; conversations are stored to help us improve our service.",
         "CHAT_WA": "Prefer WhatsApp?",
         "CHAT_TALK_TO_AGENT": "Prefer to talk to a sales agent",
+        "CHAT_MULTI_HINT": "Select one or more",
+        "CHAT_MULTI_CONFIRM": "Continue",
         # Zie de NL-variant: hub-begroeting, nu gelijk aan de projectpagina's.
         "CHAT_HUB_TITLE": "Your personal AI",
         "CHAT_HUB_SUBTITLE": "Find the project that suits you",

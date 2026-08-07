@@ -827,6 +827,8 @@ var USE_AI_CHAT = true;
   var GREETING = "__I_CHAT_GREETING__";
   var THINKING = '__I_CHAT_THINKING__';
   var ERROR_TEXT = '__I_CHAT_ERROR__';
+  var MULTI_HINT = '__I_CHAT_MULTI_HINT__';
+  var MULTI_CONFIRM = '__I_CHAT_MULTI_CONFIRM__';
 
   var history = [];   // wat er naar de API gaat
   var busy = false;
@@ -848,17 +850,86 @@ var USE_AI_CHAT = true;
   // om budget/regio/type als klikbare snelkeuzes aan te bieden i.p.v. de
   // bezoeker te laten typen. Die regel wordt hier eruit gehaald en nooit
   // als tekst getoond.
+  // "OPTIES: a | b" = één keuze, "OPTIES-MEER: a | b" = meerdere mogelijk
+  // (bv. regio, voor wie nog twijfelt tussen gebieden). Zelfde vergevings-
+  // gezinde aanpak als bij PROJECTEN: regel mag overal staan.
+  var OPTIONS_LINE = /(^|\n)[ \t]*OPTIES(-MEER)?:[ \t]*([^\n]+)/i;
+
   function extractOptions(text) {
-    var match = text.match(/\n?OPTIES:\s*(.+)\s*$/i);
-    if (!match) return { clean: text, options: [] };
-    var options = match[1].split('|').map(function(s) { return s.trim(); }).filter(Boolean).slice(0, 6);
-    return { clean: text.slice(0, match.index).trim(), options: options };
+    var match = text.match(OPTIONS_LINE);
+    if (!match) return { clean: text, options: [], multi: false };
+    var options = match[3].split('|')
+      .map(function(s) { return s.trim(); })
+      .filter(Boolean)
+      .slice(0, 6);
+    var clean = (text.slice(0, match.index) + ' ' + text.slice(match.index + match[0].length))
+      .replace(/[ \t]+/g, ' ').replace(/\n{3,}/g, '\n\n').trim();
+    return { clean: clean, options: options, multi: !!match[2] };
   }
 
   function sendQuick(text) {
     if (busy || !text) return;
     input.value = text;
     form.requestSubmit ? form.requestSubmit() : form.dispatchEvent(new Event('submit'));
+  }
+
+  function buildChips(options, multi) {
+    var chips = document.createElement('div');
+    chips.className = 'chat-chips';
+
+    function lockAll() {
+      Array.prototype.forEach.call(chips.querySelectorAll('button'), function(b) { b.disabled = true; });
+    }
+
+    if (!multi) {
+      options.forEach(function(opt) {
+        var chip = document.createElement('button');
+        chip.type = 'button';
+        chip.className = 'chat-chip';
+        chip.textContent = opt;
+        chip.addEventListener('click', function() { lockAll(); sendQuick(opt); });
+        chips.appendChild(chip);
+      });
+      return chips;
+    }
+
+    // Meerkeuze: aan/uit klikken, daarna pas versturen met de knop.
+    var hint = document.createElement('p');
+    hint.className = 'chat-chips__hint';
+    hint.textContent = MULTI_HINT;
+    chips.appendChild(hint);
+
+    var picked = [];
+    var confirm = document.createElement('button');
+    confirm.type = 'button';
+    confirm.className = 'chat-chips__confirm';
+    confirm.textContent = MULTI_CONFIRM;
+    confirm.disabled = true;
+
+    options.forEach(function(opt) {
+      var chip = document.createElement('button');
+      chip.type = 'button';
+      chip.className = 'chat-chip';
+      chip.textContent = opt;
+      chip.setAttribute('aria-pressed', 'false');
+      chip.addEventListener('click', function() {
+        var i = picked.indexOf(opt);
+        if (i === -1) { picked.push(opt); } else { picked.splice(i, 1); }
+        var on = picked.indexOf(opt) !== -1;
+        chip.classList.toggle('is-picked', on);
+        chip.setAttribute('aria-pressed', String(on));
+        confirm.disabled = picked.length === 0;
+      });
+      chips.appendChild(chip);
+    });
+
+    confirm.addEventListener('click', function() {
+      if (!picked.length) return;
+      lockAll();
+      sendQuick(picked.join(', '));
+    });
+    chips.appendChild(confirm);
+    return chips;
   }
 
   // Zelfde principe als OPTIES, maar dan "PROJECTEN: slug1 | slug2 | slug3"
@@ -933,12 +1004,14 @@ var USE_AI_CHAT = true;
 
   function addMessage(text, who, isError) {
     var options = [];
+    var optionsMulti = false;
     var projectSlugs = [];
     if (who === 'bot' && !isError) {
       var pOpts = extractOptions(text);
       var pProj = extractProjectSlugs(pOpts.clean);
       text = pProj.clean;
       options = pOpts.options;
+      optionsMulti = pOpts.multi;
       projectSlugs = pProj.slugs;
     }
 
@@ -963,20 +1036,7 @@ var USE_AI_CHAT = true;
       col.appendChild(bubble);
 
       if (options.length) {
-        var chips = document.createElement('div');
-        chips.className = 'chat-chips';
-        options.forEach(function(opt) {
-          var chip = document.createElement('button');
-          chip.type = 'button';
-          chip.className = 'chat-chip';
-          chip.textContent = opt;
-          chip.addEventListener('click', function() {
-            Array.prototype.forEach.call(chips.querySelectorAll('.chat-chip'), function(b) { b.disabled = true; });
-            sendQuick(opt);
-          });
-          chips.appendChild(chip);
-        });
-        col.appendChild(chips);
+        col.appendChild(buildChips(options, optionsMulti));
       }
 
       if (projectSlugs.length) {

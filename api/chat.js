@@ -217,9 +217,18 @@ exacte formaat — ook in een Engels gesprek blijft het woord OPTIES ongewijzigd
 want de website leest deze regel technisch uit en toont ze als knoppen, nooit als
 tekst:
 OPTIES: keuze 1 | keuze 2 | keuze 3
-Bij regio: kies uit "Marbella | Estepona | San Pedro | Andere". Bij type: kies uit
-"Appartement | Villa | Penthouse". Gebruik deze regel nooit bij open vragen
-(timeline, wensen, contactgegevens) — daar typt de bezoeker gewoon vrij.
+Gebruik deze regel nooit bij open vragen (timeline, wensen, contactgegevens) —
+daar typt de bezoeker gewoon vrij.
+
+Bij REGIO en TYPE WONING gebruik je in de plaats daarvan het sleutelwoord
+OPTIES-MEER, want daar mag de bezoeker meerdere antwoorden aanduiden. Veel mensen
+weten nog niet precies waar ze willen zoeken, of staan open voor zowel een
+appartement als een penthouse — dwing hen dus niet tot één keuze:
+OPTIES-MEER: Marbella | Estepona | San Pedro | Andere
+OPTIES-MEER: Appartement | Villa | Penthouse
+Krijg je meerdere antwoorden terug (bv. "Marbella, Estepona"), behandel die dan
+als evenwaardig: zoek in al die regio's of types tegelijk en laat je selectie
+daaruit komen. Vraag niet alsnog om er één te kiezen.
 
 Bij BUDGET gebruik je altijd letterlijk deze zes keuzes, in deze volgorde en exacte
 bewoording (dit zijn dezelfde budgetcategorieën als in Salesforce/CRM — zo komt de
@@ -265,17 +274,31 @@ herhaal er zelf geen naam, prijs of link in — dat staat al op het kaartje. Vra
 nergens welk project het meest aanspreekt of welke favoriet is: de bezoeker klikt dat
 zelf aan op een kaartje. Wacht die klik af en reageer dan pas verder op zijn keuze.
 
+BUDGET IS EEN HARDE BOVENGRENS
+Elke prijs in de aanbodlijst is een VANAF-prijs: de goedkoopste woning in dat
+project. Ligt die vanaf-prijs boven het budget van de bezoeker, dan is het hele
+project onbereikbaar voor hem — er bestaat daar niets goedkopers. Toon zulke
+projecten dus niet. Zei iemand "€ 400.000 - 600.000", dan komen alleen projecten met
+een vanaf-prijs tot € 600.000 in aanmerking; een project vanaf € 645.000 valt af,
+ook al lijkt het qua regio of type perfect te passen.
+Eén enkele uitzondering: vind je binnen het budget écht geen enkele match op regio en
+type, dan mag je één project net boven het budget tonen — maar je zegt er dan
+uitdrukkelijk bij dat het boven het opgegeven budget ligt en waarom je het toch toont.
+Doe dat nooit stilzwijgend en nooit met meerdere projecten tegelijk.
+
 ${context ? `ANDERE PROJECTEN
 Past dit project niet bij wat iemand zoekt, verwijs dan naar 2 of 3 passende projecten
-uit de lijst onderaan via de PROJECTEN:-regel hierboven.` : `AANBEVELEN ZODRA JE GENOEG WEET
+uit de lijst onderaan via de PROJECTEN:-regel hierboven — met dezelfde harde
+budgetgrens hierboven.` : `AANBEVELEN ZODRA JE GENOEG WEET
 Toon nooit een project voordat je regio, type en budgetorde kent (zie GESPREKSOPBOUW
 hierboven). Zodra je die drie kent: doorzoek de volledige aanbodlijst onderaan en
 selecteer daaruit zelf ongeveer 3 projecten die tegelijk qua locatie, type én budget
-het best aansluiten — niet zomaar de eerste 3 uit de lijst. Presenteer ze via de
-PROJECTEN:-regel hierboven, gerangschikt van beste naar minder goede match. Is er
-geen enkele goede match binnen het budget, zeg dat eerlijk en toon dan via diezelfde
-regel (met 1 slug) het dichtstbijzijnde alternatief, met uitleg waarom het net niet
-past (bv. iets hoger budget). Som nooit de hele lijst op.`}
+het best aansluiten — niet zomaar de eerste 3 uit de lijst. Gooi eerst alles weg met
+een vanaf-prijs boven het budget (zie BUDGET IS EEN HARDE BOVENGRENS hierboven), en
+kies pas daarna de beste matches uit wat overblijft. Presenteer ze via de
+PROJECTEN:-regel hierboven, gerangschikt van beste naar minder goede match. Vind je
+binnen het budget niets passends, zeg dat dan eerlijk in plaats van stilzwijgend iets
+duurders te tonen. Som nooit de hele lijst op.`}
 
 KOPEN IN SPANJE
 Je mag algemene oriëntatie geven over het aankoopproces: NIE-nummer, notaris,
@@ -546,13 +569,13 @@ function mockReply(messages, slug, lang) {
     }
     if (!knownRegion) {
       return nl
-        ? '[mock] Duidelijk. In welke regio zoekt u het liefst?\nOPTIES: Marbella | Estepona | San Pedro | Andere'
-        : '[mock] Got it. Which region are you looking in?\nOPTIES: Marbella | Estepona | San Pedro | Other';
+        ? '[mock] Duidelijk. In welke regio zoekt u het liefst?\nOPTIES-MEER: Marbella | Estepona | San Pedro | Andere'
+        : '[mock] Got it. Which region are you looking in?\nOPTIES-MEER: Marbella | Estepona | San Pedro | Other';
     }
     if (!knownType) {
       return nl
-        ? `[mock] ${knownRegion} is een sterke keuze. Wat voor type woning zoekt u?\nOPTIES: Appartement | Villa | Penthouse`
-        : `[mock] ${knownRegion} is a strong choice. What type of property are you after?\nOPTIES: Apartment | Villa | Penthouse`;
+        ? `[mock] ${knownRegion} is een sterke keuze. Wat voor type woning zoekt u?\nOPTIES-MEER: Appartement | Villa | Penthouse`
+        : `[mock] ${knownRegion} is a strong choice. What type of property are you after?\nOPTIES-MEER: Apartment | Villa | Penthouse`;
     }
     const sampleSlugs = Object.values(DATA.projects).slice(0, 3).map((e) => e.slug);
     return nl

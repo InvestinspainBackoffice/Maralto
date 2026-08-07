@@ -1179,6 +1179,26 @@ html.ai-chat-on .lead-dock { display: none; }
 }
 .chat-chip:hover { border-color: var(--gold-dim); color: var(--gold); background: var(--chat-block); }
 .chat-chip:disabled { opacity: 0.4; cursor: default; }
+.chat-chip.is-picked {
+  border-color: var(--gold); color: var(--gold);
+  background: var(--chat-block);
+  box-shadow: inset 0 0 0 1px var(--gold-dim);
+}
+.chat-chip.is-picked::before { content: '✓ '; }
+.chat-chips__hint {
+  width: 100%;
+  font-size: 0.58rem; letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--text-muted); margin: 0 0 0.1rem;
+}
+.chat-chips__confirm {
+  padding: 0.4rem 0.9rem;
+  background: var(--cta); border: none;
+  color: var(--white); font-family: var(--font);
+  font-size: 0.7rem; font-weight: 500; letter-spacing: 0.06em;
+  cursor: pointer; transition: background 0.3s, opacity 0.3s;
+}
+.chat-chips__confirm:hover:not(:disabled) { background: var(--cta-hover); }
+.chat-chips__confirm:disabled { opacity: 0.3; cursor: default; }
 
 /* ── Projectkaartjes (glassy, lichte 3D-tilt) bij een aanbeveling ── */
 .chat-cards { display: flex; flex-wrap: wrap; gap: 0.6rem; margin-top: 0.1rem; }
@@ -2327,6 +2347,8 @@ var USE_AI_CHAT = true;
   var GREETING = "Hoi, ik ben uw persoonlijke AI. Waarmee kan ik u vandaag helpen?";
   var THINKING = 'Aan het typen';
   var ERROR_TEXT = 'Er ging iets mis. Probeer het opnieuw of bel Gunther op +32 496 57 13 97.';
+  var MULTI_HINT = 'Meerdere mogelijk';
+  var MULTI_CONFIRM = 'Verder';
 
   var history = [];   // wat er naar de API gaat
   var busy = false;
@@ -2348,17 +2370,86 @@ var USE_AI_CHAT = true;
   // om budget/regio/type als klikbare snelkeuzes aan te bieden i.p.v. de
   // bezoeker te laten typen. Die regel wordt hier eruit gehaald en nooit
   // als tekst getoond.
+  // "OPTIES: a | b" = één keuze, "OPTIES-MEER: a | b" = meerdere mogelijk
+  // (bv. regio, voor wie nog twijfelt tussen gebieden). Zelfde vergevings-
+  // gezinde aanpak als bij PROJECTEN: regel mag overal staan.
+  var OPTIONS_LINE = /(^|\n)[ \t]*OPTIES(-MEER)?:[ \t]*([^\n]+)/i;
+
   function extractOptions(text) {
-    var match = text.match(/\n?OPTIES:\s*(.+)\s*$/i);
-    if (!match) return { clean: text, options: [] };
-    var options = match[1].split('|').map(function(s) { return s.trim(); }).filter(Boolean).slice(0, 6);
-    return { clean: text.slice(0, match.index).trim(), options: options };
+    var match = text.match(OPTIONS_LINE);
+    if (!match) return { clean: text, options: [], multi: false };
+    var options = match[3].split('|')
+      .map(function(s) { return s.trim(); })
+      .filter(Boolean)
+      .slice(0, 6);
+    var clean = (text.slice(0, match.index) + ' ' + text.slice(match.index + match[0].length))
+      .replace(/[ \t]+/g, ' ').replace(/\n{3,}/g, '\n\n').trim();
+    return { clean: clean, options: options, multi: !!match[2] };
   }
 
   function sendQuick(text) {
     if (busy || !text) return;
     input.value = text;
     form.requestSubmit ? form.requestSubmit() : form.dispatchEvent(new Event('submit'));
+  }
+
+  function buildChips(options, multi) {
+    var chips = document.createElement('div');
+    chips.className = 'chat-chips';
+
+    function lockAll() {
+      Array.prototype.forEach.call(chips.querySelectorAll('button'), function(b) { b.disabled = true; });
+    }
+
+    if (!multi) {
+      options.forEach(function(opt) {
+        var chip = document.createElement('button');
+        chip.type = 'button';
+        chip.className = 'chat-chip';
+        chip.textContent = opt;
+        chip.addEventListener('click', function() { lockAll(); sendQuick(opt); });
+        chips.appendChild(chip);
+      });
+      return chips;
+    }
+
+    // Meerkeuze: aan/uit klikken, daarna pas versturen met de knop.
+    var hint = document.createElement('p');
+    hint.className = 'chat-chips__hint';
+    hint.textContent = MULTI_HINT;
+    chips.appendChild(hint);
+
+    var picked = [];
+    var confirm = document.createElement('button');
+    confirm.type = 'button';
+    confirm.className = 'chat-chips__confirm';
+    confirm.textContent = MULTI_CONFIRM;
+    confirm.disabled = true;
+
+    options.forEach(function(opt) {
+      var chip = document.createElement('button');
+      chip.type = 'button';
+      chip.className = 'chat-chip';
+      chip.textContent = opt;
+      chip.setAttribute('aria-pressed', 'false');
+      chip.addEventListener('click', function() {
+        var i = picked.indexOf(opt);
+        if (i === -1) { picked.push(opt); } else { picked.splice(i, 1); }
+        var on = picked.indexOf(opt) !== -1;
+        chip.classList.toggle('is-picked', on);
+        chip.setAttribute('aria-pressed', String(on));
+        confirm.disabled = picked.length === 0;
+      });
+      chips.appendChild(chip);
+    });
+
+    confirm.addEventListener('click', function() {
+      if (!picked.length) return;
+      lockAll();
+      sendQuick(picked.join(', '));
+    });
+    chips.appendChild(confirm);
+    return chips;
   }
 
   // Zelfde principe als OPTIES, maar dan "PROJECTEN: slug1 | slug2 | slug3"
@@ -2433,12 +2524,14 @@ var USE_AI_CHAT = true;
 
   function addMessage(text, who, isError) {
     var options = [];
+    var optionsMulti = false;
     var projectSlugs = [];
     if (who === 'bot' && !isError) {
       var pOpts = extractOptions(text);
       var pProj = extractProjectSlugs(pOpts.clean);
       text = pProj.clean;
       options = pOpts.options;
+      optionsMulti = pOpts.multi;
       projectSlugs = pProj.slugs;
     }
 
@@ -2463,20 +2556,7 @@ var USE_AI_CHAT = true;
       col.appendChild(bubble);
 
       if (options.length) {
-        var chips = document.createElement('div');
-        chips.className = 'chat-chips';
-        options.forEach(function(opt) {
-          var chip = document.createElement('button');
-          chip.type = 'button';
-          chip.className = 'chat-chip';
-          chip.textContent = opt;
-          chip.addEventListener('click', function() {
-            Array.prototype.forEach.call(chips.querySelectorAll('.chat-chip'), function(b) { b.disabled = true; });
-            sendQuick(opt);
-          });
-          chips.appendChild(chip);
-        });
-        col.appendChild(chips);
+        col.appendChild(buildChips(options, optionsMulti));
       }
 
       if (projectSlugs.length) {
