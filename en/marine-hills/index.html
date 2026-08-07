@@ -1180,6 +1180,54 @@ html.ai-chat-on .lead-dock { display: none; }
 .chat-chip:hover { border-color: var(--gold-dim); color: var(--gold); background: var(--chat-block); }
 .chat-chip:disabled { opacity: 0.4; cursor: default; }
 
+/* ── Projectkaartjes (glassy, lichte 3D-tilt) bij een aanbeveling ── */
+.chat-cards { display: flex; flex-wrap: wrap; gap: 0.6rem; margin-top: 0.1rem; }
+.chat-card {
+  width: 134px;
+  padding: 0;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 10px;
+  overflow: hidden;
+  cursor: pointer;
+  text-align: left;
+  font-family: var(--font);
+  background: linear-gradient(160deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.02));
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  transform: perspective(700px) rotateX(0deg);
+  transition: transform 0.35s var(--ease), box-shadow 0.35s var(--ease), border-color 0.35s;
+}
+.chat-card:hover, .chat-card:focus-visible {
+  transform: perspective(700px) rotateX(-6deg) translateY(-3px);
+  border-color: var(--gold-dim);
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.45), 0 0 0 1px rgba(197, 164, 107, 0.25),
+    inset 0 1px 0 rgba(255, 255, 255, 0.12);
+}
+.chat-card:disabled { opacity: 0.45; cursor: default; transform: none; }
+.chat-card.is-selected {
+  border-color: var(--gold);
+  box-shadow: 0 0 0 1px var(--gold), 0 10px 24px rgba(0, 0, 0, 0.4);
+}
+.chat-card__img {
+  display: block;
+  width: 100%;
+  height: 72px;
+  background-size: cover;
+  background-position: center;
+  background-color: rgba(255, 255, 255, 0.05);
+}
+.chat-card__body { display: block; padding: 0.5rem 0.55rem 0.6rem; }
+.chat-card__name { display: block; font-size: 0.68rem; font-weight: 600; color: var(--text); line-height: 1.3; }
+.chat-card__loc {
+  display: block; font-size: 0.56rem; letter-spacing: 0.05em; text-transform: uppercase;
+  color: var(--text-muted); margin-top: 0.15rem;
+}
+.chat-card__price { display: block; font-size: 0.62rem; color: var(--gold); margin-top: 0.3rem; font-weight: 500; }
+@media (prefers-reduced-motion: reduce) {
+  .chat-card, .chat-card:hover, .chat-card:focus-visible { transition: none; transform: none; }
+}
+
 .chat-typing-row { display: flex; align-items: center; gap: 0.5rem; align-self: flex-start; }
 .chat-typing {
   font-size: 0.6rem; letter-spacing: 0.2em; text-transform: uppercase;
@@ -2337,12 +2385,72 @@ var USE_AI_CHAT = true;
     form.requestSubmit ? form.requestSubmit() : form.dispatchEvent(new Event('submit'));
   }
 
+  // Zelfde principe als OPTIES, maar dan "PROJECTEN: slug1 | slug2 | slug3"
+  // voor de aanbevolen projecten. De widget haalt naam/prijs/foto altijd zelf
+  // op bij /api/project-cards - het model geeft alleen de slug door, nooit
+  // die gegevens zelf, zodat een kaartje nooit iets verzonnens kan tonen.
+  function extractProjectSlugs(text) {
+    var match = text.match(/\n?PROJECTEN:\s*(.+)\s*$/i);
+    if (!match) return { clean: text, slugs: [] };
+    var slugs = match[1].split('|').map(function(s) { return s.trim(); }).filter(Boolean).slice(0, 4);
+    return { clean: text.slice(0, match.index).trim(), slugs: slugs };
+  }
+
+  function renderProjectCards(col, slugs) {
+    var wrap = document.createElement('div');
+    wrap.className = 'chat-cards';
+    col.appendChild(wrap);
+    fetch('/api/project-cards?slugs=' + encodeURIComponent(slugs.join(',')) + '&lang=' + LANG)
+      .then(function(r) { return r.json(); })
+      .then(function(data) {
+        var cards = (data && data.cards) || [];
+        cards.forEach(function(p) {
+          var card = document.createElement('button');
+          card.type = 'button';
+          card.className = 'chat-card';
+
+          var img = document.createElement('span');
+          img.className = 'chat-card__img';
+          if (p.image) img.style.backgroundImage = 'url(' + JSON.stringify(p.image) + ')';
+
+          var name = document.createElement('span');
+          name.className = 'chat-card__name';
+          name.textContent = p.name;
+          var loc = document.createElement('span');
+          loc.className = 'chat-card__loc';
+          loc.textContent = p.location;
+          var price = document.createElement('span');
+          price.className = 'chat-card__price';
+          price.textContent = p.price;
+
+          var body = document.createElement('span');
+          body.className = 'chat-card__body';
+          body.appendChild(name);
+          body.appendChild(loc);
+          body.appendChild(price);
+
+          card.appendChild(img);
+          card.appendChild(body);
+          card.addEventListener('click', function() {
+            Array.prototype.forEach.call(wrap.querySelectorAll('.chat-card'), function(b) { b.disabled = true; });
+            card.classList.add('is-selected');
+            sendQuick(p.name);
+          });
+          wrap.appendChild(card);
+        });
+      })
+      .catch(function() { /* stille fallback: geen kaartjes, gesprek gaat gewoon door */ });
+  }
+
   function addMessage(text, who, isError) {
     var options = [];
+    var projectSlugs = [];
     if (who === 'bot' && !isError) {
-      var parsed = extractOptions(text);
-      text = parsed.clean;
-      options = parsed.options;
+      var pOpts = extractOptions(text);
+      var pProj = extractProjectSlugs(pOpts.clean);
+      text = pProj.clean;
+      options = pOpts.options;
+      projectSlugs = pProj.slugs;
     }
 
     var bubble = document.createElement('div');
@@ -2380,6 +2488,10 @@ var USE_AI_CHAT = true;
           chips.appendChild(chip);
         });
         col.appendChild(chips);
+      }
+
+      if (projectSlugs.length) {
+        renderProjectCards(col, projectSlugs);
       }
 
       row.appendChild(col);

@@ -145,10 +145,19 @@ def build_project(project_file):
     slug = mod.DATA["SLUG"]
     price_num = generate.parse_price_number(mod.DATA["PRICE_FROM"])
 
+    nl_data = data_for_lang(mod, "nl")
     entry = {
         "slug": slug,
         "price_num": price_num,
         "budget": generate.budget_bucket(price_num),
+        # Voor de projectkaartjes in de AI-chatwidget (zie api/project-cards.js).
+        # THUMB (uit het optionele HUB-dict) eerst: dat is bij de oudere
+        # projecten de enige zelf-gehoste (WebP) variant - hun OG_IMAGE/
+        # HERO_BG linkt daar nog rechtstreeks naar investinspain.be, wat we
+        # juist nooit willen (zie CLAUDE.md).
+        "image": getattr(mod, "HUB", {}).get("THUMB")
+        or nl_data.get("HERO_BG")
+        or nl_data.get("OG_IMAGE", ""),
     }
 
     for lang in ("nl", "en"):

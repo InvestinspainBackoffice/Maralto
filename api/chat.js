@@ -100,9 +100,12 @@ function projectIndex(lang, rich) {
     const p = entry[lang] || entry.nl;
     if (!p) continue;
     const types = p.types && p.types.length ? p.types.join('/') : '?';
+    // slug staat vooraan en apart, want dat is het enige stukje dat het
+    // model letterlijk moet overnemen in een PROJECTEN:-regel (zie
+    // systemPrompt) - naam/prijs mogen daar losjes uit de tekst komen.
     rows.push(rich
-      ? `${p.name} | ${p.location} | ${types} | ${p.price} | ${p.url}\n   ${p.summary}`
-      : `${p.name} | ${p.location} | ${types} | ${p.price} | ${p.url}`);
+      ? `[${entry.slug}] ${p.name} | ${p.location} | ${types} | ${p.price} | ${p.url}\n   ${p.summary}`
+      : `[${entry.slug}] ${p.name} | ${p.location} | ${types} | ${p.price} | ${p.url}`);
   }
   rows.sort();
   indexCache[key] = rows.join('\n');
@@ -182,6 +185,10 @@ STIJL
   populaire keuze, vooral rond San Pedro" of "Met dat budget zijn er mooie opties") en
   laat de volgende vraag daar natuurlijk uit voortvloeien. Varieer de formulering elke
   beurt; herhaal nooit twee keer dezelfde overgangszin in hetzelfde gesprek.
+- Gebruik nooit markdown-opmaak: geen **vet**, geen #kopjes, geen [links](url) of
+  kale URL's in de lopende tekst. Dit is platte chattekst, geen document. Projecten
+  worden hoe dan ook als aparte kaartjes getoond (zie AANBEVELEN ZODRA JE GENOEG WEET
+  en ANDERE PROJECTEN hieronder) — noem in je zin dus nooit zelf een link.
 
 GESPREKSOPBOUW (max. 3 kwalificatievragen, één per beurt, dan pas aanbevelen)
 Voor je specifieke projecten, prijzen of links toont, ken je minstens: (1) het BUDGET —
@@ -234,19 +241,31 @@ opleverdata, beschikbaarheid of aantallen die er niet staan. Weet je iets niet, 
 dan en bied aan dat Gunther het uitzoekt. Dat is altijd een beter antwoord dan gokken.
 ${pb.noPlansUpfront}
 
+PROJECTKAARTJES TONEN
+Wil je één of meerdere projecten tonen (hieronder staat wanneer), doe dat dan NOOIT
+door zelf naam, prijs of link uit te schrijven — de website toont ze als aparte,
+klikbare kaartjes met foto. Jij levert alleen de slug (het stukje tussen [blokhaken]
+vóór elke regel in de aanbodlijst onderaan, bv. "[apron-estepona]" → gebruik dan
+"apron-estepona"). Sluit je bericht af met een aparte, letterlijke laatste regel in
+dit exacte formaat, met 1 tot 3 slugs, gescheiden door een |:
+PROJECTEN: slug1 | slug2 | slug3
+In de tekst ervoor mag je best kort zeggen waaróm elk project past (bv. "vooral omdat
+het dicht bij het strand ligt"), maar herhaal daar zelf geen naam, prijs of link in —
+dat staat al op het kaartje. Vraag na deze regel niet nogmaals welk project het meest
+aanspreekt: de bezoeker kiest dat zelf door op een kaartje te klikken. Wacht dat af en
+reageer dan pas verder op zijn keuze.
+
 ${context ? `ANDERE PROJECTEN
-Past dit project niet bij wat iemand zoekt, verwijs dan naar een passend project
-uit de lijst onderaan, met naam, locatie, vanaf-prijs en link. Doe dat hooguit
-twee of drie projecten tegelijk.` : `AANBEVELEN ZODRA JE GENOEG WEET
-Toon nooit een project, prijs of link voordat je regio, type en budgetorde kent (zie
-GESPREKSOPBOUW hierboven). Zodra je die drie kent: doorzoek de volledige aanbodlijst
-onderaan en selecteer daaruit zelf ongeveer 3 projecten die tegelijk qua locatie, type
-én budget het best aansluiten — niet zomaar de eerste 3 uit de lijst. Presenteer ze
-gerangschikt van beste naar minder goede match, telkens met naam, locatie, type,
-vanaf-prijs, link en één korte zin waarom precies dit project past bij wat de bezoeker
-zocht. Is er geen enkele goede match binnen het budget, zeg dat eerlijk en toon dan het
-dichtstbijzijnde alternatief met uitleg waarom het net niet past (bv. iets hoger budget).
-Som nooit de hele lijst op.`}
+Past dit project niet bij wat iemand zoekt, verwijs dan naar 2 of 3 passende projecten
+uit de lijst onderaan via de PROJECTEN:-regel hierboven.` : `AANBEVELEN ZODRA JE GENOEG WEET
+Toon nooit een project voordat je regio, type en budgetorde kent (zie GESPREKSOPBOUW
+hierboven). Zodra je die drie kent: doorzoek de volledige aanbodlijst onderaan en
+selecteer daaruit zelf ongeveer 3 projecten die tegelijk qua locatie, type én budget
+het best aansluiten — niet zomaar de eerste 3 uit de lijst. Presenteer ze via de
+PROJECTEN:-regel hierboven, gerangschikt van beste naar minder goede match. Is er
+geen enkele goede match binnen het budget, zeg dat eerlijk en toon dan via diezelfde
+regel (met 1 slug) het dichtstbijzijnde alternatief, met uitleg waarom het net niet
+past (bv. iets hoger budget). Som nooit de hele lijst op.`}
 
 KOPEN IN SPANJE
 Je mag algemene oriëntatie geven over het aankoopproces: NIE-nummer, notaris,
@@ -298,7 +317,7 @@ het knopje "Liever met een verkoper spreken" hierboven in de chat, of rechtstree
 Gunther op +32 496 57 13 97.
 
 ${context ? `═══ HUIDIGE PROJECTPAGINA ═══\n${context}\n` : ''}
-═══ VOLLEDIG AANBOD (naam | locatie | type(s) | vanaf-prijs | link — "?" = type onbekend) ═══
+═══ VOLLEDIG AANBOD ([slug] naam | locatie | type(s) | vanaf-prijs | link — "?" = type onbekend) ═══
 ${projectIndex(lang, !context)}`;
 }
 
@@ -525,15 +544,10 @@ function mockReply(messages, slug, lang) {
         ? `[mock] ${knownRegion} is een sterke keuze. Wat voor type woning zoekt u?\nOPTIES: Appartement | Villa | Penthouse`
         : `[mock] ${knownRegion} is a strong choice. What type of property are you after?\nOPTIES: Apartment | Villa | Penthouse`;
     }
-    const sample = Object.values(DATA.projects)
-      .map((e) => e[lang] || e.nl)
-      .filter(Boolean)
-      .slice(0, 3)
-      .map((x) => `${x.name} (${x.location}, ${(x.types || []).join('/') || '?'}, ${x.price.toLowerCase()})`)
-      .join(' — ');
+    const sampleSlugs = Object.values(DATA.projects).slice(0, 3).map((e) => e.slug);
     return nl
-      ? `[mock] Op basis daarvan passen deze het best: ${sample}. Zal ik een van deze verder toelichten, of stel ik een gesprek met een verkoper voor?`
-      : `[mock] Based on that, these fit best: ${sample}. Shall I go into more detail on one of these, or would you like to arrange a chat with a sales agent?`;
+      ? `[mock] Op basis daarvan passen deze het best bij wat u zoekt.\nPROJECTEN: ${sampleSlugs.join(' | ')}`
+      : `[mock] Based on that, these fit best with what you're looking for.\nPROJECTEN: ${sampleSlugs.join(' | ')}`;
   }
   if (turns >= 3) {
     return nl

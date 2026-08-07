@@ -861,12 +861,72 @@ var USE_AI_CHAT = true;
     form.requestSubmit ? form.requestSubmit() : form.dispatchEvent(new Event('submit'));
   }
 
+  // Zelfde principe als OPTIES, maar dan "PROJECTEN: slug1 | slug2 | slug3"
+  // voor de aanbevolen projecten. De widget haalt naam/prijs/foto altijd zelf
+  // op bij /api/project-cards - het model geeft alleen de slug door, nooit
+  // die gegevens zelf, zodat een kaartje nooit iets verzonnens kan tonen.
+  function extractProjectSlugs(text) {
+    var match = text.match(/\n?PROJECTEN:\s*(.+)\s*$/i);
+    if (!match) return { clean: text, slugs: [] };
+    var slugs = match[1].split('|').map(function(s) { return s.trim(); }).filter(Boolean).slice(0, 4);
+    return { clean: text.slice(0, match.index).trim(), slugs: slugs };
+  }
+
+  function renderProjectCards(col, slugs) {
+    var wrap = document.createElement('div');
+    wrap.className = 'chat-cards';
+    col.appendChild(wrap);
+    fetch('/api/project-cards?slugs=' + encodeURIComponent(slugs.join(',')) + '&lang=' + LANG)
+      .then(function(r) { return r.json(); })
+      .then(function(data) {
+        var cards = (data && data.cards) || [];
+        cards.forEach(function(p) {
+          var card = document.createElement('button');
+          card.type = 'button';
+          card.className = 'chat-card';
+
+          var img = document.createElement('span');
+          img.className = 'chat-card__img';
+          if (p.image) img.style.backgroundImage = 'url(' + JSON.stringify(p.image) + ')';
+
+          var name = document.createElement('span');
+          name.className = 'chat-card__name';
+          name.textContent = p.name;
+          var loc = document.createElement('span');
+          loc.className = 'chat-card__loc';
+          loc.textContent = p.location;
+          var price = document.createElement('span');
+          price.className = 'chat-card__price';
+          price.textContent = p.price;
+
+          var body = document.createElement('span');
+          body.className = 'chat-card__body';
+          body.appendChild(name);
+          body.appendChild(loc);
+          body.appendChild(price);
+
+          card.appendChild(img);
+          card.appendChild(body);
+          card.addEventListener('click', function() {
+            Array.prototype.forEach.call(wrap.querySelectorAll('.chat-card'), function(b) { b.disabled = true; });
+            card.classList.add('is-selected');
+            sendQuick(p.name);
+          });
+          wrap.appendChild(card);
+        });
+      })
+      .catch(function() { /* stille fallback: geen kaartjes, gesprek gaat gewoon door */ });
+  }
+
   function addMessage(text, who, isError) {
     var options = [];
+    var projectSlugs = [];
     if (who === 'bot' && !isError) {
-      var parsed = extractOptions(text);
-      text = parsed.clean;
-      options = parsed.options;
+      var pOpts = extractOptions(text);
+      var pProj = extractProjectSlugs(pOpts.clean);
+      text = pProj.clean;
+      options = pOpts.options;
+      projectSlugs = pProj.slugs;
     }
 
     var bubble = document.createElement('div');
@@ -904,6 +964,10 @@ var USE_AI_CHAT = true;
           chips.appendChild(chip);
         });
         col.appendChild(chips);
+      }
+
+      if (projectSlugs.length) {
+        renderProjectCards(col, projectSlugs);
       }
 
       row.appendChild(col);
