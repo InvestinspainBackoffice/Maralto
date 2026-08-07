@@ -2361,11 +2361,24 @@ var USE_AI_CHAT = true;
   // voor de aanbevolen projecten. De widget haalt naam/prijs/foto altijd zelf
   // op bij /api/project-cards - het model geeft alleen de slug door, nooit
   // die gegevens zelf, zodat een kaartje nooit iets verzonnens kan tonen.
+  // Bewust vergevingsgezind: het model zet deze regel niet altijd netjes
+  // onderaan, neemt soms de [blokhaken] uit de aanbodlijst mee, en schrijft
+  // er soms nog een zin achter. We matchen daarom precies de reeks slugs en
+  // laten al het andere gewoon in de zichtbare tekst staan.
+  var PROJECT_SLUG_LINE =
+    /(^|\n)[ \t]*PROJECTEN:[ \t]*((?:\[?[a-z0-9][a-z0-9-]*\]?[ \t]*\|[ \t]*)*\[?[a-z0-9][a-z0-9-]*\]?)/i;
+
   function extractProjectSlugs(text) {
-    var match = text.match(/\n?PROJECTEN:\s*(.+)\s*$/i);
+    var match = text.match(PROJECT_SLUG_LINE);
     if (!match) return { clean: text, slugs: [] };
-    var slugs = match[1].split('|').map(function(s) { return s.trim(); }).filter(Boolean).slice(0, 4);
-    return { clean: text.slice(0, match.index).trim(), slugs: slugs };
+    var slugs = match[2].split('|')
+      .map(function(s) { return s.trim().replace(/[\[\]]/g, '').trim(); })
+      .filter(Boolean)
+      .slice(0, 4);
+    var tail = text.slice(match.index + match[0].length).replace(/^[ \t]*[.,;:!?]+/, '');
+    var clean = (text.slice(0, match.index) + ' ' + tail)
+      .replace(/[ \t]+/g, ' ').replace(/\n{3,}/g, '\n\n').trim();
+    return { clean: clean, slugs: slugs };
   }
 
   function renderProjectCards(col, slugs) {

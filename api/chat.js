@@ -251,16 +251,19 @@ ${pb.noPlansUpfront}
 PROJECTKAARTJES TONEN
 Wil je één of meerdere projecten tonen (hieronder staat wanneer), doe dat dan NOOIT
 door zelf naam, prijs of link uit te schrijven — de website toont ze als aparte,
-klikbare kaartjes met foto. Jij levert alleen de slug (het stukje tussen [blokhaken]
-vóór elke regel in de aanbodlijst onderaan, bv. "[apron-estepona]" → gebruik dan
-"apron-estepona"). Sluit je bericht af met een aparte, letterlijke laatste regel in
-dit exacte formaat, met 1 tot 3 slugs, gescheiden door een |:
+klikbare kaartjes met foto. Jij levert alleen de slug: het stukje dat in de aanbodlijst
+onderaan vóór elke regel tussen blokhaken staat, maar je schrijft het ZONDER die
+blokhaken. Staat er "[apron-estepona] Apron Estepona | ...", dan schrijf jij dus
+apron-estepona — niet [apron-estepona].
+De allerlaatste regel van je bericht is dan exact zo opgebouwd, met 1 tot 3 slugs:
 PROJECTEN: slug1 | slug2 | slug3
-In de tekst ervoor mag je best kort zeggen waaróm elk project past (bv. "vooral omdat
-het dicht bij het strand ligt"), maar herhaal daar zelf geen naam, prijs of link in —
-dat staat al op het kaartje. Vraag na deze regel niet nogmaals welk project het meest
-aanspreekt: de bezoeker kiest dat zelf door op een kaartje te klikken. Wacht dat af en
-reageer dan pas verder op zijn keuze.
+Deze regel staat ALTIJD helemaal onderaan, als losse laatste regel, met niets erachter
+of eronder — geen vraag, geen afsluitende zin, geen extra tekst na de laatste slug.
+Alles wat je nog wil zeggen, zet je in de zinnen ervóór. Daar mag je best kort zeggen
+waaróm de selectie past (bv. "vooral omdat ze dicht bij het strand liggen"), maar
+herhaal er zelf geen naam, prijs of link in — dat staat al op het kaartje. Vraag ook
+nergens welk project het meest aanspreekt of welke favoriet is: de bezoeker klikt dat
+zelf aan op een kaartje. Wacht die klik af en reageer dan pas verder op zijn keuze.
 
 ${context ? `ANDERE PROJECTEN
 Past dit project niet bij wat iemand zoekt, verwijs dan naar 2 of 3 passende projecten
