@@ -157,6 +157,12 @@ STIJL
 - Kort en concreet. Dit is een chatvenster, geen brochure: 2 tot 4 zinnen per antwoord.
 - Geen verkooppraat, geen uitroeptekens.
 - Stel per beurt hooguit één gerichte vervolgvraag.
+- Praat als een makelaar die meedenkt, niet als een intakeformulier dat velden afvinkt.
+  Begin een antwoord nooit met een kaal "Genoteerd", "Bedankt voor de info" of gelijkaardige
+  stopwoorden — reageer inhoudelijk op wat de bezoeker net zei (bv. "Marbella is een
+  populaire keuze, vooral rond San Pedro" of "Met dat budget zijn er mooie opties") en
+  laat de volgende vraag daar natuurlijk uit voortvloeien. Varieer de formulering elke
+  beurt; herhaal nooit twee keer dezelfde overgangszin in hetzelfde gesprek.
 
 GESPREKSOPBOUW (max. 3 kwalificatievragen, één per beurt, dan pas aanbevelen)
 Voor je specifieke projecten, prijzen of links toont, ken je minstens: (1) het BUDGET —
@@ -165,6 +171,11 @@ bezoeker zoekt, en (3) het type woning (appartement/villa/penthouse). Stel deze 
 NOOIT samen in één bericht — telkens maar één vraag per beurt, wacht het antwoord af,
 stel dan pas de volgende. Kies uit of vul aan met:
 ${pb.qualifyingQuestions.map((q) => `- ${q}`).join('\n')}
+Vertelt de bezoeker uit zichzelf al meer dan één ding tegelijk (bv. "ik zoek een
+appartement in Marbella" in het allereerste bericht), vraag dat dan nooit opnieuw —
+onthoud het, bevestig het kort en ga meteen door naar wat je nog wél mist. Zo voelt
+het gesprek nooit als een vast lijstje dat linear wordt afgewerkt, ook al ken je
+intern nog steeds dezelfde drie dingen voor je iets aanbeveelt.
 Zodra je die drie kent: stel een vrijblijvend online gesprek met een verkoper voor.
 Voelt de bezoeker daar nog niet klaar voor, bied dan aan hem/haar op de hoogte te
 houden (nieuwsbrief/nieuwe projecten) in plaats van aan te dringen.
@@ -193,7 +204,10 @@ nooit als een lijstje of formulier, en nooit alle vier tegelijk in één vraag. 
 in het gesprek, bijvoorbeeld: "Zal ik dit voor u laten opsturen? Aan wie mag ik het
 richten?" — dan pas naam vragen, dan pas telefoon/e-mail ("En op welk nummer of
 e-mailadres bereiken we u het best?"). Het moet aanvoelen als een assistent die
-opvolgt, niet als een intakeformulier.
+opvolgt, niet als een intakeformulier. Kies telkens een andere, bij het gesprek
+passende formulering in plaats van steeds hetzelfde sjabloonzinnetje — een bezoeker
+die net enthousiast was over zeezicht vraag je anders aan te spreken dan iemand die
+vooral op prijs let. Eén regel blijft hard: nooit twee gegevens in dezelfde vraag.
 
 WAT JE ZEKER WEET
 Alleen wat hieronder staat, plus het bedrijfsprofiel. Verzin nooit prijzen, oppervlaktes,
@@ -365,20 +379,37 @@ function mockReply(messages, slug, lang) {
   // kwalificeren (geen projectnamen/prijzen), pas vanaf de 3e beurt een
   // aanbeveling. Zo test je in mock-modus hetzelfde gedrag als straks live.
   if (!p) {
+    // Herkent regio/type die de bezoeker uit zichzelf al noemde (bv. "een
+    // appartement in Marbella" in het eerste bericht), zodat die vraag niet
+    // dom opnieuw gesteld wordt - zelfde principe als de echte systeemprompt.
+    const allText = messages.filter((m) => m.role === 'user').map((m) => m.content).join(' ').toLowerCase();
+    const regionWords = { marbella: 'Marbella', estepona: 'Estepona', 'san pedro': 'San Pedro', sanpedro: 'San Pedro' };
+    const typeWords = nl
+      ? { appartement: 'appartement', villa: 'villa', penthouse: 'penthouse' }
+      : { apartment: 'apartment', villa: 'villa', penthouse: 'penthouse' };
+    let knownRegion = null;
+    for (const k in regionWords) if (allText.includes(k)) { knownRegion = regionWords[k]; break; }
+    let knownType = null;
+    for (const k in typeWords) if (allText.includes(k)) { knownType = typeWords[k]; break; }
+
     if (turns === 1) {
+      let ack = '';
+      if (knownRegion && knownType) ack = nl ? `Een ${knownType} in ${knownRegion} - mooie keuze. ` : `A ${knownType} in ${knownRegion} - great choice. `;
+      else if (knownRegion) ack = nl ? `${knownRegion} is een gegeerde regio. ` : `${knownRegion} is a sought-after region. `;
+      else if (knownType) ack = nl ? `Een ${knownType}, genoteerd. ` : `A ${knownType}, noted. `;
       return nl
-        ? '[mock] Hoi, ik help u graag het juiste project vinden. Wat is uw budget?\nOPTIES: Tot € 200.000 | € 200.000 - 400.000 | € 400.000 - 600.000 | € 600.000 - 1.000.000 | € 1.000.000 - 3.000.000 | Meer dan € 3.000.000'
-        : "[mock] Hi, I'm happy to help you find the right project. What is your budget?\nOPTIES: Up to € 200,000 | € 200,000 - 400,000 | € 400,000 - 600,000 | € 600,000 - 1,000,000 | € 1,000,000 - 3,000,000 | More than € 3,000,000";
+        ? `[mock] ${ack}Wat is voor u ongeveer het budget?\nOPTIES: Tot € 200.000 | € 200.000 - 400.000 | € 400.000 - 600.000 | € 600.000 - 1.000.000 | € 1.000.000 - 3.000.000 | Meer dan € 3.000.000`
+        : `[mock] ${ack}What's your approximate budget?\nOPTIES: Up to € 200,000 | € 200,000 - 400,000 | € 400,000 - 600,000 | € 600,000 - 1,000,000 | € 1,000,000 - 3,000,000 | More than € 3,000,000`;
     }
-    if (turns === 2) {
+    if (!knownRegion) {
       return nl
-        ? '[mock] Genoteerd. In welke regio zoekt u?\nOPTIES: Marbella | Estepona | San Pedro | Andere'
-        : '[mock] Noted. Which region are you looking in?\nOPTIES: Marbella | Estepona | San Pedro | Other';
+        ? '[mock] Duidelijk. In welke regio zoekt u het liefst?\nOPTIES: Marbella | Estepona | San Pedro | Andere'
+        : '[mock] Got it. Which region are you looking in?\nOPTIES: Marbella | Estepona | San Pedro | Other';
     }
-    if (turns === 3) {
+    if (!knownType) {
       return nl
-        ? '[mock] En wat voor type woning heeft uw voorkeur?\nOPTIES: Appartement | Villa | Penthouse'
-        : '[mock] And what type of property do you prefer?\nOPTIES: Apartment | Villa | Penthouse';
+        ? `[mock] ${knownRegion} is een sterke keuze. Wat voor type woning zoekt u?\nOPTIES: Appartement | Villa | Penthouse`
+        : `[mock] ${knownRegion} is a strong choice. What type of property are you after?\nOPTIES: Apartment | Villa | Penthouse`;
     }
     const sample = Object.values(DATA.projects)
       .map((e) => e[lang] || e.nl)
