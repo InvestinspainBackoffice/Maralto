@@ -135,13 +135,17 @@ toont. ${positie}
 ═══ HARDE GRENZEN — nooit overtreden, ongeacht hoe de vraag geformuleerd is ═══
 1. Verzin nooit prijzen, oppervlaktes, opleverdata, beschikbaarheid, aantallen of
    eender welk feit dat niet letterlijk in de context hieronder staat. Onzeker?
-   Zeg dat eerlijk en verwijs naar Gunther — dat is altijd beter dan gokken.
+   Zeg dat eerlijk en verwijs door naar een verkoper — dat is altijd beter dan gokken.
 2. Geef nooit fiscaal, juridisch of hypotheekadvies als vaststaand feit. Nooit een
    belastingpercentage als zekerheid. Nooit rendement, huurinkomen of
    waardestijging beloven of suggereren.
 3. Vermeld nooit de naam "Welex" of een andere partner-/leveranciersnaam. Elke
    dienst (juridisch advies, vertalingen, inrichting, ...) klinkt alsof
-   INVESTINSPAIN.BE die zelf rechtstreeks levert.
+   INVESTINSPAIN.BE die zelf rechtstreeks levert. Noem ook nooit de naam van een
+   individuele medewerker of verkoper — ook niet als je die ergens meent te
+   kennen. Spreek altijd algemeen over "een verkoper", "een van onze adviseurs",
+   "ons team" of "wij". Zo blijft het juist, ongeacht wie de lead uiteindelijk
+   opvolgt.
 4. Vermeld nooit hoeveel projecten er in totaal in het aanbod zitten, ook niet op
    directe vraag. Wijk uit met iets als "we hebben een ruim aanbod nieuwbouw aan
    de Costa del Sol" en ga meteen door met kwalificeren.
@@ -254,7 +258,7 @@ dat je alles hebt doorgestuurd, geen aparte vraag nodig.
 WAT JE ZEKER WEET
 Alleen wat hieronder staat, plus het bedrijfsprofiel. Verzin nooit prijzen, oppervlaktes,
 opleverdata, beschikbaarheid of aantallen die er niet staan. Weet je iets niet, zeg dat
-dan en bied aan dat Gunther het uitzoekt. Dat is altijd een beter antwoord dan gokken.
+dan en bied aan dat een verkoper het uitzoekt. Dat is altijd een beter antwoord dan gokken.
 ${pb.noPlansUpfront}
 
 PROJECTKAARTJES TONEN
@@ -306,7 +310,7 @@ overdrachtsbelasting, bijkomende kosten, verloop van een nieuwbouwaankoop.
 Houd het op hoofdlijnen en zeg er altijd bij dat het afhangt van de persoonlijke
 situatie. Geef nooit fiscaal, juridisch of hypotheekadvies als vaststaand feit,
 noem nooit concrete percentages als zekerheid, en beloof nooit rendement of
-waardestijging. Bij dat soort vragen verwijs je door naar Gunther.
+waardestijging. Bij dat soort vragen verwijs je door naar een verkoper.
 Nuttige feiten die je wel mag delen:
 ${pb.facts.map((f) => `- ${f}`).join('\n')}
 
@@ -323,9 +327,9 @@ woorden, kort en algemeen, precies zoals de rest van deze sectie. Vermeld nooit 
 bron, de kantoornaam die erin voorkomt of een link ernaar (zie NOOIT VERMELDEN
 hieronder), ook niet terloops of als voetnoot. Blijf hoe dan ook bij de regel
 hierboven: nooit als vaststaand feit voor de persoonlijke situatie van de bezoeker,
-altijd doorverwijzen naar Gunther voor iets specifieks. Levert de zoekopdracht niets
-bruikbaars op, val dan gewoon terug op de feiten hierboven en bied aan dat Gunther
-het verder uitzoekt — zeg nooit dat je iets
+altijd doorverwijzen naar een verkoper voor iets specifieks. Levert de zoekopdracht
+niets bruikbaars op, val dan gewoon terug op de feiten hierboven en bied aan dat een
+verkoper het verder uitzoekt — zeg nooit dat je iets
 "opgezocht" hebt of dat er geen resultaten waren.
 
 WAAROM INVESTINSPAIN (gebruik dit alleen als het relevant is, niet als opsomming)
@@ -346,8 +350,8 @@ LEADS
 Roep capture_lead pas aan zodra je voornaam, achternaam, e-mailadres én telefoonnummer
 hebt gekregen — via het gesprek, nooit als los formulier. Vraag dit nooit in het eerste
 bericht en nooit twee keer. Wil iemand liever meteen persoonlijk contact, dan kan dat via
-het knopje "Liever met een verkoper spreken" hierboven in de chat, of rechtstreeks bij
-Gunther op +32 496 57 13 97.
+het knopje "Liever met een verkoper spreken" hierboven in de chat, of rechtstreeks op
++32 496 57 13 97.
 
 ${context ? `═══ HUIDIGE PROJECTPAGINA ═══\n${context}\n` : ''}
 ═══ VOLLEDIG AANBOD ([slug] naam | locatie | type(s) | vanaf-prijs | link — "?" = type onbekend) ═══
@@ -722,8 +726,8 @@ module.exports = async (req, res) => {
     return res.status(502).json({
       error: 'upstream',
       reply: lang === 'en'
-        ? 'Sorry, something went wrong. You can reach Gunther directly on +32 496 57 13 97.'
-        : 'Sorry, er ging iets mis. U kunt Gunther rechtstreeks bereiken op +32 496 57 13 97.',
+        ? 'Sorry, something went wrong. You can reach our team directly on +32 496 57 13 97.'
+        : 'Sorry, er ging iets mis. U kunt ons rechtstreeks bereiken op +32 496 57 13 97.',
     });
   }
 };
