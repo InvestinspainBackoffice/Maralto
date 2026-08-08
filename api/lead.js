@@ -19,7 +19,12 @@ const RATE_WINDOW_MS = 60000; // per minuut per IP
 // hooguit een paar keer per bezoek, nooit tientallen keren per minuut.
 
 const MAX_FIELD_LEN = 200;
-const ALLOWED_SOURCES = ['hoofdformulier', 'pop-up', 'zijpaneel', 'projectenoverzicht'];
+const ALLOWED_SOURCES = ['hoofdformulier', 'pop-up', 'zijpaneel', 'projectenoverzicht', 'selectie'];
+
+// UTM-parameters worden alleen doorgegeven als ze er zijn. De projectpagina's
+// sturen ze niet mee (die zetten utm_source vast op 'site'); /selectie/ wel,
+// want de advertenties die daarheen linken leunen erop.
+const UTM_FIELDS = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content'];
 
 const hits = new Map();
 
@@ -83,6 +88,19 @@ module.exports = async (req, res) => {
     description: `${str(body.project_name)} — ${formBron} — ${str(body.page_url)}`,
     timestamp: new Date().toISOString(),
   };
+
+  // De selectiepagina stuurt de gegeven antwoorden mee. Ze gaan achter de
+  // bestaande description aan in plaats van in een nieuw veld, zodat de Zap
+  // en de kolommen in de leadsheet ongewijzigd blijven werken.
+  const answers = str(body.answers);
+  if (answers) payload.description += ` — ${answers}`;
+  // description is samengesteld uit meerdere velden en kan zo langer worden
+  // dan de limiet die str() per veld bewaakt.
+  payload.description = payload.description.slice(0, 600);
+
+  for (const field of UTM_FIELDS) {
+    if (body[field]) payload[field] = str(body[field]);
+  }
 
   const ok = await forwardToZapier(payload);
   // Ook bij een mislukte Zap 200 teruggeven: de bezoeker staat al onderweg

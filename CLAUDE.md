@@ -32,3 +32,15 @@ zonder kwaliteitsverlies.
 
 Na het toevoegen van foto's: `python3 _build/generate.py && python3
 _build/generate_hub.py` om alles te regenereren.
+
+## Regenereren
+
+```bash
+python3 _build/generate_data.py     # api/_projects.json (bron voor /api/match)
+python3 _build/generate.py          # alle projectpagina's
+python3 _build/generate_hub.py      # de overzichtspagina
+python3 _build/generate_selectie.py # /selectie/ en /en/selection/
+```
+
+`generate_selectie.py` leest `api/_projects.json`, dus draai `generate_data.py`
+eerst wanneer er projecten of prijzen zijn gewijzigd.

@@ -1,0 +1,1142 @@
+<!DOCTYPE html>
+<html lang="__I_LANG__">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>__I_SEL_TITLE__</title>
+<meta name="description" content="__I_SEL_META__">
+<meta property="og:title" content="__I_SEL_OG_TITLE__">
+<meta property="og:description" content="__I_SEL_META__">
+<meta property="og:image" content="__OG_IMAGE__">
+<meta property="og:type" content="website">
+<meta name="robots" content="noindex, follow">
+<!-- Vercel Web Analytics - cookieless, geen persoonsgegevens, dus geen consent nodig -->
+<script defer src="/_vercel/insights/script.js"></script>
+<!-- Vercel Speed Insights - cookieless performance-metingen, geen consent nodig -->
+<script defer src="/_vercel/speed-insights/script.js"></script>
+<!-- Google tag (gtag.js) - analytics_storage staat pas op 'granted' na akkoord via de cookiebalk -->
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('consent', 'default', {
+    'ad_storage': 'denied',
+    'ad_user_data': 'denied',
+    'ad_personalization': 'denied',
+    'analytics_storage': 'denied'
+  });
+  try {
+    if (localStorage.getItem('cookie_consent') === 'granted') {
+      gtag('consent', 'update', { 'analytics_storage': 'granted' });
+    }
+  } catch (e) {}
+</script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-ZQJ99DP4N5"></script>
+<script>
+  gtag('js', new Date());
+  gtag('config', 'G-ZQJ99DP4N5');
+</script>
+<!-- Meta Pixel Code - laadt pas na akkoord via de cookiebalk -->
+<script>
+  window.metaPixelLoaded = false;
+  function loadMetaPixel() {
+    if (window.metaPixelLoaded) return;
+    window.metaPixelLoaded = true;
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window, document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', '569820826775985');
+    fbq('track', 'PageView');
+  }
+  try {
+    if (localStorage.getItem('cookie_consent') === 'granted') { loadMetaPixel(); }
+  } catch (e) {}
+</script>
+<!-- End Meta Pixel Code -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="image" href="__HERO_IMAGE__" fetchpriority="high">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+/* De designtokens zijn dezelfde als in head.html/hub.html. Die duplicatie is
+   in dit project bewust (zie CLAUDE.md): elke pagina staat op zichzelf en
+   heeft geen build-pipeline die een gedeelde stylesheet kan bundelen. Wijzigt
+   een token, wijzig hem dan in alle drie. */
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root {
+  --bg: #0E1318;
+  --bg-el: #131920;
+  --text: #EDE8E0;
+  --text-muted: #8A96A3;
+  --gold: #C4A97D;
+  --gold-dim: #9E8968;
+  --line: #1F2830;
+  --line-light: #2A3644;
+  --cta: #2D6A7A;
+  --cta-hover: #387F91;
+  --white: #FEFCF9;
+  --font: 'Sora', system-ui, -apple-system, sans-serif;
+  --ease: cubic-bezier(0.16, 1, 0.3, 1);
+}
+html { -webkit-text-size-adjust: 100%; }
+body {
+  font-family: var(--font);
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.65;
+  font-weight: 300;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+img { display: block; max-width: 100%; height: auto; }
+a { color: inherit; text-decoration: none; }
+button { font-family: inherit; cursor: pointer; border: none; background: none; color: inherit; }
+
+.frame {
+  position: fixed; inset: 0; pointer-events: none; z-index: 100;
+  border: 1px solid var(--line);
+  opacity: 0; animation: frame-in 1.5s var(--ease) 0.8s forwards;
+}
+@keyframes frame-in { to { opacity: 1; } }
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.label {
+  font-size: 0.6rem; letter-spacing: 0.3em; text-transform: uppercase;
+  color: var(--gold-dim); margin-bottom: 1.5rem;
+  position: relative; padding-left: 2rem;
+}
+.label::before {
+  content: ''; position: absolute; left: 0; top: 50%;
+  width: 1.2rem; height: 1px; background: var(--gold-dim);
+}
+.heading {
+  font-size: clamp(1.6rem, 4vw, 2.8rem);
+  font-weight: 300; line-height: 1.25; letter-spacing: -0.01em;
+  margin-bottom: 1.5rem;
+}
+.heading em { font-style: normal; color: var(--gold); }
+.body-text {
+  font-size: clamp(0.9rem, 1.8vw, 1.05rem);
+  color: var(--text-muted); line-height: 1.75; max-width: 60ch;
+}
+.body-text strong { color: var(--text); font-weight: 400; }
+
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem;
+  padding: 1rem 2.5rem;
+  background: var(--cta); color: var(--white);
+  font-size: 0.75rem; font-weight: 500; letter-spacing: 0.15em;
+  text-transform: uppercase; border: none; cursor: pointer;
+  transition: background 0.3s, transform 0.2s;
+}
+.btn:hover { background: var(--cta-hover); }
+.btn:active { transform: scale(0.98); }
+.btn[disabled] { opacity: 0.55; cursor: default; }
+.btn--outline {
+  background: transparent; border: 1px solid var(--line-light); color: var(--text);
+}
+.btn--outline:hover { border-color: var(--gold-dim); background: transparent; }
+
+/* ── Voortgangsbalk + teller ───────────────────────────────────────────── */
+.sel-topbar {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 90;
+  background: rgba(14,19,24,0.92);
+  backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--line);
+  opacity: 0; pointer-events: none;
+  transition: opacity 0.4s var(--ease);
+}
+.sel-topbar.is-visible { opacity: 1; pointer-events: auto; }
+.sel-progress { height: 2px; background: var(--line); }
+.sel-progress__bar {
+  height: 100%; width: 0; background: var(--gold);
+  transition: width 0.5s var(--ease);
+}
+.sel-topbar__row {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 1rem; padding: 0.55rem clamp(1rem, 4vw, 2rem);
+}
+.sel-topbar__back {
+  display: inline-flex; align-items: center; gap: 0.45rem;
+  font-size: 0.62rem; letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--text-muted); transition: color 0.2s;
+}
+.sel-topbar__back:hover { color: var(--text); }
+.sel-topbar__back svg { width: 12px; height: 12px; stroke: currentColor; stroke-width: 1.5; fill: none; }
+.sel-topbar__back[hidden] { display: none; }
+
+/* De live teller. Het getal is het enige dat verandert, dus alleen dát krijgt
+   een accentkleur - anders trekt de hele regel bij elke stap de aandacht weg
+   van de vraag. */
+.sel-count {
+  font-size: 0.62rem; letter-spacing: 0.12em;
+  color: var(--text-muted); text-align: right; line-height: 1.4;
+}
+.sel-count__n {
+  color: var(--gold); font-size: 0.85rem; font-weight: 400;
+  letter-spacing: 0.05em; display: inline-block;
+}
+.sel-count.is-bumped .sel-count__n { animation: count-bump 0.45s var(--ease); }
+@keyframes count-bump {
+  0% { transform: scale(1); }
+  40% { transform: scale(1.28); }
+  100% { transform: scale(1); }
+}
+.sel-count[hidden] { display: none; }
+
+/* ── Layout ────────────────────────────────────────────────────────────── */
+.sel {
+  min-height: 100svh;
+  display: flex; flex-direction: column; justify-content: center;
+  padding: clamp(4.5rem, 12vw, 7rem) clamp(1.25rem, 5vw, 3rem) clamp(3rem, 8vw, 5rem);
+}
+.sel__inner { width: 100%; max-width: 780px; margin: 0 auto; }
+.sel-screen[hidden] { display: none; }
+.sel-screen { animation: fade-up 0.6s var(--ease); }
+
+/* ── Welkomstscherm ────────────────────────────────────────────────────── */
+.sel-welcome__img {
+  width: 100%; height: clamp(180px, 34vw, 300px);
+  object-fit: cover; margin-bottom: clamp(2rem, 5vw, 3rem);
+  border: 1px solid var(--line);
+}
+.sel-welcome__meta {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 0.75rem 1.75rem;
+  margin: 2rem 0 2.5rem;
+}
+.sel-welcome__fact {
+  display: inline-flex; align-items: center; gap: 0.55rem;
+  font-size: 0.68rem; letter-spacing: 0.15em; text-transform: uppercase;
+  color: var(--text-muted);
+}
+.sel-welcome__fact svg {
+  width: 15px; height: 15px; stroke: var(--gold); stroke-width: 1.5; fill: none;
+  flex-shrink: 0;
+}
+
+/* ── Vraagscherm ───────────────────────────────────────────────────────── */
+.sel-step__count {
+  font-size: 0.6rem; letter-spacing: 0.3em; text-transform: uppercase;
+  color: var(--gold-dim); margin-bottom: 1.25rem;
+}
+.sel-step__count span { color: var(--text-muted); letter-spacing: 0.2em; }
+.sel-step__q {
+  font-size: clamp(1.35rem, 3.6vw, 2.1rem);
+  font-weight: 300; line-height: 1.3; letter-spacing: -0.01em;
+  margin-bottom: 0.6rem;
+}
+.sel-step__hint {
+  font-size: 0.7rem; letter-spacing: 0.1em; color: var(--text-muted);
+  margin-bottom: 0.5rem;
+}
+.sel-step__error {
+  font-size: 0.65rem; color: #c0392b; letter-spacing: 0.05em; margin-top: 0.9rem;
+}
+.sel-step__error[hidden] { display: none; }
+
+.sel-options { display: grid; gap: 0.6rem; margin-top: 1.75rem; }
+@media (min-width: 620px) {
+  .sel-options { grid-template-columns: 1fr 1fr; }
+  /* Een oneven laatste optie mag niet half zo breed naast een gat staan. */
+  .sel-options > :last-child:nth-child(odd) { grid-column: 1 / -1; }
+}
+
+.sel-option {
+  position: relative;
+  display: flex; align-items: center; gap: 0.9rem;
+  width: 100%; padding: 0.95rem 1.1rem; text-align: left;
+  background: var(--bg-el); border: 1px solid var(--line);
+  transition: border-color 0.25s, background 0.25s, transform 0.15s;
+}
+.sel-option:hover { border-color: var(--gold-dim); }
+.sel-option:active { transform: scale(0.99); }
+.sel-option:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+.sel-option[aria-checked="true"] {
+  border-color: var(--gold); background: rgba(196,169,125,0.07);
+}
+.sel-option__letter {
+  flex-shrink: 0;
+  width: 26px; height: 26px;
+  display: flex; align-items: center; justify-content: center;
+  border: 1px solid var(--line-light);
+  font-size: 0.62rem; letter-spacing: 0.05em; color: var(--text-muted);
+  transition: border-color 0.25s, color 0.25s;
+}
+.sel-option[aria-checked="true"] .sel-option__letter {
+  border-color: var(--gold); color: var(--gold);
+}
+.sel-option__label {
+  flex: 1; font-size: 0.9rem; font-weight: 300; line-height: 1.4;
+}
+.sel-option__tick {
+  flex-shrink: 0; width: 14px; height: 14px; position: relative; opacity: 0;
+  transition: opacity 0.25s;
+}
+.sel-option[aria-checked="true"] .sel-option__tick { opacity: 1; }
+.sel-option__tick::after {
+  content: ''; position: absolute; left: 4px; top: 0;
+  width: 5px; height: 10px;
+  border: solid var(--gold); border-width: 0 1.5px 1.5px 0;
+  transform: rotate(45deg);
+}
+
+/* Fotokaartjes (vraag 2) */
+.sel-options--photo { gap: 0.75rem; }
+@media (min-width: 620px) {
+  .sel-options--photo { grid-template-columns: repeat(3, 1fr); }
+  .sel-options--photo > :last-child:nth-child(odd) { grid-column: auto; }
+}
+.sel-option--photo {
+  flex-direction: column; align-items: stretch; gap: 0; padding: 0;
+  overflow: hidden;
+}
+.sel-option__img {
+  display: block; width: 100%; height: clamp(88px, 20vw, 118px);
+  background-size: cover; background-position: center;
+  filter: grayscale(0.45) brightness(0.8);
+  transition: filter 0.35s var(--ease);
+}
+.sel-option--photo:hover .sel-option__img,
+.sel-option--photo[aria-checked="true"] .sel-option__img {
+  filter: grayscale(0) brightness(1);
+}
+.sel-option--photo .sel-option__letter {
+  position: absolute; top: 0.55rem; left: 0.55rem;
+  background: rgba(14,19,24,0.8); backdrop-filter: blur(4px);
+}
+.sel-option--photo .sel-option__label {
+  flex: none; padding: 0.8rem 0.9rem; font-size: 0.82rem;
+}
+.sel-option--photo .sel-option__tick {
+  position: absolute; top: 0.75rem; right: 0.75rem;
+}
+
+/* ── Kaart bij vraag 1 ─────────────────────────────────────────────────── */
+.sel-map {
+  width: 100%; height: auto; margin-top: 1.5rem;
+  border: 1px solid var(--line); background: var(--bg-el);
+  padding: 0.5rem;
+}
+.sel-map__coast { fill: none; stroke: var(--line-light); stroke-width: 1.5; }
+.sel-map__sea {
+  fill: var(--text-muted); font-size: 8px; letter-spacing: 3px;
+  text-anchor: middle; font-family: var(--font); opacity: 0.5;
+}
+.sel-map__band rect {
+  fill: rgba(196,169,125,0.05); stroke: var(--line-light); stroke-width: 1;
+  transition: fill 0.3s, stroke 0.3s;
+}
+.sel-map__band.is-active rect { fill: rgba(196,169,125,0.16); stroke: var(--gold); }
+.sel-map__code {
+  fill: var(--gold-dim); font-size: 11px; letter-spacing: 2px;
+  text-anchor: middle; font-family: var(--font);
+  transition: fill 0.3s;
+}
+.sel-map__band.is-active .sel-map__code { fill: var(--gold); }
+.sel-map__place {
+  fill: var(--text); font-size: 8px; letter-spacing: 1.1px;
+  font-family: var(--font);
+}
+.sel-map__arrow {
+  fill: var(--line-light); font-size: 8px; text-anchor: middle;
+  font-family: var(--font);
+}
+.sel-map__price {
+  fill: var(--text-muted); font-size: 8.5px; letter-spacing: 0.4px;
+  text-anchor: middle; font-family: var(--font);
+}
+
+/* ── Projectkaartjes ───────────────────────────────────────────────────── */
+.sel-cards {
+  display: grid; gap: 1px; background: var(--line);
+  border: 1px solid var(--line); margin: 2rem 0;
+}
+@media (min-width: 700px) {
+  /* auto-fit met een maximum in plaats van drie vaste kolommen: bij minder
+     dan drie treffers blijven er anders lege cellen over, en die kleuren mee
+     met de achtergrond die de 1px-scheidingslijnen tekent - één resultaat zag
+     eruit als één kaartje naast een groot grijs vlak. */
+  .sel-cards {
+    grid-template-columns: repeat(auto-fit, minmax(200px, 280px));
+    justify-content: start;
+    /* De achtergrond van deze container tekent de 1px-scheidingslijnen, dus
+       hij mag niet breder zijn dan de kaartjes zelf - anders blijft er een
+       grijze balk staan naast een onvolledige rij. */
+    width: fit-content;
+    max-width: 100%;
+  }
+}
+.sel-card {
+  display: flex; flex-direction: column;
+  background: var(--bg-el);
+  transition: background 0.3s;
+}
+a.sel-card:hover { background: #182029; }
+.sel-card__img {
+  width: 100%; height: clamp(140px, 26vw, 175px); object-fit: cover;
+  background: var(--line);
+}
+.sel-card__body { padding: 1.1rem 1.15rem 1.25rem; flex: 1; display: flex; flex-direction: column; }
+.sel-card__loc {
+  font-size: 0.58rem; letter-spacing: 0.25em; text-transform: uppercase;
+  color: var(--gold-dim); margin-bottom: 0.45rem;
+}
+.sel-card__name {
+  font-size: 1rem; font-weight: 400; line-height: 1.3; margin-bottom: 0.5rem;
+}
+.sel-card__price { font-size: 0.8rem; color: var(--text-muted); }
+.sel-card__cta {
+  margin-top: auto; padding-top: 0.9rem;
+  font-size: 0.62rem; letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--gold);
+}
+
+/* Vervaagde variant op het teaser-scherm: de kaartjes staan er al, maar zijn
+   nog niet leesbaar. Dat is eerlijker dan een leeg vak met een belofte - de
+   bezoeker ziet dat er echt iets klaarstaat. */
+.sel-cards--locked { position: relative; }
+.sel-cards--locked .sel-card {
+  /* Net genoeg vervaging om naam en prijs onleesbaar te maken, en niet meer:
+     de bezoeker moet kunnen zien dát er echte foto's klaarstaan. Een te
+     donkere sluier maakt er drie lege grijze vakken van, en dan lijkt de
+     belofte hol. */
+  filter: blur(5px); opacity: 0.9; pointer-events: none; user-select: none;
+}
+.sel-cards--locked::after {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(to bottom, rgba(14,19,24,0.05), rgba(14,19,24,0.3));
+}
+.sel-locked-note {
+  display: flex; align-items: center; justify-content: center; gap: 0.55rem;
+  margin: -1rem 0 2rem;
+  font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--gold);
+}
+.sel-locked-note svg {
+  width: 13px; height: 13px; stroke: var(--gold); stroke-width: 1.5; fill: none;
+}
+.sel-relaxed {
+  font-size: 0.75rem; color: var(--text-muted); line-height: 1.6;
+  border-left: 1px solid var(--gold-dim); padding-left: 0.9rem; margin-bottom: 1.5rem;
+}
+
+/* ── Formulier ─────────────────────────────────────────────────────────── */
+.form-group { position: relative; margin-bottom: 1.5rem; }
+.form-group input {
+  display: block; width: 100%; padding: 0.9rem 0;
+  background: transparent; border: none; border-bottom: 1px solid var(--line-light);
+  color: var(--text); font-family: var(--font);
+  font-size: 0.9rem; font-weight: 300; outline: none;
+  transition: border-color 0.3s;
+}
+.form-group input::placeholder { color: var(--text-muted); opacity: 0.6; }
+.form-group input:focus { border-bottom-color: var(--gold); }
+.form-group label {
+  position: absolute; top: 0.9rem; left: 0;
+  font-size: 0.75rem; letter-spacing: 0.1em; color: var(--text-muted);
+  pointer-events: none; transition: all 0.3s var(--ease);
+}
+.form-group input:focus + label,
+.form-group input:not(:placeholder-shown) + label {
+  top: -0.6rem; font-size: 0.6rem; color: var(--gold); letter-spacing: 0.15em;
+}
+@media (min-width: 620px) {
+  .sel-form__row { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; }
+}
+.phone-group { display: flex; align-items: end; gap: 0.75rem; }
+.phone-group .form-group { flex: 1; margin-bottom: 0; }
+.phone-prefix {
+  font-size: 0.85rem; color: var(--text-muted);
+  padding: 0 1.1rem 0.9rem 0;
+  border: none; border-bottom: 1px solid var(--line-light);
+  white-space: nowrap; flex-shrink: 0; width: 7.4rem;
+  font-family: var(--font);
+  background: transparent no-repeat right 0.15rem bottom 1.05rem;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' fill='none' stroke='%238A96A3' stroke-width='1.2'/%3E%3C/svg%3E");
+  background-size: 9px 6px;
+  appearance: none; -webkit-appearance: none; cursor: pointer;
+  text-overflow: ellipsis; transition: border-color 0.3s, color 0.3s;
+}
+.phone-prefix:hover { color: var(--text); }
+.phone-prefix:focus { outline: none; border-bottom-color: var(--gold); color: var(--text); }
+.phone-prefix option { background: var(--bg-el); color: var(--text); }
+.phone-prefix optgroup { background: var(--bg); color: var(--text-muted); font-style: normal; }
+
+.consent { display: flex; align-items: flex-start; gap: 0.75rem; margin: 1.5rem 0; }
+.consent input[type="checkbox"] {
+  appearance: none; -webkit-appearance: none;
+  width: 16px; height: 16px; border: 1px solid var(--line-light); border-radius: 2px;
+  flex-shrink: 0; margin-top: 2px; cursor: pointer; position: relative;
+  transition: all 0.2s;
+}
+.consent input[type="checkbox"]:checked { background: var(--gold); border-color: var(--gold); }
+.consent input[type="checkbox"]:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+.consent input[type="checkbox"]:checked::after {
+  content: ''; position: absolute; left: 4px; top: 1px;
+  width: 5px; height: 9px; border: solid var(--bg); border-width: 0 1.5px 1.5px 0;
+  transform: rotate(45deg);
+}
+.consent label { font-size: 0.7rem; color: var(--text-muted); line-height: 1.5; cursor: pointer; }
+.consent a { color: var(--gold-dim); text-decoration: underline; text-underline-offset: 2px; }
+.form-error {
+  font-size: 0.65rem; color: #c0392b; margin-top: 0.4rem;
+  letter-spacing: 0.05em; display: none;
+}
+.form-error.is-active { display: block; }
+.sel-form__note {
+  font-size: 0.68rem; color: var(--text-muted); margin-top: 1rem; line-height: 1.6;
+}
+.sel-form__note svg {
+  width: 12px; height: 12px; stroke: var(--gold-dim); stroke-width: 1.5; fill: none;
+  display: inline-block; vertical-align: -1px; margin-right: 0.3rem;
+}
+
+.sel-result__actions {
+  display: flex; flex-wrap: wrap; gap: 0.9rem; margin-top: 2rem;
+}
+
+/* ── Footer & cookiebalk ───────────────────────────────────────────────── */
+footer {
+  padding: clamp(2rem, 4vw, 3rem) clamp(1.5rem, 5vw, 3rem);
+  text-align: center; font-size: 0.6rem; color: var(--text-muted);
+  letter-spacing: 0.05em; line-height: 2;
+  border-top: 1px solid var(--line);
+}
+footer a { color: var(--gold-dim); text-underline-offset: 2px; }
+.biv-logo { display: block; height: 40px; margin: 1.5rem auto 0; opacity: 0.7; }
+.cookie-bar {
+  position: fixed; left: 1.5rem; bottom: 1.5rem; z-index: 300;
+  max-width: 400px; background: var(--bg-el); border: 1px solid var(--line);
+  padding: 1.5rem; box-shadow: 0 8px 40px rgba(0,0,0,0.55);
+  opacity: 0; transform: translateY(12px); pointer-events: none;
+  transition: opacity 0.4s var(--ease), transform 0.4s var(--ease);
+}
+.cookie-bar.is-visible { opacity: 1; transform: translateY(0); pointer-events: auto; }
+.cookie-bar p { font-size: 0.75rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 1.1rem; }
+.cookie-bar p a { color: var(--gold-dim); text-decoration: underline; text-underline-offset: 2px; }
+.cookie-bar__actions { display: flex; gap: 0.75rem; }
+.cookie-bar__actions .btn { padding: 0.6rem 1.1rem; font-size: 0.62rem; flex: 1; }
+@media (max-width: 600px) {
+  .cookie-bar { left: 1rem; right: 1rem; bottom: 1rem; max-width: none; padding: 1.25rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+  .frame { opacity: 1; }
+}
+</style>
+</head>
+<body class="page-selectie">
+
+<div class="frame" aria-hidden="true"></div>
+
+<div class="sel-topbar" id="selTopbar">
+  <div class="sel-progress" role="progressbar" aria-label="__I_SEL_PROGRESS_ARIA__"
+       aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="selProgress">
+    <div class="sel-progress__bar" id="selProgressBar"></div>
+  </div>
+  <div class="sel-topbar__row">
+    <button type="button" class="sel-topbar__back" id="selBack" hidden>
+      <svg viewBox="0 0 24 24"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg>
+      __I_SEL_BACK__
+    </button>
+    <p class="sel-count" id="selCount" aria-live="polite" hidden>
+      <span class="sel-count__n" id="selCountN">&mdash;</span>
+      <span id="selCountLabel">__I_SEL_COUNTER_MANY__</span>
+    </p>
+  </div>
+</div>
+
+<main class="sel">
+  <div class="sel__inner">
+
+    <!-- ═══════════ WELKOM ═══════════ -->
+    <section class="sel-screen sel-welcome" id="selWelcome">
+      <img class="sel-welcome__img" src="__HERO_IMAGE__" alt="" width="1600" height="900" fetchpriority="high">
+      <p class="label">__I_SEL_HERO_LABEL__</p>
+      <h1 class="heading">__I_SEL_HERO_HEADING_PRE__<br><em>__I_SEL_HERO_HEADING_EM__</em></h1>
+      <p class="body-text">__I_SEL_HERO_INTRO__</p>
+      <div class="sel-welcome__meta">
+        <span class="sel-welcome__fact">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+          __I_SEL_HERO_TIME__
+        </span>
+        <span class="sel-welcome__fact">
+          <svg viewBox="0 0 24 24"><path d="M3 21V9l9-6 9 6v12"/><path d="M9 21v-6h6v6"/></svg>
+          __I_SEL_HERO_PROJECTS__
+        </span>
+      </div>
+      <button type="button" class="btn" id="selStart">__I_SEL_START__</button>
+    </section>
+
+    <!-- ═══════════ VRAGEN ═══════════ -->
+    <div class="sel-screen" id="selSteps" hidden>
+__STEPS__
+    </div>
+
+    <!-- ═══════════ TEASER + CONTACTGEGEVENS ═══════════ -->
+    <section class="sel-screen sel-teaser" id="selTeaser" hidden>
+      <p class="label">__I_SEL_TEASER_LABEL__</p>
+      <h2 class="heading">
+        __I_SEL_TEASER_HEADING_PRE__ <em id="selTeaserN">&mdash;</em>
+        <em id="selTeaserWord">__I_SEL_TEASER_HEADING_EM__</em>
+      </h2>
+      <p class="sel-relaxed" id="selRelaxed" hidden>__I_SEL_TEASER_RELAXED__</p>
+      <div class="sel-cards sel-cards--locked" id="selTeaserCards" aria-hidden="true"></div>
+      <p class="sel-locked-note">
+        <svg viewBox="0 0 24 24"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
+        __I_SEL_TEASER_LOCKED__
+      </p>
+      <p class="body-text" style="margin-bottom:2.25rem">__I_SEL_TEASER_INTRO__</p>
+
+      <form id="selForm" novalidate>
+        <div class="sel-form__row">
+          <div class="form-group">
+            <input type="text" id="s-fname" name="fname" placeholder=" " required autocomplete="given-name">
+            <label for="s-fname">__I_FORM_VOORNAAM__</label>
+          </div>
+          <div class="form-group">
+            <input type="text" id="s-lname" name="lname" placeholder=" " required autocomplete="family-name">
+            <label for="s-lname">__I_FORM_ACHTERNAAM__</label>
+          </div>
+        </div>
+        <div class="form-group">
+          <input type="email" id="s-email" name="email" placeholder=" " required autocomplete="email">
+          <label for="s-email">__I_FORM_EMAIL__</label>
+        </div>
+        <div class="phone-group">
+          <select class="phone-prefix" id="s-country" name="country" required aria-label="__I_FORM_LANDCODE_ARIA__">
+__PHONE_OPTGROUPS__
+          </select>
+          <div class="form-group">
+            <input type="tel" id="s-phone" name="phone" placeholder=" " required autocomplete="tel-national">
+            <label for="s-phone">__I_FORM_GSM__</label>
+          </div>
+        </div>
+        <div class="consent">
+          <input type="checkbox" id="s-consent" required>
+          <label for="s-consent">__I_FORM_CONSENT_PRE__ <a href="https://investinspain.be/privacy-policy/" target="_blank" rel="noopener">__I_FORM_CONSENT_PRIVACY__</a> __I_FORM_CONSENT_MID__ <a href="https://investinspain.be/algemene-voorwaarden/" target="_blank" rel="noopener">__I_FORM_CONSENT_TERMS__</a>.</label>
+        </div>
+        <button type="submit" class="btn" id="selSubmit">__I_SEL_SUBMIT__</button>
+        <p class="form-error" id="selFormError" role="alert">__I_SEL_ERROR__</p>
+      </form>
+    </section>
+
+    <!-- ═══════════ RESULTAAT ═══════════ -->
+    <section class="sel-screen sel-result" id="selResult" hidden>
+      <p class="label">__I_SEL_RESULT_LABEL__</p>
+      <h2 class="heading">__I_SEL_RESULT_HEADING_PRE__ <em>__I_SEL_RESULT_HEADING_EM__</em></h2>
+      <p class="body-text">__I_SEL_RESULT_INTRO__</p>
+      <div class="sel-cards" id="selResultCards"></div>
+      <div class="sel-result__actions">
+        <a class="btn" href="__HUB_HREF__">__I_SEL_RESULT_ALL__</a>
+        <button type="button" class="btn btn--outline" id="selRestart">__I_SEL_RESULT_RESTART__</button>
+      </div>
+    </section>
+
+  </div>
+</main>
+
+<footer>
+  <p>__I_FOOTER_COPYRIGHT__</p>
+  <p>__I_FOOTER_BA__</p>
+  <p><a href="https://investinspain.be/privacy-policy/" target="_blank" rel="noopener">__I_FOOTER_PRIVACY__</a> &middot; <a href="https://investinspain.be/algemene-voorwaarden/" target="_blank" rel="noopener">__I_FOOTER_TERMS__</a> &middot; <a href="__LANG_SWITCH_HREF__">__I_LANG_SWITCH_LABEL__</a></p>
+  <img src="https://investinspain.be/wp-content/uploads/2026/07/BIV2.0.png" alt="__I_BIV_ALT__" class="biv-logo" loading="lazy">
+</footer>
+
+<div class="cookie-bar" id="cookieBar" role="dialog" aria-label="__I_COOKIE_ARIA__">
+  <p>__I_COOKIE_TEXT_PRE__ <a href="https://investinspain.be/privacy-policy/" target="_blank" rel="noopener">__I_COOKIE_PRIVACY__</a>.</p>
+  <div class="cookie-bar__actions">
+    <button type="button" class="btn btn--outline" id="cookieDecline">__I_COOKIE_DECLINE__</button>
+    <button type="button" class="btn" id="cookieAccept">__I_COOKIE_ACCEPT__</button>
+  </div>
+</div>
+
+<script>
+(function () {
+  'use strict';
+
+  var LANG = '__I_LANG__';
+  var TOTAL = __STEP_TOTAL__;
+  var stepEls = Array.prototype.slice.call(document.querySelectorAll('.sel-step'));
+
+  var screens = {
+    welcome: document.getElementById('selWelcome'),
+    steps: document.getElementById('selSteps'),
+    teaser: document.getElementById('selTeaser'),
+    result: document.getElementById('selResult')
+  };
+  var topbar = document.getElementById('selTopbar');
+  var progressBar = document.getElementById('selProgressBar');
+  var progress = document.getElementById('selProgress');
+  var backBtn = document.getElementById('selBack');
+  var countBox = document.getElementById('selCount');
+  var countN = document.getElementById('selCountN');
+  var countLabel = document.getElementById('selCountLabel');
+  var form = document.getElementById('selForm');
+  var submitBtn = document.getElementById('selSubmit');
+  var formError = document.getElementById('selFormError');
+
+  var COUNT_ONE = '__I_SEL_COUNTER_ONE__';
+  var COUNT_MANY = '__I_SEL_COUNTER_MANY__';
+
+  // Antwoorden per vraag-id. Meerkeuzevragen houden een array bij, de rest
+  // één waarde.
+  var answers = {};
+  // -1 = welkom, 0..TOTAL-1 = de vragen, TOTAL = teaser, TOTAL+1 = resultaat
+  var current = -1;
+  var lastCount = null;
+  var teaserCards = [];
+  var teaserRelaxed = false;
+
+  /* ── UTM-parameters ────────────────────────────────────────────────────
+   * De advertenties linken naar deze pagina mét utm_source/medium/campaign/
+   * term/content. De flow navigeert niet weg, maar de bezoeker kan wel
+   * herladen of terugkomen, dus we bewaren ze meteen in sessionStorage en
+   * lezen ze bij het verzenden daar weer uit. */
+  var UTM_KEYS = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content'];
+  var UTM_STORE = 'iis_selectie_utm';
+
+  function captureUtm() {
+    var params = new URLSearchParams(window.location.search);
+    var found = {};
+    var any = false;
+    UTM_KEYS.forEach(function (key) {
+      var value = params.get(key);
+      if (value) { found[key] = value.slice(0, 200); any = true; }
+    });
+    if (any) {
+      try { sessionStorage.setItem(UTM_STORE, JSON.stringify(found)); } catch (e) {}
+      return found;
+    }
+    try {
+      var stored = sessionStorage.getItem(UTM_STORE);
+      if (stored) return JSON.parse(stored);
+    } catch (e) {}
+    return {};
+  }
+  var utm = captureUtm();
+
+  /* ── Query voor /api/match ─────────────────────────────────────────── */
+  function matchQuery(limit) {
+    var params = new URLSearchParams();
+    params.set('lang', LANG);
+    params.set('limit', String(limit));
+    stepEls.forEach(function (el) {
+      var param = el.getAttribute('data-param');
+      if (!param) return; // vraag telt niet mee in de matching
+      var value = answers[el.getAttribute('data-id')];
+      if (value === undefined || value === null) return;
+      params.set(param, Array.isArray(value) ? value.join(',') : value);
+    });
+    return params.toString();
+  }
+
+  // De budgetstap levert een URL-veilige code ('3m-plus'); /api/match geeft
+  // de bijhorende Salesforce-code ('3m+') terug. Die omzetting hoort op één
+  // plek te staan, en dat is daar - niet nog eens hier in de pagina.
+  var budgetSf = '';
+
+  function fetchMatches(limit) {
+    return fetch('/api/match?' + matchQuery(limit))
+      .then(function (r) { return r.ok ? r.json() : null; })
+      .then(function (data) {
+        if (data && data.budget_sf) budgetSf = data.budget_sf;
+        return data;
+      })
+      .catch(function () { return null; });
+  }
+
+  /* ── Live teller ──────────────────────────────────────────────────────
+   * Draait mee vanaf de eerste beantwoorde vraag. Bewust dezelfde endpoint
+   * als het eindresultaat, zodat het getal dat meeloopt exact het aantal is
+   * dat de bezoeker straks ontgrendelt. */
+  // Meerkeuzevragen krijgen bij het opstarten al een lege array, dus het
+  // aantal sleutels in `answers` zegt niets over of er al iets beantwoord is.
+  function hasAnswer() {
+    return Object.keys(answers).some(function (id) {
+      var value = answers[id];
+      return Array.isArray(value) ? value.length > 0 : Boolean(value);
+    });
+  }
+
+  function refreshCount() {
+    if (current < 0 || current >= TOTAL) return;
+    if (!hasAnswer()) { countBox.hidden = true; return; }
+    fetchMatches(3).then(function (data) {
+      if (!data) { countBox.hidden = true; return; }
+      countBox.hidden = false;
+      countLabel.textContent = data.count === 1 ? COUNT_ONE : COUNT_MANY;
+      countN.textContent = String(data.count);
+      if (lastCount !== null && lastCount !== data.count) {
+        countBox.classList.remove('is-bumped');
+        void countBox.offsetWidth; // herstart de animatie
+        countBox.classList.add('is-bumped');
+      }
+      lastCount = data.count;
+    });
+  }
+
+  /* ── Navigatie ────────────────────────────────────────────────────────── */
+  function show(name) {
+    Object.keys(screens).forEach(function (key) {
+      screens[key].hidden = key !== name;
+    });
+  }
+
+  function updateChrome() {
+    var done = Math.max(0, Math.min(current, TOTAL));
+    var pct = current < 0 ? 0 : Math.round((done / TOTAL) * 100);
+    progressBar.style.width = pct + '%';
+    progress.setAttribute('aria-valuenow', String(pct));
+    topbar.classList.toggle('is-visible', current >= 0);
+    backBtn.hidden = current < 0 || current > TOTAL;
+    countBox.hidden = current < 0 || current >= TOTAL || !hasAnswer();
+  }
+
+  function goTo(index) {
+    current = index;
+    if (index < 0) {
+      show('welcome');
+    } else if (index < TOTAL) {
+      show('steps');
+      stepEls.forEach(function (el, i) { el.hidden = i !== index; });
+    } else if (index === TOTAL) {
+      show('teaser');
+      loadTeaser();
+    } else {
+      show('result');
+    }
+    updateChrome();
+    // Bij een lange vraag (fotokaartjes) staat de vraag zelf anders buiten
+    // beeld nadat de vorige stap is weggevallen.
+    window.scrollTo({ top: 0, behavior: 'auto' });
+  }
+
+  function stepValid(el) {
+    if (el.getAttribute('data-required') !== '1') return true;
+    var value = answers[el.getAttribute('data-id')];
+    if (Array.isArray(value)) return value.length > 0;
+    return value !== undefined && value !== null && value !== '';
+  }
+
+  function advance() {
+    var el = stepEls[current];
+    var error = el.querySelector('.sel-step__error');
+    if (!stepValid(el)) { error.hidden = false; return; }
+    error.hidden = true;
+    goTo(current + 1);
+  }
+
+  /* ── Antwoorden ───────────────────────────────────────────────────────── */
+  stepEls.forEach(function (el) {
+    var id = el.getAttribute('data-id');
+    var multi = el.getAttribute('data-multi') === '1';
+    if (multi) answers[id] = [];
+
+    el.querySelectorAll('.sel-option').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var value = btn.getAttribute('data-value');
+
+        if (multi) {
+          var list = answers[id];
+          var at = list.indexOf(value);
+          if (at === -1) list.push(value); else list.splice(at, 1);
+          btn.setAttribute('aria-checked', at === -1 ? 'true' : 'false');
+        } else {
+          answers[id] = value;
+          el.querySelectorAll('.sel-option').forEach(function (other) {
+            other.setAttribute('aria-checked', String(other === btn));
+          });
+        }
+
+        el.querySelector('.sel-step__error').hidden = true;
+        syncMap(el);
+        refreshCount();
+
+        // Enkelvoudige keuze gaat vanzelf door - dat is de hele reden dat
+        // deze vorm sneller aanvoelt dan een lang formulier. Meerkeuze niet:
+        // daar is de klik nog geen afgerond antwoord.
+        if (!multi) {
+          window.setTimeout(function () {
+            if (current === stepEls.indexOf(el)) advance();
+          }, 260);
+        }
+      });
+    });
+
+    // Meerkeuzevragen krijgen hun eigen doorgaan-knop, onderaan de opties.
+    if (multi) {
+      var next = document.createElement('button');
+      next.type = 'button';
+      next.className = 'btn';
+      next.style.marginTop = '1.75rem';
+      next.textContent = '__I_SEL_NEXT__';
+      next.addEventListener('click', advance);
+      el.appendChild(next);
+    }
+  });
+
+  // De regiokaart kleurt mee met de gekozen banden.
+  function syncMap(el) {
+    var map = el.querySelector('.sel-map');
+    if (!map) return;
+    var chosen = answers[el.getAttribute('data-id')] || [];
+    map.querySelectorAll('.sel-map__band').forEach(function (band) {
+      band.classList.toggle('is-active', chosen.indexOf(band.getAttribute('data-region')) !== -1);
+    });
+  }
+
+  /* ── Kaartjes ─────────────────────────────────────────────────────────── */
+  function cardMarkup(card, linked) {
+    var tag = linked ? 'a' : 'div';
+    var href = linked ? ' href="' + escapeAttr(card.url) + '"' : '';
+    var cta = linked ? '<span class="sel-card__cta">__I_SEL_RESULT_CTA__</span>' : '';
+    return '<' + tag + ' class="sel-card"' + href + '>' +
+      '<img class="sel-card__img" src="' + escapeAttr(card.image) + '" alt="" loading="lazy" width="800" height="600">' +
+      '<span class="sel-card__body">' +
+        '<span class="sel-card__loc">' + escapeHtml(card.location) + '</span>' +
+        '<span class="sel-card__name">' + escapeHtml(card.name) + '</span>' +
+        '<span class="sel-card__price">' + escapeHtml(card.price) + '</span>' +
+        cta +
+      '</span>' +
+    '</' + tag + '>';
+  }
+  // De kaartjesdata komt van onze eigen /api/match, maar wordt hier alsnog
+  // ge-escaped: HTML samenstellen uit waarden die uit een fetch komen hoort
+  // niet af te hangen van de aanname dat die bron nooit iets raars bevat.
+  function escapeHtml(value) {
+    return String(value == null ? '' : value)
+      .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  }
+  function escapeAttr(value) {
+    return escapeHtml(value).replace(/"/g, '&quot;');
+  }
+
+  function loadTeaser() {
+    var target = document.getElementById('selTeaserCards');
+    var nEl = document.getElementById('selTeaserN');
+    var wordEl = document.getElementById('selTeaserWord');
+    var relaxedEl = document.getElementById('selRelaxed');
+
+    fetchMatches(3).then(function (data) {
+      if (!data) return;
+      teaserCards = data.cards || [];
+      teaserRelaxed = Boolean(data.relaxed);
+      relaxedEl.hidden = !teaserRelaxed;
+      // Bij een verruimde zoekopdracht is `count` 0; het getal in de kop moet
+      // dan het aantal getoonde alternatieven zijn, niet nul.
+      var shown = teaserRelaxed ? teaserCards.length : data.count;
+      nEl.textContent = String(shown);
+      wordEl.innerHTML = shown === 1
+        ? '__I_SEL_TEASER_HEADING_ONE_EM__'
+        : '__I_SEL_TEASER_HEADING_EM__';
+      target.innerHTML = teaserCards.map(function (c) {
+        return cardMarkup(c, false);
+      }).join('');
+    });
+  }
+
+  function showResult() {
+    document.getElementById('selResultCards').innerHTML =
+      teaserCards.map(function (c) { return cardMarkup(c, true); }).join('');
+    goTo(TOTAL + 1);
+  }
+
+  /* ── Formulier ────────────────────────────────────────────────────────── */
+  function countryOf() {
+    var sel = document.getElementById('s-country');
+    var opt = sel.options[sel.selectedIndex];
+    return { code: sel.value, name: opt ? opt.getAttribute('data-country') : '' };
+  }
+
+  function clearError(el) {
+    var container = el.closest('.phone-group') || el.closest('.form-group') || el.parentElement;
+    var err = container.nextElementSibling;
+    if (err && err.classList && err.classList.contains('form-error')) err.classList.remove('is-active');
+    el.style.borderBottomColor = '';
+    el.style.borderColor = '';
+  }
+  function showError(el, msg) {
+    var container = el.closest('.phone-group') || el.closest('.form-group') || el.parentElement;
+    var err = container.nextElementSibling;
+    if (!err || !err.classList.contains('form-error')) {
+      err = document.createElement('p');
+      err.className = 'form-error';
+      err.setAttribute('role', 'alert');
+      container.after(err);
+    }
+    err.textContent = msg;
+    err.classList.add('is-active');
+    if (el.type === 'checkbox') el.style.borderColor = '#c0392b';
+    else el.style.borderBottomColor = '#c0392b';
+  }
+
+  form.querySelectorAll('input:not([type="checkbox"])').forEach(function (input) {
+    input.addEventListener('input', function () { clearError(input); });
+  });
+  document.getElementById('s-consent').addEventListener('change', function () {
+    this.style.borderColor = '';
+    var err = this.closest('.consent').nextElementSibling;
+    if (err && err.classList.contains('form-error')) err.classList.remove('is-active');
+  });
+
+  // Alle antwoorden in één regel, zodat de opvolger in de leadsheet meteen
+  // ziet waar deze aanvraag vandaan komt zonder de flow te moeten reconstrueren.
+  function answerSummary() {
+    return stepEls.map(function (el) {
+      var id = el.getAttribute('data-id');
+      var value = answers[id];
+      if (value === undefined || value === null || (Array.isArray(value) && !value.length)) return null;
+      return id + '=' + (Array.isArray(value) ? value.join('/') : value);
+    }).filter(Boolean).join(', ');
+  }
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    var valid = true;
+    formError.classList.remove('is-active');
+
+    form.querySelectorAll('input[required]:not([type="checkbox"])').forEach(function (input) {
+      if (!input.value.trim()) { valid = false; showError(input, '__I_ERR_REQUIRED__'); }
+      else if (input.type === 'email' && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(input.value)) {
+        valid = false; showError(input, '__I_ERR_EMAIL__');
+      }
+    });
+
+    var consent = document.getElementById('s-consent');
+    if (!consent.checked) {
+      valid = false;
+      var wrap = consent.closest('.consent');
+      var err = wrap.nextElementSibling;
+      if (!err || !err.classList.contains('form-error')) {
+        err = document.createElement('p');
+        err.className = 'form-error';
+        err.setAttribute('role', 'alert');
+        wrap.after(err);
+      }
+      err.textContent = '__I_ERR_CONSENT__';
+      err.classList.add('is-active');
+      consent.style.borderColor = '#c0392b';
+    }
+    if (!valid) return;
+
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = '__I_SEL_SENDING__';
+
+    var data = new FormData(form);
+    var land = countryOf();
+    var phone = data.get('phone') || '';
+    var payload = {
+      first_name: data.get('fname') || '',
+      last_name: data.get('lname') || '',
+      email: data.get('email') || '',
+      mobile_phone: land.code + phone,
+      mobile_phone_unformatted: land.code.replace('+', '') + phone,
+      country: land.name,
+      lead_source: 'Selectiepagina',
+      // De Salesforce-budgetcode komt van /api/match, niet uit deze pagina:
+      // de omzetting van 'lt200k' naar '<200k' hoort op één plek te staan.
+      budget: budgetSf,
+      form_source: 'selectie',
+      project_name: (teaserCards[0] && teaserCards[0].name) || '',
+      answers: answerSummary(),
+      page_url: window.location.href
+    };
+    UTM_KEYS.forEach(function (key) { if (utm[key]) payload[key] = utm[key]; });
+
+    fetch('/api/lead', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    }).then(function (r) {
+      if (!r.ok) throw new Error('lead');
+      showResult();
+    }).catch(function () {
+      // De selectie is al berekend en de bezoeker heeft er recht op; een
+      // haperende Zap mag dat niet tegenhouden. We tonen het resultaat dus
+      // toch, en melden alleen dat het versturen misging.
+      formError.classList.add('is-active');
+      showResult();
+    }).then(function () {
+      submitBtn.disabled = false;
+      submitBtn.innerHTML = '__I_SEL_SUBMIT__';
+    });
+  });
+
+  /* ── Knoppen ──────────────────────────────────────────────────────────── */
+  document.getElementById('selStart').addEventListener('click', function () { goTo(0); });
+  backBtn.addEventListener('click', function () { goTo(current - 1); });
+  document.getElementById('selRestart').addEventListener('click', function () {
+    window.location.href = '__SELF_HREF__';
+  });
+
+  document.addEventListener('keydown', function (e) {
+    if (current < 0 || current >= TOTAL) return;
+    // Staat de focus al op een knop, laat die dan gewoon zijn werk doen.
+    // Zonder deze uitzondering activeert Enter op een gefocuste optie zowel
+    // die optie (native knopgedrag) als advance() hieronder, en springt de
+    // flow twee stappen tegelijk.
+    if (e.target && e.target.closest && e.target.closest('button, input, select, a')) return;
+    if (e.metaKey || e.ctrlKey || e.altKey) return;
+
+    // Cijfertoetsen selecteren de zoveelste optie - sneller dan mikken.
+    var n = parseInt(e.key, 10);
+    var options = stepEls[current].querySelectorAll('.sel-option');
+    if (n >= 1 && n <= options.length) {
+      e.preventDefault();
+      options[n - 1].click();
+      return;
+    }
+    if (e.key === 'Enter') { e.preventDefault(); advance(); }
+  });
+
+  /* ── Landcode voorinvullen ───────────────────────────────────────────── */
+  fetch('https://ipapi.co/json/')
+    .then(function (r) { return r.json(); })
+    .then(function (data) {
+      var code = data && data.country_calling_code;
+      if (!code) return;
+      var sel = document.getElementById('s-country');
+      if (sel.querySelector('option[value="' + code + '"]')) sel.value = code;
+    })
+    .catch(function () {});
+
+  /* ── Cookiebalk ───────────────────────────────────────────────────────── */
+  var cookieBar = document.getElementById('cookieBar');
+  function storedConsent() { try { return localStorage.getItem('cookie_consent'); } catch (e) { return null; } }
+  if (!storedConsent()) {
+    setTimeout(function () { cookieBar.classList.add('is-visible'); }, 1000);
+  }
+  document.getElementById('cookieAccept').addEventListener('click', function () {
+    try { localStorage.setItem('cookie_consent', 'granted'); } catch (e) {}
+    if (typeof gtag === 'function') {
+      gtag('consent', 'update', {
+        'ad_storage': 'granted', 'ad_user_data': 'granted',
+        'ad_personalization': 'granted', 'analytics_storage': 'granted'
+      });
+    }
+    if (typeof loadMetaPixel === 'function') { loadMetaPixel(); }
+    cookieBar.classList.remove('is-visible');
+  });
+  document.getElementById('cookieDecline').addEventListener('click', function () {
+    try { localStorage.setItem('cookie_consent', 'denied'); } catch (e) {}
+    cookieBar.classList.remove('is-visible');
+  });
+
+  goTo(-1);
+})();
+</script>
+</body>
+</html>
