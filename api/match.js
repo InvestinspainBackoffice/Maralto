@@ -19,6 +19,26 @@
 const { URL } = require('url');
 const DATA = require('./_projects.json');
 
+// Ruimer dan bij /api/lead (8): deze endpoint wordt bij élke beantwoorde
+// vraag aangeroepen voor de meelopende teller, dus één bezoeker komt in een
+// normale doorloop al aan een stuk of twaalf verzoeken. De limiet is er
+// tegen iemand die de hele catalogus wil uitlezen, niet tegen de flow zelf.
+const RATE_MAX = 60;
+const RATE_WINDOW_MS = 60000;
+const hits = new Map();
+
+function rateLimited(ip) {
+  const now = Date.now();
+  if (hits.size > 5000) hits.clear();
+  const record = hits.get(ip);
+  if (!record || now - record.start > RATE_WINDOW_MS) {
+    hits.set(ip, { start: now, count: 1 });
+    return false;
+  }
+  record.count += 1;
+  return record.count > RATE_MAX;
+}
+
 /* ── Regio's ──────────────────────────────────────────────────────────────
  * De drie keuzes op stap 1 zijn kuststroken, geen gemeentes, en ze overlappen
  * elkaar bewust ("Marbella" hoort bij A én B). De Costa del Sol loopt
@@ -260,6 +280,13 @@ module.exports = (req, res) => {
   if (req.method !== 'GET') {
     res.setHeader('Allow', 'GET');
     return res.status(405).json({ error: 'method_not_allowed' });
+  }
+
+  const ip =
+    ((req.headers && req.headers['x-forwarded-for']) || '').split(',')[0].trim() ||
+    'unknown';
+  if (rateLimited(ip)) {
+    return res.status(429).json({ error: 'rate_limited' });
   }
 
   if (!FACETS) FACETS = buildFacets();

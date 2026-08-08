@@ -232,6 +232,10 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   font-weight: 300; line-height: 1.3; letter-spacing: -0.01em;
   margin-bottom: 0.6rem;
 }
+/* Koppen krijgen tabindex="-1" zodat de focus er bij een stapwissel naartoe
+   kan. Ze zijn niet met Tab bereikbaar, dus een focusring zou hier alleen
+   maar een rand om een titel tekenen zonder iets te betekenen. */
+h1[tabindex="-1"]:focus, h2[tabindex="-1"]:focus { outline: none; }
 .sel-step__hint {
   font-size: 0.7rem; letter-spacing: 0.1em; color: var(--text-muted);
   margin-bottom: 0.5rem;
@@ -588,7 +592,7 @@ footer a { color: var(--gold-dim); text-underline-offset: 2px; }
                data-required="1"
                hidden>
         <p class="sel-step__count">Stap 01 <span>van 10</span></p>
-        <h2 class="sel-step__q">In welke regio bent u het meest ge&iuml;nteresseerd?</h2>
+        <h2 class="sel-step__q" tabindex="-1">In welke regio bent u het meest ge&iuml;nteresseerd?</h2>
         <p class="sel-step__hint">Meerdere antwoorden mogelijk</p>
         <svg class="sel-map" viewBox="0 0 544 178" role="img"
      aria-label="Schematische kaart van de Costa del Sol met de drie regio's en hun vanaf-prijzen">
@@ -637,7 +641,7 @@ footer a { color: var(--gold-dim); text-underline-offset: 2px; }
                data-required="1"
                hidden>
         <p class="sel-step__count">Stap 02 <span>van 10</span></p>
-        <h2 class="sel-step__q">Welk type woning zoekt u?</h2>
+        <h2 class="sel-step__q" tabindex="-1">Welk type woning zoekt u?</h2>
         
         
         <div class="sel-options sel-options--photo" role="radiogroup"
@@ -657,7 +661,7 @@ footer a { color: var(--gold-dim); text-underline-offset: 2px; }
                data-required="1"
                hidden>
         <p class="sel-step__count">Stap 03 <span>van 10</span></p>
-        <h2 class="sel-step__q">Wat is uw belangrijkste reden om te kopen?</h2>
+        <h2 class="sel-step__q" tabindex="-1">Wat is uw belangrijkste reden om te kopen?</h2>
         
         
         <div class="sel-options" role="radiogroup"
@@ -676,7 +680,7 @@ footer a { color: var(--gold-dim); text-underline-offset: 2px; }
                data-required="1"
                hidden>
         <p class="sel-step__count">Stap 04 <span>van 10</span></p>
-        <h2 class="sel-step__q">Wat is uw budget?</h2>
+        <h2 class="sel-step__q" tabindex="-1">Wat is uw budget?</h2>
         
         
         <div class="sel-options" role="radiogroup"
@@ -697,7 +701,7 @@ footer a { color: var(--gold-dim); text-underline-offset: 2px; }
                data-required="1"
                hidden>
         <p class="sel-step__count">Stap 05 <span>van 10</span></p>
-        <h2 class="sel-step__q">Wanneer wilt u er intrekken?</h2>
+        <h2 class="sel-step__q" tabindex="-1">Wanneer wilt u er intrekken?</h2>
         <p class="sel-step__hint">Meerdere antwoorden mogelijk</p>
         
         <div class="sel-options" role="group"
@@ -715,7 +719,7 @@ footer a { color: var(--gold-dim); text-underline-offset: 2px; }
                data-required=""
                hidden>
         <p class="sel-step__count">Stap 06 <span>van 10</span></p>
-        <h2 class="sel-step__q">Hoeveel slaapkamers heeft u het liefst?</h2>
+        <h2 class="sel-step__q" tabindex="-1">Hoeveel slaapkamers heeft u het liefst?</h2>
         
         
         <div class="sel-options" role="radiogroup"
@@ -734,7 +738,7 @@ footer a { color: var(--gold-dim); text-underline-offset: 2px; }
                data-required=""
                hidden>
         <p class="sel-step__count">Stap 07 <span>van 10</span></p>
-        <h2 class="sel-step__q">Wat voor ligging zoekt u?</h2>
+        <h2 class="sel-step__q" tabindex="-1">Wat voor ligging zoekt u?</h2>
         
         
         <div class="sel-options" role="radiogroup"
@@ -754,7 +758,7 @@ footer a { color: var(--gold-dim); text-underline-offset: 2px; }
                data-required=""
                hidden>
         <p class="sel-step__count">Stap 08 <span>van 10</span></p>
-        <h2 class="sel-step__q">Welk uitzicht heeft uw voorkeur?</h2>
+        <h2 class="sel-step__q" tabindex="-1">Welk uitzicht heeft uw voorkeur?</h2>
         
         
         <div class="sel-options" role="radiogroup"
@@ -772,7 +776,7 @@ footer a { color: var(--gold-dim); text-underline-offset: 2px; }
                data-required="1"
                hidden>
         <p class="sel-step__count">Stap 09 <span>van 10</span></p>
-        <h2 class="sel-step__q">Hoeveel woonoppervlak zoekt u? (m&sup2;)</h2>
+        <h2 class="sel-step__q" tabindex="-1">Hoeveel woonoppervlak zoekt u? (m&sup2;)</h2>
         
         
         <div class="sel-options" role="radiogroup"
@@ -790,7 +794,7 @@ footer a { color: var(--gold-dim); text-underline-offset: 2px; }
                data-required="1"
                hidden>
         <p class="sel-step__count">Stap 10 <span>van 10</span></p>
-        <h2 class="sel-step__q">Hoeveel buitenruimte zoekt u? (m&sup2;)</h2>
+        <h2 class="sel-step__q" tabindex="-1">Hoeveel buitenruimte zoekt u? (m&sup2;)</h2>
         
         
         <div class="sel-options" role="radiogroup"
@@ -806,13 +810,13 @@ footer a { color: var(--gold-dim); text-underline-offset: 2px; }
     <!-- ═══════════ TEASER + CONTACTGEGEVENS ═══════════ -->
     <section class="sel-screen sel-teaser" id="selTeaser" hidden>
       <p class="label">Uw selectie</p>
-      <h2 class="heading">
+      <h2 class="heading" id="selTeaserHead" tabindex="-1">
         We vonden <em id="selTeaserN">&mdash;</em>
         <em id="selTeaserWord">passende projecten</em>
       </h2>
       <p class="sel-relaxed" id="selRelaxed" hidden>Binnen dit budget hebben we vandaag niets in portefeuille. Dit zijn de projecten die er het dichtst bij komen.</p>
       <div class="sel-cards sel-cards--locked" id="selTeaserCards" aria-hidden="true"></div>
-      <p class="sel-locked-note">
+      <p class="sel-locked-note" id="selLockedNote">
         <svg viewBox="0 0 24 24"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
         Ontgrendel uw selectie
       </p>
@@ -1090,6 +1094,21 @@ footer a { color: var(--gold-dim); text-underline-offset: 2px; }
     // Bij een lange vraag (fotokaartjes) staat de vraag zelf anders buiten
     // beeld nadat de vorige stap is weggevallen.
     window.scrollTo({ top: 0, behavior: 'auto' });
+
+    // De knop waarop de focus stond is net verborgen; zonder dit valt de
+    // focus terug op <body>. Een schermlezer meldt de nieuwe vraag dan niet
+    // en wie met het toetsenbord werkt moet vanaf de bovenkant terugtabben.
+    // Daarom de focus naar de kop van het nieuwe scherm - dat is meteen ook
+    // wat voorgelezen moet worden.
+    var heading = null;
+    if (index < 0) heading = screens.welcome.querySelector('h1');
+    else if (index < TOTAL) heading = stepEls[index].querySelector('.sel-step__q');
+    else if (index === TOTAL) heading = screens.teaser.querySelector('.heading');
+    else heading = screens.result.querySelector('.heading');
+    if (heading) {
+      if (!heading.hasAttribute('tabindex')) heading.setAttribute('tabindex', '-1');
+      heading.focus({ preventScroll: true });
+    }
   }
 
   function stepValid(el) {
@@ -1202,7 +1221,15 @@ footer a { color: var(--gold-dim); text-underline-offset: 2px; }
     var relaxedEl = document.getElementById('selRelaxed');
 
     fetchMatches(3).then(function (data) {
-      if (!data) return;
+      if (!data) {
+        // Lukt het ophalen niet, laat dan geen "We vonden — projecten" met
+        // drie lege vakken staan: verberg de belofte en toon gewoon het
+        // formulier. Het versturen werkt los hiervan.
+        document.getElementById('selTeaserHead').hidden = true;
+        target.hidden = true;
+        document.getElementById('selLockedNote').hidden = true;
+        return;
+      }
       teaserCards = data.cards || [];
       teaserRelaxed = Boolean(data.relaxed);
       relaxedEl.hidden = !teaserRelaxed;

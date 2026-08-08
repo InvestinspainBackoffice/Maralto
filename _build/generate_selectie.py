@@ -359,7 +359,7 @@ def build(lang, prices, project_total):
                data-required="{'1' if question.get('required') else ''}"
                hidden>
         <p class="sel-step__count">{strings['SEL_STEP']} {number:02d} <span>{strings['SEL_OF']} {len(QUESTIONS)}</span></p>
-        <h2 class="sel-step__q">{question[lang]['q']}</h2>
+        <h2 class="sel-step__q" tabindex="-1">{question[lang]['q']}</h2>
         {hint}
         {map_svg}
         <div class="{grid_class}" role="{'group' if question.get('multi') else 'radiogroup'}"

@@ -232,6 +232,10 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   font-weight: 300; line-height: 1.3; letter-spacing: -0.01em;
   margin-bottom: 0.6rem;
 }
+/* Koppen krijgen tabindex="-1" zodat de focus er bij een stapwissel naartoe
+   kan. Ze zijn niet met Tab bereikbaar, dus een focusring zou hier alleen
+   maar een rand om een titel tekenen zonder iets te betekenen. */
+h1[tabindex="-1"]:focus, h2[tabindex="-1"]:focus { outline: none; }
 .sel-step__hint {
   font-size: 0.7rem; letter-spacing: 0.1em; color: var(--text-muted);
   margin-bottom: 0.5rem;
@@ -588,7 +592,7 @@ footer a { color: var(--gold-dim); text-underline-offset: 2px; }
                data-required="1"
                hidden>
         <p class="sel-step__count">Step 01 <span>of 10</span></p>
-        <h2 class="sel-step__q">Which area are you most interested in?</h2>
+        <h2 class="sel-step__q" tabindex="-1">Which area are you most interested in?</h2>
         <p class="sel-step__hint">Multiple answers possible</p>
         <svg class="sel-map" viewBox="0 0 544 178" role="img"
      aria-label="Schematic map of the Costa del Sol showing the three areas and their starting prices">
@@ -637,7 +641,7 @@ footer a { color: var(--gold-dim); text-underline-offset: 2px; }
                data-required="1"
                hidden>
         <p class="sel-step__count">Step 02 <span>of 10</span></p>
-        <h2 class="sel-step__q">What type of property are you interested in?</h2>
+        <h2 class="sel-step__q" tabindex="-1">What type of property are you interested in?</h2>
         
         
         <div class="sel-options sel-options--photo" role="radiogroup"
@@ -657,7 +661,7 @@ footer a { color: var(--gold-dim); text-underline-offset: 2px; }
                data-required="1"
                hidden>
         <p class="sel-step__count">Step 03 <span>of 10</span></p>
-        <h2 class="sel-step__q">What's your main reason for buying?</h2>
+        <h2 class="sel-step__q" tabindex="-1">What's your main reason for buying?</h2>
         
         
         <div class="sel-options" role="radiogroup"
@@ -676,7 +680,7 @@ footer a { color: var(--gold-dim); text-underline-offset: 2px; }
                data-required="1"
                hidden>
         <p class="sel-step__count">Step 04 <span>of 10</span></p>
-        <h2 class="sel-step__q">What is your budget?</h2>
+        <h2 class="sel-step__q" tabindex="-1">What is your budget?</h2>
         
         
         <div class="sel-options" role="radiogroup"
@@ -697,7 +701,7 @@ footer a { color: var(--gold-dim); text-underline-offset: 2px; }
                data-required="1"
                hidden>
         <p class="sel-step__count">Step 05 <span>of 10</span></p>
-        <h2 class="sel-step__q">When would you like to move in?</h2>
+        <h2 class="sel-step__q" tabindex="-1">When would you like to move in?</h2>
         <p class="sel-step__hint">Multiple answers possible</p>
         
         <div class="sel-options" role="group"
@@ -715,7 +719,7 @@ footer a { color: var(--gold-dim); text-underline-offset: 2px; }
                data-required=""
                hidden>
         <p class="sel-step__count">Step 06 <span>of 10</span></p>
-        <h2 class="sel-step__q">Preferred number of bedrooms</h2>
+        <h2 class="sel-step__q" tabindex="-1">Preferred number of bedrooms</h2>
         
         
         <div class="sel-options" role="radiogroup"
@@ -734,7 +738,7 @@ footer a { color: var(--gold-dim); text-underline-offset: 2px; }
                data-required=""
                hidden>
         <p class="sel-step__count">Step 07 <span>of 10</span></p>
-        <h2 class="sel-step__q">Preferred location type</h2>
+        <h2 class="sel-step__q" tabindex="-1">Preferred location type</h2>
         
         
         <div class="sel-options" role="radiogroup"
@@ -754,7 +758,7 @@ footer a { color: var(--gold-dim); text-underline-offset: 2px; }
                data-required=""
                hidden>
         <p class="sel-step__count">Step 08 <span>of 10</span></p>
-        <h2 class="sel-step__q">Preferred view</h2>
+        <h2 class="sel-step__q" tabindex="-1">Preferred view</h2>
         
         
         <div class="sel-options" role="radiogroup"
@@ -772,7 +776,7 @@ footer a { color: var(--gold-dim); text-underline-offset: 2px; }
                data-required="1"
                hidden>
         <p class="sel-step__count">Step 09 <span>of 10</span></p>
-        <h2 class="sel-step__q">Desired indoor space (m&sup2;)</h2>
+        <h2 class="sel-step__q" tabindex="-1">Desired indoor space (m&sup2;)</h2>
         
         
         <div class="sel-options" role="radiogroup"
@@ -790,7 +794,7 @@ footer a { color: var(--gold-dim); text-underline-offset: 2px; }
                data-required="1"
                hidden>
         <p class="sel-step__count">Step 10 <span>of 10</span></p>
-        <h2 class="sel-step__q">Desired outdoor area (m&sup2;)</h2>
+        <h2 class="sel-step__q" tabindex="-1">Desired outdoor area (m&sup2;)</h2>
         
         
         <div class="sel-options" role="radiogroup"
@@ -806,13 +810,13 @@ footer a { color: var(--gold-dim); text-underline-offset: 2px; }
     <!-- ═══════════ TEASER + CONTACTGEGEVENS ═══════════ -->
     <section class="sel-screen sel-teaser" id="selTeaser" hidden>
       <p class="label">Your selection</p>
-      <h2 class="heading">
+      <h2 class="heading" id="selTeaserHead" tabindex="-1">
         We found <em id="selTeaserN">&mdash;</em>
         <em id="selTeaserWord">matching projects</em>
       </h2>
       <p class="sel-relaxed" id="selRelaxed" hidden>We have nothing in our portfolio within this budget today. These come closest.</p>
       <div class="sel-cards sel-cards--locked" id="selTeaserCards" aria-hidden="true"></div>
-      <p class="sel-locked-note">
+      <p class="sel-locked-note" id="selLockedNote">
         <svg viewBox="0 0 24 24"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
         Unlock your selection
       </p>
@@ -1090,6 +1094,21 @@ footer a { color: var(--gold-dim); text-underline-offset: 2px; }
     // Bij een lange vraag (fotokaartjes) staat de vraag zelf anders buiten
     // beeld nadat de vorige stap is weggevallen.
     window.scrollTo({ top: 0, behavior: 'auto' });
+
+    // De knop waarop de focus stond is net verborgen; zonder dit valt de
+    // focus terug op <body>. Een schermlezer meldt de nieuwe vraag dan niet
+    // en wie met het toetsenbord werkt moet vanaf de bovenkant terugtabben.
+    // Daarom de focus naar de kop van het nieuwe scherm - dat is meteen ook
+    // wat voorgelezen moet worden.
+    var heading = null;
+    if (index < 0) heading = screens.welcome.querySelector('h1');
+    else if (index < TOTAL) heading = stepEls[index].querySelector('.sel-step__q');
+    else if (index === TOTAL) heading = screens.teaser.querySelector('.heading');
+    else heading = screens.result.querySelector('.heading');
+    if (heading) {
+      if (!heading.hasAttribute('tabindex')) heading.setAttribute('tabindex', '-1');
+      heading.focus({ preventScroll: true });
+    }
   }
 
   function stepValid(el) {
@@ -1202,7 +1221,15 @@ footer a { color: var(--gold-dim); text-underline-offset: 2px; }
     var relaxedEl = document.getElementById('selRelaxed');
 
     fetchMatches(3).then(function (data) {
-      if (!data) return;
+      if (!data) {
+        // Lukt het ophalen niet, laat dan geen "We vonden — projecten" met
+        // drie lege vakken staan: verberg de belofte en toon gewoon het
+        // formulier. Het versturen werkt los hiervan.
+        document.getElementById('selTeaserHead').hidden = true;
+        target.hidden = true;
+        document.getElementById('selLockedNote').hidden = true;
+        return;
+      }
       teaserCards = data.cards || [];
       teaserRelaxed = Boolean(data.relaxed);
       relaxedEl.hidden = !teaserRelaxed;

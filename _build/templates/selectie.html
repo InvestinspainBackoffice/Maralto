@@ -232,6 +232,10 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   font-weight: 300; line-height: 1.3; letter-spacing: -0.01em;
   margin-bottom: 0.6rem;
 }
+/* Koppen krijgen tabindex="-1" zodat de focus er bij een stapwissel naartoe
+   kan. Ze zijn niet met Tab bereikbaar, dus een focusring zou hier alleen
+   maar een rand om een titel tekenen zonder iets te betekenen. */
+h1[tabindex="-1"]:focus, h2[tabindex="-1"]:focus { outline: none; }
 .sel-step__hint {
   font-size: 0.7rem; letter-spacing: 0.1em; color: var(--text-muted);
   margin-bottom: 0.5rem;
@@ -587,13 +591,13 @@ __STEPS__
     <!-- ═══════════ TEASER + CONTACTGEGEVENS ═══════════ -->
     <section class="sel-screen sel-teaser" id="selTeaser" hidden>
       <p class="label">__I_SEL_TEASER_LABEL__</p>
-      <h2 class="heading">
+      <h2 class="heading" id="selTeaserHead" tabindex="-1">
         __I_SEL_TEASER_HEADING_PRE__ <em id="selTeaserN">&mdash;</em>
         <em id="selTeaserWord">__I_SEL_TEASER_HEADING_EM__</em>
       </h2>
       <p class="sel-relaxed" id="selRelaxed" hidden>__I_SEL_TEASER_RELAXED__</p>
       <div class="sel-cards sel-cards--locked" id="selTeaserCards" aria-hidden="true"></div>
-      <p class="sel-locked-note">
+      <p class="sel-locked-note" id="selLockedNote">
         <svg viewBox="0 0 24 24"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
         __I_SEL_TEASER_LOCKED__
       </p>
@@ -821,6 +825,21 @@ __PHONE_OPTGROUPS__
     // Bij een lange vraag (fotokaartjes) staat de vraag zelf anders buiten
     // beeld nadat de vorige stap is weggevallen.
     window.scrollTo({ top: 0, behavior: 'auto' });
+
+    // De knop waarop de focus stond is net verborgen; zonder dit valt de
+    // focus terug op <body>. Een schermlezer meldt de nieuwe vraag dan niet
+    // en wie met het toetsenbord werkt moet vanaf de bovenkant terugtabben.
+    // Daarom de focus naar de kop van het nieuwe scherm - dat is meteen ook
+    // wat voorgelezen moet worden.
+    var heading = null;
+    if (index < 0) heading = screens.welcome.querySelector('h1');
+    else if (index < TOTAL) heading = stepEls[index].querySelector('.sel-step__q');
+    else if (index === TOTAL) heading = screens.teaser.querySelector('.heading');
+    else heading = screens.result.querySelector('.heading');
+    if (heading) {
+      if (!heading.hasAttribute('tabindex')) heading.setAttribute('tabindex', '-1');
+      heading.focus({ preventScroll: true });
+    }
   }
 
   function stepValid(el) {
@@ -933,7 +952,15 @@ __PHONE_OPTGROUPS__
     var relaxedEl = document.getElementById('selRelaxed');
 
     fetchMatches(3).then(function (data) {
-      if (!data) return;
+      if (!data) {
+        // Lukt het ophalen niet, laat dan geen "We vonden — projecten" met
+        // drie lege vakken staan: verberg de belofte en toon gewoon het
+        // formulier. Het versturen werkt los hiervan.
+        document.getElementById('selTeaserHead').hidden = true;
+        target.hidden = true;
+        document.getElementById('selLockedNote').hidden = true;
+        return;
+      }
       teaserCards = data.cards || [];
       teaserRelaxed = Boolean(data.relaxed);
       relaxedEl.hidden = !teaserRelaxed;
