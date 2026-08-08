@@ -359,16 +359,15 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   border: 1px solid var(--line); margin: 2rem 0;
 }
 @media (min-width: 700px) {
-  /* auto-fit met een maximum in plaats van drie vaste kolommen: bij minder
-     dan drie treffers blijven er anders lege cellen over, en die kleuren mee
-     met de achtergrond die de 1px-scheidingslijnen tekent - één resultaat zag
-     eruit als één kaartje naast een groot grijs vlak. */
-  .sel-cards {
+  .sel-cards { grid-template-columns: repeat(3, 1fr); }
+  /* Bij minder dan drie treffers blijven er anders lege cellen over, en die
+     kleuren mee met de achtergrond die de 1px-scheidingslijnen tekent - één
+     resultaat zag eruit als één kaartje naast een groot grijs vlak. De
+     container krimpt dan mee met de kaartjes. Browsers zonder :has() vallen
+     terug op drie kolommen; dat is de oude situatie, niet erger. */
+  .sel-cards:has(> :last-child:nth-child(-n+2)) {
     grid-template-columns: repeat(auto-fit, minmax(200px, 280px));
     justify-content: start;
-    /* De achtergrond van deze container tekent de 1px-scheidingslijnen, dus
-       hij mag niet breder zijn dan de kaartjes zelf - anders blijft er een
-       grijze balk staan naast een onvolledige rij. */
     width: fit-content;
     max-width: 100%;
   }
@@ -1173,7 +1172,10 @@ footer a { color: var(--gold-dim); text-underline-offset: 2px; }
     var href = linked ? ' href="' + escapeAttr(card.url) + '"' : '';
     var cta = linked ? '<span class="sel-card__cta">View project &rarr;</span>' : '';
     return '<' + tag + ' class="sel-card"' + href + '>' +
-      '<img class="sel-card__img" src="' + escapeAttr(card.image) + '" alt="" loading="lazy" width="800" height="600">' +
+      // Niet lazy: het gaat om hoogstens drie foto's die meteen in beeld
+      // staan op precies het moment dat ze het werk moeten doen. Uitstellen
+      // levert hier alleen zichtbare lege vakken op.
+      '<img class="sel-card__img" src="' + escapeAttr(card.image) + '" alt="" width="800" height="600">' +
       '<span class="sel-card__body">' +
         '<span class="sel-card__loc">' + escapeHtml(card.location) + '</span>' +
         '<span class="sel-card__name">' + escapeHtml(card.name) + '</span>' +
