@@ -322,39 +322,51 @@ h1[tabindex="-1"]:focus, h2[tabindex="-1"]:focus { outline: none; }
   position: absolute; top: 0.75rem; right: 0.75rem;
 }
 
-/* ── Kaart bij vraag 1 ─────────────────────────────────────────────────── */
-.sel-map {
-  width: 100%; height: auto; margin-top: 1.5rem;
-  border: 1px solid var(--line); background: var(--bg-el);
-  padding: 0.5rem;
+/* ── Kustlijn-decoratie boven de regiokaarten (vraag 1) ──────────────────
+   Zuiver decoratief (aria-hidden): de kaarten eronder zijn de klikbare
+   elementen, dit tekent alleen de kustlijn waarnaar ze verwijzen. */
+.sel-coast { margin-top: 1.5rem; }
+.sel-coast svg {
+  display: block; width: 100%; height: 22px;
+  overflow: visible;
 }
-.sel-map__coast { fill: none; stroke: var(--line-light); stroke-width: 1.5; }
-.sel-map__sea {
-  fill: var(--text-muted); font-size: 8px; letter-spacing: 3px;
-  text-anchor: middle; font-family: var(--font); opacity: 0.5;
+.sel-coast path { fill: none; stroke: var(--line-light); stroke-width: 1.5; }
+.sel-coast__label {
+  display: block; text-align: center; margin-top: 0.35rem;
+  font-size: 0.6rem; letter-spacing: 0.3em; color: var(--text-muted);
+  opacity: 0.6;
 }
-.sel-map__band rect {
-  fill: rgba(196,169,125,0.05); stroke: var(--line-light); stroke-width: 1;
-  transition: fill 0.3s, stroke 0.3s;
+
+/* ── Regiokaarten (vraag 1) ───────────────────────────────────────────────
+   Dezelfde .sel-option-basis als de andere vragen (klik, toetsenbord,
+   aria-checked), met een eigen indeling: code + twee plaatsnamen + twee
+   prijzen per kaart, in plaats van één label. */
+.sel-options--region { gap: 0.75rem; margin-top: 0.75rem; }
+@media (min-width: 620px) {
+  .sel-options--region { grid-template-columns: repeat(3, 1fr); }
+  .sel-options--region > :last-child:nth-child(odd) { grid-column: auto; }
 }
-.sel-map__band.is-active rect { fill: rgba(196,169,125,0.16); stroke: var(--gold); }
-.sel-map__code {
-  fill: var(--gold-dim); font-size: 11px; letter-spacing: 2px;
-  text-anchor: middle; font-family: var(--font);
-  transition: fill 0.3s;
+.sel-option--region {
+  flex-direction: column; align-items: center; text-align: center;
+  gap: 0.5rem; padding: 1.25rem 1rem 1.4rem;
 }
-.sel-map__band.is-active .sel-map__code { fill: var(--gold); }
-.sel-map__place {
-  fill: var(--text); font-size: 8px; letter-spacing: 1.1px;
-  font-family: var(--font);
+.sel-option__region-code {
+  font-size: 0.7rem; letter-spacing: 0.2em; color: var(--gold-dim);
+  transition: color 0.25s;
 }
-.sel-map__arrow {
-  fill: var(--line-light); font-size: 8px; text-anchor: middle;
-  font-family: var(--font);
+.sel-option--region[aria-checked="true"] .sel-option__region-code { color: var(--gold); }
+.sel-option__places {
+  display: flex; align-items: center; gap: 0.5rem;
+  font-size: 0.68rem; letter-spacing: 0.09em; color: var(--text);
+  font-weight: 400;
 }
-.sel-map__price {
-  fill: var(--text-muted); font-size: 8.5px; letter-spacing: 0.4px;
-  text-anchor: middle; font-family: var(--font);
+.sel-option__dash { color: var(--line-light); }
+.sel-option__prices {
+  display: flex; flex-direction: column; gap: 0.2rem;
+  font-size: 0.68rem; color: var(--text-muted);
+}
+.sel-option--region .sel-option__tick {
+  position: absolute; top: 0.7rem; right: 0.7rem;
 }
 
 /* ── Projectkaartjes ───────────────────────────────────────────────────── */
@@ -880,7 +892,6 @@ __PHONE_OPTGROUPS__
         }
 
         el.querySelector('.sel-step__error').hidden = true;
-        syncMap(el);
         refreshCount();
 
         // Enkelvoudige keuze gaat vanzelf door - dat is de hele reden dat
@@ -905,16 +916,6 @@ __PHONE_OPTGROUPS__
       el.appendChild(next);
     }
   });
-
-  // De regiokaart kleurt mee met de gekozen banden.
-  function syncMap(el) {
-    var map = el.querySelector('.sel-map');
-    if (!map) return;
-    var chosen = answers[el.getAttribute('data-id')] || [];
-    map.querySelectorAll('.sel-map__band').forEach(function (band) {
-      band.classList.toggle('is-active', chosen.indexOf(band.getAttribute('data-region')) !== -1);
-    });
-  }
 
   /* ── Kaartjes ─────────────────────────────────────────────────────────── */
   function cardMarkup(card, linked) {

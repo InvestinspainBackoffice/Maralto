@@ -62,7 +62,7 @@ QUESTIONS = [
         "param": "regions",
         "multi": True,
         "required": True,
-        "map": True,
+        "region_cards": True,
         "nl": {"q": "In welke regio bent u het meest ge&iuml;nteresseerd?"},
         "en": {"q": "Which area are you most interested in?"},
         "options": [
@@ -292,45 +292,51 @@ def render_options(question, lang):
     return "\n          ".join(parts)
 
 
-def render_map(strings, prices):
-    """Schematische kaart bij vraag 1.
+def render_region_options(question, lang, strings, prices):
+    """Vraag 1: de drie regio's als klikbare kaarten - geen aparte kaart mét
+    losse antwoordknoppen eronder. Die twee stonden eerst na elkaar en zeiden
+    hetzelfde tweemaal; dit is de ene set knoppen die je ook echt aanklikt.
 
-    Bewust een inline SVG en geen kaart-screenshot: hij schaalt mee op mobiel,
-    kent geen laadtijd of externe host, volgt de kleuren van de rest van de
-    pagina, en de prijzen erin komen uit region_prices() - dus ze blijven
-    kloppen zonder dat er een nieuwe afbeelding gemaakt moet worden.
+    HTML-knoppen in plaats van SVG-rects: een <rect> is geen focusbaar,
+    klikbaar element zonder een hoop extra werk (foreignObject, click-mapping
+    op coördinaten). Drie <button>'s met dezelfde look kosten dat niet en
+    werken meteen met dezelfde toetsenbordbediening als de andere vragen.
     """
-    # De drie banden vullen de volle breedte met een smalle tussenruimte. Ze
-    # moeten breed genoeg blijven voor twee plaatsnamen naast elkaar - bij
-    # smallere banden lopen "MÁLAGA" en "MARBELLA" in elkaar.
+    coast = f"""<div class="sel-coast" aria-hidden="true">
+    <svg viewBox="0 0 544 34" preserveAspectRatio="none">
+      <path d="M4 14 C 120 6, 180 22, 272 12 S 430 2, 540 10"/>
+    </svg>
+    <span class="sel-coast__label">{strings['SEL_MAP_SEA']}</span>
+  </div>"""
+
     labels = [
         ("A", "M&Aacute;LAGA", "MARBELLA"),
         ("B", "MARBELLA", "ESTEPONA"),
         ("C", "ESTEPONA", "SOTOGRANDE"),
     ]
-    band_w = 168
-    gap = 8
-    bands = []
-    for i, (code, left, right) in enumerate(labels):
-        x = 12 + i * (band_w + gap)
-        x_end = x + band_w
-        mid = x + band_w / 2
-        bands.append(f"""
-    <g class="sel-map__band" data-region="{code}">
-      <rect x="{x}" y="46" width="{band_w}" height="94" rx="2"/>
-      <text class="sel-map__code" x="{mid}" y="32">{code}</text>
-      <text class="sel-map__place" x="{x + 8}" y="70" text-anchor="start">{left}</text>
-      <text class="sel-map__arrow" x="{mid}" y="70">&#8212;</text>
-      <text class="sel-map__place" x="{x_end - 8}" y="70" text-anchor="end">{right}</text>
-      <text class="sel-map__price" x="{mid}" y="102">{strings['SEL_MAP_APT']} {prices[code]['apartment']}</text>
-      <text class="sel-map__price" x="{mid}" y="124">{strings['SEL_MAP_VILLA']} {prices[code]['villa']}</text>
-    </g>""")
+    role = "checkbox" if question.get("multi") else "radio"
+    cards = []
+    for code, left, right in labels:
+        cards.append(f"""
+      <button type="button" class="sel-option sel-option--region" data-value="{code}"
+              role="{role}" aria-checked="false">
+        <span class="sel-option__region-code" aria-hidden="true">{code}</span>
+        <span class="sel-option__places">
+          <span>{left}</span><span class="sel-option__dash" aria-hidden="true">&mdash;</span><span>{right}</span>
+        </span>
+        <span class="sel-option__prices">
+          <span>{strings['SEL_MAP_APT']} {prices[code]['apartment']}</span>
+          <span>{strings['SEL_MAP_VILLA']} {prices[code]['villa']}</span>
+        </span>
+        <span class="sel-option__tick" aria-hidden="true"></span>
+      </button>""")
 
-    return f"""<svg class="sel-map" viewBox="0 0 544 178" role="img"
-     aria-label="{strings['SEL_MAP_ARIA']}">
-  <path class="sel-map__coast" d="M4 156 C 120 148, 180 164, 272 154 S 430 144, 540 152"/>
-  <text class="sel-map__sea" x="272" y="172">{strings['SEL_MAP_SEA']}</text>{''.join(bands)}
-</svg>"""
+    options = (
+        f'<div class="sel-options sel-options--region" '
+        f'role="{"group" if question.get("multi") else "radiogroup"}" '
+        f'aria-label="{question[lang]["q"]}">{"".join(cards)}\n      </div>'
+    )
+    return coast + "\n      " + options
 
 
 def build(lang, prices, project_total):
@@ -348,10 +354,16 @@ def build(lang, prices, project_total):
             if question.get("multi")
             else ""
         )
-        map_svg = render_map(strings, prices) if question.get("map") else ""
-        grid_class = "sel-options"
-        if question.get("photos"):
-            grid_class += " sel-options--photo"
+        if question.get("region_cards"):
+            options_html = render_region_options(question, lang, strings, prices)
+        else:
+            grid_class = "sel-options"
+            if question.get("photos"):
+                grid_class += " sel-options--photo"
+            options_html = (
+                f'<div class="{grid_class}" role="{"group" if question.get("multi") else "radiogroup"}" '
+                f'aria-label="{question[lang]["q"]}">\n          {render_options(question, lang)}\n        </div>'
+            )
         steps.append(f"""
       <section class="sel-step" data-step="{number}" data-id="{question['id']}"
                data-param="{question.get('param', '')}"
@@ -361,11 +373,7 @@ def build(lang, prices, project_total):
         <p class="sel-step__count">{strings['SEL_STEP']} {number:02d} <span>{strings['SEL_OF']} {len(QUESTIONS)}</span></p>
         <h2 class="sel-step__q" tabindex="-1">{question[lang]['q']}</h2>
         {hint}
-        {map_svg}
-        <div class="{grid_class}" role="{'group' if question.get('multi') else 'radiogroup'}"
-             aria-label="{question[lang]['q']}">
-          {render_options(question, lang)}
-        </div>
+        {options_html}
         <p class="sel-step__error" role="alert" hidden>{strings['SEL_REQUIRED']}</p>
       </section>""")
 

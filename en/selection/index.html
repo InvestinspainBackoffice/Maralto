@@ -322,39 +322,51 @@ h1[tabindex="-1"]:focus, h2[tabindex="-1"]:focus { outline: none; }
   position: absolute; top: 0.75rem; right: 0.75rem;
 }
 
-/* ── Kaart bij vraag 1 ─────────────────────────────────────────────────── */
-.sel-map {
-  width: 100%; height: auto; margin-top: 1.5rem;
-  border: 1px solid var(--line); background: var(--bg-el);
-  padding: 0.5rem;
+/* ── Kustlijn-decoratie boven de regiokaarten (vraag 1) ──────────────────
+   Zuiver decoratief (aria-hidden): de kaarten eronder zijn de klikbare
+   elementen, dit tekent alleen de kustlijn waarnaar ze verwijzen. */
+.sel-coast { margin-top: 1.5rem; }
+.sel-coast svg {
+  display: block; width: 100%; height: 22px;
+  overflow: visible;
 }
-.sel-map__coast { fill: none; stroke: var(--line-light); stroke-width: 1.5; }
-.sel-map__sea {
-  fill: var(--text-muted); font-size: 8px; letter-spacing: 3px;
-  text-anchor: middle; font-family: var(--font); opacity: 0.5;
+.sel-coast path { fill: none; stroke: var(--line-light); stroke-width: 1.5; }
+.sel-coast__label {
+  display: block; text-align: center; margin-top: 0.35rem;
+  font-size: 0.6rem; letter-spacing: 0.3em; color: var(--text-muted);
+  opacity: 0.6;
 }
-.sel-map__band rect {
-  fill: rgba(196,169,125,0.05); stroke: var(--line-light); stroke-width: 1;
-  transition: fill 0.3s, stroke 0.3s;
+
+/* ── Regiokaarten (vraag 1) ───────────────────────────────────────────────
+   Dezelfde .sel-option-basis als de andere vragen (klik, toetsenbord,
+   aria-checked), met een eigen indeling: code + twee plaatsnamen + twee
+   prijzen per kaart, in plaats van één label. */
+.sel-options--region { gap: 0.75rem; margin-top: 0.75rem; }
+@media (min-width: 620px) {
+  .sel-options--region { grid-template-columns: repeat(3, 1fr); }
+  .sel-options--region > :last-child:nth-child(odd) { grid-column: auto; }
 }
-.sel-map__band.is-active rect { fill: rgba(196,169,125,0.16); stroke: var(--gold); }
-.sel-map__code {
-  fill: var(--gold-dim); font-size: 11px; letter-spacing: 2px;
-  text-anchor: middle; font-family: var(--font);
-  transition: fill 0.3s;
+.sel-option--region {
+  flex-direction: column; align-items: center; text-align: center;
+  gap: 0.5rem; padding: 1.25rem 1rem 1.4rem;
 }
-.sel-map__band.is-active .sel-map__code { fill: var(--gold); }
-.sel-map__place {
-  fill: var(--text); font-size: 8px; letter-spacing: 1.1px;
-  font-family: var(--font);
+.sel-option__region-code {
+  font-size: 0.7rem; letter-spacing: 0.2em; color: var(--gold-dim);
+  transition: color 0.25s;
 }
-.sel-map__arrow {
-  fill: var(--line-light); font-size: 8px; text-anchor: middle;
-  font-family: var(--font);
+.sel-option--region[aria-checked="true"] .sel-option__region-code { color: var(--gold); }
+.sel-option__places {
+  display: flex; align-items: center; gap: 0.5rem;
+  font-size: 0.68rem; letter-spacing: 0.09em; color: var(--text);
+  font-weight: 400;
 }
-.sel-map__price {
-  fill: var(--text-muted); font-size: 8.5px; letter-spacing: 0.4px;
-  text-anchor: middle; font-family: var(--font);
+.sel-option__dash { color: var(--line-light); }
+.sel-option__prices {
+  display: flex; flex-direction: column; gap: 0.2rem;
+  font-size: 0.68rem; color: var(--text-muted);
+}
+.sel-option--region .sel-option__tick {
+  position: absolute; top: 0.7rem; right: 0.7rem;
 }
 
 /* ── Projectkaartjes ───────────────────────────────────────────────────── */
@@ -594,44 +606,50 @@ footer a { color: var(--gold-dim); text-underline-offset: 2px; }
         <p class="sel-step__count">Step 01 <span>of 10</span></p>
         <h2 class="sel-step__q" tabindex="-1">Which area are you most interested in?</h2>
         <p class="sel-step__hint">Multiple answers possible</p>
-        <svg class="sel-map" viewBox="0 0 544 178" role="img"
-     aria-label="Schematic map of the Costa del Sol showing the three areas and their starting prices">
-  <path class="sel-map__coast" d="M4 156 C 120 148, 180 164, 272 154 S 430 144, 540 152"/>
-  <text class="sel-map__sea" x="272" y="172">MEDITERRANEAN SEA</text>
-    <g class="sel-map__band" data-region="A">
-      <rect x="12" y="46" width="168" height="94" rx="2"/>
-      <text class="sel-map__code" x="96.0" y="32">A</text>
-      <text class="sel-map__place" x="20" y="70" text-anchor="start">M&Aacute;LAGA</text>
-      <text class="sel-map__arrow" x="96.0" y="70">&#8212;</text>
-      <text class="sel-map__place" x="172" y="70" text-anchor="end">MARBELLA</text>
-      <text class="sel-map__price" x="96.0" y="102">Apartment from &euro; 240.000</text>
-      <text class="sel-map__price" x="96.0" y="124">Villa from &euro; 690.000</text>
-    </g>
-    <g class="sel-map__band" data-region="B">
-      <rect x="188" y="46" width="168" height="94" rx="2"/>
-      <text class="sel-map__code" x="272.0" y="32">B</text>
-      <text class="sel-map__place" x="196" y="70" text-anchor="start">MARBELLA</text>
-      <text class="sel-map__arrow" x="272.0" y="70">&#8212;</text>
-      <text class="sel-map__place" x="348" y="70" text-anchor="end">ESTEPONA</text>
-      <text class="sel-map__price" x="272.0" y="102">Apartment from &euro; 380.000</text>
-      <text class="sel-map__price" x="272.0" y="124">Villa from &euro; 460.000</text>
-    </g>
-    <g class="sel-map__band" data-region="C">
-      <rect x="364" y="46" width="168" height="94" rx="2"/>
-      <text class="sel-map__code" x="448.0" y="32">C</text>
-      <text class="sel-map__place" x="372" y="70" text-anchor="start">ESTEPONA</text>
-      <text class="sel-map__arrow" x="448.0" y="70">&#8212;</text>
-      <text class="sel-map__place" x="524" y="70" text-anchor="end">SOTOGRANDE</text>
-      <text class="sel-map__price" x="448.0" y="102">Apartment from &euro; 320.000</text>
-      <text class="sel-map__price" x="448.0" y="124">Villa from &euro; 950.000</text>
-    </g>
-</svg>
-        <div class="sel-options" role="group"
-             aria-label="Which area are you most interested in?">
-          <button type="button" class="sel-option" data-value="A" role="checkbox" aria-checked="false"><span class="sel-option__letter" aria-hidden="true">A</span><span class="sel-option__label">M&aacute;laga &ndash; Marbella</span><span class="sel-option__tick" aria-hidden="true"></span></button>
-          <button type="button" class="sel-option" data-value="B" role="checkbox" aria-checked="false"><span class="sel-option__letter" aria-hidden="true">B</span><span class="sel-option__label">Marbella &ndash; Estepona</span><span class="sel-option__tick" aria-hidden="true"></span></button>
-          <button type="button" class="sel-option" data-value="C" role="checkbox" aria-checked="false"><span class="sel-option__letter" aria-hidden="true">C</span><span class="sel-option__label">Estepona &ndash; Sotogrande</span><span class="sel-option__tick" aria-hidden="true"></span></button>
-        </div>
+        <div class="sel-coast" aria-hidden="true">
+    <svg viewBox="0 0 544 34" preserveAspectRatio="none">
+      <path d="M4 14 C 120 6, 180 22, 272 12 S 430 2, 540 10"/>
+    </svg>
+    <span class="sel-coast__label">MEDITERRANEAN SEA</span>
+  </div>
+      <div class="sel-options sel-options--region" role="group" aria-label="Which area are you most interested in?">
+      <button type="button" class="sel-option sel-option--region" data-value="A"
+              role="checkbox" aria-checked="false">
+        <span class="sel-option__region-code" aria-hidden="true">A</span>
+        <span class="sel-option__places">
+          <span>M&Aacute;LAGA</span><span class="sel-option__dash" aria-hidden="true">&mdash;</span><span>MARBELLA</span>
+        </span>
+        <span class="sel-option__prices">
+          <span>Apartment from &euro; 240.000</span>
+          <span>Villa from &euro; 690.000</span>
+        </span>
+        <span class="sel-option__tick" aria-hidden="true"></span>
+      </button>
+      <button type="button" class="sel-option sel-option--region" data-value="B"
+              role="checkbox" aria-checked="false">
+        <span class="sel-option__region-code" aria-hidden="true">B</span>
+        <span class="sel-option__places">
+          <span>MARBELLA</span><span class="sel-option__dash" aria-hidden="true">&mdash;</span><span>ESTEPONA</span>
+        </span>
+        <span class="sel-option__prices">
+          <span>Apartment from &euro; 380.000</span>
+          <span>Villa from &euro; 460.000</span>
+        </span>
+        <span class="sel-option__tick" aria-hidden="true"></span>
+      </button>
+      <button type="button" class="sel-option sel-option--region" data-value="C"
+              role="checkbox" aria-checked="false">
+        <span class="sel-option__region-code" aria-hidden="true">C</span>
+        <span class="sel-option__places">
+          <span>ESTEPONA</span><span class="sel-option__dash" aria-hidden="true">&mdash;</span><span>SOTOGRANDE</span>
+        </span>
+        <span class="sel-option__prices">
+          <span>Apartment from &euro; 320.000</span>
+          <span>Villa from &euro; 950.000</span>
+        </span>
+        <span class="sel-option__tick" aria-hidden="true"></span>
+      </button>
+      </div>
         <p class="sel-step__error" role="alert" hidden>Choose at least one answer to continue</p>
       </section>
 
@@ -643,9 +661,7 @@ footer a { color: var(--gold-dim); text-underline-offset: 2px; }
         <p class="sel-step__count">Step 02 <span>of 10</span></p>
         <h2 class="sel-step__q" tabindex="-1">What type of property are you interested in?</h2>
         
-        
-        <div class="sel-options sel-options--photo" role="radiogroup"
-             aria-label="What type of property are you interested in?">
+        <div class="sel-options sel-options--photo" role="radiogroup" aria-label="What type of property are you interested in?">
           <button type="button" class="sel-option sel-option--photo" data-value="apartment" role="radio" aria-checked="false"><span class="sel-option__img" role="presentation" style="background-image:url('https://projects.investinspain.be/images/oceana-views/hero.webp')"></span><span class="sel-option__letter" aria-hidden="true">A</span><span class="sel-option__label">New apartment</span><span class="sel-option__tick" aria-hidden="true"></span></button>
           <button type="button" class="sel-option sel-option--photo" data-value="penthouse" role="radio" aria-checked="false"><span class="sel-option__img" role="presentation" style="background-image:url('https://projects.investinspain.be/images/royal-river/img3.webp')"></span><span class="sel-option__letter" aria-hidden="true">B</span><span class="sel-option__label">New penthouse</span><span class="sel-option__tick" aria-hidden="true"></span></button>
           <button type="button" class="sel-option sel-option--photo" data-value="villa" role="radio" aria-checked="false"><span class="sel-option__img" role="presentation" style="background-image:url('https://projects.investinspain.be/images/las-villas-sotogrande/hero.webp')"></span><span class="sel-option__letter" aria-hidden="true">C</span><span class="sel-option__label">New villa</span><span class="sel-option__tick" aria-hidden="true"></span></button>
@@ -663,9 +679,7 @@ footer a { color: var(--gold-dim); text-underline-offset: 2px; }
         <p class="sel-step__count">Step 03 <span>of 10</span></p>
         <h2 class="sel-step__q" tabindex="-1">What's your main reason for buying?</h2>
         
-        
-        <div class="sel-options" role="radiogroup"
-             aria-label="What's your main reason for buying?">
+        <div class="sel-options" role="radiogroup" aria-label="What's your main reason for buying?">
           <button type="button" class="sel-option" data-value="investment" role="radio" aria-checked="false"><span class="sel-option__letter" aria-hidden="true">A</span><span class="sel-option__label">Investment</span><span class="sel-option__tick" aria-hidden="true"></span></button>
           <button type="button" class="sel-option" data-value="personal" role="radio" aria-checked="false"><span class="sel-option__letter" aria-hidden="true">B</span><span class="sel-option__label">Personal use</span><span class="sel-option__tick" aria-hidden="true"></span></button>
           <button type="button" class="sel-option" data-value="both" role="radio" aria-checked="false"><span class="sel-option__letter" aria-hidden="true">C</span><span class="sel-option__label">Both investment & personal</span><span class="sel-option__tick" aria-hidden="true"></span></button>
@@ -682,9 +696,7 @@ footer a { color: var(--gold-dim); text-underline-offset: 2px; }
         <p class="sel-step__count">Step 04 <span>of 10</span></p>
         <h2 class="sel-step__q" tabindex="-1">What is your budget?</h2>
         
-        
-        <div class="sel-options" role="radiogroup"
-             aria-label="What is your budget?">
+        <div class="sel-options" role="radiogroup" aria-label="What is your budget?">
           <button type="button" class="sel-option" data-value="lt200k" role="radio" aria-checked="false"><span class="sel-option__letter" aria-hidden="true">A</span><span class="sel-option__label">Up to &euro; 200,000</span><span class="sel-option__tick" aria-hidden="true"></span></button>
           <button type="button" class="sel-option" data-value="200-400" role="radio" aria-checked="false"><span class="sel-option__letter" aria-hidden="true">B</span><span class="sel-option__label">&euro; 200,000 &ndash; 400,000</span><span class="sel-option__tick" aria-hidden="true"></span></button>
           <button type="button" class="sel-option" data-value="400-600" role="radio" aria-checked="false"><span class="sel-option__letter" aria-hidden="true">C</span><span class="sel-option__label">&euro; 400,000 &ndash; 600,000</span><span class="sel-option__tick" aria-hidden="true"></span></button>
@@ -703,9 +715,7 @@ footer a { color: var(--gold-dim); text-underline-offset: 2px; }
         <p class="sel-step__count">Step 05 <span>of 10</span></p>
         <h2 class="sel-step__q" tabindex="-1">When would you like to move in?</h2>
         <p class="sel-step__hint">Multiple answers possible</p>
-        
-        <div class="sel-options" role="group"
-             aria-label="When would you like to move in?">
+        <div class="sel-options" role="group" aria-label="When would you like to move in?">
           <button type="button" class="sel-option" data-value="2026" role="checkbox" aria-checked="false"><span class="sel-option__letter" aria-hidden="true">A</span><span class="sel-option__label">2026</span><span class="sel-option__tick" aria-hidden="true"></span></button>
           <button type="button" class="sel-option" data-value="2027" role="checkbox" aria-checked="false"><span class="sel-option__letter" aria-hidden="true">B</span><span class="sel-option__label">2027</span><span class="sel-option__tick" aria-hidden="true"></span></button>
           <button type="button" class="sel-option" data-value="2028" role="checkbox" aria-checked="false"><span class="sel-option__letter" aria-hidden="true">C</span><span class="sel-option__label">2028 or later</span><span class="sel-option__tick" aria-hidden="true"></span></button>
@@ -721,9 +731,7 @@ footer a { color: var(--gold-dim); text-underline-offset: 2px; }
         <p class="sel-step__count">Step 06 <span>of 10</span></p>
         <h2 class="sel-step__q" tabindex="-1">Preferred number of bedrooms</h2>
         
-        
-        <div class="sel-options" role="radiogroup"
-             aria-label="Preferred number of bedrooms">
+        <div class="sel-options" role="radiogroup" aria-label="Preferred number of bedrooms">
           <button type="button" class="sel-option" data-value="1" role="radio" aria-checked="false"><span class="sel-option__letter" aria-hidden="true">A</span><span class="sel-option__label">1</span><span class="sel-option__tick" aria-hidden="true"></span></button>
           <button type="button" class="sel-option" data-value="2" role="radio" aria-checked="false"><span class="sel-option__letter" aria-hidden="true">B</span><span class="sel-option__label">2</span><span class="sel-option__tick" aria-hidden="true"></span></button>
           <button type="button" class="sel-option" data-value="3" role="radio" aria-checked="false"><span class="sel-option__letter" aria-hidden="true">C</span><span class="sel-option__label">3</span><span class="sel-option__tick" aria-hidden="true"></span></button>
@@ -740,9 +748,7 @@ footer a { color: var(--gold-dim); text-underline-offset: 2px; }
         <p class="sel-step__count">Step 07 <span>of 10</span></p>
         <h2 class="sel-step__q" tabindex="-1">Preferred location type</h2>
         
-        
-        <div class="sel-options" role="radiogroup"
-             aria-label="Preferred location type">
+        <div class="sel-options" role="radiogroup" aria-label="Preferred location type">
           <button type="button" class="sel-option" data-value="quiet" role="radio" aria-checked="false"><span class="sel-option__letter" aria-hidden="true">A</span><span class="sel-option__label">Quiet</span><span class="sel-option__tick" aria-hidden="true"></span></button>
           <button type="button" class="sel-option" data-value="city" role="radio" aria-checked="false"><span class="sel-option__letter" aria-hidden="true">B</span><span class="sel-option__label">City center</span><span class="sel-option__tick" aria-hidden="true"></span></button>
           <button type="button" class="sel-option" data-value="golf" role="radio" aria-checked="false"><span class="sel-option__letter" aria-hidden="true">C</span><span class="sel-option__label">Golf area</span><span class="sel-option__tick" aria-hidden="true"></span></button>
@@ -760,9 +766,7 @@ footer a { color: var(--gold-dim); text-underline-offset: 2px; }
         <p class="sel-step__count">Step 08 <span>of 10</span></p>
         <h2 class="sel-step__q" tabindex="-1">Preferred view</h2>
         
-        
-        <div class="sel-options" role="radiogroup"
-             aria-label="Preferred view">
+        <div class="sel-options" role="radiogroup" aria-label="Preferred view">
           <button type="button" class="sel-option" data-value="sea" role="radio" aria-checked="false"><span class="sel-option__letter" aria-hidden="true">A</span><span class="sel-option__label">Sea</span><span class="sel-option__tick" aria-hidden="true"></span></button>
           <button type="button" class="sel-option" data-value="mountain" role="radio" aria-checked="false"><span class="sel-option__letter" aria-hidden="true">B</span><span class="sel-option__label">Mountain</span><span class="sel-option__tick" aria-hidden="true"></span></button>
           <button type="button" class="sel-option" data-value="none" role="radio" aria-checked="false"><span class="sel-option__letter" aria-hidden="true">C</span><span class="sel-option__label">No preference</span><span class="sel-option__tick" aria-hidden="true"></span></button>
@@ -778,9 +782,7 @@ footer a { color: var(--gold-dim); text-underline-offset: 2px; }
         <p class="sel-step__count">Step 09 <span>of 10</span></p>
         <h2 class="sel-step__q" tabindex="-1">Desired indoor space (m&sup2;)</h2>
         
-        
-        <div class="sel-options" role="radiogroup"
-             aria-label="Desired indoor space (m&sup2;)">
+        <div class="sel-options" role="radiogroup" aria-label="Desired indoor space (m&sup2;)">
           <button type="button" class="sel-option" data-value="lt100" role="radio" aria-checked="false"><span class="sel-option__letter" aria-hidden="true">A</span><span class="sel-option__label">Less than 100</span><span class="sel-option__tick" aria-hidden="true"></span></button>
           <button type="button" class="sel-option" data-value="100-150" role="radio" aria-checked="false"><span class="sel-option__letter" aria-hidden="true">B</span><span class="sel-option__label">100 &ndash; 150</span><span class="sel-option__tick" aria-hidden="true"></span></button>
           <button type="button" class="sel-option" data-value="150plus" role="radio" aria-checked="false"><span class="sel-option__letter" aria-hidden="true">C</span><span class="sel-option__label">150 or more</span><span class="sel-option__tick" aria-hidden="true"></span></button>
@@ -796,9 +798,7 @@ footer a { color: var(--gold-dim); text-underline-offset: 2px; }
         <p class="sel-step__count">Step 10 <span>of 10</span></p>
         <h2 class="sel-step__q" tabindex="-1">Desired outdoor area (m&sup2;)</h2>
         
-        
-        <div class="sel-options" role="radiogroup"
-             aria-label="Desired outdoor area (m&sup2;)">
+        <div class="sel-options" role="radiogroup" aria-label="Desired outdoor area (m&sup2;)">
           <button type="button" class="sel-option" data-value="0-25" role="radio" aria-checked="false"><span class="sel-option__letter" aria-hidden="true">A</span><span class="sel-option__label">0 &ndash; 25</span><span class="sel-option__tick" aria-hidden="true"></span></button>
           <button type="button" class="sel-option" data-value="25-100" role="radio" aria-checked="false"><span class="sel-option__letter" aria-hidden="true">B</span><span class="sel-option__label">25 &ndash; 100</span><span class="sel-option__tick" aria-hidden="true"></span></button>
           <button type="button" class="sel-option" data-value="100plus" role="radio" aria-checked="false"><span class="sel-option__letter" aria-hidden="true">C</span><span class="sel-option__label">100 or more</span><span class="sel-option__tick" aria-hidden="true"></span></button>
@@ -1149,7 +1149,6 @@ footer a { color: var(--gold-dim); text-underline-offset: 2px; }
         }
 
         el.querySelector('.sel-step__error').hidden = true;
-        syncMap(el);
         refreshCount();
 
         // Enkelvoudige keuze gaat vanzelf door - dat is de hele reden dat
@@ -1174,16 +1173,6 @@ footer a { color: var(--gold-dim); text-underline-offset: 2px; }
       el.appendChild(next);
     }
   });
-
-  // De regiokaart kleurt mee met de gekozen banden.
-  function syncMap(el) {
-    var map = el.querySelector('.sel-map');
-    if (!map) return;
-    var chosen = answers[el.getAttribute('data-id')] || [];
-    map.querySelectorAll('.sel-map__band').forEach(function (band) {
-      band.classList.toggle('is-active', chosen.indexOf(band.getAttribute('data-region')) !== -1);
-    });
-  }
 
   /* ── Kaartjes ─────────────────────────────────────────────────────────── */
   function cardMarkup(card, linked) {
