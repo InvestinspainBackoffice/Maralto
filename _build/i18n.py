@@ -86,7 +86,7 @@ STRINGS = {
         "CHAT_ERROR": "Er ging iets mis. Probeer het opnieuw of bel ons op +32 496 57 13 97.",
         "CHAT_DISCLAIMER": "AI-assistent &mdash; gesprekken worden bewaard om onze dienstverlening te verbeteren.",
         "CHAT_WA": "Liever WhatsApp?",
-        "CHAT_TALK_TO_AGENT": "Liever met een verkoper spreken",
+        "CHAT_TALK_TO_AGENT": "Liever met een adviseur spreken",
         # Meerkeuze-snelkeuzes (bv. regio): iemand die nog niet weet waar hij
         # wil zoeken, moet meerdere gebieden kunnen aanduiden.
         "CHAT_MULTI_HINT": "Meerdere mogelijk",
@@ -198,7 +198,7 @@ STRINGS = {
         "CHAT_ERROR": "Something went wrong. Please try again or call us on +32 496 57 13 97.",
         "CHAT_DISCLAIMER": "AI assistant &mdash; conversations are stored to help us improve our service.",
         "CHAT_WA": "Prefer WhatsApp?",
-        "CHAT_TALK_TO_AGENT": "Prefer to talk to a sales agent",
+        "CHAT_TALK_TO_AGENT": "Prefer to talk to an advisor",
         "CHAT_MULTI_HINT": "Select one or more",
         "CHAT_MULTI_CONFIRM": "Continue",
         # Zie de NL-variant: hub-begroeting, nu gelijk aan de projectpagina's.

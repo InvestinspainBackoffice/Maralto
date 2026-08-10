@@ -1640,7 +1640,7 @@ html.ai-chat-on .lead-dock { display: none; }
 
   <div class="chat-log" id="chatLog" role="log" aria-live="polite"></div>
 
-  <button type="button" class="chat-talk-btn" id="chatTalkToAgent">Liever met een verkoper spreken</button>
+  <button type="button" class="chat-talk-btn" id="chatTalkToAgent">Liever met een adviseur spreken</button>
 
   <div class="chat-foot">
     <form class="chat-form" id="chatForm" novalidate>
@@ -2488,8 +2488,15 @@ var USE_AI_CHAT = true;
           });
           wrap.appendChild(card);
         });
+        // Kaartjes laden async, ná het scrollen dat addMessage al deed -
+        // zonder dit opnieuw te scrollen kunnen ze op een kleiner scherm
+        // buiten beeld blijven staan (onzichtbaar zonder zelf te scrollen).
+        log.scrollTop = log.scrollHeight;
       })
-      .catch(function() { /* stille fallback: geen kaartjes, gesprek gaat gewoon door */ });
+      .catch(function(err) {
+        console.warn('[chat] projectkaartjes konden niet geladen worden', err);
+        log.scrollTop = log.scrollHeight;
+      });
   }
 
   function addMessage(text, who, isError) {
