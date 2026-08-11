@@ -36,7 +36,7 @@ HREFS = {"nl": "/selectie/", "en": "/en/selection/"}
 # Infinity pool met de zee op de achtergrond - de meest herkenbare "Costa
 # del Sol"-belofte uit heel de beeldbank, en zonder watermerk (in
 # tegenstelling tot enkele andere kandidaten, zoals ocean-view-marbella-2).
-HERO_IMAGE = f"{IMG}/veridian/pool.webp"
+HERO_IMAGE = f"{IMG}/arosa/coastline.webp"
 
 # Antwoordopties met een foto gebruiken bestaande, zelf-gehoste projectfoto's
 # (zie CLAUDE.md: nooit hotlinken). Ze illustreren de categorie; ze zijn geen

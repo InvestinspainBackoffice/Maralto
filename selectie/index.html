@@ -7,7 +7,7 @@
 <meta name="description" content="Beantwoord 10 korte vragen en zie meteen welke van onze nieuwbouwprojecten aan de Costa del Sol bij u passen.">
 <meta property="og:title" content="Vind uw ideale woning aan de Costa del Sol">
 <meta property="og:description" content="Beantwoord 10 korte vragen en zie meteen welke van onze nieuwbouwprojecten aan de Costa del Sol bij u passen.">
-<meta property="og:image" content="https://projects.investinspain.be/images/veridian/pool.webp">
+<meta property="og:image" content="https://projects.investinspain.be/images/arosa/coastline.webp">
 <meta property="og:type" content="website">
 <meta name="robots" content="noindex, follow">
 <!-- Vercel Web Analytics - cookieless, geen persoonsgegevens, dus geen consent nodig -->
@@ -59,7 +59,7 @@
 <!-- End Meta Pixel Code -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="preload" as="image" href="https://projects.investinspain.be/images/veridian/pool.webp" fetchpriority="high">
+<link rel="preload" as="image" href="https://projects.investinspain.be/images/arosa/coastline.webp" fetchpriority="high">
 <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
 /* De designtokens zijn dezelfde als in head.html/hub.html. Die duplicatie is
@@ -203,22 +203,16 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 
 /* ── Welkomstscherm ────────────────────────────────────────────────────── */
 .sel-welcome__img {
-  width: 100%; height: clamp(180px, 34vw, 300px);
-  object-fit: cover; margin-bottom: clamp(2rem, 5vw, 3rem);
-  border: 1px solid var(--line);
-}
-.sel-welcome__meta {
-  display: flex; flex-wrap: wrap; align-items: center; gap: 0.75rem 1.75rem;
-  margin: 2rem 0 2.5rem;
-}
-.sel-welcome__fact {
-  display: inline-flex; align-items: center; gap: 0.55rem;
-  font-size: 0.68rem; letter-spacing: 0.15em; text-transform: uppercase;
-  color: var(--text-muted);
-}
-.sel-welcome__fact svg {
-  width: 15px; height: 15px; stroke: var(--gold); stroke-width: 1.5; fill: none;
-  flex-shrink: 0;
+  /* Full-bleed breakout: 50%+translateX(-50%) werkt ongeacht container-centering */
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100vw;
+  max-width: 100vw; /* overschrijft globale img { max-width: 100% } */
+  height: clamp(220px, 45vw, 520px);
+  object-fit: cover; object-position: center 55%;
+  margin-bottom: clamp(2.5rem, 5vw, 3.5rem);
+  display: block;
 }
 
 /* ── Vraagscherm ───────────────────────────────────────────────────────── */
@@ -578,20 +572,10 @@ footer a { color: var(--gold-dim); text-underline-offset: 2px; }
 
     <!-- ═══════════ WELKOM ═══════════ -->
     <section class="sel-screen sel-welcome" id="selWelcome">
-      <img class="sel-welcome__img" src="https://projects.investinspain.be/images/veridian/pool.webp" alt="" width="1600" height="900" fetchpriority="high">
+      <img class="sel-welcome__img" src="https://projects.investinspain.be/images/arosa/coastline.webp" alt="" width="1600" height="900" fetchpriority="high">
       <p class="label">Persoonlijke selectie</p>
       <h1 class="heading">Vind uw ideale woning aan de<br><em>Costa del Sol</em></h1>
       <p class="body-text">Beantwoord tien korte vragen en zie <strong>meteen</strong> welke projecten uit onze portefeuille bij u passen &mdash; met foto, locatie en vanaf-prijs.</p>
-      <div class="sel-welcome__meta">
-        <span class="sel-welcome__fact">
-          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
-          Duurt 2 minuten
-        </span>
-        <span class="sel-welcome__fact">
-          <svg viewBox="0 0 24 24"><path d="M3 21V9l9-6 9 6v12"/><path d="M9 21v-6h6v6"/></svg>
-          124 projecten in portefeuille
-        </span>
-      </div>
       <button type="button" class="btn" id="selStart">Starten</button>
     </section>
 
