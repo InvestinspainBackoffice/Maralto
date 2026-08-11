@@ -203,15 +203,17 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 
 /* ── Welkomstscherm ────────────────────────────────────────────────────── */
 .sel-welcome__img {
-  /* Full-bleed breakout: 50%+translateX(-50%) werkt ongeacht container-centering */
+  /* Full-bleed breakout + optrekken tot de bovenkant van .sel */
   position: relative;
   left: 50%;
   transform: translateX(-50%);
   width: 100vw;
   max-width: 100vw; /* overschrijft globale img { max-width: 100% } */
-  height: clamp(220px, 45vw, 520px);
+  height: clamp(160px, 28vw, 340px);
   object-fit: cover; object-position: center 55%;
-  margin-bottom: clamp(2.5rem, 5vw, 3.5rem);
+  /* trekt foto omhoog over de top-padding van .sel heen */
+  margin-top: calc(-1 * clamp(4.5rem, 12vw, 7rem));
+  margin-bottom: clamp(2rem, 4vw, 2.5rem);
   display: block;
 }
 
