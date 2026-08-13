@@ -64,6 +64,21 @@ EXCLUDE = [
     "zenith-estepona",             # Batch 31 part 2 - offline
     "asperia",                     # Batch 31 part 2 - offline
     "lakun",                       # Batch 31 part 2 - offline
+    "la-finca-de-jasmine-the-sky-villas",  # Batch 32 - offline
+    "torre-biznaga",               # Batch 32 - offline
+    "real-de-la-quinta",           # Batch 32 - offline
+    "mimosas-real-de-la-quinta",   # Batch 32 - offline
+    "terra-nova-hills",            # Batch 32 - offline
+    "los-hidalgos-de-la-duquesa-villas",  # Batch 32 - offline
+    "atria",                       # Batch 32 - offline
+    "premier-residencial",         # Batch 32 - offline
+    "sira-homes",                  # Batch 32 - offline
+    "aby-estepona",                # Batch 32 - offline
+    "zinnia",                      # Batch 32 - offline
+    "one-seven-villas-estepona",   # Batch 32 - offline
+    "the-meadows-la-cala-golf",    # Batch 32 - offline
+    "idyllic",                     # Batch 32 - offline
+    "camarate-hills",              # Batch 32 - offline
 ]
 
 # Maralto eerst (vlaggenschip), daarna alfabetisch. Nieuwe projecten die hier
