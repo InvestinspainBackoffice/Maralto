@@ -79,6 +79,28 @@ EXCLUDE = [
     "the-meadows-la-cala-golf",    # Batch 32 - offline
     "idyllic",                     # Batch 32 - offline
     "camarate-hills",              # Batch 32 - offline
+    "terra-homes",                 # Batch 33 - offline
+    "nalu-suites",                 # Batch 33 - offline
+    "termica-beach",               # Batch 33 - offline
+    "savia",                       # Batch 33 - offline
+    "unika",                       # Batch 33 - offline
+    "celestia-homes",              # Batch 33 - offline
+    "4our-villas",                 # Batch 33 - offline
+    "aruna-cabopino-golf",         # Batch 33 - offline
+    "idris-6-view",                # Batch 33 - offline
+    "taray",                       # Batch 33 - offline
+    "horizonte-village",           # Batch 33 - offline
+    "sancha-view-32",              # Batch 33 - offline
+    "vista-linda",                 # Batch 33 - offline
+    "la-loma-de-cortesin",         # Batch 33 - offline
+    "pinares-hills",               # Batch 33 - offline
+    "seven-diamonds",              # Batch 33 - offline
+    "ava-villas",                  # Batch 33 - offline
+    "sunway-residence",            # Batch 33 - offline
+    "armonia",                     # Batch 33 - offline
+    "bougainvillea",               # Batch 33 - offline
+    "the-avenue",                  # Batch 33 - offline
+    "waterfall-residences",        # Batch 33 - offline
 ]
 
 # Maralto eerst (vlaggenschip), daarna alfabetisch. Nieuwe projecten die hier
