@@ -33,13 +33,3 @@ DATA_EN = {
     "OG_DESCRIPTION": "Enebros near Marbella: luxury villas and apartments with private pool, sea views and solarium. Gated community with premium finishes. From € 1,600,000.",
     "HERO_BG_ALT": "Pool with sea views at Enebros Marbella",
 }
-
-HUB = {
-    "NAME": "Enebros",
-    "LOCATION": "Marbella",
-    "PRICE": "Vanaf € 1.600.000",
-    "THUMB": "https://projects.investinspain.be/images/enebros/hero.webp",
-    "LAT": 36.533226,
-    "LNG": -4.989510,
-    "HREF": "/enebros/",
-}

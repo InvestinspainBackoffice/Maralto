@@ -33,13 +33,3 @@ DATA_EN = {
     "OG_DESCRIPTION": "Calanova Collection in La Cala de Mijas: contemporary apartments next to Calanova Golf with sea views, spacious terraces and top amenities. From € 520,000.",
     "HERO_BG_ALT": "Calanova Collection apartments La Cala de Mijas with sea views",
 }
-
-HUB = {
-    "NAME": "Calanova Collection",
-    "LOCATION": "La Cala de Mijas",
-    "PRICE": "Vanaf € 520.000",
-    "THUMB": "https://projects.investinspain.be/images/calanova-collection/hero.webp",
-    "LAT": 36.511904,
-    "LNG": -4.712802,
-    "HREF": "/calanova-collection/",
-}

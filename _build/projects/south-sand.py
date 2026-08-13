@@ -33,13 +33,3 @@ DATA_EN = {
     "OG_DESCRIPTION": "South Sand near Estepona: contemporary apartments and penthouses with sea views, spacious terraces and communal amenities close to the beach. From € 702,000.",
     "HERO_BG_ALT": "South Sand apartments with sea views Estepona",
 }
-
-HUB = {
-    "NAME": "South Sand",
-    "LOCATION": "Estepona",
-    "PRICE": "Vanaf € 702.000",
-    "THUMB": "https://projects.investinspain.be/images/south-sand/hero.webp",
-    "LAT": 36.422448,
-    "LNG": -5.161954,
-    "HREF": "/south-sand/",
-}
