@@ -37,6 +37,13 @@ HUB_TEXT = {
     },
 }
 
+# Projecten die NIET in de hub moeten verschijnen (offline houden)
+EXCLUDE = [
+    "kosmos",           # Batch 28 - offline
+    "kristina-views",   # Batch 28 - offline
+    "octavia",          # Batch 28 - offline
+]
+
 # Maralto eerst (vlaggenschip), daarna alfabetisch. Nieuwe projecten die hier
 # niet in staan, komen automatisch achteraan (alfabetisch) terecht.
 ORDER = ["maralto"]
@@ -93,6 +100,8 @@ def load_hub_entries_by_slug():
         if not fname.endswith(".py"):
             continue
         slug = fname[:-3]
+        if slug in EXCLUDE:
+            continue
         spec = importlib.util.spec_from_file_location(slug, os.path.join(PROJECTS_DIR, fname))
         mod = importlib.util.module_from_spec(spec)
         spec.loader.exec_module(mod)
