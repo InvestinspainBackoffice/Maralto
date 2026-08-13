@@ -46,6 +46,15 @@ EXCLUDE = [
     "el-bosque-en-alcuzcuz",       # Batch 29 - offline
     "alura-living",                # Batch 29 - offline
     "las-mesas-infinity-homes",    # Batch 29 - offline
+    "vasari-villas",               # Batch 30 - offline
+    "balance-mijas",               # Batch 30 - offline
+    "noura",                       # Batch 30 - offline
+    "imagine-by-marein",           # Batch 30 - offline
+    "aura-cabopino",               # Batch 30 - offline
+    "aura-higueron",               # Batch 30 - offline
+    "the-line-superior-villas",    # Batch 30 - offline
+    "the-place-by-alcazaba",       # Batch 30 - offline
+    "lomas-unique",                # Batch 30 - offline
 ]
 
 # Maralto eerst (vlaggenschip), daarna alfabetisch. Nieuwe projecten die hier
