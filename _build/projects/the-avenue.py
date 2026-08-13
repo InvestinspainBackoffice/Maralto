@@ -7,9 +7,9 @@ WA_MESSAGE = f"Hallo, ik heb interesse in {PROJECT_NAME}. Kan ik meer informatie
 DATA = {
     "SLUG": "the-avenue",
     "TITLE": f"{PROJECT_NAME} Nueva Andalucía — INVESTINSPAIN.BE",
-    "META_DESCRIPTION": "The Avenue: 23 luxe villa's in 3 typologieën met privézwembad, domotica en panoramisch berg- en zeezicht in Nueva Andalucía. Vanaf € 4.450.000.",
+    "META_DESCRIPTION": "The Avenue: 26 luxe villa's in 3 typologieën met privézwembad, domotica en panoramisch berg- en zeezicht in Nueva Andalucía. Vanaf € 4.450.000.",
     "OG_TITLE": f"{PROJECT_NAME} — Villa's in Nueva Andalucía",
-    "OG_DESCRIPTION": "23 luxe villa's met privézwembad, domotica en panoramisch uitzicht in Nueva Andalucía.",
+    "OG_DESCRIPTION": "26 luxe villa's met privézwembad, domotica en panoramisch uitzicht in Nueva Andalucía.",
     "OG_IMAGE": "https://projects.investinspain.be/images/the-avenue/hero.webp",
     "HERO_BG": "https://projects.investinspain.be/images/the-avenue/hero.webp",
     "HERO_BG_ALT": f"{PROJECT_NAME} — Villa's in Nueva Andalucía",
@@ -28,9 +28,9 @@ DATA = {
 }
 
 DATA_EN = {
-    "META_DESCRIPTION": "The Avenue: 23 luxury villas in 3 typologies with private pool, home automation and panoramic mountain & sea views in Nueva Andalucía. From € 4,450,000.",
+    "META_DESCRIPTION": "The Avenue: 26 luxury villas in 3 typologies with private pool, home automation and panoramic mountain & sea views in Nueva Andalucía. From € 4,450,000.",
     "OG_TITLE": f"{PROJECT_NAME} — Villas in Nueva Andalucía",
-    "OG_DESCRIPTION": "23 luxury villas with private pool, home automation and panoramic views in Nueva Andalucía.",
+    "OG_DESCRIPTION": "26 luxury villas with private pool, home automation and panoramic views in Nueva Andalucía.",
     "HERO_BG_ALT": f"{PROJECT_NAME} — Villas in Nueva Andalucía",
 }
 

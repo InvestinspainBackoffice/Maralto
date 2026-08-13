@@ -7,9 +7,9 @@ WA_MESSAGE = f"Hallo, ik heb interesse in {PROJECT_NAME}. Kan ik meer informatie
 DATA = {
     "SLUG": "la-loma-de-cortesin",
     "TITLE": f"{PROJECT_NAME} Casares — INVESTINSPAIN.BE",
-    "META_DESCRIPTION": "La Loma de Cortesín: 38 townhouses met 3 slaapkamers, privézwembad en social club nabij Finca Cortesín golf in Casares. Vanaf € 2.600.000.",
+    "META_DESCRIPTION": "La Loma de Cortesín: 86 woningen met 3 slaapkamers, privézwembad en La Loma Club nabij Finca Cortesín golf in Casares. Vanaf € 2.600.000.",
     "OG_TITLE": f"{PROJECT_NAME} — Townhouses in Casares",
-    "OG_DESCRIPTION": "38 traditionele townhouses met privézwembad en social club nabij Finca Cortesín in Casares.",
+    "OG_DESCRIPTION": "86 woningen met privézwembad en La Loma Club nabij Finca Cortesín golf in Casares.",
     "OG_IMAGE": "https://projects.investinspain.be/images/la-loma-de-cortesin/hero.webp",
     "HERO_BG": "https://projects.investinspain.be/images/la-loma-de-cortesin/hero.webp",
     "HERO_BG_ALT": f"{PROJECT_NAME} — Townhouses in Casares",
@@ -28,9 +28,9 @@ DATA = {
 }
 
 DATA_EN = {
-    "META_DESCRIPTION": "La Loma de Cortesín: 38 townhouses with 3 bedrooms, private pool and social club near Finca Cortesín golf in Casares. From € 2,600,000.",
+    "META_DESCRIPTION": "La Loma de Cortesín: 86 homes with 3 bedrooms, private pool and La Loma Club near Finca Cortesín golf in Casares. From € 2,600,000.",
     "OG_TITLE": f"{PROJECT_NAME} — Townhouses in Casares",
-    "OG_DESCRIPTION": "38 traditional townhouses with private pool and social club near Finca Cortesín in Casares.",
+    "OG_DESCRIPTION": "86 homes with private pool and La Loma Club near Finca Cortesín golf in Casares.",
     "HERO_BG_ALT": f"{PROJECT_NAME} — Townhouses in Casares",
 }
 

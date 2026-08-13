@@ -7,7 +7,7 @@ WA_MESSAGE = f"Hallo, ik heb interesse in {PROJECT_NAME}. Kan ik meer informatie
 DATA = {
     "SLUG": "waterfall-residences",
     "TITLE": f"{PROJECT_NAME} Fuengirola — INVESTINSPAIN.BE",
-    "META_DESCRIPTION": "Waterfall Residences: luxe appartementen, garden villas en sky villas met 3 slaapkamers en zeezicht in Higuerón resort, Fuengirola. Vanaf € 720.000.",
+    "META_DESCRIPTION": "Waterfall Residences: luxe appartementen, garden villas en sky villas met 1-3 slaapkamers en zeezicht in Higuerón resort, Fuengirola. Vanaf € 720.000.",
     "OG_TITLE": f"{PROJECT_NAME} — Appartementen in Fuengirola",
     "OG_DESCRIPTION": "Luxe appartementen en sky villas met 3 slaapkamers in het Higuerón resort in Fuengirola.",
     "OG_IMAGE": "https://projects.investinspain.be/images/waterfall-residences/hero.webp",
@@ -28,7 +28,7 @@ DATA = {
 }
 
 DATA_EN = {
-    "META_DESCRIPTION": "Waterfall Residences: luxury apartments, garden villas and sky villas with 3 bedrooms and sea views in Higuerón resort, Fuengirola. From € 720,000.",
+    "META_DESCRIPTION": "Waterfall Residences: luxury apartments, garden villas and sky villas with 1-3 bedrooms and sea views in Higuerón resort, Fuengirola. From € 720,000.",
     "OG_TITLE": f"{PROJECT_NAME} — Apartments in Fuengirola",
     "OG_DESCRIPTION": "Luxury apartments and sky villas with 3 bedrooms in the Higuerón resort in Fuengirola.",
     "HERO_BG_ALT": f"{PROJECT_NAME} — Apartments in Fuengirola",

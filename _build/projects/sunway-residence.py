@@ -7,9 +7,9 @@ WA_MESSAGE = f"Hallo, ik heb interesse in {PROJECT_NAME}. Kan ik meer informatie
 DATA = {
     "SLUG": "sunway-residence",
     "TITLE": f"{PROJECT_NAME} Estepona — INVESTINSPAIN.BE",
-    "META_DESCRIPTION": "Sunway Residence: 48 appartementen met 3 slaapkamers, terrassen en gated community in Estepona. Vanaf € 480.000.",
+    "META_DESCRIPTION": "Sunway Residence: 48 appartementen met 2-3 slaapkamers, terrassen en gated community in Estepona. Vanaf € 480.000.",
     "OG_TITLE": f"{PROJECT_NAME} — Appartementen in Estepona",
-    "OG_DESCRIPTION": "48 moderne appartementen met 3 slaapkamers en gated community in Estepona.",
+    "OG_DESCRIPTION": "48 moderne appartementen met 2-3 slaapkamers en gated community in Estepona.",
     "OG_IMAGE": "https://projects.investinspain.be/images/sunway-residence/hero.webp",
     "HERO_BG": "https://projects.investinspain.be/images/sunway-residence/hero.webp",
     "HERO_BG_ALT": f"{PROJECT_NAME} — Appartementen in Estepona",
@@ -28,9 +28,9 @@ DATA = {
 }
 
 DATA_EN = {
-    "META_DESCRIPTION": "Sunway Residence: 48 apartments with 3 bedrooms, terraces and gated community in Estepona. From € 480,000.",
+    "META_DESCRIPTION": "Sunway Residence: 48 apartments with 2-3 bedrooms, terraces and gated community in Estepona. From € 480,000.",
     "OG_TITLE": f"{PROJECT_NAME} — Apartments in Estepona",
-    "OG_DESCRIPTION": "48 modern apartments with 3 bedrooms and gated community in Estepona.",
+    "OG_DESCRIPTION": "48 modern apartments with 2-3 bedrooms and gated community in Estepona.",
     "HERO_BG_ALT": f"{PROJECT_NAME} — Apartments in Estepona",
 }
 

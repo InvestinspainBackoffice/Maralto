@@ -7,7 +7,7 @@ WA_MESSAGE = f"Hallo, ik heb interesse in {PROJECT_NAME}. Kan ik meer informatie
 DATA = {
     "SLUG": "taray",
     "TITLE": f"{PROJECT_NAME} Benahavís — INVESTINSPAIN.BE",
-    "META_DESCRIPTION": "Taray Residences: 21 moderne woningen met 3 slaapkamers en berg- en zeezicht in Benahavís. Vanaf € 750.000.",
+    "META_DESCRIPTION": "Taray Residences: 21 moderne woningen met 2-3 slaapkamers en berg- en zeezicht in Benahavís. Vanaf € 750.000.",
     "OG_TITLE": f"{PROJECT_NAME} — Appartementen in Benahavís",
     "OG_DESCRIPTION": "21 moderne woningen met berg- en zeezicht in Benahavís — exclusief gated community.",
     "OG_IMAGE": "https://projects.investinspain.be/images/taray/hero.webp",
@@ -28,7 +28,7 @@ DATA = {
 }
 
 DATA_EN = {
-    "META_DESCRIPTION": "Taray Residences: 21 modern homes with 3 bedrooms and mountain & sea views in Benahavís. From € 750,000.",
+    "META_DESCRIPTION": "Taray Residences: 21 modern homes with 2-3 bedrooms and mountain & sea views in Benahavís. From € 750,000.",
     "OG_TITLE": f"{PROJECT_NAME} — Apartments in Benahavís",
     "OG_DESCRIPTION": "21 modern homes with mountain & sea views in Benahavís — exclusive gated community.",
     "HERO_BG_ALT": f"{PROJECT_NAME} — Apartments in Benahavís",

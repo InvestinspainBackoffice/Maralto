@@ -7,7 +7,7 @@ WA_MESSAGE = f"Hallo, ik heb interesse in {PROJECT_NAME}. Kan ik meer informatie
 DATA = {
     "SLUG": "celestia-homes",
     "TITLE": f"{PROJECT_NAME} Estepona — INVESTINSPAIN.BE",
-    "META_DESCRIPTION": "Celestia Homes: 25 boutique appartementen met 3 slaapkamers en zeezicht in La Gaspara, Estepona. Vanaf € 530.000.",
+    "META_DESCRIPTION": "Celestia Homes: 25 boutique appartementen met 1-3 slaapkamers en zeezicht in La Gaspara, Estepona. Vanaf € 530.000.",
     "OG_TITLE": f"{PROJECT_NAME} — Appartementen in Estepona",
     "OG_DESCRIPTION": "25 boutique appartementen met zeezicht in La Gaspara, Estepona.",
     "OG_IMAGE": "https://projects.investinspain.be/images/celestia-homes/hero.webp",
@@ -28,7 +28,7 @@ DATA = {
 }
 
 DATA_EN = {
-    "META_DESCRIPTION": "Celestia Homes: 25 boutique apartments with 3 bedrooms and sea views in La Gaspara, Estepona. From € 530,000.",
+    "META_DESCRIPTION": "Celestia Homes: 25 boutique apartments with 1-3 bedrooms and sea views in La Gaspara, Estepona. From € 530,000.",
     "OG_TITLE": f"{PROJECT_NAME} — Apartments in Estepona",
     "OG_DESCRIPTION": "25 boutique apartments with sea views in La Gaspara, Estepona.",
     "HERO_BG_ALT": f"{PROJECT_NAME} — Apartments in Estepona",

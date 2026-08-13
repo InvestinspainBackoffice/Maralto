@@ -7,9 +7,9 @@ WA_MESSAGE = f"Hallo, ik heb interesse in {PROJECT_NAME}. Kan ik meer informatie
 DATA = {
     "SLUG": "vista-linda",
     "TITLE": f"{PROJECT_NAME} Fuengirola — INVESTINSPAIN.BE",
-    "META_DESCRIPTION": "Vista Linda: 4 villa's met 5 slaapkamers, privé lift en panoramisch zeezicht in Torreblanca, Fuengirola. Vanaf € 1.460.000.",
+    "META_DESCRIPTION": "Vista Linda: 4 villa's met 3 slaapkamers, privé lift en panoramisch zeezicht in Torreblanca, Fuengirola. Vanaf € 1.460.000.",
     "OG_TITLE": f"{PROJECT_NAME} — Villa's in Fuengirola",
-    "OG_DESCRIPTION": "4 villa's met 5 slaapkamers, privé lift en panoramisch zeezicht in Fuengirola.",
+    "OG_DESCRIPTION": "4 villa's met 3 slaapkamers, privé lift en panoramisch zeezicht in Fuengirola.",
     "OG_IMAGE": "https://projects.investinspain.be/images/vista-linda/hero.webp",
     "HERO_BG": "https://projects.investinspain.be/images/vista-linda/hero.webp",
     "HERO_BG_ALT": f"{PROJECT_NAME} — Villa's in Fuengirola",
@@ -28,9 +28,9 @@ DATA = {
 }
 
 DATA_EN = {
-    "META_DESCRIPTION": "Vista Linda: 4 villas with 5 bedrooms, private elevator and panoramic sea views in Torreblanca, Fuengirola. From € 1,460,000.",
+    "META_DESCRIPTION": "Vista Linda: 4 villas with 3 bedrooms, private elevator and panoramic sea views in Torreblanca, Fuengirola. From € 1,460,000.",
     "OG_TITLE": f"{PROJECT_NAME} — Villas in Fuengirola",
-    "OG_DESCRIPTION": "4 villas with 5 bedrooms, private elevator and panoramic sea views in Fuengirola.",
+    "OG_DESCRIPTION": "4 villas with 3 bedrooms, private elevator and panoramic sea views in Fuengirola.",
     "HERO_BG_ALT": f"{PROJECT_NAME} — Villas in Fuengirola",
 }
 
