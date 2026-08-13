@@ -55,6 +55,10 @@ EXCLUDE = [
     "the-line-superior-villas",    # Batch 30 - offline
     "the-place-by-alcazaba",       # Batch 30 - offline
     "lomas-unique",                # Batch 30 - offline
+    "higueron-south-residences",   # Batch 31 - offline
+    "balcon-del-mediterraneo",     # Batch 31 - offline
+    "the-oak-48",                  # Batch 31 - offline
+    "waveview",                    # Batch 31 - offline
 ]
 
 # Maralto eerst (vlaggenschip), daarna alfabetisch. Nieuwe projecten die hier
