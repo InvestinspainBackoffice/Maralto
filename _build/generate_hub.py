@@ -39,9 +39,13 @@ HUB_TEXT = {
 
 # Projecten die NIET in de hub moeten verschijnen (offline houden)
 EXCLUDE = [
-    "kosmos",           # Batch 28 - offline
-    "kristina-views",   # Batch 28 - offline
-    "octavia",          # Batch 28 - offline
+    "kosmos",                      # Batch 28 - offline
+    "kristina-views",              # Batch 28 - offline
+    "octavia",                     # Batch 28 - offline
+    "the-list-rio-real",           # Batch 29 - offline
+    "el-bosque-en-alcuzcuz",       # Batch 29 - offline
+    "alura-living",                # Batch 29 - offline
+    "las-mesas-infinity-homes",    # Batch 29 - offline
 ]
 
 # Maralto eerst (vlaggenschip), daarna alfabetisch. Nieuwe projecten die hier
