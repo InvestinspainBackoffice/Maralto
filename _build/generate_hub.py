@@ -59,6 +59,11 @@ EXCLUDE = [
     "balcon-del-mediterraneo",     # Batch 31 - offline
     "the-oak-48",                  # Batch 31 - offline
     "waveview",                    # Batch 31 - offline
+    "astrid-torremuelle",          # Batch 31 part 2 - offline
+    "abelias",                     # Batch 31 part 2 - offline
+    "zenith-estepona",             # Batch 31 part 2 - offline
+    "asperia",                     # Batch 31 part 2 - offline
+    "lakun",                       # Batch 31 part 2 - offline
 ]
 
 # Maralto eerst (vlaggenschip), daarna alfabetisch. Nieuwe projecten die hier
