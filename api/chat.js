@@ -37,7 +37,7 @@ const LEGAL_SEARCH_TIMEOUT_MS = 5000;
 
 const MAX_MESSAGES = 24;      // ~12 beurten, daarna vriendelijk afronden
 const MAX_CHARS = 1500;       // per bericht
-const MAX_TOKENS = 550;       // Sonnet heeft wat meer ruimte nodig dan Haiku voor vloeiende antwoorden
+const MAX_TOKENS = 600;       // Sonnet heeft wat meer ruimte nodig dan Haiku voor vloeiende antwoorden
 const RATE_MAX = 12;          // verzoeken
 const RATE_WINDOW_MS = 60000; // per minuut per IP
 
