@@ -2488,14 +2488,13 @@ var USE_AI_CHAT = true;
           });
           wrap.appendChild(card);
         });
-        // Kaartjes laden async, ná het scrollen dat addMessage al deed -
-        // zonder dit opnieuw te scrollen kunnen ze op een kleiner scherm
-        // buiten beeld blijven staan (onzichtbaar zonder zelf te scrollen).
-        log.scrollTop = log.scrollHeight;
+        // Kaartjes laden async: scroll de eerste kaart in beeld zodat de
+        // bezoeker ze ziet zonder zelf te hoeven scrollen.
+        var firstCard = wrap.querySelector('.chat-card');
+        if (firstCard) firstCard.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
       })
       .catch(function(err) {
         console.warn('[chat] projectkaartjes konden niet geladen worden', err);
-        log.scrollTop = log.scrollHeight;
       });
   }
 
@@ -2542,10 +2541,13 @@ var USE_AI_CHAT = true;
 
       row.appendChild(col);
       log.appendChild(row);
+      // Scroll de bovenkant van het nieuwe botbericht in beeld, niet de onderkant.
+      // Zo ziet de bezoeker altijd het begin van het antwoord.
+      row.scrollIntoView({ block: 'start', behavior: 'smooth' });
     } else {
       log.appendChild(bubble);
+      log.scrollTop = log.scrollHeight;
     }
-    log.scrollTop = log.scrollHeight;
     return bubble;
   }
 
