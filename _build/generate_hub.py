@@ -101,8 +101,34 @@ EXCLUDE = [
     "bougainvillea",               # Batch 33 - offline
     "the-avenue",                  # Batch 33 - offline
     "waterfall-residences",        # Batch 33 - offline
-    "marbella-club-hills",         # tijdelijk offline (aug 2026)
     "granados-2-slaapkamer-appartement-met-tuin",  # tijdelijk offline (aug 2026)
+    # Batches 22-44: tijdelijk uit de hub (terug naar 44-project staat van vóór aug 2026)
+    "abril",
+    "aida",
+    "almazara-forest",
+    "altura-160",
+    "aurea-villas",
+    "beseven-villas",
+    "bliss-homes",
+    "estrella-del-mar-villas-marbella",
+    "las-mesas-collection",
+    "lyra-residences",
+    "ocyan-luxury-villas",
+    "royal-park-residence",
+    "sia-residences",
+    "the-collection-camojan",
+    "valley-views",
+    "velaya-villa",
+    "vilas12",
+    "villa-batur",
+    "villas-higueron",
+    "zenity-blau",
+    # Batch 44: tijdelijk offline
+    "elie-saab-villas",
+    "isea-estepona-iii",
+    "organic",
+    "privilege-by-marein-villa",
+    "puresun-residences",
     # Batch 45+ — nog niet gepubliceerd, body HTML ontbreekt nog
     "australy-libella",
     "azata-delmare",
