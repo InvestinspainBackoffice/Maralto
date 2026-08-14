@@ -6,15 +6,15 @@ WA_MESSAGE = f"Hallo, ik heb interesse in {PROJECT_NAME}. Kan ik meer informatie
 
 DATA = {
     "SLUG": "lomas-unique",
-    "TITLE": f"{PROJECT_NAME} El Higuerón Resort, Fuengirola — INVESTINSPAIN.BE",
-    "META_DESCRIPTION": "Lomas Unique: villa's, appartementen en penthouses in El Higuerón Resort, Fuengirola. Gym, spa, zeezicht, CURIO by HILTON. Vanaf € 620.000.",
-    "OG_TITLE": f"{PROJECT_NAME} — Wonen in El Higuerón Resort",
-    "OG_DESCRIPTION": "Lomas Unique: garden villas, appartementen en sky solarium penthouses in El Higuerón Resort met Michelin-restaurants, spa en strandtoegang. Vanaf € 620.000.",
+    "TITLE": f"{PROJECT_NAME} El Higuerón Fuengirola — INVESTINSPAIN.BE",
+    "META_DESCRIPTION": "Lomas Unique: Garden Villas, appartementen en Sky Penthouses in het El Higuerón resort in Fuengirola. Luxe met zeezicht, zwembad en privégarage. Vanaf € 620.000.",
+    "OG_TITLE": f"{PROJECT_NAME} · Garden Villas & Sky Penthouses El Higuerón",
+    "OG_DESCRIPTION": "Exclusief woonconcept in El Higuerón, Fuengirola: Garden Villas, Unique Apartments en Sky Solarium Penthouses. Zwembad, groen, garage, zeezicht. Vanaf € 620.000.",
     "OG_IMAGE": "https://projects.investinspain.be/images/lomas-unique/hero.webp",
     "HERO_BG": "https://projects.investinspain.be/images/lomas-unique/hero.webp",
-    "HERO_BG_ALT": "Lomas Unique — residentie met zeezicht in El Higuerón Resort, Fuengirola",
-    "HERO_NAME": "Lomas Unique",
-    "HERO_LOCATION": "EL HIGUERÓN RESORT, FUENGIROLA",
+    "HERO_BG_ALT": "Lomas Unique El Higuerón resort Fuengirola gemeenschappelijke zones",
+    "HERO_NAME": PROJECT_NAME,
+    "HERO_LOCATION": "EL HIGUERÓN, FUENGIROLA",
     "HERO_PRICE": PRICE_FROM,
     "PRICE_FROM": PRICE_FROM,
     "WA_TEXT_ENCODED": quote(WA_MESSAGE),
@@ -25,21 +25,13 @@ DATA = {
     "AGENT_PHONE_DISPLAY": "+32 496 57 13 97",
     "AGENT_EMAIL": "gunther@investinspain.be",
     "WA_NUMBER": "32496571397",
+    "MAP_LAT": "36.570289904719",
+    "MAP_LNG": "-4.5981712330243",
 }
 
 DATA_EN = {
-    "META_DESCRIPTION": "Lomas Unique: villas, apartments and penthouses in El Higuerón Resort, Fuengirola. Gym, spa, sea views, CURIO by HILTON. From € 620,000.",
-    "OG_TITLE": f"{PROJECT_NAME} — Living in El Higuerón Resort",
-    "OG_DESCRIPTION": "Lomas Unique: garden villas, apartments and sky solarium penthouses in El Higuerón Resort with Michelin restaurants, spa and beach access. From € 620,000.",
-    "HERO_BG_ALT": "Lomas Unique — residence with sea views in El Higuerón Resort, Fuengirola",
-}
-
-HUB = {
-    "NAME": "Lomas Unique",
-    "LOCATION": "Fuengirola",
-    "PRICE": "Vanaf € 620.000",
-    "THUMB": "https://projects.investinspain.be/images/lomas-unique/hero.webp",
-    "LAT": 36.570290,
-    "LNG": -4.598171,
-    "HREF": "/lomas-unique/",
+    "META_DESCRIPTION": "Lomas Unique: Garden Villas, apartments and Sky Penthouses in the El Higuerón resort in Fuengirola. Luxury with sea views, pool and private garage. From € 620,000.",
+    "OG_TITLE": f"{PROJECT_NAME} · Garden Villas & Sky Penthouses El Higuerón",
+    "OG_DESCRIPTION": "Exclusive residential concept at El Higuerón, Fuengirola: Garden Villas, Unique Apartments and Sky Solarium Penthouses. Pool, gardens, garage, sea views. From € 620,000.",
+    "HERO_BG_ALT": "Lomas Unique El Higuerón resort Fuengirola communal areas",
 }
