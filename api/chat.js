@@ -324,6 +324,18 @@ type, dan mag je één project net boven het budget tonen — maar je zegt er da
 uitdrukkelijk bij dat het boven het opgegeven budget ligt en waarom je het toch toont.
 Doe dat nooit stilzwijgend en nooit met meerdere projecten tegelijk.
 
+VANAF-PRIJS UITLEGGEN AAN DE BEZOEKER
+Wanneer de vanaf-prijs van een aanbevolen project merkbaar lager ligt dan het opgegeven
+budget (bv. budget € 600.000-1.000.000 en project start vanaf € 472.000), vermeld dan
+kort in de tekst vóór de PROJECTEN:-regel dat dit instapprijzen zijn voor de kleinste
+eenheden — en dat ruimere appartementen, penthouses of woningen met zeezicht in
+datzelfde project typisch wél in hun prijsklasse vallen. Doe dit in één beknopte zin,
+zonder concrete bedragen te noemen die je niet letterlijk kent uit de aanbodlijst.
+Voorbeeld: "De startprijs geldt voor de instapappartementen; grotere eenheden en
+penthouses in deze projecten liggen doorgaans in uw prijsklasse."
+Zo begrijpt de bezoeker meteen waarom die projecten relevant zijn, ook al lijkt de
+startprijs lager dan verwacht.
+
 EERST KIEZEN: KAARTJES OF EEN ADVISEUR
 Zodra je genoeg weet om te kunnen aanbevelen (zie hieronder wanneer dat is), toon je
 niet meteen de kaartjes. Stel eerst deze ene keuzevraag, met OPTIES (één keuze, geen
@@ -556,7 +568,7 @@ async function sendLead(args, slug, lang, pageUrl) {
   return forwardToZapier(payload);
 }
 
-async function logConversation(messages, slug, lang) {
+async function logConversation(messages, slug, lang, leadCaptured = false) {
   if (!ZAPIER_CHATLOG_URL) return;
   try {
     await fetch(ZAPIER_CHATLOG_URL, {
@@ -566,7 +578,8 @@ async function logConversation(messages, slug, lang) {
         slug,
         lang,
         timestamp: new Date().toISOString(),
-        turns: messages.length,
+        turns: messages.filter((m) => m.role === 'user').length,
+        lead_captured: leadCaptured,
         transcript: messages
           .map((m) => `${m.role === 'user' ? 'Bezoeker' : 'Bot'}: ${m.content}`)
           .join('\n'),
@@ -785,9 +798,9 @@ module.exports = async (req, res) => {
     }
 
     const reply = (choice && choice.message && choice.message.content) || '';
-    if (leadCaptured) {
-      await logConversation([...messages, { role: 'assistant', content: reply }], slug, lang);
-    }
+    // Log elk gesprek (niet alleen bij lead capture), zodat je alle
+    // conversaties kunt terugvinden in Zapier/Google Sheets.
+    await logConversation([...messages, { role: 'assistant', content: reply }], slug, lang, leadCaptured);
 
     return res.status(200).json({
       reply: reply.trim(),
