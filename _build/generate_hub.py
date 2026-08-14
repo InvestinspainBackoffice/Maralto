@@ -101,6 +101,31 @@ EXCLUDE = [
     "bougainvillea",               # Batch 33 - offline
     "the-avenue",                  # Batch 33 - offline
     "waterfall-residences",        # Batch 33 - offline
+    "marbella-club-hills",         # tijdelijk offline (aug 2026)
+    "granados-2-slaapkamer-appartement-met-tuin",  # tijdelijk offline (aug 2026)
+    # Batch 45+ — nog niet gepubliceerd, body HTML ontbreekt nog
+    "australy-libella",
+    "azata-delmare",
+    "blue-view-heights",
+    "boutique-project",
+    "breeze-marbella",
+    "cerrado-hills",
+    "corallisa",
+    "evergreen-homes",
+    "isidora-living",
+    "la-quinta-de-cerrado",
+    "living-estepona",
+    "lomas-del-higueron",
+    "malaga-towers",
+    "marbella-club-golf-villa-alegria",
+    "marein-natura",
+    "palacetes-de-banus",
+    "quintessence",
+    "royal-palms",
+    "villa-senses",
+    "vista-lago",
+    "vitae-villas-monte-mayor",
+    "vitta-marina",
 ]
 
 # Maralto eerst (vlaggenschip), daarna alfabetisch. Nieuwe projecten die hier
