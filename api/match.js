@@ -325,6 +325,34 @@ module.exports = (req, res) => {
         if (entry.price_num < lo * BUDGET_TOLERANCE_LOW) continue;
       }
 
+      // Slaapkamers: harde filter voor projecten die hun aanbod vermelden
+      // maar niet het gewenste aantal hebben. Projecten zonder slaapkamerdata
+      // (f.bedrooms === null) krijgen een pass – onbekend ≠ ongeschikt.
+      if (q.bedrooms && f.bedrooms) {
+        const want = q.bedrooms;
+        const fits = q.bedroomsOpen
+          ? f.bedrooms.max >= want
+          : f.bedrooms.min <= want && f.bedrooms.max >= want;
+        if (!fits) continue;
+      }
+
+      // Ligging: harde filter op de sterke tekst (naam + samenvatting + koppen).
+      // We vermijden f.weak bewust: "5 min van het strand" in de afstandenlijst
+      // maakt een project nog geen strandproject. Projecten zonder liggings-
+      // trefwoord in hun sterke tekst (f.strong leeg of geen match) krijgen
+      // ook een pass – ze worden dan door de scorefunctie naar achteren geduwd.
+      if (q.location && f.strong) {
+        const re = LOCATION_PATTERNS[q.location];
+        // Ga alleen uitsluiten als het project wél over ligging schrijft maar
+        // het gevraagde type er niet bij zit. Dat detecteren we door eerst te
+        // kijken of één van de vijf liggingspatronen matcht in f.strong; als
+        // géén enkel patroon matcht, zegt de tekst niets over ligging → pass.
+        const anyLocationMentioned = Object.values(LOCATION_PATTERNS).some((r) =>
+          r.test(f.strong)
+        );
+        if (anyLocationMentioned && re && !re.test(f.strong)) continue;
+      }
+
       out.push({ slug, entry, score: scoreProject(entry, facet, f, q) });
     }
 
