@@ -27,7 +27,7 @@ const { forwardToZapier } = require('./_zapier.js');
 const { PLAYBOOK } = require('./_playbook.js');
 
 const GATEWAY_URL = 'https://ai-gateway.vercel.sh/v1/chat/completions';
-const MODEL = process.env.AI_MODEL || 'anthropic/claude-haiku-4.5';
+const MODEL = process.env.AI_MODEL || 'anthropic/claude-sonnet-4-6';
 // Optioneel: aparte Zap voor gesprekslogging. Niet gezet = geen logging.
 const ZAPIER_CHATLOG_URL = process.env.ZAPIER_CHATLOG_URL || '';
 // Publieke, niet-geauthenticeerde WordPress REST API - geen eigen key nodig.
