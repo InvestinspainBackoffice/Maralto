@@ -160,6 +160,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   transition: width 0.5s var(--ease);
 }
 .sel-topbar__row {
+  position: relative;
   display: flex; align-items: center; justify-content: space-between;
   gap: 1rem; padding: 0.55rem clamp(1rem, 4vw, 2rem);
 }
@@ -217,31 +218,28 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   display: block;
 }
 
-/* ── Vraagscherm ───────────────────────────────────────────────────────── */
-
-/* iPhone-stijl countdown: groot getal bovenaan in het midden, telt af van
-   10 naar 1 terwijl de bezoeker door de vragen loopt. De animatie krimpt
-   het getal even in bij elke stap (zoals de iOS-alarmbel-afteller). */
+/* ── iPhone-stijl countdown in de topbar ──────────────────────────────── */
+/* Telt af van 10 naar 1, gecentreerd boven de voortgangsbalk. */
 .sel-countdown {
-  position: absolute; top: 0; left: 0; right: 0;
-  display: flex; justify-content: center;
-  padding-top: clamp(1rem, 3vw, 1.75rem);
+  position: absolute; left: 50%; transform: translateX(-50%);
+  display: flex; align-items: center;
   pointer-events: none;
 }
 .sel-countdown__num {
-  font-size: clamp(2.8rem, 8vw, 4.5rem);
+  font-size: clamp(1.35rem, 4vw, 2rem);
   font-weight: 200; letter-spacing: -0.04em;
   color: var(--gold); line-height: 1;
   transition: transform 0.22s var(--ease), opacity 0.22s var(--ease);
   will-change: transform, opacity;
 }
 .sel-countdown__num.is-flipping {
-  transform: scale(0.55); opacity: 0;
+  transform: scale(0.45); opacity: 0;
 }
 @media (prefers-reduced-motion: reduce) {
   .sel-countdown__num { transition: none; }
 }
 
+/* ── Vraagscherm ───────────────────────────────────────────────────────── */
 .sel-step__count {
   /* Verborgen voor schermlezers (countdown geeft de positie al aan), maar
      behouden voor toegankelijkheids-context via aria-label op de stap. */
@@ -342,26 +340,38 @@ h1[tabindex="-1"]:focus, h2[tabindex="-1"]:focus { outline: none; }
   position: absolute; top: 0.75rem; right: 0.75rem;
 }
 
-/* ── Gemeente-kaarten (vraag 1) ───────────────────────────────────────────
-   10 gemeentes in een 2-koloms grid. Compact: naam + laagste prijs. */
-.sel-options--muni {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 0.5rem; margin-top: 1.25rem;
+/* ── Gemeente-kaart (vraag 1): SVG Costa del Sol ──────────────────────── */
+.sel-map-wrap { margin-top: 1.25rem; border: 1px solid var(--line); overflow: hidden; }
+.sel-map { width: 100%; display: block; }
+.sel-map__sea { fill: #060e18; }
+.sel-map__land { fill: var(--bg-el); }
+.sel-map__coast { stroke: var(--line-light); stroke-width: 1.2; }
+.sel-map__inland-line { stroke: var(--line); stroke-width: 1; stroke-dasharray: 3 3; }
+.sel-map__dot {
+  fill: var(--bg); stroke: var(--line-light); stroke-width: 1.5;
+  transition: fill 0.18s, stroke 0.18s, r 0.18s;
 }
-.sel-option--muni {
-  flex-direction: column; align-items: flex-start;
-  gap: 0.2rem; padding: 0.9rem 1rem;
+.sel-map__muni { cursor: pointer; }
+.sel-map__muni:hover .sel-map__dot,
+.sel-map__muni:focus .sel-map__dot { stroke: var(--gold-dim); fill: rgba(196,169,125,0.12); }
+.sel-map__muni[aria-checked="true"] .sel-map__dot { fill: var(--gold); stroke: var(--gold); }
+.sel-map__name {
+  font-size: 9.5px; fill: var(--text-muted);
+  font-family: var(--font); font-weight: 400;
+  pointer-events: none;
+  transition: fill 0.18s;
 }
-.sel-option--muni .sel-option__label {
-  font-size: 0.88rem; font-weight: 400;
+.sel-map__muni:hover .sel-map__name,
+.sel-map__muni:focus .sel-map__name { fill: var(--text); }
+.sel-map__muni[aria-checked="true"] .sel-map__name { fill: var(--gold); font-weight: 500; }
+.sel-map__price {
+  font-size: 7.5px; fill: #4a5a6a;
+  font-family: var(--font);
+  pointer-events: none;
 }
-.sel-option__price {
-  font-size: 0.65rem; color: var(--text-muted); letter-spacing: 0.03em;
-}
-.sel-option--muni .sel-option__tick {
-  position: absolute; top: 0.65rem; right: 0.65rem;
-}
+.sel-map__muni[aria-checked="true"] .sel-map__price { fill: var(--gold-dim); }
+.sel-map__dir { font-size: 7px; fill: #2a3a4a; font-family: var(--font); letter-spacing: 0.03em; }
+.sel-map__muni:focus-visible .sel-map__dot { stroke: var(--gold); stroke-width: 2.5; }
 
 /* ── Projectkaartjes ───────────────────────────────────────────────────── */
 .sel-cards {
@@ -560,6 +570,10 @@ footer a { color: var(--gold-dim); text-underline-offset: 2px; }
       <svg viewBox="0 0 24 24"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg>
       Terug
     </button>
+    <!-- iPhone-stijl afteller: gecentreerd in de topbar, telt van 10 naar 1 -->
+    <div class="sel-countdown" id="selCountdownWrap" aria-hidden="true" hidden>
+      <span class="sel-countdown__num" id="selCountNum">10</span>
+    </div>
     <p class="sel-count" id="selCount" aria-live="polite" hidden>
       <span class="sel-count__n" id="selCountN">&mdash;</span>
       <span id="selCountLabel">projecten passen bij uw antwoorden</span>
@@ -580,11 +594,7 @@ footer a { color: var(--gold-dim); text-underline-offset: 2px; }
     </section>
 
     <!-- ═══════════ VRAGEN ═══════════ -->
-    <div class="sel-screen" id="selSteps" style="position:relative" hidden>
-      <!-- iPhone-stijl afteller: groot getal bovenaan, telt van 10 naar 1 -->
-      <div class="sel-countdown" aria-hidden="true">
-        <span class="sel-countdown__num" id="selCountNum">10</span>
-      </div>
+    <div class="sel-screen" id="selSteps" hidden>
 
       <section class="sel-step" data-step="1" data-id="region"
                data-param="regions"
@@ -594,17 +604,25 @@ footer a { color: var(--gold-dim); text-underline-offset: 2px; }
         <p class="sel-step__count">Stap 01 <span>van 10</span></p>
         <h2 class="sel-step__q" tabindex="-1">In welke gemeente(n) bent u ge&iuml;nteresseerd?</h2>
         <p class="sel-step__hint">Meerdere antwoorden mogelijk</p>
-        <div class="sel-options sel-options--muni" role="group" aria-label="In welke gemeente(n) bent u ge&iuml;nteresseerd?"><button type="button" class="sel-option sel-option--muni" data-value="malaga" role="checkbox" aria-checked="false"><span class="sel-option__label">M&aacute;laga</span><span class="sel-option__price">v.a. &euro; 350.000</span><span class="sel-option__tick" aria-hidden="true"></span></button>
-        <button type="button" class="sel-option sel-option--muni" data-value="fuengirola" role="checkbox" aria-checked="false"><span class="sel-option__label">Fuengirola</span><span class="sel-option__price">v.a. &euro; 340.000</span><span class="sel-option__tick" aria-hidden="true"></span></button>
-        <button type="button" class="sel-option sel-option--muni" data-value="mijas" role="checkbox" aria-checked="false"><span class="sel-option__label">Mijas</span><span class="sel-option__price">v.a. &euro; 240.000</span><span class="sel-option__tick" aria-hidden="true"></span></button>
-        <button type="button" class="sel-option sel-option--muni" data-value="mijascosta" role="checkbox" aria-checked="false"><span class="sel-option__label">Mijas Costa</span><span class="sel-option__price">v.a. &euro; 290.000</span><span class="sel-option__tick" aria-hidden="true"></span></button>
-        <button type="button" class="sel-option sel-option--muni" data-value="marbella" role="checkbox" aria-checked="false"><span class="sel-option__label">Marbella</span><span class="sel-option__price">v.a. &euro; 410.000</span><span class="sel-option__tick" aria-hidden="true"></span></button>
-        <button type="button" class="sel-option sel-option--muni" data-value="puertobanus" role="checkbox" aria-checked="false"><span class="sel-option__label">Puerto Ban&uacute;s</span><span class="sel-option__price">v.a. &euro; 460.000</span><span class="sel-option__tick" aria-hidden="true"></span></button>
-        <button type="button" class="sel-option sel-option--muni" data-value="sanpedro" role="checkbox" aria-checked="false"><span class="sel-option__label">San Pedro</span><span class="sel-option__price">v.a. &euro; 390.000</span><span class="sel-option__tick" aria-hidden="true"></span></button>
-        <button type="button" class="sel-option sel-option--muni" data-value="estepona" role="checkbox" aria-checked="false"><span class="sel-option__label">Estepona</span><span class="sel-option__price">v.a. &euro; 300.000</span><span class="sel-option__tick" aria-hidden="true"></span></button>
-        <button type="button" class="sel-option sel-option--muni" data-value="manilva" role="checkbox" aria-checked="false"><span class="sel-option__label">Manilva</span><span class="sel-option__price">v.a. &euro; 350.000</span><span class="sel-option__tick" aria-hidden="true"></span></button>
-        <button type="button" class="sel-option sel-option--muni" data-value="sotogrande" role="checkbox" aria-checked="false"><span class="sel-option__label">Sotogrande</span><span class="sel-option__price">v.a. &euro; 540.000</span><span class="sel-option__tick" aria-hidden="true"></span></button>
-      </div>
+        <div class="sel-map-wrap" role="group" aria-label="In welke gemeente(n) bent u ge&iuml;nteresseerd?">
+  <svg class="sel-map" viewBox="0 0 840 220" xmlns="http://www.w3.org/2000/svg">
+    <rect class="sel-map__sea" x="0" y="0" width="840" height="220"/>
+    <path class="sel-map__land" d="M 0,0 L 840,0 L 840,133 C 808,136 770,140 730,147 C 672,157 624,163 582,163 C 557,163 530,161 505,159 C 484,157 460,152 432,150 C 408,148 382,151 364,154 C 348,157 332,161 310,161 C 284,161 250,156 220,158 C 193,160 158,162 130,163 C 108,164 72,155 52,158 C 38,161 25,165 0,166 Z"/>
+    <path class="sel-map__coast" d="M 0,166 C 25,165 38,161 52,158 C 72,155 108,164 130,163 C 158,162 193,160 220,158 C 250,156 284,161 310,161 C 332,161 348,157 364,154 C 382,151 408,148 432,150 C 460,152 484,157 505,159 C 530,161 557,163 582,163 C 624,163 672,157 730,147 C 770,140 808,136 840,133" fill="none"/>
+    <g class="sel-option sel-map__muni" data-value="sotogrande" role="checkbox" aria-checked="false" tabindex="0" aria-label="Sotogrande"><rect class="sel-map__hit" x="12" y="127" width="80" height="37" fill="transparent"/><circle class="sel-map__dot" cx="52" cy="158" r="5"/><text class="sel-map__name" x="52" y="133" text-anchor="middle">Sotogrande</text><text class="sel-map__price" x="52" y="120" text-anchor="middle">v.a. € 540.000</text></g>
+    <g class="sel-option sel-map__muni" data-value="manilva" role="checkbox" aria-checked="false" tabindex="0" aria-label="Manilva"><rect class="sel-map__hit" x="95" y="157" width="70" height="45" fill="transparent"/><circle class="sel-map__dot" cx="130" cy="163" r="5"/><text class="sel-map__name" x="130" y="183" text-anchor="middle">Manilva</text><text class="sel-map__price" x="130" y="196" text-anchor="middle">v.a. € 350.000</text></g>
+    <g class="sel-option sel-map__muni" data-value="estepona" role="checkbox" aria-checked="false" tabindex="0" aria-label="Estepona"><rect class="sel-map__hit" x="185" y="127" width="70" height="37" fill="transparent"/><circle class="sel-map__dot" cx="220" cy="158" r="5"/><text class="sel-map__name" x="220" y="133" text-anchor="middle">Estepona</text><text class="sel-map__price" x="220" y="120" text-anchor="middle">v.a. € 300.000</text></g>
+    <g class="sel-option sel-map__muni" data-value="sanpedro" role="checkbox" aria-checked="false" tabindex="0" aria-label="San Pedro"><rect class="sel-map__hit" x="273" y="155" width="74" height="45" fill="transparent"/><circle class="sel-map__dot" cx="310" cy="161" r="5"/><text class="sel-map__name" x="310" y="181" text-anchor="middle">San Pedro</text><text class="sel-map__price" x="310" y="194" text-anchor="middle">v.a. € 390.000</text></g>
+    <g class="sel-option sel-map__muni" data-value="puertobanus" role="checkbox" aria-checked="false" tabindex="0" aria-label="Puerto Banús"><rect class="sel-map__hit" x="318" y="123" width="92" height="37" fill="transparent"/><circle class="sel-map__dot" cx="364" cy="154" r="5"/><text class="sel-map__name" x="364" y="129" text-anchor="middle">Puerto Banús</text><text class="sel-map__price" x="364" y="116" text-anchor="middle">v.a. € 460.000</text></g>
+    <g class="sel-option sel-map__muni" data-value="marbella" role="checkbox" aria-checked="false" tabindex="0" aria-label="Marbella"><rect class="sel-map__hit" x="397" y="144" width="70" height="53" fill="transparent"/><circle class="sel-map__dot" cx="432" cy="150" r="5"/><text class="sel-map__name" x="432" y="178" text-anchor="middle">Marbella</text><text class="sel-map__price" x="432" y="191" text-anchor="middle">v.a. € 410.000</text></g>
+    <g class="sel-option sel-map__muni" data-value="mijascosta" role="checkbox" aria-checked="false" tabindex="0" aria-label="Mijas Costa"><rect class="sel-map__hit" x="462" y="153" width="86" height="45" fill="transparent"/><circle class="sel-map__dot" cx="505" cy="159" r="5"/><text class="sel-map__name" x="505" y="179" text-anchor="middle">Mijas Costa</text><text class="sel-map__price" x="505" y="192" text-anchor="middle">v.a. € 290.000</text></g>
+    <g class="sel-option sel-map__muni" data-value="mijas" role="checkbox" aria-checked="false" tabindex="0" aria-label="Mijas"><line class="sel-map__inland-line" x1="505" y1="103" x2="505" y2="152"/><rect class="sel-map__hit" x="470" y="66" width="70" height="36" fill="transparent"/><circle class="sel-map__dot" cx="505" cy="96" r="5"/><text class="sel-map__name" x="505" y="72" text-anchor="middle">Mijas</text><text class="sel-map__price" x="505" y="59" text-anchor="middle">v.a. € 240.000</text></g>
+    <g class="sel-option sel-map__muni" data-value="fuengirola" role="checkbox" aria-checked="false" tabindex="0" aria-label="Fuengirola"><rect class="sel-map__hit" x="542" y="127" width="80" height="42" fill="transparent"/><circle class="sel-map__dot" cx="582" cy="163" r="5"/><text class="sel-map__name" x="582" y="133" text-anchor="middle">Fuengirola</text><text class="sel-map__price" x="582" y="120" text-anchor="middle">v.a. € 340.000</text></g>
+    <g class="sel-option sel-map__muni" data-value="malaga" role="checkbox" aria-checked="false" tabindex="0" aria-label="Málaga"><rect class="sel-map__hit" x="695" y="116" width="70" height="37" fill="transparent"/><circle class="sel-map__dot" cx="730" cy="147" r="5"/><text class="sel-map__name" x="730" y="122" text-anchor="middle">Málaga</text><text class="sel-map__price" x="730" y="109" text-anchor="middle">v.a. € 350.000</text></g>
+    <text class="sel-map__dir" x="8" y="214">← Sotogrande</text>
+    <text class="sel-map__dir" x="832" y="214" text-anchor="end">Málaga →</text>
+  </svg>
+</div>
         <p class="sel-step__error" role="alert" hidden>Kies minstens &eacute;&eacute;n antwoord om verder te gaan</p>
       </section>
 
@@ -911,6 +929,7 @@ footer a { color: var(--gold-dim); text-underline-offset: 2px; }
   var countBox = document.getElementById('selCount');
   var countN = document.getElementById('selCountN');
   var countLabel = document.getElementById('selCountLabel');
+  var countdownWrap = document.getElementById('selCountdownWrap');
   var form = document.getElementById('selForm');
   var submitBtn = document.getElementById('selSubmit');
   var formError = document.getElementById('selFormError');
@@ -1030,6 +1049,7 @@ footer a { color: var(--gold-dim); text-underline-offset: 2px; }
     topbar.classList.toggle('is-visible', current >= 0);
     backBtn.hidden = current < 0 || current > TOTAL;
     countBox.hidden = current < 0 || current >= TOTAL || !hasAnswer();
+    if (countdownWrap) countdownWrap.hidden = current < 0 || current >= TOTAL;
   }
 
   /* ── Countdown ─────────────────────────────────────────────────────────
@@ -1162,6 +1182,15 @@ footer a { color: var(--gold-dim); text-underline-offset: 2px; }
       next.addEventListener('click', advance);
       el.appendChild(next);
     }
+  });
+
+  /* ── Toetsenbordondersteuning SVG-kaart ──────────────────────────────── */
+  /* SVG <g>-elementen zijn niet van nature activeerbaar met Enter/Spatie;
+     dit voegt dat gedrag toe zodat de kaart volledig bedienbaar is zonder muis. */
+  document.querySelectorAll('.sel-map__muni').forEach(function (g) {
+    g.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); g.click(); }
+    });
   });
 
   /* ── Kaartjes ─────────────────────────────────────────────────────────── */

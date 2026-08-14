@@ -160,6 +160,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   transition: width 0.5s var(--ease);
 }
 .sel-topbar__row {
+  position: relative;
   display: flex; align-items: center; justify-content: space-between;
   gap: 1rem; padding: 0.55rem clamp(1rem, 4vw, 2rem);
 }
@@ -217,31 +218,28 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   display: block;
 }
 
-/* ── Vraagscherm ───────────────────────────────────────────────────────── */
-
-/* iPhone-stijl countdown: groot getal bovenaan in het midden, telt af van
-   10 naar 1 terwijl de bezoeker door de vragen loopt. De animatie krimpt
-   het getal even in bij elke stap (zoals de iOS-alarmbel-afteller). */
+/* ── iPhone-stijl countdown in de topbar ──────────────────────────────── */
+/* Telt af van 10 naar 1, gecentreerd boven de voortgangsbalk. */
 .sel-countdown {
-  position: absolute; top: 0; left: 0; right: 0;
-  display: flex; justify-content: center;
-  padding-top: clamp(1rem, 3vw, 1.75rem);
+  position: absolute; left: 50%; transform: translateX(-50%);
+  display: flex; align-items: center;
   pointer-events: none;
 }
 .sel-countdown__num {
-  font-size: clamp(2.8rem, 8vw, 4.5rem);
+  font-size: clamp(1.35rem, 4vw, 2rem);
   font-weight: 200; letter-spacing: -0.04em;
   color: var(--gold); line-height: 1;
   transition: transform 0.22s var(--ease), opacity 0.22s var(--ease);
   will-change: transform, opacity;
 }
 .sel-countdown__num.is-flipping {
-  transform: scale(0.55); opacity: 0;
+  transform: scale(0.45); opacity: 0;
 }
 @media (prefers-reduced-motion: reduce) {
   .sel-countdown__num { transition: none; }
 }
 
+/* ── Vraagscherm ───────────────────────────────────────────────────────── */
 .sel-step__count {
   /* Verborgen voor schermlezers (countdown geeft de positie al aan), maar
      behouden voor toegankelijkheids-context via aria-label op de stap. */
@@ -342,26 +340,38 @@ h1[tabindex="-1"]:focus, h2[tabindex="-1"]:focus { outline: none; }
   position: absolute; top: 0.75rem; right: 0.75rem;
 }
 
-/* ── Gemeente-kaarten (vraag 1) ───────────────────────────────────────────
-   10 gemeentes in een 2-koloms grid. Compact: naam + laagste prijs. */
-.sel-options--muni {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 0.5rem; margin-top: 1.25rem;
+/* ── Gemeente-kaart (vraag 1): SVG Costa del Sol ──────────────────────── */
+.sel-map-wrap { margin-top: 1.25rem; border: 1px solid var(--line); overflow: hidden; }
+.sel-map { width: 100%; display: block; }
+.sel-map__sea { fill: #060e18; }
+.sel-map__land { fill: var(--bg-el); }
+.sel-map__coast { stroke: var(--line-light); stroke-width: 1.2; }
+.sel-map__inland-line { stroke: var(--line); stroke-width: 1; stroke-dasharray: 3 3; }
+.sel-map__dot {
+  fill: var(--bg); stroke: var(--line-light); stroke-width: 1.5;
+  transition: fill 0.18s, stroke 0.18s, r 0.18s;
 }
-.sel-option--muni {
-  flex-direction: column; align-items: flex-start;
-  gap: 0.2rem; padding: 0.9rem 1rem;
+.sel-map__muni { cursor: pointer; }
+.sel-map__muni:hover .sel-map__dot,
+.sel-map__muni:focus .sel-map__dot { stroke: var(--gold-dim); fill: rgba(196,169,125,0.12); }
+.sel-map__muni[aria-checked="true"] .sel-map__dot { fill: var(--gold); stroke: var(--gold); }
+.sel-map__name {
+  font-size: 9.5px; fill: var(--text-muted);
+  font-family: var(--font); font-weight: 400;
+  pointer-events: none;
+  transition: fill 0.18s;
 }
-.sel-option--muni .sel-option__label {
-  font-size: 0.88rem; font-weight: 400;
+.sel-map__muni:hover .sel-map__name,
+.sel-map__muni:focus .sel-map__name { fill: var(--text); }
+.sel-map__muni[aria-checked="true"] .sel-map__name { fill: var(--gold); font-weight: 500; }
+.sel-map__price {
+  font-size: 7.5px; fill: #4a5a6a;
+  font-family: var(--font);
+  pointer-events: none;
 }
-.sel-option__price {
-  font-size: 0.65rem; color: var(--text-muted); letter-spacing: 0.03em;
-}
-.sel-option--muni .sel-option__tick {
-  position: absolute; top: 0.65rem; right: 0.65rem;
-}
+.sel-map__muni[aria-checked="true"] .sel-map__price { fill: var(--gold-dim); }
+.sel-map__dir { font-size: 7px; fill: #2a3a4a; font-family: var(--font); letter-spacing: 0.03em; }
+.sel-map__muni:focus-visible .sel-map__dot { stroke: var(--gold); stroke-width: 2.5; }
 
 /* ── Projectkaartjes ───────────────────────────────────────────────────── */
 .sel-cards {
@@ -560,6 +570,10 @@ footer a { color: var(--gold-dim); text-underline-offset: 2px; }
       <svg viewBox="0 0 24 24"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg>
       __I_SEL_BACK__
     </button>
+    <!-- iPhone-stijl afteller: gecentreerd in de topbar, telt van 10 naar 1 -->
+    <div class="sel-countdown" id="selCountdownWrap" aria-hidden="true" hidden>
+      <span class="sel-countdown__num" id="selCountNum">__STEP_TOTAL__</span>
+    </div>
     <p class="sel-count" id="selCount" aria-live="polite" hidden>
       <span class="sel-count__n" id="selCountN">&mdash;</span>
       <span id="selCountLabel">__I_SEL_COUNTER_MANY__</span>
@@ -580,11 +594,7 @@ footer a { color: var(--gold-dim); text-underline-offset: 2px; }
     </section>
 
     <!-- ═══════════ VRAGEN ═══════════ -->
-    <div class="sel-screen" id="selSteps" style="position:relative" hidden>
-      <!-- iPhone-stijl afteller: groot getal bovenaan, telt van 10 naar 1 -->
-      <div class="sel-countdown" aria-hidden="true">
-        <span class="sel-countdown__num" id="selCountNum">__STEP_TOTAL__</span>
-      </div>
+    <div class="sel-screen" id="selSteps" hidden>
 __STEPS__
     </div>
 
@@ -687,6 +697,7 @@ __PHONE_OPTGROUPS__
   var countBox = document.getElementById('selCount');
   var countN = document.getElementById('selCountN');
   var countLabel = document.getElementById('selCountLabel');
+  var countdownWrap = document.getElementById('selCountdownWrap');
   var form = document.getElementById('selForm');
   var submitBtn = document.getElementById('selSubmit');
   var formError = document.getElementById('selFormError');
@@ -806,6 +817,7 @@ __PHONE_OPTGROUPS__
     topbar.classList.toggle('is-visible', current >= 0);
     backBtn.hidden = current < 0 || current > TOTAL;
     countBox.hidden = current < 0 || current >= TOTAL || !hasAnswer();
+    if (countdownWrap) countdownWrap.hidden = current < 0 || current >= TOTAL;
   }
 
   /* ── Countdown ─────────────────────────────────────────────────────────
@@ -938,6 +950,15 @@ __PHONE_OPTGROUPS__
       next.addEventListener('click', advance);
       el.appendChild(next);
     }
+  });
+
+  /* ── Toetsenbordondersteuning SVG-kaart ──────────────────────────────── */
+  /* SVG <g>-elementen zijn niet van nature activeerbaar met Enter/Spatie;
+     dit voegt dat gedrag toe zodat de kaart volledig bedienbaar is zonder muis. */
+  document.querySelectorAll('.sel-map__muni').forEach(function (g) {
+    g.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); g.click(); }
+    });
   });
 
   /* ── Kaartjes ─────────────────────────────────────────────────────────── */

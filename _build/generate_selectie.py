@@ -306,34 +306,112 @@ def render_options(question, lang):
 
 
 def render_region_options(question, lang, strings, prices):
-    """Vraag 1: tien gemeente-kaarten in een 2-koloms grid.
+    """Vraag 1: interactieve SVG-kaart van de Costa del Sol.
 
-    Multi-select (checkbox): meerdere gemeentes tegelijk aanduiden is normaal
-    ("Estepona of Marbella"). Elke kaart toont de naam en de laagste
-    vanaf-prijs in die gemeente.
+    10 klikpunten op een gestileerde kustkaart (west → oost). Multi-select
+    (checkbox): de bezoeker kan meerdere gemeentes aanduiden. Elk punt toont
+    de naam en de laagste vanaf-prijs uit onze eigen projectdata.
+
+    De <g>-elementen krijgen class="sel-option" zodat de bestaande JS-toggle
+    (aria-checked, answers[]-array, refreshCount) zonder aanpassing werkt.
+    Toetsenbordondersteuning (Enter/Spatie) wordt in de template-JS toegevoegd.
     """
     role = "checkbox" if question.get("multi") else "radio"
-    cards = []
-    for opt in question["options"]:
-        code = opt["value"]
-        label = opt[lang]
-        price = prices.get(code, "")
-        price_html = f'<span class="sel-option__price">{price}</span>' if price else ""
-        cards.append(
-            f'<button type="button" class="sel-option sel-option--muni" data-value="{code}" '
-            f'role="{role}" aria-checked="false">'
-            f'<span class="sel-option__label">{label}</span>'
-            f'{price_html}'
-            f'<span class="sel-option__tick" aria-hidden="true"></span>'
-            f'</button>'
+    group_role = "group" if question.get("multi") else "radiogroup"
+
+    # Posities op de SVG (viewBox 0 0 840 220).
+    # x = west → oost (Sotogrande links, Málaga rechts)
+    # y = land boven (~0-155), kust ~155-165, zee onder (~165-220)
+    # yn/yp = y-positie naam / prijs;  "above" = label boven het punt
+    munis = [
+        # value         nl                  en                  x    y    yn   yp   side
+        ("sotogrande",  "Sotogrande",       "Sotogrande",       52,  158, 133, 120, "above"),
+        ("manilva",     "Manilva",          "Manilva",          130, 163, 183, 196, "below"),
+        ("estepona",    "Estepona",         "Estepona",         220, 158, 133, 120, "above"),
+        ("sanpedro",    "San Pedro",        "San Pedro",        310, 161, 181, 194, "below"),
+        ("puertobanus", "Puerto Banús", "Puerto Banús", 364, 154, 129, 116, "above"),
+        ("marbella",    "Marbella",         "Marbella",         432, 150, 178, 191, "below"),
+        ("mijascosta",  "Mijas Costa",      "Mijas Costa",      505, 159, 179, 192, "below"),
+        ("mijas",       "Mijas",            "Mijas",            505,  96,  72,  59, "above"),
+        ("fuengirola",  "Fuengirola",       "Fuengirola",       582, 163, 133, 120, "above"),
+        ("malaga",      "Málaga",      "Málaga",      730, 147, 122, 109, "above"),
+    ]
+
+    # Kustlijn-pad (west naar oost, langs alle gemeentepunten)
+    coast = (
+        "M 0,166 C 25,165 38,161 52,158 "
+        "C 72,155 108,164 130,163 "
+        "C 158,162 193,160 220,158 "
+        "C 250,156 284,161 310,161 "
+        "C 332,161 348,157 364,154 "
+        "C 382,151 408,148 432,150 "
+        "C 460,152 484,157 505,159 "
+        "C 530,161 557,163 582,163 "
+        "C 624,163 672,157 730,147 "
+        "C 770,140 808,136 840,133"
+    )
+
+    # Land-vlak: alles boven de kustlijn
+    land = (
+        "M 0,0 L 840,0 L 840,133 "
+        "C 808,136 770,140 730,147 "
+        "C 672,157 624,163 582,163 "
+        "C 557,163 530,161 505,159 "
+        "C 484,157 460,152 432,150 "
+        "C 408,148 382,151 364,154 "
+        "C 348,157 332,161 310,161 "
+        "C 284,161 250,156 220,158 "
+        "C 193,160 158,162 130,163 "
+        "C 108,164 72,155 52,158 "
+        "C 38,161 25,165 0,166 Z"
+    )
+
+    dots = []
+    for value, name_nl, name_en, x, y, yn, yp, side in munis:
+        name = name_nl if lang == "nl" else name_en
+        price = prices.get(value, "").replace("&euro;", "€")
+
+        # Stippellijn van Mijas (inland) naar de kust
+        inland_line = (
+            f'<line class="sel-map__inland-line" x1="{x}" y1="{y + 7}" x2="{x}" y2="152"/>'
+            if value == "mijas" else ""
         )
 
+        price_el = (
+            f'<text class="sel-map__price" x="{x}" y="{yp}" text-anchor="middle">{price}</text>'
+            if price else ""
+        )
+
+        # Klikbaar hitgebied (transparant): dekt naam + punt + prijs
+        hit_top = min(yn, y) - 6
+        hit_bot = max(y, yp) + 6
+        hit_w = max(70, len(name) * 6 + 20)
+
+        dots.append(
+            f'<g class="sel-option sel-map__muni" data-value="{value}" '
+            f'role="{role}" aria-checked="false" tabindex="0" aria-label="{name}">'
+            f'{inland_line}'
+            f'<rect class="sel-map__hit" x="{x - hit_w // 2}" y="{hit_top}" '
+            f'width="{hit_w}" height="{hit_bot - hit_top}" fill="transparent"/>'
+            f'<circle class="sel-map__dot" cx="{x}" cy="{y}" r="5"/>'
+            f'<text class="sel-map__name" x="{x}" y="{yn}" text-anchor="middle">{name}</text>'
+            f'{price_el}'
+            f'</g>'
+        )
+
+    dots_str = "\n    ".join(dots)
+
     return (
-        f'<div class="sel-options sel-options--muni" '
-        f'role="{"group" if question.get("multi") else "radiogroup"}" '
-        f'aria-label="{question[lang]["q"]}">'
-        + "\n        ".join(cards)
-        + "\n      </div>"
+        f'<div class="sel-map-wrap" role="{group_role}" aria-label="{question[lang]["q"]}">\n'
+        f'  <svg class="sel-map" viewBox="0 0 840 220" xmlns="http://www.w3.org/2000/svg">\n'
+        f'    <rect class="sel-map__sea" x="0" y="0" width="840" height="220"/>\n'
+        f'    <path class="sel-map__land" d="{land}"/>\n'
+        f'    <path class="sel-map__coast" d="{coast}" fill="none"/>\n'
+        f'    {dots_str}\n'
+        f'    <text class="sel-map__dir" x="8" y="214">← Sotogrande</text>\n'
+        f'    <text class="sel-map__dir" x="832" y="214" text-anchor="end">Málaga →</text>\n'
+        f'  </svg>\n'
+        f'</div>'
     )
 
 
