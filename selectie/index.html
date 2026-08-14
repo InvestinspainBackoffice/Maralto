@@ -218,69 +218,23 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   display: block;
 }
 
-/* ── Split-flap afteller in de topbar ─────────────────────────────────── */
-/* Papieren omklap-klok: donkere kaart, gouden cijfer, animatie bij elke stap. */
+/* ── Afteller in de topbar ─────────────────────────────────────────────── */
+/* Groot goudkleurig getal, gecentreerd — zelfde stijl als de live project-
+   teller maar dan voor de stap-countdown. Wisselt met een korte crossfade. */
 .sel-countdown {
   position: absolute; left: 50%; transform: translateX(-50%);
-  pointer-events: none;
+  pointer-events: none; display: flex; align-items: center;
 }
-.flip-clock { perspective: 300px; }
-.flip-card {
-  /* Maatvoering als CSS-variabelen zodat tekst-positionering consistent is */
-  --fc-h: 44px; --fc-w: 56px; --fc-fs: 2rem;
-  --fc-pad: calc((var(--fc-h) - var(--fc-fs)) / 2); /* witruimte boven/onder getal */
-  --fc-half: calc(var(--fc-h) / 2);
-  position: relative; width: var(--fc-w); height: var(--fc-h);
+.sel-countdown__num {
+  font-size: clamp(1.1rem, 3.5vw, 1.6rem);
+  font-weight: 400; letter-spacing: 0.03em;
+  color: var(--gold); line-height: 1;
+  transition: opacity 0.18s, transform 0.18s var(--ease);
 }
-/* Statische achtergrond: toont altijd het nieuwe getal; verborgen achter de flappen */
-.flip-static {
-  position: absolute; inset: 0;
-  background: #16212e; border-radius: 5px;
-  display: flex; align-items: center; justify-content: center;
-  box-shadow: 0 3px 12px rgba(0,0,0,0.65);
-  border: 1px solid #0c1520;
-}
-.flip-static span {
-  font-size: var(--fc-fs); font-weight: 200; color: var(--gold);
-  line-height: 1; letter-spacing: -0.03em; font-family: var(--font);
-}
-/* Horizontale scheidingslijn midden-in de kaart */
-.flip-divider {
-  position: absolute; left: 0; right: 0; top: 50%;
-  height: 1px; background: #080f18; z-index: 10;
-}
-/* Flappen: bovenste vouwt weg (fold), onderste onthult (reveal) */
-.flip-flap {
-  position: absolute; left: 0; right: 0; height: var(--fc-half);
-  overflow: hidden;
-  backface-visibility: hidden; -webkit-backface-visibility: hidden;
-  border: 1px solid #0c1520;
-}
-.flip-flap--front {
-  top: 0; transform-origin: center bottom;
-  background: #16212e; border-radius: 5px 5px 0 0; border-bottom: none;
-  z-index: 5;
-}
-.flip-flap--back {
-  bottom: 0; transform-origin: center top;
-  background: #1b2c3e; border-radius: 0 0 5px 5px; border-top: none;
-  transform: rotateX(90deg); z-index: 5;
-}
-/* Tekst gepositioneerd alsof de kaart de volle hoogte heeft, daarna bijgesneden */
-.flip-flap span {
-  position: absolute; left: 0; right: 0; text-align: center;
-  font-size: var(--fc-fs); font-weight: 200; color: var(--gold);
-  line-height: 1; letter-spacing: -0.03em; font-family: var(--font);
-}
-.flip-flap--front span { top: var(--fc-pad); }
-.flip-flap--back  span { top: calc(var(--fc-pad) - var(--fc-half)); }
-/* Animaties */
-.flip-card.is-flipping .flip-flap--front { animation: fc-fold 0.27s ease-in forwards; }
-.flip-card.is-flipping .flip-flap--back  { animation: fc-reveal 0.27s ease-out 0.23s forwards; }
-@keyframes fc-fold   { from { transform: rotateX(0deg); }   to { transform: rotateX(-90deg); } }
-@keyframes fc-reveal { from { transform: rotateX(90deg); }  to { transform: rotateX(0deg); } }
+.sel-countdown__num.is-out  { opacity: 0; transform: translateY(-6px); }
+.sel-countdown__num.is-in   { opacity: 0; transform: translateY(6px); }
 @media (prefers-reduced-motion: reduce) {
-  .flip-flap--front, .flip-flap--back { animation: none !important; }
+  .sel-countdown__num { transition: none; }
 }
 
 /* ── Vraagscherm ───────────────────────────────────────────────────────── */
@@ -614,21 +568,10 @@ footer a { color: var(--gold-dim); text-underline-offset: 2px; }
       <svg viewBox="0 0 24 24"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg>
       Terug
     </button>
-    <!-- Split-flap afteller: papieren omklap-klok, gecentreerd in de topbar -->
+    <!-- Afteller: groot goudkleurig getal, gecentreerd in de topbar -->
     <div class="sel-countdown" id="selCountdownWrap" aria-hidden="true" hidden>
-      <div class="flip-clock">
-        <div class="flip-card" id="flipCard">
-          <div class="flip-static"><span id="flipStatic">10</span></div>
-          <div class="flip-divider"></div>
-          <div class="flip-flap flip-flap--front"><span id="flipFront">10</span></div>
-          <div class="flip-flap flip-flap--back"><span id="flipBack">10</span></div>
-        </div>
-      </div>
+      <span class="sel-countdown__num" id="selCountNum">10</span>
     </div>
-    <p class="sel-count" id="selCount" aria-live="polite" hidden>
-      <span class="sel-count__n" id="selCountN">&mdash;</span>
-      <span id="selCountLabel">projecten passen bij uw antwoorden</span>
-    </p>
   </div>
 </div>
 
@@ -977,14 +920,13 @@ footer a { color: var(--gold-dim); text-underline-offset: 2px; }
   var progressBar = document.getElementById('selProgressBar');
   var progress = document.getElementById('selProgress');
   var backBtn = document.getElementById('selBack');
-  var countBox = document.getElementById('selCount');
-  var countN = document.getElementById('selCountN');
-  var countLabel = document.getElementById('selCountLabel');
   var countdownWrap = document.getElementById('selCountdownWrap');
+  var countNumEl = document.getElementById('selCountNum');
   var form = document.getElementById('selForm');
   var submitBtn = document.getElementById('selSubmit');
   var formError = document.getElementById('selFormError');
 
+  // Project-teller is uit de topbar verwijderd; constanten bewaard voor lead-payload.
   var COUNT_ONE = 'project past bij uw antwoorden';
   var COUNT_MANY = 'projecten passen bij uw antwoorden';
 
@@ -1069,19 +1011,10 @@ footer a { color: var(--gold-dim); text-underline-offset: 2px; }
   }
 
   function refreshCount() {
-    if (current < 0 || current >= TOTAL) return;
-    if (!hasAnswer()) { countBox.hidden = true; return; }
+    // Project-teller verwijderd uit topbar; fetch enkel nog voor teaser-kaartjes.
+    if (current < 0 || current >= TOTAL || !hasAnswer()) return;
     fetchMatches(3).then(function (data) {
-      if (!data) { countBox.hidden = true; return; }
-      countBox.hidden = false;
-      countLabel.textContent = data.count === 1 ? COUNT_ONE : COUNT_MANY;
-      countN.textContent = String(data.count);
-      if (lastCount !== null && lastCount !== data.count) {
-        countBox.classList.remove('is-bumped');
-        void countBox.offsetWidth; // herstart de animatie
-        countBox.classList.add('is-bumped');
-      }
-      lastCount = data.count;
+      if (data) lastCount = data ? data.count : lastCount;
     });
   }
 
@@ -1099,42 +1032,28 @@ footer a { color: var(--gold-dim); text-underline-offset: 2px; }
     progress.setAttribute('aria-valuenow', String(pct));
     topbar.classList.toggle('is-visible', current >= 0);
     backBtn.hidden = current < 0 || current > TOTAL;
-    countBox.hidden = current < 0 || current >= TOTAL || !hasAnswer();
     if (countdownWrap) countdownWrap.hidden = current < 0 || current >= TOTAL;
   }
 
-  /* ── Split-flap afteller ───────────────────────────────────────────────
-   * Papieren omklap-klok: bovenste flap vouwt weg (fc-fold), onderste
-   * onthult het nieuwe getal (fc-reveal). De statische achtergrondkaart
-   * bevat altijd al het nieuwe getal - de flappen maskeren dat tijdelijk. */
-  var flipCard   = document.getElementById('flipCard');
-  var flipStatic = document.getElementById('flipStatic');
-  var flipFront  = document.getElementById('flipFront');
-  var flipBack   = document.getElementById('flipBack');
-
+  /* ── Afteller ──────────────────────────────────────────────────────────
+   * Groot goudkleurig getal, gecentreerd in de topbar. Wisselt met een
+   * korte slide-out (omhoog) / slide-in (omlaag) crossfade. */
   function updateCountdown(index) {
-    if (!flipCard) return;
+    if (!countNumEl) return;
     var remaining = (index >= 0 && index < TOTAL) ? TOTAL - index : null;
     if (remaining === null) return;
     var next = String(remaining);
-    var current = flipStatic ? flipStatic.textContent : '';
-    if (current === next) return;
+    if (countNumEl.textContent === next) return;
 
-    // Front (bovenste flap) toont het HUIDIGE getal en vouwt weg
-    if (flipFront) flipFront.textContent = current;
-    // Back (onderste flap) toont het NIEUWE getal en onthult
-    if (flipBack)  flipBack.textContent  = next;
-    // Statische laag toont meteen het nieuwe getal (achter de flappen verborgen)
-    if (flipStatic) flipStatic.textContent = next;
-
-    // Herstart animatie (verwijder klasse, force reflow, voeg terug toe)
-    flipCard.classList.remove('is-flipping');
-    void flipCard.offsetWidth;
-    flipCard.classList.add('is-flipping');
-
+    // Slide huidig getal omhoog weg
+    countNumEl.classList.add('is-out');
     window.setTimeout(function () {
-      flipCard.classList.remove('is-flipping');
-    }, 620);
+      countNumEl.textContent = next;
+      countNumEl.classList.remove('is-out');
+      countNumEl.classList.add('is-in');
+      void countNumEl.offsetWidth;
+      countNumEl.classList.remove('is-in'); // trigg transition naar zichtbaar
+    }, 180);
   }
 
   /* ── GA event helper ──────────────────────────────────────────────────── */
