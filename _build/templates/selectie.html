@@ -219,25 +219,22 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 }
 
 /* ── Grote project-teller in het midden van het vraagscherm ───────────── */
-/* Kaart: 96×84px, lettergrootte 52px (lijn-hoogte 1 = 52px)
-   Centrering: (84 - 52) / 2 = 16px boven/onder in de volle kaart
-   Bovenste flap span top:  16px  (ten opzichte van de flap = de kaart)
-   Onderste flap span top: -26px  (= 16 - 42, want flap begint op y=42)      */
 .sel-project-count {
   display: flex; flex-direction: column; align-items: center;
   gap: 0.65rem; margin-bottom: 2rem;
 }
-.flip-clock { perspective: 400px; }
-.flip-card {
-  position: relative;
-  width: 96px; height: 84px;
-}
-/* Statische achtergrond: toont altijd het correcte getal via flexbox */
+/* Zorg dat het hidden-attribuut het altijd wint van display:flex */
+.sel-project-count[hidden] { display: none !important; }
+.flip-clock { /* perspective via transform-functie in animaties */ }
+.flip-card { position: relative; width: 96px; height: 84px; }
+
+/* Statische achtergrond: altijd het correcte getal, nooit geanimeerd.
+   Flexbox-centrering vermijdt pixel-berekeningen voor lettertypes. */
 .flip-static {
   position: absolute; inset: 0;
   background: #16212e; border-radius: 6px;
   display: flex; align-items: center; justify-content: center;
-  box-shadow: 0 4px 18px rgba(0,0,0,0.65), inset 0 1px 0 rgba(255,255,255,0.03);
+  box-shadow: 0 4px 18px rgba(0,0,0,0.65), inset 0 1px 0 rgba(255,255,255,0.04);
   border: 1px solid #0c1520;
 }
 .flip-static span {
@@ -247,47 +244,49 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 /* Horizontale naad */
 .flip-divider {
   position: absolute; left: 0; right: 0; top: 42px;
-  height: 1px; background: #06101a; z-index: 10;
+  height: 1px; background: #06101a; z-index: 20; pointer-events: none;
 }
-/* Flappen */
+/* Flappen: volledige kaartgrootte, clip-path bepaalt welke helft zichtbaar is.
+   clip-path werkt in lokale 2D-ruimte en roteert mee → correcte split-flap.
+   transform-origin: center 50% (standaard) = hartlijn van de kaart.           */
 .flip-flap {
-  position: absolute; left: 0; right: 0; height: 42px; /* = 84/2 */
-  overflow: hidden;
+  position: absolute; inset: 0;
+  display: flex; align-items: center; justify-content: center;
   backface-visibility: hidden; -webkit-backface-visibility: hidden;
+  border-radius: 6px; z-index: 5;
 }
-.flip-flap--front {
-  top: 0; transform-origin: center bottom;
-  background: #16212e; border-radius: 6px 6px 0 0;
-  border: 1px solid #0c1520; border-bottom: none; z-index: 5;
-}
-.flip-flap--back {
-  top: 42px; transform-origin: center top;
-  background: #18283c; border-radius: 0 0 6px 6px;
-  border: 1px solid #0c1520; border-top: none;
-  transform: rotateX(90deg); z-index: 5;
-}
-/* Tekst: gepositioneerd alsof de kaart de volle hoogte heeft → flap clipt */
 .flip-flap span {
-  position: absolute; left: 0; right: 0; text-align: center;
   font-size: 52px; font-weight: 200; color: var(--gold);
   line-height: 1; letter-spacing: -0.03em; font-family: var(--font);
+  pointer-events: none;
 }
-.flip-flap--front span { top: 16px; }   /* (84 - 52) / 2 */
-.flip-flap--back  span { top: -26px; }  /* 16 - 42 */
-
-/* Animaties */
+.flip-flap--front {
+  background: #16212e; border: 1px solid #0c1520;
+  clip-path: inset(0 0 50% 0 round 6px 6px 0 0); /* bovenste helft */
+}
+.flip-flap--back {
+  background: #18283c; border: 1px solid #0c1520;
+  clip-path: inset(50% 0 0 0 round 0 0 6px 6px); /* onderste helft */
+  transform: perspective(300px) rotateX(90deg);   /* begin verborgen */
+}
+/* Animaties – perspective() in de transform zelf voor betrouwbare 3D */
 .flip-card.is-flipping .flip-flap--front {
   animation: fc-fold   0.28s cubic-bezier(0.55,0,1,0.45) forwards;
 }
 .flip-card.is-flipping .flip-flap--back {
   animation: fc-reveal 0.28s cubic-bezier(0,0.55,0.45,1) 0.24s forwards;
 }
-@keyframes fc-fold   { to { transform: rotateX(-90deg); } }
-@keyframes fc-reveal { from { transform: rotateX(90deg); } to { transform: rotateX(0deg); } }
-@media (prefers-reduced-motion: reduce) {
-  .flip-flap { animation: none !important; }
+@keyframes fc-fold {
+  from { transform: perspective(300px) rotateX(0deg); }
+  to   { transform: perspective(300px) rotateX(-90deg); }
 }
-
+@keyframes fc-reveal {
+  from { transform: perspective(300px) rotateX(90deg); }
+  to   { transform: perspective(300px) rotateX(0deg); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .flip-flap--front, .flip-flap--back { animation: none !important; }
+}
 /* Label onder de flip card */
 .sel-project-count__label {
   font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase;
@@ -857,7 +856,12 @@ __PHONE_OPTGROUPS__
     flipCard.classList.remove('is-flipping');
     void flipCard.offsetWidth;
     flipCard.classList.add('is-flipping');
-    setTimeout(function () { flipCard.classList.remove('is-flipping'); }, 560);
+    setTimeout(function () {
+      flipCard.classList.remove('is-flipping');
+      // Sync de voorste flap naar het nieuwe getal zodat hij na de animatie
+      // het juiste getal toont (anders snapt hij terug naar de oude waarde).
+      if (flipFront) flipFront.textContent = next;
+    }, 560);
   }
 
   function refreshCount() {
