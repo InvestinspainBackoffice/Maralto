@@ -218,68 +218,79 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   display: block;
 }
 
-/* ── Project-teller in flip card (topbar, gecentreerd) ────────────────── */
-.sel-countdown {
-  position: absolute; left: 50%; transform: translateX(-50%);
-  pointer-events: none;
-  display: flex; align-items: center; gap: 0.6rem;
-  white-space: nowrap;
+/* ── Grote project-teller in het midden van het vraagscherm ───────────── */
+/* Kaart: 96×84px, lettergrootte 52px (lijn-hoogte 1 = 52px)
+   Centrering: (84 - 52) / 2 = 16px boven/onder in de volle kaart
+   Bovenste flap span top:  16px  (ten opzichte van de flap = de kaart)
+   Onderste flap span top: -26px  (= 16 - 42, want flap begint op y=42)      */
+.sel-project-count {
+  display: flex; flex-direction: column; align-items: center;
+  gap: 0.65rem; margin-bottom: 2rem;
 }
-/* Flip card */
-.flip-clock { perspective: 300px; flex-shrink: 0; }
+.flip-clock { perspective: 400px; }
 .flip-card {
-  --fc-h: 40px; --fc-w: 52px; --fc-fs: 1.7rem;
-  --fc-pad: calc((var(--fc-h) - var(--fc-fs)) / 2);
-  --fc-half: calc(var(--fc-h) / 2);
-  position: relative; width: var(--fc-w); height: var(--fc-h);
+  position: relative;
+  width: 96px; height: 84px;
 }
+/* Statische achtergrond: toont altijd het correcte getal via flexbox */
 .flip-static {
   position: absolute; inset: 0;
-  background: #16212e; border-radius: 5px;
+  background: #16212e; border-radius: 6px;
   display: flex; align-items: center; justify-content: center;
-  box-shadow: 0 3px 10px rgba(0,0,0,0.6);
+  box-shadow: 0 4px 18px rgba(0,0,0,0.65), inset 0 1px 0 rgba(255,255,255,0.03);
   border: 1px solid #0c1520;
 }
 .flip-static span {
-  font-size: var(--fc-fs); font-weight: 300; color: var(--gold);
-  line-height: 1; letter-spacing: -0.02em; font-family: var(--font);
+  font-size: 52px; font-weight: 200; color: var(--gold);
+  line-height: 1; letter-spacing: -0.03em; font-family: var(--font);
 }
+/* Horizontale naad */
 .flip-divider {
-  position: absolute; left: 0; right: 0; top: 50%;
-  height: 1px; background: #080f18; z-index: 10;
+  position: absolute; left: 0; right: 0; top: 42px;
+  height: 1px; background: #06101a; z-index: 10;
 }
+/* Flappen */
 .flip-flap {
-  position: absolute; left: 0; right: 0; height: var(--fc-half);
+  position: absolute; left: 0; right: 0; height: 42px; /* = 84/2 */
   overflow: hidden;
   backface-visibility: hidden; -webkit-backface-visibility: hidden;
-  border: 1px solid #0c1520;
 }
 .flip-flap--front {
   top: 0; transform-origin: center bottom;
-  background: #16212e; border-radius: 5px 5px 0 0; border-bottom: none; z-index: 5;
+  background: #16212e; border-radius: 6px 6px 0 0;
+  border: 1px solid #0c1520; border-bottom: none; z-index: 5;
 }
 .flip-flap--back {
-  bottom: 0; transform-origin: center top;
-  background: #1b2c3e; border-radius: 0 0 5px 5px; border-top: none;
+  top: 42px; transform-origin: center top;
+  background: #18283c; border-radius: 0 0 6px 6px;
+  border: 1px solid #0c1520; border-top: none;
   transform: rotateX(90deg); z-index: 5;
 }
+/* Tekst: gepositioneerd alsof de kaart de volle hoogte heeft → flap clipt */
 .flip-flap span {
   position: absolute; left: 0; right: 0; text-align: center;
-  font-size: var(--fc-fs); font-weight: 300; color: var(--gold);
-  line-height: 1; letter-spacing: -0.02em; font-family: var(--font);
+  font-size: 52px; font-weight: 200; color: var(--gold);
+  line-height: 1; letter-spacing: -0.03em; font-family: var(--font);
 }
-.flip-flap--front span { top: var(--fc-pad); }
-.flip-flap--back  span { top: calc(var(--fc-pad) - var(--fc-half)); }
-.flip-card.is-flipping .flip-flap--front { animation: fc-fold   0.25s ease-in  forwards; }
-.flip-card.is-flipping .flip-flap--back  { animation: fc-reveal 0.25s ease-out 0.21s forwards; }
-@keyframes fc-fold   { from { transform: rotateX(0deg); }  to { transform: rotateX(-90deg); } }
+.flip-flap--front span { top: 16px; }   /* (84 - 52) / 2 */
+.flip-flap--back  span { top: -26px; }  /* 16 - 42 */
+
+/* Animaties */
+.flip-card.is-flipping .flip-flap--front {
+  animation: fc-fold   0.28s cubic-bezier(0.55,0,1,0.45) forwards;
+}
+.flip-card.is-flipping .flip-flap--back {
+  animation: fc-reveal 0.28s cubic-bezier(0,0.55,0.45,1) 0.24s forwards;
+}
+@keyframes fc-fold   { to { transform: rotateX(-90deg); } }
 @keyframes fc-reveal { from { transform: rotateX(90deg); } to { transform: rotateX(0deg); } }
 @media (prefers-reduced-motion: reduce) {
-  .flip-flap--front, .flip-flap--back { animation: none !important; }
+  .flip-flap { animation: none !important; }
 }
-/* Label naast de flip card */
-.sel-countdown__label {
-  font-size: 0.62rem; letter-spacing: 0.12em;
+
+/* Label onder de flip card */
+.sel-project-count__label {
+  font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase;
   color: var(--text-muted); line-height: 1.4;
 }
 
@@ -614,18 +625,6 @@ footer a { color: var(--gold-dim); text-underline-offset: 2px; }
       <svg viewBox="0 0 24 24"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg>
       __I_SEL_BACK__
     </button>
-    <!-- Project-teller in flip card, gecentreerd in de topbar -->
-    <div class="sel-countdown" id="selCountdownWrap" aria-hidden="true" hidden>
-      <div class="flip-clock">
-        <div class="flip-card" id="flipCard">
-          <div class="flip-static"><span id="flipStatic">&mdash;</span></div>
-          <div class="flip-divider"></div>
-          <div class="flip-flap flip-flap--front"><span id="flipFront">&mdash;</span></div>
-          <div class="flip-flap flip-flap--back"><span id="flipBack">&mdash;</span></div>
-        </div>
-      </div>
-      <span class="sel-countdown__label" id="selCountLabel">__I_SEL_COUNTER_MANY__</span>
-    </div>
   </div>
 </div>
 
@@ -643,6 +642,18 @@ footer a { color: var(--gold-dim); text-underline-offset: 2px; }
 
     <!-- ═══════════ VRAGEN ═══════════ -->
     <div class="sel-screen" id="selSteps" hidden>
+      <!-- Grote project-teller: verschijnt na het eerste antwoord -->
+      <div class="sel-project-count" id="selProjectCount" hidden>
+        <div class="flip-clock">
+          <div class="flip-card" id="flipCard">
+            <div class="flip-static"><span id="flipStatic">&mdash;</span></div>
+            <div class="flip-divider"></div>
+            <div class="flip-flap flip-flap--front"><span id="flipFront">&mdash;</span></div>
+            <div class="flip-flap flip-flap--back"><span id="flipBack">&mdash;</span></div>
+          </div>
+        </div>
+        <p class="sel-project-count__label" id="selCountLabel">__I_SEL_COUNTER_MANY__</p>
+      </div>
 __STEPS__
     </div>
 
@@ -741,13 +752,13 @@ __PHONE_OPTGROUPS__
   var topbar = document.getElementById('selTopbar');
   var progressBar = document.getElementById('selProgressBar');
   var progress = document.getElementById('selProgress');
-  var backBtn       = document.getElementById('selBack');
-  var countdownWrap = document.getElementById('selCountdownWrap');
-  var flipCard      = document.getElementById('flipCard');
-  var flipStatic    = document.getElementById('flipStatic');
-  var flipFront     = document.getElementById('flipFront');
-  var flipBack      = document.getElementById('flipBack');
-  var countLabel    = document.getElementById('selCountLabel');
+  var backBtn      = document.getElementById('selBack');
+  var projectCount = document.getElementById('selProjectCount');
+  var flipCard     = document.getElementById('flipCard');
+  var flipStatic   = document.getElementById('flipStatic');
+  var flipFront    = document.getElementById('flipFront');
+  var flipBack     = document.getElementById('flipBack');
+  var countLabel   = document.getElementById('selCountLabel');
   var form = document.getElementById('selForm');
   var submitBtn = document.getElementById('selSubmit');
   var formError = document.getElementById('selFormError');
@@ -854,10 +865,9 @@ __PHONE_OPTGROUPS__
     fetchMatches(3).then(function (data) {
       if (!data) return;
       lastCount = data.count;
-      var n = String(data.count);
-      flipTo(n);
+      flipTo(String(data.count));
       if (countLabel) countLabel.textContent = data.count === 1 ? COUNT_ONE : COUNT_MANY;
-      if (countdownWrap) countdownWrap.hidden = false;
+      if (projectCount) projectCount.hidden = false;
     });
   }
 
@@ -875,7 +885,7 @@ __PHONE_OPTGROUPS__
     progress.setAttribute('aria-valuenow', String(pct));
     topbar.classList.toggle('is-visible', current >= 0);
     backBtn.hidden = current < 0 || current > TOTAL;
-    if (countdownWrap && (current < 0 || current >= TOTAL)) countdownWrap.hidden = true;
+    if (projectCount && (current < 0 || current >= TOTAL)) projectCount.hidden = true;
   }
 
 
