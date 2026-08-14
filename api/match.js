@@ -39,20 +39,25 @@ function rateLimited(ip) {
   return record.count > RATE_MAX;
 }
 
-/* ── Regio's ──────────────────────────────────────────────────────────────
- * De drie keuzes op stap 1 zijn kuststroken, geen gemeentes, en ze overlappen
- * elkaar bewust ("Marbella" hoort bij A én B). De Costa del Sol loopt
- * praktisch oost-west, dus de lengtegraad uit de coördinaten van elk project
- * is hier een betrouwbaardere indeling dan de plaatsnaam: die staat als vrije
- * tekst in de projectbestanden ("SAN PEDRO, MARBELLA", "OOST-MARBELLA", ...)
- * en zou een lijst uitzonderingen vragen die bij elk nieuw project weer
- * bijgewerkt moet worden. Met deze banden valt elk van de 128 projecten in
- * minstens één regio.
+/* ── Gemeentes ────────────────────────────────────────────────────────────
+ * De tien keuzes op stap 1 zijn gemeentes/wijken langs de Costa del Sol.
+ * We matchen op de `location`-tekst van elk project (HERO_LOCATION uit het
+ * projectbestand), niet op lengtegraad. Die tekst is betrouwbaarder: "SAN
+ * PEDRO, MARBELLA" is duidelijk San Pedro, terwijl dezelfde lengtegraad ook
+ * net in Cancelada of Benahavís kan vallen. Een project kan in meerdere
+ * gemeentes vallen als de locatietekst meerdere patronen treft.
  */
-const REGIONS = {
-  A: [-4.92, -3.70], // Málaga – Marbella
-  B: [-5.18, -4.85], // Marbella – Estepona
-  C: [-5.42, -5.10], // Estepona – Sotogrande
+const MUNICIPALITIES = {
+  sotogrande:  /sotogrande|alcaidesa/i,
+  manilva:     /manilva|casares/i,
+  estepona:    /estepona/i,
+  sanpedro:    /san pedro|cancelada/i,
+  puertobanus: /nueva andal|la quinta|real de la quinta|ist[aá]n|oj[eé]n|puerto ban/i,
+  marbella:    /\bmarbella\b|benahav[ií]s|elviria/i,
+  mijascosta:  /mijas costa|la cala de mijas/i,
+  mijas:       /\bmijas\b(?!\s*costa)/i,
+  fuengirola:  /fuengirola|mijas pueblo/i,
+  malaga:      /benalm[aá]dena|torremolinos|m[aá]laga|torre del mar/i,
 };
 
 /* Onder- en bovengrens per budgetcategorie, in euro.
@@ -65,12 +70,12 @@ const REGIONS = {
  * lead (in de JSON-body van /api/lead, waar hij géén encoding hoeft te
  * overleven). Spiegelt BUDGET_BUCKETS in _build/generate.py. */
 const BUDGET_RANGE = {
-  lt200k: { range: [0, 200000], sf: '<200k' },
-  '200-400': { range: [200000, 400000], sf: '200k-400k' },
-  '400-600': { range: [400000, 600000], sf: '400k-600k' },
-  '600-1m': { range: [600000, 1000000], sf: '600k-1m' },
-  '1m-3m': { range: [1000000, 3000000], sf: '1m - 3m' },
-  '3m-plus': { range: [3000000, Infinity], sf: '3m+' },
+  lt200k:   { range: [0, 200000],         sf: '<200k' },
+  '200-400':{ range: [200000, 400000],    sf: '200k-400k' },
+  '400-600':{ range: [400000, 600000],    sf: '400k-600k' },
+  '600-1m': { range: [600000, 1000000],   sf: '600k-1m' },
+  '1m-3m':  { range: [1000000, 3000000],  sf: '1m - 3m' },
+  '3m-plus':{ range: [3000000, Infinity], sf: '3m+' },
 };
 // Een vanaf-prijs is een vanaf-prijs: een project dat net buiten de gekozen
 // categorie begint is nog steeds een reële optie. Boven de grens 10%
@@ -152,12 +157,15 @@ let FACETS = null;
 function buildFacets() {
   const out = {};
   for (const [slug, entry] of Object.entries(DATA.projects)) {
-    const lon = entry.coords ? parseFloat(entry.coords.split(',')[1]) : NaN;
-    const regions = [];
-    if (!Number.isNaN(lon)) {
-      for (const [code, [lo, hi]] of Object.entries(REGIONS)) {
-        if (lon >= lo && lon <= hi) regions.push(code);
-      }
+    // Gemeente-matching op locatietekst: betrouwbaarder dan lengtegraad
+    // omdat de HERO_LOCATION in elk projectbestand de echte gemeentenaam
+    // bevat (bv. "SAN PEDRO, MARBELLA"), terwijl lengtegraad-banden altijd
+    // een arbitraire drempel vereisen die bij elk nieuw project gecontroleerd
+    // moet worden.
+    const locationText = (entry.nl && entry.nl.location) || '';
+    const municipalities = [];
+    for (const [code, re] of Object.entries(MUNICIPALITIES)) {
+      if (re.test(locationText)) municipalities.push(code);
     }
 
     const perLang = {};
@@ -177,7 +185,7 @@ function buildFacets() {
       };
     }
 
-    out[slug] = { regions, lang: perLang };
+    out[slug] = { municipalities, lang: perLang };
   }
   return out;
 }
@@ -190,8 +198,6 @@ function scoreProject(entry, facet, f, q) {
   // De punten zetten die eerste groep bovenaan.
   if (q.type) {
     if (q.type === 'turnkey') {
-      // "Turnkey Modern Property" is geen bouwvorm maar een oplevermoment,
-      // en dus geen reden om iets uit te sluiten - alleen om het te tonen.
       if (/sleutelklaar|instapklaar|turnkey|opgeleverd|key-?ready|move-?in ready/.test(f.weak)) {
         score += 24;
       }
@@ -200,11 +206,7 @@ function scoreProject(entry, facet, f, q) {
     }
   }
 
-  // Slaapkamers, woonoppervlak: alleen belonen wat we zéker weten. Deze
-  // getallen staan in vrije tekst en zijn maar voor een deel van de projecten
-  // af te leiden (slaapkamers ~71/128, m² ~21/128). Een onbekende waarde
-  // telt daarom neutraal - anders zou de helft van de catalogus wegvallen op
-  // ontbrekende data in plaats van op een echte mismatch.
+  // Slaapkamers, woonoppervlak: alleen belonen wat we zéker weten.
   if (q.bedrooms && f.bedrooms) {
     const want = q.bedrooms;
     const fits = q.bedroomsOpen
@@ -234,14 +236,8 @@ function scoreProject(entry, facet, f, q) {
   }
 
   // Budget weegt zwaar, en bewust zwaarder dan elke tekstuele voorkeur.
-  // Iemand die "1m - 3m" antwoordt en bovenaan een project van €464.000
-  // krijgt omdat dat toevallig "zeezicht" in zijn samenvatting heeft, ziet
-  // een selectie die zijn belangrijkste antwoord negeert. De prijs telt
-  // volledig mee vanaf ~70% van de bovengrens en zakt daaronder af.
   if (entry.price_num && q.budget) {
     const [lo, hi] = BUDGET_RANGE[q.budget].range;
-    // Binnen de gekozen categorie: volle punten. Erbuiten (maar binnen de
-    // tolerantie die de harde filter nog doorlaat): afgezwakt.
     const inside = entry.price_num >= lo && entry.price_num <= hi;
     score += inside ? 25 : 10;
   }
@@ -252,8 +248,8 @@ function scoreProject(entry, facet, f, q) {
 function parseQuery(params) {
   const regions = (params.get('regions') || '')
     .split(',')
-    .map((s) => s.trim().toUpperCase())
-    .filter((s) => REGIONS[s]);
+    .map((s) => s.trim().toLowerCase())
+    .filter((s) => MUNICIPALITIES[s]);
 
   const INDOOR = { lt100: [0, 100], '100-150': [100, 150], '150plus': [150, 100000] };
 
@@ -305,21 +301,16 @@ module.exports = (req, res) => {
       if (!f) continue;
 
       // Projecten zonder vanaf-prijs ("Uitverkocht", "Prijs op aanvraag",
-      // "Binnenkort beschikbaar" - 4 van de 128) vallen af. Ze zijn niet op
-      // budget te toetsen, en een uitverkocht project bovenaan een
-      // persoonlijke selectie zetten ondermijnt precies het vertrouwen dat
-      // deze pagina moet opbouwen.
+      // "Binnenkort beschikbaar" - 4 van de 128) vallen af.
       if (!entry.price_num) continue;
 
-      // Harde filters: alleen op wat we voor álle projecten zeker weten -
-      // de regio (uit de coördinaten) en de vanaf-prijs.
-      if (q.regions.length && !q.regions.some((r) => facet.regions.includes(r))) continue;
+      // Harde gemeente-filter: alleen als de bezoeker minstens één gemeente
+      // heeft gekozen én het project in geen enkele gekozen gemeente valt.
+      if (q.regions.length && !q.regions.some((r) => facet.municipalities.includes(r))) continue;
 
       // Wie om een villa vraagt hoort niet meegeteld te worden in een lijst
       // vol appartementen. Projecten die hun type nergens benoemen (6 van de
-      // 128) blijven wél staan: die vallen weg op ontbrekende data, niet op
-      // een echte mismatch. 'turnkey' filtert niet - dat is een
-      // oplevermoment, geen bouwvorm.
+      // 128) blijven wél staan. 'turnkey' filtert niet.
       if (
         q.type &&
         q.type !== 'turnkey' &&
@@ -337,9 +328,6 @@ module.exports = (req, res) => {
       out.push({ slug, entry, score: scoreProject(entry, facet, f, q) });
     }
 
-    // Vaste volgorde bij gelijke score, zodat dezelfde antwoorden altijd
-    // dezelfde lijst geven - een resultaat dat per refresh wisselt voelt als
-    // een gok in plaats van een selectie.
     out.sort(
       (a, b) =>
         b.score - a.score ||
@@ -357,9 +345,7 @@ module.exports = (req, res) => {
   if (relaxed) scored = collect(false);
 
   // Vier ontwikkelingen staan onder twee slugs in de portefeuille (een
-  // tweede fase of een aparte duplex-selectie), met dezelfde naam. Twee
-  // kaartjes "Ocean View Marbella" naast elkaar kost een plek in een top drie
-  // en leest als een fout. De best scorende van het paar blijft staan.
+  // tweede fase of een aparte duplex-selectie), met dezelfde naam.
   const seenNames = new Set();
   const cards = [];
   for (const { slug, entry } of scored) {
@@ -382,9 +368,6 @@ module.exports = (req, res) => {
   return res.status(200).json({
     count: relaxed ? 0 : scored.length,
     relaxed,
-    // De Salesforce-code hoort bij de gekozen categorie en wordt hier
-    // teruggegeven zodat de pagina hem letterlijk kan doorsturen met de lead,
-    // zonder de mapping een tweede keer te moeten kennen.
     budget_sf: q.budget ? BUDGET_RANGE[q.budget].sf : '',
     cards,
   });

@@ -66,12 +66,23 @@ QUESTIONS = [
         "multi": True,
         "required": True,
         "region_cards": True,
-        "nl": {"q": "In welke regio bent u het meest ge&iuml;nteresseerd?"},
-        "en": {"q": "Which area are you most interested in?"},
+        "nl": {"q": "In welke gemeente(n) bent u ge&iuml;nteresseerd?"},
+        "en": {"q": "Which area(s) are you interested in?"},
+        # Waarden zijn de sleutels uit MUNICIPALITIES in api/match.js.
+        # Volgorde: van oost naar west langs de kust (zoals je rijdt van
+        # Málaga richting Sotogrande), zodat de kaarten geografisch logisch
+        # aanvoelen.
         "options": [
-            {"value": "A", "nl": "M&aacute;laga &ndash; Marbella", "en": "M&aacute;laga &ndash; Marbella"},
-            {"value": "B", "nl": "Marbella &ndash; Estepona", "en": "Marbella &ndash; Estepona"},
-            {"value": "C", "nl": "Estepona &ndash; Sotogrande", "en": "Estepona &ndash; Sotogrande"},
+            {"value": "malaga",      "nl": "M&aacute;laga",     "en": "M&aacute;laga"},
+            {"value": "fuengirola",  "nl": "Fuengirola",        "en": "Fuengirola"},
+            {"value": "mijas",       "nl": "Mijas",             "en": "Mijas"},
+            {"value": "mijascosta",  "nl": "Mijas Costa",       "en": "Mijas Costa"},
+            {"value": "marbella",    "nl": "Marbella",          "en": "Marbella"},
+            {"value": "puertobanus", "nl": "Puerto Ban&uacute;s","en": "Puerto Ban&uacute;s"},
+            {"value": "sanpedro",    "nl": "San Pedro",         "en": "San Pedro"},
+            {"value": "estepona",    "nl": "Estepona",          "en": "Estepona"},
+            {"value": "manilva",     "nl": "Manilva",           "en": "Manilva"},
+            {"value": "sotogrande",  "nl": "Sotogrande",        "en": "Sotogrande"},
         ],
     },
     {
@@ -203,50 +214,49 @@ LETTERS = "ABCDEFGH"
 
 
 def region_prices():
-    """Vanaf-prijzen per regio, berekend uit onze eigen projectdata.
+    """Laagste vanaf-prijs per gemeente, berekend uit onze eigen projectdata.
 
-    De Typeform toont hier vaste getallen die met de hand zijn ingetypt en
-    dus verouderen zodra de portefeuille verandert. Deze komen bij elke
-    regeneratie opnieuw uit api/_projects.json, zodat wat de bezoeker op de
-    kaart ziet altijd klopt met wat hij daarna te zien krijgt.
+    Gespiegeld aan MUNICIPALITIES in api/match.js: dezelfde tekst-patronen op
+    de HERO_LOCATION van elk project. Zo klopt wat de bezoeker op de kaarten
+    ziet altijd met de projecten die hij daarna te zien krijgt.
     """
+    import re as _re
+
     data_path = os.path.join(ROOT, "api", "_projects.json")
     with open(data_path, encoding="utf-8") as f:
         projects = json.load(f)["projects"]
 
-    bands = {"A": (-4.92, -3.70), "B": (-5.18, -4.85), "C": (-5.42, -5.10)}
-    found = {r: {"apartment": [], "villa": []} for r in bands}
+    # Patronen gespiegeld aan MUNICIPALITIES in api/match.js
+    MUNI_PATTERNS = {
+        "sotogrande":  _re.compile(r"sotogrande|alcaidesa", _re.I),
+        "manilva":     _re.compile(r"manilva|casares", _re.I),
+        "estepona":    _re.compile(r"estepona", _re.I),
+        "sanpedro":    _re.compile(r"san pedro|cancelada", _re.I),
+        "puertobanus": _re.compile(r"nueva andal|la quinta|real de la quinta|ist[aá]n|oj[eé]n|puerto ban", _re.I),
+        "marbella":    _re.compile(r"\bmarbella\b|benahav[ií]s|elviria", _re.I),
+        "mijascosta":  _re.compile(r"mijas costa|la cala de mijas", _re.I),
+        "mijas":       _re.compile(r"\bmijas\b(?!\s*costa)", _re.I),
+        "fuengirola":  _re.compile(r"fuengirola|mijas pueblo", _re.I),
+        "malaga":      _re.compile(r"benalm[aá]dena|torremolinos|m[aá]laga|torre del mar", _re.I),
+    }
+
+    found = {k: [] for k in MUNI_PATTERNS}
 
     for entry in projects.values():
-        if not entry.get("price_num") or not entry.get("coords"):
+        if not entry.get("price_num"):
             continue
-        lon = float(entry["coords"].split(",")[1])
-        nl = entry["nl"]
-        text = " ".join(
-            [nl.get("summary", "")]
-            + [s["heading"] + " " + s["text"] for s in nl.get("sections", [])]
-        ).lower()
-        for region, (lo, hi) in bands.items():
-            if not lo <= lon <= hi:
-                continue
-            if "appartement" in text:
-                found[region]["apartment"].append(entry["price_num"])
-            if "villa" in text:
-                found[region]["villa"].append(entry["price_num"])
+        loc = (entry.get("nl") or {}).get("location", "")
+        for muni, pat in MUNI_PATTERNS.items():
+            if pat.search(loc):
+                found[muni].append(entry["price_num"])
 
     def fmt(values):
         if not values:
-            return "&mdash;"
-        # De laagste vanaf-prijs, afgerond naar beneden op tienduizendtallen:
-        # "v.a. € 250.000" leest als een richtprijs, "v.a. € 248.000" wekt de
-        # indruk dat het om één specifiek project gaat.
+            return ""
         low = (min(values) // 10000) * 10000
-        return "&euro; " + f"{low:,}".replace(",", ".")
+        return "v.a. &euro; " + f"{low:,}".replace(",", ".")
 
-    return {
-        region: {"apartment": fmt(v["apartment"]), "villa": fmt(v["villa"])}
-        for region, v in found.items()
-    }
+    return {muni: fmt(prices) for muni, prices in found.items()}
 
 
 def phone_optgroups():
@@ -296,50 +306,35 @@ def render_options(question, lang):
 
 
 def render_region_options(question, lang, strings, prices):
-    """Vraag 1: de drie regio's als klikbare kaarten - geen aparte kaart mét
-    losse antwoordknoppen eronder. Die twee stonden eerst na elkaar en zeiden
-    hetzelfde tweemaal; dit is de ene set knoppen die je ook echt aanklikt.
+    """Vraag 1: tien gemeente-kaarten in een 2-koloms grid.
 
-    HTML-knoppen in plaats van SVG-rects: een <rect> is geen focusbaar,
-    klikbaar element zonder een hoop extra werk (foreignObject, click-mapping
-    op coördinaten). Drie <button>'s met dezelfde look kosten dat niet en
-    werken meteen met dezelfde toetsenbordbediening als de andere vragen.
+    Multi-select (checkbox): meerdere gemeentes tegelijk aanduiden is normaal
+    ("Estepona of Marbella"). Elke kaart toont de naam en de laagste
+    vanaf-prijs in die gemeente.
     """
-    coast = f"""<div class="sel-coast" aria-hidden="true">
-    <svg viewBox="0 0 544 34" preserveAspectRatio="none">
-      <path d="M4 14 C 120 6, 180 22, 272 12 S 430 2, 540 10"/>
-    </svg>
-    <span class="sel-coast__label">{strings['SEL_MAP_SEA']}</span>
-  </div>"""
-
-    labels = [
-        ("A", "M&Aacute;LAGA", "MARBELLA"),
-        ("B", "MARBELLA", "ESTEPONA"),
-        ("C", "ESTEPONA", "SOTOGRANDE"),
-    ]
     role = "checkbox" if question.get("multi") else "radio"
     cards = []
-    for code, left, right in labels:
-        cards.append(f"""
-      <button type="button" class="sel-option sel-option--region" data-value="{code}"
-              role="{role}" aria-checked="false">
-        <span class="sel-option__region-code" aria-hidden="true">{code}</span>
-        <span class="sel-option__places">
-          <span>{left}</span><span class="sel-option__dash" aria-hidden="true">&mdash;</span><span>{right}</span>
-        </span>
-        <span class="sel-option__prices">
-          <span>{strings['SEL_MAP_APT']} {prices[code]['apartment']}</span>
-          <span>{strings['SEL_MAP_VILLA']} {prices[code]['villa']}</span>
-        </span>
-        <span class="sel-option__tick" aria-hidden="true"></span>
-      </button>""")
+    for opt in question["options"]:
+        code = opt["value"]
+        label = opt[lang]
+        price = prices.get(code, "")
+        price_html = f'<span class="sel-option__price">{price}</span>' if price else ""
+        cards.append(
+            f'<button type="button" class="sel-option sel-option--muni" data-value="{code}" '
+            f'role="{role}" aria-checked="false">'
+            f'<span class="sel-option__label">{label}</span>'
+            f'{price_html}'
+            f'<span class="sel-option__tick" aria-hidden="true"></span>'
+            f'</button>'
+        )
 
-    options = (
-        f'<div class="sel-options sel-options--region" '
+    return (
+        f'<div class="sel-options sel-options--muni" '
         f'role="{"group" if question.get("multi") else "radiogroup"}" '
-        f'aria-label="{question[lang]["q"]}">{"".join(cards)}\n      </div>'
+        f'aria-label="{question[lang]["q"]}">'
+        + "\n        ".join(cards)
+        + "\n      </div>"
     )
-    return coast + "\n      " + options
 
 
 def build(lang, prices, project_total):

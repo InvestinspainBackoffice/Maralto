@@ -218,11 +218,35 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 }
 
 /* ── Vraagscherm ───────────────────────────────────────────────────────── */
-.sel-step__count {
-  font-size: 0.6rem; letter-spacing: 0.3em; text-transform: uppercase;
-  color: var(--gold-dim); margin-bottom: 1.25rem;
+
+/* iPhone-stijl countdown: groot getal bovenaan in het midden, telt af van
+   10 naar 1 terwijl de bezoeker door de vragen loopt. De animatie krimpt
+   het getal even in bij elke stap (zoals de iOS-alarmbel-afteller). */
+.sel-countdown {
+  position: absolute; top: 0; left: 0; right: 0;
+  display: flex; justify-content: center;
+  padding-top: clamp(1rem, 3vw, 1.75rem);
+  pointer-events: none;
 }
-.sel-step__count span { color: var(--text-muted); letter-spacing: 0.2em; }
+.sel-countdown__num {
+  font-size: clamp(2.8rem, 8vw, 4.5rem);
+  font-weight: 200; letter-spacing: -0.04em;
+  color: var(--gold); line-height: 1;
+  transition: transform 0.22s var(--ease), opacity 0.22s var(--ease);
+  will-change: transform, opacity;
+}
+.sel-countdown__num.is-flipping {
+  transform: scale(0.55); opacity: 0;
+}
+@media (prefers-reduced-motion: reduce) {
+  .sel-countdown__num { transition: none; }
+}
+
+.sel-step__count {
+  /* Verborgen voor schermlezers (countdown geeft de positie al aan), maar
+     behouden voor toegankelijkheids-context via aria-label op de stap. */
+  display: none;
+}
 .sel-step__q {
   font-size: clamp(1.35rem, 3.6vw, 2.1rem);
   font-weight: 300; line-height: 1.3; letter-spacing: -0.01em;
@@ -318,51 +342,25 @@ h1[tabindex="-1"]:focus, h2[tabindex="-1"]:focus { outline: none; }
   position: absolute; top: 0.75rem; right: 0.75rem;
 }
 
-/* ── Kustlijn-decoratie boven de regiokaarten (vraag 1) ──────────────────
-   Zuiver decoratief (aria-hidden): de kaarten eronder zijn de klikbare
-   elementen, dit tekent alleen de kustlijn waarnaar ze verwijzen. */
-.sel-coast { margin-top: 1.5rem; }
-.sel-coast svg {
-  display: block; width: 100%; height: 22px;
-  overflow: visible;
+/* ── Gemeente-kaarten (vraag 1) ───────────────────────────────────────────
+   10 gemeentes in een 2-koloms grid. Compact: naam + laagste prijs. */
+.sel-options--muni {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem; margin-top: 1.25rem;
 }
-.sel-coast path { fill: none; stroke: var(--line-light); stroke-width: 1.5; }
-.sel-coast__label {
-  display: block; text-align: center; margin-top: 0.35rem;
-  font-size: 0.6rem; letter-spacing: 0.3em; color: var(--text-muted);
-  opacity: 0.6;
+.sel-option--muni {
+  flex-direction: column; align-items: flex-start;
+  gap: 0.2rem; padding: 0.9rem 1rem;
 }
-
-/* ── Regiokaarten (vraag 1) ───────────────────────────────────────────────
-   Dezelfde .sel-option-basis als de andere vragen (klik, toetsenbord,
-   aria-checked), met een eigen indeling: code + twee plaatsnamen + twee
-   prijzen per kaart, in plaats van één label. */
-.sel-options--region { gap: 0.75rem; margin-top: 0.75rem; }
-@media (min-width: 620px) {
-  .sel-options--region { grid-template-columns: repeat(3, 1fr); }
-  .sel-options--region > :last-child:nth-child(odd) { grid-column: auto; }
+.sel-option--muni .sel-option__label {
+  font-size: 0.88rem; font-weight: 400;
 }
-.sel-option--region {
-  flex-direction: column; align-items: center; text-align: center;
-  gap: 0.5rem; padding: 1.25rem 1rem 1.4rem;
+.sel-option__price {
+  font-size: 0.65rem; color: var(--text-muted); letter-spacing: 0.03em;
 }
-.sel-option__region-code {
-  font-size: 0.7rem; letter-spacing: 0.2em; color: var(--gold-dim);
-  transition: color 0.25s;
-}
-.sel-option--region[aria-checked="true"] .sel-option__region-code { color: var(--gold); }
-.sel-option__places {
-  display: flex; align-items: center; gap: 0.5rem;
-  font-size: 0.68rem; letter-spacing: 0.09em; color: var(--text);
-  font-weight: 400;
-}
-.sel-option__dash { color: var(--line-light); }
-.sel-option__prices {
-  display: flex; flex-direction: column; gap: 0.2rem;
-  font-size: 0.68rem; color: var(--text-muted);
-}
-.sel-option--region .sel-option__tick {
-  position: absolute; top: 0.7rem; right: 0.7rem;
+.sel-option--muni .sel-option__tick {
+  position: absolute; top: 0.65rem; right: 0.65rem;
 }
 
 /* ── Projectkaartjes ───────────────────────────────────────────────────── */
@@ -582,7 +580,11 @@ footer a { color: var(--gold-dim); text-underline-offset: 2px; }
     </section>
 
     <!-- ═══════════ VRAGEN ═══════════ -->
-    <div class="sel-screen" id="selSteps" hidden>
+    <div class="sel-screen" id="selSteps" style="position:relative" hidden>
+      <!-- iPhone-stijl afteller: groot getal bovenaan, telt van 10 naar 1 -->
+      <div class="sel-countdown" aria-hidden="true">
+        <span class="sel-countdown__num" id="selCountNum">10</span>
+      </div>
 
       <section class="sel-step" data-step="1" data-id="region"
                data-param="regions"
@@ -590,51 +592,18 @@ footer a { color: var(--gold-dim); text-underline-offset: 2px; }
                data-required="1"
                hidden>
         <p class="sel-step__count">Stap 01 <span>van 10</span></p>
-        <h2 class="sel-step__q" tabindex="-1">In welke regio bent u het meest ge&iuml;nteresseerd?</h2>
+        <h2 class="sel-step__q" tabindex="-1">In welke gemeente(n) bent u ge&iuml;nteresseerd?</h2>
         <p class="sel-step__hint">Meerdere antwoorden mogelijk</p>
-        <div class="sel-coast" aria-hidden="true">
-    <svg viewBox="0 0 544 34" preserveAspectRatio="none">
-      <path d="M4 14 C 120 6, 180 22, 272 12 S 430 2, 540 10"/>
-    </svg>
-    <span class="sel-coast__label">MIDDELLANDSE ZEE</span>
-  </div>
-      <div class="sel-options sel-options--region" role="group" aria-label="In welke regio bent u het meest ge&iuml;nteresseerd?">
-      <button type="button" class="sel-option sel-option--region" data-value="A"
-              role="checkbox" aria-checked="false">
-        <span class="sel-option__region-code" aria-hidden="true">A</span>
-        <span class="sel-option__places">
-          <span>M&Aacute;LAGA</span><span class="sel-option__dash" aria-hidden="true">&mdash;</span><span>MARBELLA</span>
-        </span>
-        <span class="sel-option__prices">
-          <span>Appartement v.a. &euro; 240.000</span>
-          <span>Villa v.a. &euro; 690.000</span>
-        </span>
-        <span class="sel-option__tick" aria-hidden="true"></span>
-      </button>
-      <button type="button" class="sel-option sel-option--region" data-value="B"
-              role="checkbox" aria-checked="false">
-        <span class="sel-option__region-code" aria-hidden="true">B</span>
-        <span class="sel-option__places">
-          <span>MARBELLA</span><span class="sel-option__dash" aria-hidden="true">&mdash;</span><span>ESTEPONA</span>
-        </span>
-        <span class="sel-option__prices">
-          <span>Appartement v.a. &euro; 380.000</span>
-          <span>Villa v.a. &euro; 460.000</span>
-        </span>
-        <span class="sel-option__tick" aria-hidden="true"></span>
-      </button>
-      <button type="button" class="sel-option sel-option--region" data-value="C"
-              role="checkbox" aria-checked="false">
-        <span class="sel-option__region-code" aria-hidden="true">C</span>
-        <span class="sel-option__places">
-          <span>ESTEPONA</span><span class="sel-option__dash" aria-hidden="true">&mdash;</span><span>SOTOGRANDE</span>
-        </span>
-        <span class="sel-option__prices">
-          <span>Appartement v.a. &euro; 320.000</span>
-          <span>Villa v.a. &euro; 950.000</span>
-        </span>
-        <span class="sel-option__tick" aria-hidden="true"></span>
-      </button>
+        <div class="sel-options sel-options--muni" role="group" aria-label="In welke gemeente(n) bent u ge&iuml;nteresseerd?"><button type="button" class="sel-option sel-option--muni" data-value="malaga" role="checkbox" aria-checked="false"><span class="sel-option__label">M&aacute;laga</span><span class="sel-option__price">v.a. &euro; 350.000</span><span class="sel-option__tick" aria-hidden="true"></span></button>
+        <button type="button" class="sel-option sel-option--muni" data-value="fuengirola" role="checkbox" aria-checked="false"><span class="sel-option__label">Fuengirola</span><span class="sel-option__price">v.a. &euro; 340.000</span><span class="sel-option__tick" aria-hidden="true"></span></button>
+        <button type="button" class="sel-option sel-option--muni" data-value="mijas" role="checkbox" aria-checked="false"><span class="sel-option__label">Mijas</span><span class="sel-option__price">v.a. &euro; 240.000</span><span class="sel-option__tick" aria-hidden="true"></span></button>
+        <button type="button" class="sel-option sel-option--muni" data-value="mijascosta" role="checkbox" aria-checked="false"><span class="sel-option__label">Mijas Costa</span><span class="sel-option__price">v.a. &euro; 290.000</span><span class="sel-option__tick" aria-hidden="true"></span></button>
+        <button type="button" class="sel-option sel-option--muni" data-value="marbella" role="checkbox" aria-checked="false"><span class="sel-option__label">Marbella</span><span class="sel-option__price">v.a. &euro; 410.000</span><span class="sel-option__tick" aria-hidden="true"></span></button>
+        <button type="button" class="sel-option sel-option--muni" data-value="puertobanus" role="checkbox" aria-checked="false"><span class="sel-option__label">Puerto Ban&uacute;s</span><span class="sel-option__price">v.a. &euro; 460.000</span><span class="sel-option__tick" aria-hidden="true"></span></button>
+        <button type="button" class="sel-option sel-option--muni" data-value="sanpedro" role="checkbox" aria-checked="false"><span class="sel-option__label">San Pedro</span><span class="sel-option__price">v.a. &euro; 390.000</span><span class="sel-option__tick" aria-hidden="true"></span></button>
+        <button type="button" class="sel-option sel-option--muni" data-value="estepona" role="checkbox" aria-checked="false"><span class="sel-option__label">Estepona</span><span class="sel-option__price">v.a. &euro; 300.000</span><span class="sel-option__tick" aria-hidden="true"></span></button>
+        <button type="button" class="sel-option sel-option--muni" data-value="manilva" role="checkbox" aria-checked="false"><span class="sel-option__label">Manilva</span><span class="sel-option__price">v.a. &euro; 350.000</span><span class="sel-option__tick" aria-hidden="true"></span></button>
+        <button type="button" class="sel-option sel-option--muni" data-value="sotogrande" role="checkbox" aria-checked="false"><span class="sel-option__label">Sotogrande</span><span class="sel-option__price">v.a. &euro; 540.000</span><span class="sel-option__tick" aria-hidden="true"></span></button>
       </div>
         <p class="sel-step__error" role="alert" hidden>Kies minstens &eacute;&eacute;n antwoord om verder te gaan</p>
       </section>
@@ -1063,13 +1032,40 @@ footer a { color: var(--gold-dim); text-underline-offset: 2px; }
     countBox.hidden = current < 0 || current >= TOTAL || !hasAnswer();
   }
 
+  /* ── Countdown ─────────────────────────────────────────────────────────
+   * Het grote getal bovenaan telt af van TOTAL naar 1 naarmate de bezoeker
+   * door de vragen loopt. Animatie: het getal krimpt in (iPhone-stijl) en
+   * toont het nieuwe getal terwijl het weer op normale grootte terugveert. */
+  var countNumEl = document.getElementById('selCountNum');
+  function updateCountdown(index) {
+    if (!countNumEl) return;
+    var remaining = index >= 0 && index < TOTAL ? TOTAL - index : null;
+    if (remaining === null) return;
+    var next = String(remaining);
+    if (countNumEl.textContent === next) return; // geen animatie nodig
+    countNumEl.classList.add('is-flipping');
+    window.setTimeout(function () {
+      countNumEl.textContent = next;
+      countNumEl.classList.remove('is-flipping');
+    }, 220);
+  }
+
+  /* ── GA event helper ──────────────────────────────────────────────────── */
+  function gaEvent(name, params) {
+    try {
+      if (window.gtag) window.gtag('event', name, params || {});
+    } catch (e) { /* analytics nooit kritiek */ }
+  }
+
   function goTo(index) {
+    var prev = current;
     current = index;
     if (index < 0) {
       show('welcome');
     } else if (index < TOTAL) {
       show('steps');
       stepEls.forEach(function (el, i) { el.hidden = i !== index; });
+      updateCountdown(index);
     } else if (index === TOTAL) {
       show('teaser');
       loadTeaser();
@@ -1077,15 +1073,23 @@ footer a { color: var(--gold-dim); text-underline-offset: 2px; }
       show('result');
     }
     updateChrome();
-    // Bij een lange vraag (fotokaartjes) staat de vraag zelf anders buiten
-    // beeld nadat de vorige stap is weggevallen.
     window.scrollTo({ top: 0, behavior: 'auto' });
 
-    // De knop waarop de focus stond is net verborgen; zonder dit valt de
-    // focus terug op <body>. Een schermlezer meldt de nieuwe vraag dan niet
-    // en wie met het toetsenbord werkt moet vanaf de bovenkant terugtabben.
-    // Daarom de focus naar de kop van het nieuwe scherm - dat is meteen ook
-    // wat voorgelezen moet worden.
+    // GA: stap afgerond als we vooruit gaan vanuit een stap
+    if (prev >= 0 && prev < TOTAL && index > prev) {
+      var stepEl = stepEls[prev];
+      gaEvent('sel_step_complete', {
+        step: prev + 1,
+        step_id: stepEl ? stepEl.getAttribute('data-id') : '',
+        total: TOTAL
+      });
+    }
+    // GA: teaser bereikt = alle vragen afgerond
+    if (index === TOTAL) {
+      gaEvent('sel_flow_complete', { total: TOTAL });
+    }
+
+    // Focus naar het nieuwe scherm
     var heading = null;
     if (index < 0) heading = screens.welcome.querySelector('h1');
     else if (index < TOTAL) heading = stepEls[index].querySelector('.sel-step__q');
@@ -1329,6 +1333,8 @@ footer a { color: var(--gold-dim); text-underline-offset: 2px; }
     };
     UTM_KEYS.forEach(function (key) { if (utm[key]) payload[key] = utm[key]; });
 
+    gaEvent('sel_lead_submitted', { budget: budgetSf });
+
     fetch('/api/lead', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -1349,7 +1355,19 @@ footer a { color: var(--gold-dim); text-underline-offset: 2px; }
   });
 
   /* ── Knoppen ──────────────────────────────────────────────────────────── */
-  document.getElementById('selStart').addEventListener('click', function () { goTo(0); });
+  document.getElementById('selStart').addEventListener('click', function () {
+    gaEvent('sel_flow_start');
+    goTo(0);
+  });
+
+  /* GA abandon: fire wanneer de pagina verborgen wordt (tab wisselen,
+   * sluiten) terwijl de bezoeker midden in de flow zit. pagehide is
+   * betrouwbaarder dan beforeunload in mobiele browsers. */
+  document.addEventListener('visibilitychange', function () {
+    if (document.visibilityState === 'hidden' && current >= 0 && current < TOTAL) {
+      gaEvent('sel_step_abandon', { step: current + 1, total: TOTAL });
+    }
+  });
   backBtn.addEventListener('click', function () { goTo(current - 1); });
   document.getElementById('selRestart').addEventListener('click', function () {
     window.location.href = '/selectie/';
