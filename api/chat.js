@@ -25,6 +25,7 @@
 const DATA = require('./_projects.json');
 const { forwardToZapier } = require('./_zapier.js');
 const { PLAYBOOK } = require('./_playbook.js');
+const { AREAS } = require('./_areas.js');
 
 const GATEWAY_URL = 'https://ai-gateway.vercel.sh/v1/chat/completions';
 const MODEL = process.env.AI_MODEL || 'anthropic/claude-sonnet-4-6';
@@ -110,6 +111,28 @@ function projectIndex(lang, rich) {
   rows.sort();
   indexCache[key] = rows.join('\n');
   return indexCache[key];
+}
+
+/* ── Gebiedskennisbasis ──────────────────────────────────────────────── */
+
+// Maakt een beknopte tekstsamenvatting van alle gebieden voor de systeemprompt.
+// Compact gehouden (~3 regels per gebied) zodat het tokenbudget niet explodeert.
+// De bot kan dit gebruiken bij vragen als "wat is Estepona zo?", "vergelijk
+// Marbella met Benahavís" of "welk gebied past bij een gezin met kinderen?".
+function areasContext() {
+  const lines = ['GEBIEDSKENNIS COSTA DEL SOL'];
+  for (const area of Object.values(AREAS)) {
+    lines.push(`\n[${area.slug}] ${area.name}`);
+    lines.push(`Karakter: ${area.karakter}`);
+    lines.push(`Ligging: Málaga airport ~${area.ligging.malaga_airport_min} min, Marbella centrum ~${area.ligging.marbella_centrum_min} min, strand ~${area.ligging.strand_min}`);
+    lines.push(`Doelgroep: ${area.doelgroep.join('; ')}`);
+    lines.push(`Prijsniveau: ${area.prijsniveau.segment} — ${area.prijsniveau.prijs_per_m2_range} | Appartement: ${area.prijsniveau.typisch_appartement}`);
+    lines.push(`Troeven: ${area.troeven.join(' | ')}`);
+    lines.push(`Aandachtspunten: ${area.aandachtspunten.join(' | ')}`);
+    lines.push(`Verhuurpotentieel: ${area.verhuurpotentieel}`);
+    lines.push(`Infrastructuur: ${area.infrastructuur}`);
+  }
+  return lines.join('\n');
 }
 
 /* ── Systeemprompt ───────────────────────────────────────────────────── */
@@ -352,6 +375,14 @@ ${pb.usps.map((u) => `- ${u}`).join('\n')}
 
 BEDRIJFSPROFIEL
 ${pb.company}
+
+GEBIEDSKENNIS — gebruik dit bij vragen over een specifiek gebied of vergelijkingen
+Als een bezoeker vraagt "wat is [gebied] zo?", "wat zijn de voordelen van Estepona?",
+"vergelijk Marbella met Benahavís", "welk gebied past bij ons?", of vergelijkbare
+gebiedsvragen, gebruik dan de kennisbasis hieronder. Pas die kennis aan aan de toon
+van het gesprek: nooit als opgesomde lijst, maar als gerichte, conversationele zinnen.
+Prijs- en afstandsinformatie uit deze kennisbasis is indicatief (marktdata 2024–2026).
+${areasContext()}
 
 NOOIT VERMELDEN
 - Vermeld nooit de naam "Welex" of eender welke andere partner- of leveranciersnaam.
