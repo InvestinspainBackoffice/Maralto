@@ -7,13 +7,13 @@ WA_MESSAGE = f"Hallo, ik heb interesse in {PROJECT_NAME}. Kan ik meer informatie
 DATA = {
     "SLUG": "the-oak-48",
     "TITLE": f"{PROJECT_NAME} Estepona — INVESTINSPAIN.BE",
-    "META_DESCRIPTION": "The Oak 48: 48 exclusieve appartementen en penthouses in Estepona. 2-3 slaapkamers, zwembad, gym, co-working, solarium. Vanaf € 511.500.",
-    "OG_TITLE": f"{PROJECT_NAME} — Appartementen in Estepona",
-    "OG_DESCRIPTION": "The Oak 48: modern woonproject met panoramisch zeezicht, zwembad, fitnessruimte, co-working en social lounge in Estepona. Vanaf € 511.500.",
+    "META_DESCRIPTION": "The Oak 48: 48 exclusieve woningen vlakbij het centrum van Estepona. Eigentijdse architectuur, adembenemend zeezicht, solarium en zwembad. Vanaf € 511.500.",
+    "OG_TITLE": f"{PROJECT_NAME} · 48 exclusieve woningen Estepona centrum",
+    "OG_DESCRIPTION": "48 exclusieve woningen op een bevoorrechte locatie in Estepona. Eigentijdse architectuur, design en functionaliteit, adembenemend uitzicht. Vanaf € 511.500.",
     "OG_IMAGE": "https://projects.investinspain.be/images/the-oak-48/hero.webp",
     "HERO_BG": "https://projects.investinspain.be/images/the-oak-48/hero.webp",
-    "HERO_BG_ALT": "The Oak 48 — modern appartementencomplex met zwembad in Estepona",
-    "HERO_NAME": "The Oak 48",
+    "HERO_BG_ALT": "The Oak 48 gevel zwembad Estepona",
+    "HERO_NAME": PROJECT_NAME,
     "HERO_LOCATION": "ESTEPONA",
     "HERO_PRICE": PRICE_FROM,
     "PRICE_FROM": PRICE_FROM,
@@ -25,21 +25,13 @@ DATA = {
     "AGENT_PHONE_DISPLAY": "+32 496 57 13 97",
     "AGENT_EMAIL": "gunther@investinspain.be",
     "WA_NUMBER": "32496571397",
+    "MAP_LAT": "36.43479861235",
+    "MAP_LNG": "-5.151185335531",
 }
 
 DATA_EN = {
-    "META_DESCRIPTION": "The Oak 48: 48 exclusive apartments and penthouses in Estepona. 2-3 bedrooms, pool, gym, co-working, solarium. From € 511,500.",
-    "OG_TITLE": f"{PROJECT_NAME} — Apartments in Estepona",
-    "OG_DESCRIPTION": "The Oak 48: modern residential project with panoramic sea views, pool, gym, co-working and social lounge in Estepona. From € 511,500.",
-    "HERO_BG_ALT": "The Oak 48 — modern apartment complex with pool in Estepona",
-}
-
-HUB = {
-    "NAME": "The Oak 48",
-    "LOCATION": "Estepona",
-    "PRICE": "Vanaf € 511.500",
-    "THUMB": "https://projects.investinspain.be/images/the-oak-48/hero.webp",
-    "LAT": 36.434799,
-    "LNG": -5.151185,
-    "HREF": "/the-oak-48/",
+    "META_DESCRIPTION": "The Oak 48: 48 exclusive homes near the centre of Estepona. Contemporary architecture, breathtaking sea views, solarium and pool. From € 511,500.",
+    "OG_TITLE": f"{PROJECT_NAME} · 48 exclusive homes Estepona centre",
+    "OG_DESCRIPTION": "48 exclusive homes in a privileged location in Estepona. Contemporary architecture, design and functionality, breathtaking views. From € 511,500.",
+    "HERO_BG_ALT": "The Oak 48 facade pool Estepona",
 }
