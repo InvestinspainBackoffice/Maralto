@@ -8,6 +8,7 @@ Gebruik:  python3 _build/generate.py            (alle projecten, beide talen)
           python3 _build/generate.py adagio      (één project, beide talen)
 """
 import importlib.util
+import json
 import os
 import re
 import sys
@@ -114,6 +115,16 @@ def build_one(project_file, lang):
     # Kleine per-project CSS-overrides (bv. watermerk uit een herofoto croppen)
     # die niet elk project aangaan, dus niet in de gedeelde stylesheet horen.
     data.setdefault("EXTRA_HEAD_CSS", "")
+
+    # fill() is een kale str.replace() zonder enig besef van HTML- vs.
+    # JS-context. __PROJECT_NAME__ wordt in tail.html ook rechtstreeks in een
+    # JS-stringliteral geplakt (project_name: '__PROJECT_NAME__') - een
+    # projectnaam met een apostrof (Lantana Villa's, Alexandra's Dream, ...)
+    # sluit die string dan vroegtijdig af en breekt het hele scriptblok
+    # (formulier, scroll-animaties, alles). json.dumps() escaped dat correct;
+    # het token in tail.html gebruikt deze WEL-gequote variant, dus zonder
+    # eigen '...' eromheen.
+    data["PROJECT_NAME_JS"] = json.dumps(data["PROJECT_NAME"])
 
     # Vaste UI-teksten (labels, knoppen, foutmeldingen) per taal - één
     # aanpassing in _build/i18n.py of in de gedeelde templates geldt

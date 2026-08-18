@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>INVESTINSPAIN.BE — Concept homepage</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600&display=swap" rel="stylesheet">
+<!--
+  ONTWERPCONTRACT (impeccable — surface: homepage, mode: persuade)
+  THESIS: de zoekwidget is niet een UI-hulpmiddel maar het startpunt van het
+  gesprek — de bezoeker geeft zijn opdracht mee vóór het bureau iets toont,
+  in plaats van het gebruikelijke "hero-foto + zoekbalk eronder"-patroon.
+  OWN-WORLD: The Architect's Folio, ongewijzigd overgenomen uit de
+  Maralto-projectpagina's — donkere grond, gouden annotaties, Sora.
+  STORY: bezoeker geeft regio/type/budget mee → ziet meteen een shortlist →
+  ontmoet Sofie & Gunther → ziet het bewijs (BIV, inspectiereis, schaal) →
+  boekt een inspectiereis.
+  FIRST VIEWPOINT: "UW VASTGOEDMAKELAAR IN COSTA DEL SOL" in goud, met de
+  zoekopdracht direct eronder als geannoteerde tabel — geen fotoheld, de
+  opdracht IS de opening.
+  FORM: concierge-dossier (eigen structuurkandidaat 4/7), met een dun gouden
+  lijnmotief dat opdracht → shortlist → team → bewijs → actie verbindt, als
+  uitbreiding van de bestaande "architecturale lijnen"-grammatica.
+  Dit is een statische mockup zonder back-end — velden en knoppen zijn nog
+  niet functioneel, puur voor visuele goedkeuring.
+-->
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root {
+  --bg: #0E1318;
+  --bg-el: #131920;
+  --text: #EDE8E0;
+  --text-muted: #8A96A3;
+  --gold: #C4A97D;
+  --gold-dim: #9E8968;
+  --line: #1F2830;
+  --line-light: #2A3644;
+  --cta: #2D6A7A;
+  --cta-hover: #387F91;
+  --white: #FEFCF9;
+  --font: 'Sora', system-ui, -apple-system, sans-serif;
+  --ease: cubic-bezier(0.16, 1, 0.3, 1);
+}
+html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+body {
+  font-family: var(--font);
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.65;
+  font-weight: 300;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+img { display: block; max-width: 100%; height: auto; }
+a { color: inherit; text-decoration: none; }
+button, select { font-family: inherit; cursor: pointer; }
+
+.frame { position: fixed; inset: 0; pointer-events: none; z-index: 100; border: 1px solid var(--line); opacity: 0; animation: frame-in 1.5s var(--ease) 0.8s forwards; }
+@keyframes frame-in { to { opacity: 1; } }
+
+/* ── Doorlopende gouden draad — verbindt opdracht → shortlist → team → bewijs → actie ── */
+.thread-wrap { position: relative; }
+.thread {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: linear-gradient(to bottom, transparent 0%, var(--gold-dim) 8%, var(--gold-dim) 92%, transparent 100%);
+  opacity: 0.35;
+  pointer-events: none;
+  z-index: 1;
+}
+@media (max-width: 900px) { .thread { display: none; } }
+
+/* ── Hero: de opdracht, niet een foto ── */
+.hero {
+  position: relative;
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  padding: clamp(6rem, 12vw, 8rem) 1.5rem 4rem;
+}
+.hero__bg {
+  position: absolute; inset: 0;
+  background: url('https://projects.investinspain.be/images/azurean/hero.webp') center 45% / cover no-repeat;
+  opacity: 0; transform: scale(1.06);
+  animation: hero-bg 2s var(--ease) 0.3s forwards;
+}
+.hero__bg::after {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(to bottom, var(--bg) 0%, rgba(14,19,24,0.86) 30%, rgba(14,19,24,0.92) 100%);
+}
+@keyframes hero-bg { to { opacity: 1; transform: scale(1); } }
+.hero__content { position: relative; z-index: 2; text-align: center; max-width: 720px; }
+.hero__eyebrow {
+  font-size: 0.65rem; letter-spacing: 0.35em; text-transform: uppercase; color: var(--gold-dim);
+  opacity: 0; animation: fade-up 1s var(--ease) 0.5s forwards;
+}
+.hero__name {
+  font-size: clamp(2rem, 6vw, 3.6rem); font-weight: 300; letter-spacing: 0.01em; line-height: 1.15;
+  color: var(--text); margin: 0.9rem 0 0.5rem;
+  opacity: 0; animation: fade-up 1.2s var(--ease) 0.7s forwards;
+}
+.hero__name em { font-style: normal; color: var(--gold); }
+.hero__sub {
+  font-size: clamp(0.85rem, 1.8vw, 1rem); color: var(--text-muted); max-width: 46ch; margin: 0 auto;
+  opacity: 0; animation: fade-up 1s var(--ease) 0.95s forwards;
+}
+
+/* Opdracht-tabel: het zoekwidget als geannoteerd formulier */
+.brief {
+  position: relative; z-index: 2; margin-top: clamp(2.5rem, 6vw, 3.5rem);
+  width: 100%; max-width: 640px;
+  background: rgba(19, 25, 32, 0.72);
+  border: 1px solid var(--line-light);
+  backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+  padding: clamp(1.5rem, 4vw, 2.25rem);
+  opacity: 0; animation: fade-up 1s var(--ease) 1.2s forwards;
+}
+.brief__label {
+  font-size: 0.6rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--gold-dim);
+  margin-bottom: 1.25rem; position: relative; padding-left: 2rem; text-align: left;
+}
+.brief__label::before { content: ''; position: absolute; left: 0; top: 50%; width: 1.2rem; height: 1px; background: var(--gold-dim); }
+.brief__grid { display: grid; grid-template-columns: 1fr; gap: 1px; background: var(--line); border: 1px solid var(--line); }
+@media (min-width: 640px) { .brief__grid { grid-template-columns: 1fr 1fr 1fr; } }
+.brief__field { background: var(--bg-el); padding: 0.9rem 1.1rem; text-align: left; }
+.brief__field-label { display: block; font-size: 0.58rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 0.4rem; }
+.brief__field select {
+  width: 100%; background: transparent; border: none; color: var(--text); font-family: var(--font);
+  font-size: 0.85rem; font-weight: 300; appearance: none; -webkit-appearance: none; outline: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' fill='none' stroke='%238A96A3' stroke-width='1.2'/%3E%3C/svg%3E");
+  background-repeat: no-repeat; background-position: right center; background-size: 9px 6px; padding-right: 1.1rem;
+}
+.brief__field select option { background: var(--bg-el); color: var(--text); }
+.brief .btn { width: 100%; margin-top: 1.25rem; justify-content: center; }
+
+/* ── Sections ── */
+section { position: relative; }
+.spacer { height: clamp(4rem, 10vw, 8rem); }
+.spacer--sm { height: clamp(2rem, 5vw, 4rem); }
+.content { max-width: 720px; margin: 0 auto; padding: 0 clamp(1.5rem, 5vw, 3rem); position: relative; z-index: 2; }
+.content--wide { max-width: 1180px; }
+.label {
+  font-size: 0.6rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--gold-dim);
+  margin-bottom: 1.5rem; position: relative; padding-left: 2rem;
+}
+.label::before { content: ''; position: absolute; left: 0; top: 50%; width: 1.2rem; height: 1px; background: var(--gold-dim); }
+.label--center { text-align: center; padding-left: 0; display: flex; align-items: center; justify-content: center; gap: 0.75rem; }
+.label--center::before { position: static; }
+.heading { font-size: clamp(1.6rem, 4vw, 2.6rem); font-weight: 300; line-height: 1.25; letter-spacing: -0.01em; margin-bottom: 1.25rem; }
+.heading em { font-style: normal; color: var(--gold); }
+.heading--center { text-align: center; }
+.body-text { font-size: clamp(0.9rem, 1.8vw, 1.05rem); color: var(--text-muted); line-height: 1.75; max-width: 60ch; }
+.body-text--center { margin: 0 auto; text-align: center; }
+.rule--gold { height: 1px; background: var(--gold-dim); max-width: 60px; margin: 0 auto; }
+
+/* ── Shortlist: projectkaarten ── */
+.shortlist-grid {
+  display: grid; grid-template-columns: 1fr; gap: 1px; background: var(--line);
+  border: 1px solid var(--line);
+}
+@media (min-width: 640px) { .shortlist-grid { grid-template-columns: 1fr 1fr; } }
+@media (min-width: 1000px) { .shortlist-grid { grid-template-columns: 1fr 1fr 1fr; } }
+.pcard { background: var(--bg-el); display: flex; flex-direction: column; }
+.pcard__img { aspect-ratio: 4/3; background-size: cover; background-position: center; position: relative; }
+.pcard__img::after {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(to top, rgba(14,19,24,0.75) 0%, transparent 50%);
+}
+.pcard__body { padding: 1.1rem 1.25rem 1.4rem; }
+.pcard__name { font-size: 1rem; font-weight: 400; letter-spacing: 0.02em; margin-bottom: 0.15rem; }
+.pcard__loc { font-size: 0.65rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 0.6rem; }
+.pcard__price { font-size: 0.8rem; color: var(--gold); }
+
+/* ── Team welkom ── */
+.welcome-grid { display: grid; grid-template-columns: 1fr; gap: clamp(2rem, 5vw, 3.5rem); align-items: center; }
+@media (min-width: 768px) { .welcome-grid { grid-template-columns: 0.85fr 1.15fr; } }
+.welcome-photo { width: 100%; aspect-ratio: 4/5; background: url('https://investinspain.be/wp-content/uploads/2020/01/Gunther-De-Vleeschouwer-INVESTINSPAIN.jpg') center 15% / cover; border: 1px solid var(--line-light); }
+.welcome-offices { display: flex; gap: 1.5rem; margin-top: 1.5rem; }
+.welcome-offices span { font-size: 0.65rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text-muted); }
+.welcome-offices span em { font-style: normal; color: var(--gold-dim); }
+
+/* ── Bewijs-ledger (USP's + portfolio) ── */
+.stats { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1px; background: var(--line); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+@media (min-width: 640px) { .stats { grid-template-columns: repeat(4, 1fr); } }
+.stat { background: var(--bg); padding: clamp(1.25rem, 3vw, 2rem) clamp(0.5rem, 2vw, 1.5rem); text-align: center; }
+.stat__value { font-size: clamp(1.3rem, 3.5vw, 2rem); font-weight: 400; color: var(--gold); letter-spacing: -0.02em; }
+.stat__label { font-size: clamp(0.55rem, 1.5vw, 0.62rem); letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-muted); margin-top: 0.35rem; }
+.amenities-list { display: grid; grid-template-columns: 1fr; gap: 0; }
+@media (min-width: 600px) { .amenities-list { grid-template-columns: 1fr 1fr; } }
+.amenity-item { display: flex; align-items: center; gap: 0.75rem; padding: 0.85rem 0; border-bottom: 1px solid var(--line); }
+.amenity-item svg { width: 16px; height: 16px; stroke: var(--gold); stroke-width: 1.5; fill: none; flex-shrink: 0; }
+.amenity-item span { font-size: 0.85rem; color: var(--text-muted); }
+
+/* ── Inline CTA ── */
+.inline-cta { background: var(--bg-el); border: 1px solid var(--line); padding: clamp(2.5rem, 6vw, 4rem) clamp(1.5rem, 5vw, 3rem); text-align: center; max-width: 640px; margin: 0 auto; position: relative; z-index: 2; }
+.inline-cta h3 { font-size: clamp(1.3rem, 3vw, 1.8rem); font-weight: 300; margin-bottom: 0.85rem; }
+.inline-cta h3 em { font-style: normal; color: var(--gold); }
+.inline-cta p { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1.75rem; max-width: 45ch; margin-left: auto; margin-right: auto; }
+.inline-cta .btn { margin: 0 auto; }
+
+.btn { display: inline-flex; align-items: center; gap: 0.5rem; padding: 1rem 2.25rem; background: var(--cta); color: var(--white); font-size: 0.72rem; font-weight: 500; letter-spacing: 0.15em; text-transform: uppercase; border: none; cursor: pointer; transition: background 0.3s, transform 0.2s; }
+.btn:hover { background: var(--cta-hover); }
+.btn--outline { background: transparent; border: 1px solid var(--line-light); color: var(--text); }
+.btn--outline:hover { border-color: var(--gold-dim); background: transparent; }
+
+/* ── IIS bar + footer ── */
+.iis-bar { display: flex; align-items: center; justify-content: center; padding: 2.5rem 1rem; position: relative; z-index: 2; }
+.iis-mark { display: flex; align-items: center; gap: 0.6rem; font-size: 0.75rem; letter-spacing: 0.3em; color: var(--gold-dim); text-transform: uppercase; }
+.iis-mark svg { width: 22px; height: 22px; stroke: var(--gold-dim); stroke-width: 1.3; fill: none; }
+footer { padding: clamp(2rem, 4vw, 3rem) clamp(1.5rem, 5vw, 3rem); text-align: center; font-size: 0.62rem; color: var(--text-muted); letter-spacing: 0.03em; line-height: 2; border-top: 1px solid var(--line); position: relative; z-index: 2; }
+.footer-links { display: flex; flex-wrap: wrap; justify-content: center; gap: 0 1.5rem; margin-bottom: 1rem; }
+.footer-links a { color: var(--text-muted); transition: color 0.2s; }
+.footer-links a:hover { color: var(--gold-dim); }
+
+.reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.9s var(--ease), transform 0.9s var(--ease); }
+.reveal.is-visible { opacity: 1; transform: translateY(0); }
+
+@keyframes fade-up { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+.mockup-badge {
+  position: fixed; top: 1rem; left: 50%; transform: translateX(-50%); z-index: 300;
+  background: var(--gold); color: var(--bg); font-size: 0.62rem; font-weight: 500;
+  letter-spacing: 0.15em; text-transform: uppercase; padding: 0.5rem 1rem; border-radius: 2px;
+  pointer-events: none;
+}
+</style>
+</head>
+<body>
+
+<div class="mockup-badge">Conceptmockup — nog geen back-end</div>
+<div class="frame" aria-hidden="true"></div>
+
+<!-- ═══════════ HERO: DE OPDRACHT ═══════════ -->
+<div class="hero">
+  <div class="hero__bg" aria-hidden="true"></div>
+  <div class="hero__content">
+    <p class="hero__eyebrow">Costa del Sol · sinds 2015</p>
+    <h1 class="hero__name">Uw vastgoedmakelaar<br>in <em>Costa del Sol</em></h1>
+    <p class="hero__sub">Vertel ons wat u zoekt — wij zetten de passende projecten voor u op een rij.</p>
+  </div>
+
+  <form class="brief" onsubmit="return false;">
+    <p class="brief__label">Uw zoekopdracht</p>
+    <div class="brief__grid">
+      <div class="brief__field">
+        <label class="brief__field-label" for="f-regio">Regio</label>
+        <select id="f-regio">
+          <option>Alle regio's</option>
+          <option>West-Marbella</option>
+          <option>Oost-Marbella</option>
+          <option>Marbella</option>
+          <option>Puerto Banús</option>
+          <option>Tenerife</option>
+          <option>Balearen</option>
+        </select>
+      </div>
+      <div class="brief__field">
+        <label class="brief__field-label" for="f-type">Type</label>
+        <select id="f-type">
+          <option>Alle types</option>
+          <option>Appartement</option>
+          <option>Penthouse</option>
+          <option>Villa</option>
+          <option>Townhouse</option>
+        </select>
+      </div>
+      <div class="brief__field">
+        <label class="brief__field-label" for="f-budget">Budget</label>
+        <select id="f-budget">
+          <option>€ 200.000 – 10.000.000</option>
+          <option>Tot € 400.000</option>
+          <option>€ 400.000 – 600.000</option>
+          <option>€ 600.000 – 1.000.000</option>
+          <option>€ 1.000.000 – 3.000.000</option>
+          <option>Meer dan € 3.000.000</option>
+        </select>
+      </div>
+    </div>
+    <button type="submit" class="btn">Toon mijn shortlist &rarr;</button>
+  </form>
+</div>
+
+<div class="thread-wrap">
+<div class="thread" aria-hidden="true"></div>
+
+<div class="spacer"></div>
+
+<!-- ═══════════ SHORTLIST ═══════════ -->
+<section class="content content--wide reveal">
+  <p class="label label--center">Onze projecten in de spotlight</p>
+  <h2 class="heading heading--center">Vind uw perfecte<br><em>buitenverblijf</em></h2>
+  <p class="body-text body-text--center" style="margin-bottom: 3rem;">Nieuwbouwappartementen, penthouses en luxe villa's aan de Costa del Sol — hieronder een greep uit ons actuele aanbod. In de nieuwe back-end wordt deze sectie automatisch gevuld en door het team zelf beheerd.</p>
+</section>
+
+<section class="content content--wide reveal" style="margin-bottom: 0;">
+  <div class="shortlist-grid">
+    <a class="pcard" href="https://projects.investinspain.be/azurean/">
+      <div class="pcard__img" style="background-image:url('https://projects.investinspain.be/images/azurean/hero.webp')"></div>
+      <div class="pcard__body">
+        <div class="pcard__name">Azurean</div>
+        <div class="pcard__loc">Estepona</div>
+        <div class="pcard__price">Vanaf € 901.992</div>
+      </div>
+    </a>
+    <a class="pcard" href="https://projects.investinspain.be/adagio/">
+      <div class="pcard__img" style="background-image:url('https://projects.investinspain.be/images/adagio/hero.webp')"></div>
+      <div class="pcard__body">
+        <div class="pcard__name">Adagio</div>
+        <div class="pcard__loc">Cancelada</div>
+        <div class="pcard__price">Vanaf € 512.000</div>
+      </div>
+    </a>
+    <a class="pcard" href="https://projects.investinspain.be/solaia-cancelada/">
+      <div class="pcard__img" style="background-image:url('https://projects.investinspain.be/images/solaia-cancelada/hero.webp')"></div>
+      <div class="pcard__body">
+        <div class="pcard__name">Solaia</div>
+        <div class="pcard__loc">Cancelada</div>
+        <div class="pcard__price">Vanaf € 890.000</div>
+      </div>
+    </a>
+    <a class="pcard" href="https://projects.investinspain.be/villa-europa-6/">
+      <div class="pcard__img" style="background-image:url('https://projects.investinspain.be/images/villa-europa-6/hero.webp')"></div>
+      <div class="pcard__body">
+        <div class="pcard__name">Villa Europa 6</div>
+        <div class="pcard__loc">La Cala Golf, Mijas</div>
+        <div class="pcard__price">Vanaf € 1.515.000</div>
+      </div>
+    </a>
+    <a class="pcard" href="https://projects.investinspain.be/aloha-forest/">
+      <div class="pcard__img" style="background-image:url('https://projects.investinspain.be/images/aloha-forest/hero.webp')"></div>
+      <div class="pcard__body">
+        <div class="pcard__name">Aloha Forest</div>
+        <div class="pcard__loc">Nueva Andalucía, Marbella</div>
+        <div class="pcard__price">Vanaf € 1.176.270</div>
+      </div>
+    </a>
+    <a class="pcard" href="https://projects.investinspain.be/moon64/">
+      <div class="pcard__img" style="background-image:url('https://projects.investinspain.be/images/moon64/hero.webp')"></div>
+      <div class="pcard__body">
+        <div class="pcard__name">Moon64</div>
+        <div class="pcard__loc">Los Hidalgos, Manilva</div>
+        <div class="pcard__price">Vanaf € 381.800</div>
+      </div>
+    </a>
+  </div>
+</section>
+
+<div class="spacer"></div>
+<div class="rule--gold" aria-hidden="true"></div>
+<div class="spacer"></div>
+
+<!-- ═══════════ WELKOM: SOFIE & GUNTHER ═══════════ -->
+<section class="content content--wide reveal">
+  <div class="welcome-grid">
+    <div class="welcome-photo" role="img" aria-label="Sofie en Gunther van INVESTINSPAIN.BE"></div>
+    <div>
+      <p class="label">Een warm welkom van INVESTINSPAIN</p>
+      <h2 class="heading">Sofie <em>&amp;</em> Gunther</h2>
+      <p class="body-text" style="margin-bottom: 1.25rem;">Als vastgoedmakelaar zijn wij, INVESTINSPAIN, gespecialiseerd in de regio Marbella – San Pedro – Estepona, het "Saint-Tropez" van Spanje. Niet alleen vanwege het klimaat en de levenskwaliteit, maar tevens omdat dit één van de minst crisis-gevoelige gebieden is in Spanje.</p>
+      <p class="body-text" style="margin-bottom: 1.75rem;">We willen onze klanten een persoonlijke aanpak geven zoals wij die ook graag voor onszelf zouden wensen. Een eerste of tweede huis in Spanje aanschaffen is niet zomaar wat. Hier zit een emotie bij en wij luisteren hier graag naar.</p>
+      <a href="/over-ons/" class="btn btn--outline">Over ons</a>
+      <div class="welcome-offices">
+        <span>Kantoor <em>België</em></span>
+        <span>Kantoor <em>Nederland</em></span>
+        <span>Kantoor <em>Spanje</em></span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="spacer"></div>
+
+<!-- ═══════════ BEWIJS: BIV, PORTFOLIO, USP'S ═══════════ -->
+<section class="content content--wide reveal">
+  <p class="label label--center">Waarom kiezen voor INVESTINSPAIN?</p>
+  <h2 class="heading heading--center">Wij maken<br>het <em>verschil</em></h2>
+  <p class="body-text body-text--center" style="margin-bottom: 2.5rem;">Alle nieuwbouwprojecten in Spanje worden op een niet-exclusieve manier aangeboden door alle makelaars. Woningen, beschikbaarheid &amp; prijzen zijn dus via elke makelaar dezelfde. Naast de persoonlijke aanpak zijn dit onze onderscheidende elementen:</p>
+</section>
+
+<section class="stats reveal">
+  <div class="stat"><div class="stat__value">300</div><div class="stat__label">Appartementen</div></div>
+  <div class="stat"><div class="stat__value">237</div><div class="stat__label">Penthouses</div></div>
+  <div class="stat"><div class="stat__value">142</div><div class="stat__label">Villa's</div></div>
+  <div class="stat"><div class="stat__value">49</div><div class="stat__label">Townhouses</div></div>
+</section>
+
+<div class="spacer--sm"></div>
+
+<section class="content reveal">
+  <div class="amenities-list">
+    <div class="amenity-item"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg><span>Erkend BIV-makelaar</span></div>
+    <div class="amenity-item"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg><span>Persoonlijke aanpak</span></div>
+    <div class="amenity-item"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg><span>Specialisatie in Costa del Sol</span></div>
+    <div class="amenity-item"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg><span>Lokaal kantoor in BE, NL en ES</span></div>
+    <div class="amenity-item"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg><span>Inspectiereis 100% vergoed</span></div>
+    <div class="amenity-item"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg><span>Zorgeloos investeren</span></div>
+  </div>
+</section>
+
+<div class="spacer"></div>
+
+<!-- ═══════════ CTA: INSPECTIEREIS ═══════════ -->
+<div class="inline-cta reveal">
+  <h3>Wil u uw toekomstige<br><em>droomvilla</em> gaan bekijken?</h3>
+  <p>Uw inspectiereis naar Spanje wordt 100% vergoed door ons — voel het huis voor u beslist.</p>
+  <a href="/inspectiereizen" class="btn">Boek nu uw inspectiereis</a>
+</div>
+
+<div class="spacer"></div>
+
+<!-- ═══════════ IIS BAR ═══════════ -->
+<div class="iis-bar">
+  <div class="iis-mark">
+    <svg viewBox="0 0 24 24"><path d="M15 7a4 4 0 1 1-8 0 4 4 0 0 1 8 0z"/><path d="M11 11 3 19"/><path d="M6 16l2 2"/><path d="M3 19l2 2"/></svg>
+    INVESTINSPAIN.BE
+  </div>
+</div>
+
+<!-- ═══════════ FOOTER ═══════════ -->
+<footer>
+  <div class="footer-links">
+    <a href="/">Homepage</a>
+    <a href="/projecten/">Projecten</a>
+    <a href="/diensten/">Diensten</a>
+    <a href="/biv-makelaar/">BIV-makelaar</a>
+    <a href="/contact/">Contact</a>
+    <a href="/veelgestelde-vragen/">Veelgestelde vragen</a>
+  </div>
+  <div class="footer-links">
+    <a href="#">Villa's</a>
+    <a href="#">Appartementen</a>
+    <a href="#">Penthouses</a>
+    <a href="#">Townhouses</a>
+  </div>
+  <div class="footer-links">
+    <a href="#">Marbella</a>
+    <a href="#">Puerto Banús</a>
+    <a href="#">Estepona</a>
+    <a href="#">Benahavís</a>
+    <a href="#">Mijas</a>
+    <a href="#">Benalmádena</a>
+  </div>
+  &copy; INVESTINSPAIN.BE 2026 &mdash; Alle rechten voorbehouden &middot; BA en borgstelling via NV AXA Belgium (polisnr. 730.390.160)<br>
+  <a href="/privacy-policy/">Privacybeleid</a>
+</footer>
+
+</div><!-- /thread-wrap -->
+
+<script>
+  var els = document.querySelectorAll('.reveal');
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if (e.isIntersecting) { e.target.classList.add('is-visible'); io.unobserve(e.target); }
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+  els.forEach(function(el){ io.observe(el); });
+</script>
+
+</body>
+</html>
