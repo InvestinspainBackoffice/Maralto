@@ -139,7 +139,9 @@ def build_one(project_file, lang):
 
     with open(os.path.join(TEMPLATES, "head.html"), encoding="utf-8") as f:
         head = f.read()
-    with open(os.path.join(TEMPLATES, "hero.html"), encoding="utf-8") as f:
+    # Gebruik hero_video.html als HERO_VIDEO_ID is opgegeven, anders hero.html.
+    hero_tpl = "hero_video.html" if data.get("HERO_VIDEO_ID") else "hero.html"
+    with open(os.path.join(TEMPLATES, hero_tpl), encoding="utf-8") as f:
         hero = f.read()
     with open(os.path.join(TEMPLATES, "tail.html"), encoding="utf-8") as f:
         tail = f.read()
