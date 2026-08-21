@@ -1070,15 +1070,8 @@ footer a {
 <section class="hero hero--video">
   <div class="hero__bg" role="img" aria-label="Villa Syzygy zwembad en terras tussen Estepona en Marbella"></div>
   <div class="hero__video-wrap">
-    <iframe
-      id="hero-video-iframe"
-      src="https://www.youtube-nocookie.com/embed/fpW5BfS1PBI?autoplay=1&mute=1&loop=1&playlist=fpW5BfS1PBI&controls=0&rel=0&playsinline=1&disablekb=1"
-      allow="autoplay; fullscreen; encrypted-media"
-      title="Villa Syzygy zwembad en terras tussen Estepona en Marbella"
-      style="opacity:0;transition:opacity 1s ease 0.5s"
-      loading="lazy"
-      onload="this.style.opacity='1'">
-    </iframe>
+    <div id="hero-yt-player"></div>
+    <!-- transparante overlay: voorkomt dat klikken YouTube-knoppen triggeren -->
     <div style="position:absolute;inset:0;z-index:2;pointer-events:auto"></div>
   </div>
   <div class="hero__content">
@@ -1089,6 +1082,63 @@ footer a {
   </div>
   <span class="hero__scroll" aria-hidden="true">Ontdek</span>
 </section>
+<script>
+(function(){
+  var VIDEO_ID = 'fpW5BfS1PBI';
+  var shown = false;
+
+  function showPlayer(iframe) {
+    if (shown) return;
+    shown = true;
+    iframe.style.transition = 'opacity 1.2s ease';
+    iframe.style.opacity = '1';
+  }
+
+  window._ytHeroReady = function() {
+    new YT.Player('hero-yt-player', {
+      videoId: VIDEO_ID,
+      playerVars: {
+        autoplay: 1, mute: 1, loop: 1, playlist: VIDEO_ID,
+        controls: 0, rel: 0, playsinline: 1, disablekb: 1,
+        modestbranding: 1
+      },
+      events: {
+        onReady: function(e) {
+          var iframe = document.querySelector('#hero-yt-player iframe');
+          if (iframe) {
+            iframe.style.opacity = '0';
+            iframe.style.position = 'absolute';
+            iframe.style.top = '50%';
+            iframe.style.left = '50%';
+            iframe.style.width = '177.78vh';
+            iframe.style.minWidth = '100%';
+            iframe.style.height = '100%';
+            iframe.style.minHeight = '56.25vw';
+            iframe.style.transform = 'translate(-50%,-50%)';
+            iframe.style.border = '0';
+          }
+          e.target.playVideo();
+        },
+        onStateChange: function(e) {
+          /* YT.PlayerState.PLAYING === 1 */
+          if (e.data === 1) {
+            var iframe = document.querySelector('#hero-yt-player iframe');
+            if (iframe) showPlayer(iframe);
+          }
+        }
+      }
+    });
+  };
+
+  /* Laad de YouTube Iframe API asynchroon */
+  var tag = document.createElement('script');
+  tag.src = 'https://www.youtube.com/iframe_api';
+  document.head.appendChild(tag);
+
+  /* YouTube roept window.onYouTubeIframeAPIReady aan na laden */
+  window.onYouTubeIframeAPIReady = window._ytHeroReady;
+})();
+</script>
 
 <div class="spacer"></div>
 
