@@ -13,7 +13,7 @@ DATA = {
     "OG_IMAGE": "https://projects.investinspain.be/images/villa-syzygy/hero.webp",
     "HERO_BG": "https://projects.investinspain.be/images/villa-syzygy/hero.webp",
     "HERO_BG_ALT": "Villa Syzygy zwembad en terras tussen Estepona en Marbella",
-    "HERO_VIDEO_ID": "aDkwabDGrcc",
+    "HERO_VIDEO_ID": "fpW5BfS1PBI",
     "HERO_NAME": PROJECT_NAME,
     "HERO_LOCATION": "CANCELADA, ESTEPONA",
     "HERO_PRICE": PRICE_FROM,
