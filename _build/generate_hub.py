@@ -102,6 +102,7 @@ EXCLUDE = [
     "the-avenue",                  # Batch 33 - offline
     "waterfall-residences",        # Batch 33 - offline
     "granados-2-slaapkamer-appartement-met-tuin",  # tijdelijk offline (aug 2026)
+    "marbella-club-hills",          # uit hub: foto's mogen niet gebruikt worden (aug 2026)
     # Batches 22-44: tijdelijk uit de hub (terug naar 44-project staat van vóór aug 2026)
     "abril",
     "aida",
@@ -239,7 +240,7 @@ def last_n_chronological(entries, n):
     return [entries[s] for s in last]
 
 
-def render_card(entry):
+def render_card(entry, index=99):
     price_num = parse_price_number(entry["PRICE"])
     band_id = price_band_id(price_num)
     # Sommige thumbnails hebben een storende watermerktekst onderaan de
@@ -247,9 +248,18 @@ def render_card(entry):
     # __CARD_EXTRA_CSS__ (zie main()) om net dat stukje uit de crop te
     # croppen zonder de gedeelde kaart-CSS voor alle projecten te raken.
     slug_class = f" project-card--{entry['SLUG']}" if entry.get("THUMB_EXTRA_CSS") else ""
+    # De eerste kaartjes staan boven de vouw (en zijn, nu de hero geen foto
+    # meer heeft, meestal het LCP-element) - die moeten meteen laden i.p.v.
+    # lazy, anders straft Lighthouse's LCP-audit dit onterecht af. Vanaf
+    # kaartje 3 (2 kolommen op mobiel, dus rij 2) blijft lazy zoals voorheen.
+    img_attrs = (
+        'loading="eager" fetchpriority="high"' if index == 0
+        else 'loading="eager"' if index < 2
+        else 'loading="lazy"'
+    )
     return f"""    <a class="project-card{slug_class}" href="{entry['HREF']}" data-location="{html.escape(entry['LOCATION'])}" data-price-band="{band_id}">
       <div class="project-card__img-wrap">
-        <img class="project-card__img" src="{entry['THUMB']}" alt="{html.escape(entry['NAME'])}" loading="lazy" decoding="async">
+        <img class="project-card__img" src="{entry['THUMB']}" alt="{html.escape(entry['NAME'])}" {img_attrs} decoding="async">
       </div>
       <div class="project-card__body">
         <div class="project-card__name">{html.escape(entry['NAME'])}</div>
@@ -313,7 +323,7 @@ def build(lang):
     entries = [entry_for_lang(e, lang) for e in display_order(by_slug)]
     hero_entries = [entry_for_lang(e, lang) for e in last_n_chronological(by_slug, HERO_ROTATION_COUNT)]
 
-    cards_html = "\n".join(render_card(e) for e in entries)
+    cards_html = "\n".join(render_card(e, i) for i, e in enumerate(entries))
     markers = [
         {
             "name": e["NAME"],
@@ -348,6 +358,7 @@ def build(lang):
         page = f.read()
 
     page = page.replace("__PROJECT_CARDS__", cards_html)
+    page = page.replace("__HUB_FIRST_THUMB__", entries[0]["THUMB"])
     page = page.replace("__LOCATION_OPTIONS__", render_location_options(entries))
     page = page.replace("__PRICE_OPTIONS__", render_price_options())
     page = page.replace("__MAP_MARKERS_JSON__", json.dumps(markers, ensure_ascii=False))
