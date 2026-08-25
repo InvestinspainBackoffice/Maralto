@@ -1,13 +1,13 @@
 from urllib.parse import quote
 
 PROJECT_NAME = "Marbella Club Hills Penthouse"
-PRICE_FROM = "Prijs op aanvraag"
+PRICE_FROM = "€ 990.000"
 WA_MESSAGE = f"Hallo, ik heb interesse in {PROJECT_NAME}. Kan ik meer informatie ontvangen?"
 
 DATA = {
     "SLUG": "marbella-club-hills-penthouse-2",
     "TITLE": f"{PROJECT_NAME} — Panoramisch penthouse in Benahavís · INVESTINSPAIN.BE",
-    "META_DESCRIPTION": "Marbella Club Hills Penthouse: exclusief 4-slaapkamer penthouse met panoramisch zeezicht, privésolarium en terrassen in Benahavís. Prijs op aanvraag.",
+    "META_DESCRIPTION": "Marbella Club Hills Penthouse: exclusief 4-slaapkamer penthouse met panoramisch zeezicht, privésolarium en terrassen in Benahavís. Prijs: € 990.000.",
     "OG_TITLE": f"{PROJECT_NAME} · Panoramisch penthouse Benahavís",
     "OG_DESCRIPTION": "Exclusief penthouse in Marbella Club Hills, Benahavís: 4 slaapkamers, adembenemend zeezicht, privésolarium en grote terrassen aan de voet van Marbella Club Golf.",
     "OG_IMAGE": "https://projects.investinspain.be/images/marbella-club-hills-penthouse-2/hero.webp",
@@ -30,7 +30,7 @@ DATA = {
 }
 
 DATA_EN = {
-    "META_DESCRIPTION": "Marbella Club Hills Penthouse: exclusive 4-bedroom penthouse with panoramic sea views, private solarium and terraces in Benahavís. Price on request.",
+    "META_DESCRIPTION": "Marbella Club Hills Penthouse: exclusive 4-bedroom penthouse with panoramic sea views, private solarium and terraces in Benahavís. Price: € 990,000.",
     "OG_TITLE": f"{PROJECT_NAME} · Panoramic penthouse Benahavís",
     "OG_DESCRIPTION": "Exclusive penthouse in Marbella Club Hills, Benahavís: 4 bedrooms, breathtaking sea views, private solarium and large terraces at the foot of Marbella Club Golf.",
     "HERO_BG_ALT": "Marbella Club Hills Penthouse — solarium with panoramic sea views Benahavís",
