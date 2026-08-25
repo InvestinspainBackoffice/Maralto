@@ -483,6 +483,13 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   transition: color 0.2s;
 }
 .map-modal__close:hover { color: var(--gold); }
+@media (max-width: 600px) {
+  /* Op smalle schermen wrapt de flex-rij (teken-knoppen + telling) al snel
+     naar een 2de regel - het sluitkruisje zou dan meewrappen i.p.v. in de
+     hoek te blijven staan. Vastgezet rechtsboven, los van de flex-flow. */
+  .map-modal__bar { position: relative; padding-right: 3rem; }
+  .map-modal__close { position: absolute; top: 0.6rem; right: 0.75rem; }
+}
 .map-modal__hint {
   text-align: center;
   color: var(--text-muted);
@@ -1788,11 +1795,8 @@ footer a { color: var(--gold-dim); text-underline-offset: 2px; }
   // als een lijst naast de kaart - i.p.v. enkel zichtbaar te zijn na het
   // sluiten van de kaart en scrollen naar het raster.
   function renderMapList(indices) {
-    if (!activeArea()) {
-      mapModalList.hidden = true;
-      mapModalList.innerHTML = '';
-      return;
-    }
+    // Toont altijd de huidige gefilterde lijst naast de kaart, ook zonder
+    // getekend gebied - niet pas zodra er iets getekend is.
     mapModalList.hidden = false;
     if (indices.length === 0) {
       mapModalList.innerHTML = '<p class="map-list-empty">No projects within this area.</p>';
