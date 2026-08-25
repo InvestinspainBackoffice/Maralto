@@ -316,6 +316,8 @@ def build(lang):
             "name": e["NAME"],
             "location": e["LOCATION"],
             "price": e["PRICE"],
+            "priceNum": parse_price_number(e["PRICE"]),
+            "priceBand": price_band_id(parse_price_number(e["PRICE"])),
             "href": e["HREF"],
             "lat": e["LAT"],
             "lng": e["LNG"],

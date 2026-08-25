@@ -80,6 +80,11 @@
   --ease: cubic-bezier(0.16, 1, 0.3, 1);
 }
 html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+/* [hidden] verliest anders van .btn/.filter-clear's eigen `display:` (zelfde
+   specificiteit, maar die regels komen later in de cascade dan de
+   UA-stylesheet) - expliciet geforceerd zodat hidden-knoppen (kaart-modal,
+   tekenbediening) ook echt verdwijnen. */
+[hidden] { display: none !important; }
 body {
   font-family: var(--font);
   background: var(--bg);
@@ -283,13 +288,31 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   transition: opacity 0.3s;
 }
 
-/* ── Filters (locatie + prijs) ── */
+/* ── Eyebrow boven de titel ── */
+.page-eyebrow {
+  display: block;
+  font-size: 0.65rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 0.75rem;
+  position: relative;
+  z-index: 2;
+  opacity: 0;
+  animation: fade-up 0.9s var(--ease) 0.2s forwards;
+}
+
+/* ── Filters (locatie, prijs, zoek, sorteer) - nu in de hero-band ── */
 .filter-bar {
   display: flex;
   flex-wrap: wrap;
-  gap: 1rem 1.5rem;
+  gap: 1rem 0.75rem;
   justify-content: center;
-  margin-bottom: 2rem;
+  margin-top: 1.75rem;
+  position: relative;
+  z-index: 2;
+  opacity: 0;
+  animation: fade-up 0.9s var(--ease) 0.6s forwards;
 }
 .filter-select select {
   appearance: none;
@@ -312,6 +335,36 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 .filter-select select:hover { border-color: var(--gold-dim); }
 .filter-select select:focus { outline: none; border-color: var(--gold); }
 .filter-select select option { background: var(--bg-el); color: var(--text); }
+.filter-select--search input {
+  appearance: none;
+  background-color: var(--bg-el);
+  border: 1px solid var(--line-light);
+  color: var(--text);
+  font-family: var(--font);
+  font-size: 0.75rem;
+  letter-spacing: 0.05em;
+  padding: 0.8rem 1.15rem;
+  min-width: 210px;
+  transition: border-color 0.3s;
+}
+.filter-select--search input::placeholder { color: var(--text-muted); }
+.filter-select--search input:hover { border-color: var(--gold-dim); }
+.filter-select--search input:focus { outline: none; border-color: var(--gold); }
+.filter-select--sort select { min-width: 190px; }
+.filter-clear {
+  appearance: none;
+  background: transparent;
+  border: 1px solid var(--line-light);
+  color: var(--gold-dim);
+  font-family: var(--font);
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 0.8rem 1.25rem;
+  cursor: pointer;
+  transition: border-color 0.3s, color 0.3s;
+}
+.filter-clear:hover { border-color: var(--gold); color: var(--gold); }
 .filter-empty {
   display: none;
   text-align: center;
@@ -321,6 +374,143 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   letter-spacing: 0.02em;
 }
 .filter-empty.is-active { display: block; }
+
+/* ── "Bekijk op kaart"-knop + gebiedschip ── */
+.map-trigger-row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+  flex-wrap: wrap;
+  position: relative;
+  z-index: 2;
+  opacity: 0;
+  animation: fade-up 0.9s var(--ease) 0.75s forwards;
+}
+.btn--gold {
+  background: var(--gold);
+  color: var(--bg);
+  padding: 0.9rem 2rem;
+}
+.btn--gold:hover { background: var(--gold-dim); }
+.area-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: transparent;
+  border: 1px solid var(--gold-dim);
+  color: var(--gold);
+  font-family: var(--font);
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 0.65rem 1rem;
+  cursor: pointer;
+  transition: border-color 0.2s;
+}
+.area-chip:hover { border-color: var(--gold); }
+.area-chip[hidden] { display: none; }
+
+/* ── Resultaattelling ── */
+.result-count {
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 0.78rem;
+  letter-spacing: 0.03em;
+  margin-bottom: 1.5rem;
+}
+
+/* ── Paginering ── */
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 3rem;
+}
+.pagination[hidden] { display: none; }
+.pagination button {
+  min-width: 2.4rem;
+  height: 2.4rem;
+  padding: 0 0.5rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: 1px solid var(--line-light);
+  color: var(--text-muted);
+  font-family: var(--font);
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: border-color 0.2s, color 0.2s, background-color 0.2s;
+}
+.pagination button:hover:not(:disabled) { border-color: var(--gold-dim); color: var(--text); }
+.pagination button.is-active { background: var(--gold); border-color: var(--gold); color: var(--bg); }
+.pagination button:disabled { opacity: 0.35; cursor: default; }
+
+/* ── Kaart-overlay (modal, standaard gesloten - zie map-trigger-row) ── */
+.map-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 400;
+  background: var(--bg);
+  display: flex;
+  flex-direction: column;
+}
+.map-modal[hidden] { display: none; }
+.map-modal__bar {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid var(--line);
+  flex-wrap: wrap;
+}
+.map-modal__actions { display: flex; gap: 0.75rem; flex-wrap: wrap; }
+.map-modal__count {
+  margin: 0 auto;
+  color: var(--text-muted);
+  font-size: 0.78rem;
+  letter-spacing: 0.03em;
+  white-space: nowrap;
+}
+.map-modal__close {
+  appearance: none;
+  background: transparent;
+  border: none;
+  color: var(--text);
+  font-size: 1.1rem;
+  line-height: 1;
+  cursor: pointer;
+  padding: 0.4rem;
+  transition: color 0.2s;
+}
+.map-modal__close:hover { color: var(--gold); }
+.map-modal__hint {
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 0.78rem;
+  letter-spacing: 0.02em;
+  padding: 0.75rem 1.5rem 0;
+  margin: 0;
+}
+.map-modal__hint[hidden] { display: none; }
+.map-modal__body { position: relative; flex: 1; min-height: 0; }
+.map-modal__body #map {
+  width: 100%;
+  height: 100%;
+  border: none;
+  box-shadow: none;
+}
+.map-modal.is-drawing #map { cursor: crosshair; }
+.draw-point-marker {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--gold);
+  border: 2px solid var(--bg);
+}
 
 /* ── Projectenraster ── */
 .project-grid {
@@ -619,42 +809,74 @@ __CARD_EXTRA_CSS__
 <div class="page-header">
   <div class="hero-rotator" id="heroRotator" role="img" aria-label="__I_HUB_ROTATOR_ARIA__"></div>
   <div class="page-header__content">
+    <span class="page-eyebrow">__I_HUB_EYEBROW__</span>
     <h1 class="page-header__title">__I_HUB_HERO_TITLE__</h1>
     <p class="page-header__intro">__I_HUB_HERO_INTRO__</p>
+
+    <div class="filter-bar">
+      <div class="filter-select">
+        <select id="filterLocation" aria-label="__I_HUB_FILTER_LOC_ARIA__">
+          <option value="">__I_HUB_FILTER_LOC_ALL__</option>
+__LOCATION_OPTIONS__
+        </select>
+      </div>
+      <div class="filter-select">
+        <select id="filterPrice" aria-label="__I_HUB_FILTER_PRICE_ARIA__">
+          <option value="">__I_HUB_FILTER_PRICE_ALL__</option>
+__PRICE_OPTIONS__
+        </select>
+      </div>
+      <div class="filter-select filter-select--search">
+        <input type="search" id="filterSearch" aria-label="__I_HUB_FILTER_SEARCH_ARIA__" placeholder="__I_HUB_FILTER_SEARCH_PLACEHOLDER__">
+      </div>
+      <div class="filter-select filter-select--sort">
+        <select id="filterSort" aria-label="__I_HUB_SORT_ARIA__">
+          <option value="name-asc">__I_HUB_SORT_NAME__</option>
+          <option value="price-asc">__I_HUB_SORT_PRICE_ASC__</option>
+          <option value="price-desc">__I_HUB_SORT_PRICE_DESC__</option>
+        </select>
+      </div>
+      <button type="button" class="filter-clear" id="filterClear" hidden>__I_HUB_CLEAR_FILTERS__</button>
+    </div>
+
+    <div class="map-trigger-row">
+      <button type="button" class="btn btn--gold" id="mapOpenBtn">__I_HUB_MAP_BTN__</button>
+      <button type="button" class="area-chip" id="areaChip" hidden>
+        <span id="areaChipLabel">__I_HUB_AREA_CHIP__</span>
+        <span aria-hidden="true">&#10005;</span>
+      </button>
+    </div>
   </div>
-</div>
-
-<div class="map-section content--wide reveal">
-  <div id="map" role="img" aria-label="__I_HUB_MAP_ARIA__"></div>
-</div>
-
-<div class="spacer"></div>
-
-<div class="content reveal" style="text-align:center">
-  <p class="label" style="padding-left:0"><span style="padding-left:2rem">__I_HUB_ALL_PROJECTS_LABEL__</span></p>
 </div>
 
 <div class="spacer--sm"></div>
 
 <div class="content--wide">
-  <div class="filter-bar">
-    <div class="filter-select">
-      <select id="filterLocation" aria-label="__I_HUB_FILTER_LOC_ARIA__">
-        <option value="">__I_HUB_FILTER_LOC_ALL__</option>
-__LOCATION_OPTIONS__
-      </select>
-    </div>
-    <div class="filter-select">
-      <select id="filterPrice" aria-label="__I_HUB_FILTER_PRICE_ARIA__">
-        <option value="">__I_HUB_FILTER_PRICE_ALL__</option>
-__PRICE_OPTIONS__
-      </select>
-    </div>
-  </div>
+  <p class="result-count" id="resultCount"></p>
   <div class="project-grid" id="projectGrid">
 __PROJECT_CARDS__
   </div>
   <p class="filter-empty" id="filterEmpty">__I_HUB_FILTER_EMPTY__</p>
+
+  <nav class="pagination" id="pagination" aria-label="__I_HUB_PAGINATION_ARIA__" hidden></nav>
+</div>
+
+<!-- ═══════════ KAART-OVERLAY (standaard gesloten) ═══════════ -->
+<div class="map-modal" id="mapModal" role="dialog" aria-modal="true" aria-label="__I_HUB_MAP_ARIA__" hidden>
+  <div class="map-modal__bar">
+    <div class="map-modal__actions">
+      <button type="button" class="filter-clear" id="drawStartBtn">__I_HUB_MAP_DRAW_BTN__</button>
+      <button type="button" class="btn" id="drawDoneBtn" hidden>__I_HUB_MAP_DRAW_DONE__ (<span id="drawCount">0</span>)</button>
+      <button type="button" class="filter-clear" id="drawCancelBtn" hidden>__I_HUB_MAP_DRAW_CANCEL__</button>
+      <button type="button" class="filter-clear" id="areaClearBtn" hidden>__I_HUB_MAP_DRAW_CLEAR__</button>
+    </div>
+    <p class="map-modal__count" id="mapModalCount"></p>
+    <button type="button" class="map-modal__close" id="mapCloseBtn" aria-label="__I_HUB_MAP_CLOSE_ARIA__">&#10005;</button>
+  </div>
+  <p class="map-modal__hint" id="mapModalHint" hidden>__I_HUB_MAP_DRAW_HINT__</p>
+  <div class="map-modal__body">
+    <div id="map" role="img" aria-label="__I_HUB_MAP_ARIA__"></div>
+  </div>
 </div>
 
 <div class="spacer"></div>
@@ -822,40 +1044,106 @@ __PROJECT_CARDS__
     }, 5000);
   }
 
-  /* ═══════════ FILTERS (locatie + prijs) ═══════════ */
+  /* ═══════════ FILTERS + PAGINATIE (locatie, prijs, zoek, sorteer, gebied) ═══════════ */
   var filterLocation = document.getElementById('filterLocation');
   var filterPrice = document.getElementById('filterPrice');
+  var filterSearch = document.getElementById('filterSearch');
+  var filterSort = document.getElementById('filterSort');
+  var filterClear = document.getElementById('filterClear');
   var filterEmpty = document.getElementById('filterEmpty');
   var projectGrid = document.getElementById('projectGrid');
+  var resultCount = document.getElementById('resultCount');
+  var pagination = document.getElementById('pagination');
   var cards = Array.prototype.slice.call(document.querySelectorAll('.project-card'));
+  var projects = __MAP_MARKERS_JSON__;
 
-  function applyFilters() {
+  var PAGE_SIZE = 24;
+  var currentPage = 1;
+  var committedArea = null; // array van [lat,lng] of null - zie tekenfunctie hieronder
+
+  // Standaard even-odd ray casting - zelfde algoritme als geo.ts op de
+  // Next.js-site, hier in vanilla JS voor deze statische pagina.
+  function pointInPolygon(point, polygon) {
+    var x = point[0], y = point[1];
+    var inside = false;
+    for (var i = 0, j = polygon.length - 1; i < polygon.length; j = i++) {
+      var xi = polygon[i][0], yi = polygon[i][1];
+      var xj = polygon[j][0], yj = polygon[j][1];
+      var intersect = ((yi > y) !== (yj > y)) &&
+        (x < (xj - xi) * (y - yi) / (yj - yi) + xi);
+      if (intersect) inside = !inside;
+    }
+    return inside;
+  }
+
+  function pluralize(n) {
+    return n + ' ' + (n === 1 ? '__I_HUB_RESULT_COUNT_SINGULAR__' : '__I_HUB_RESULT_COUNT_PLURAL__');
+  }
+
+  function getFilteredIndices() {
     var loc = filterLocation.value;
     var band = filterPrice.value;
-    var visibleCount = 0;
-    var visibleBounds = [];
-    cards.forEach(function(card, i){
-      var matchLoc = !loc || card.getAttribute('data-location') === loc;
-      var matchPrice = !band || card.getAttribute('data-price-band') === band;
-      var show = matchLoc && matchPrice;
-      card.style.display = show ? '' : 'none';
-      if (show) visibleCount++;
-
-      var marker = markers[i];
-      if (marker) {
-        var onMap = map.hasLayer(marker);
-        if (show && !onMap) marker.addTo(map);
-        else if (!show && onMap) map.removeLayer(marker);
-        if (show) visibleBounds.push([projects[i].lat, projects[i].lng]);
-      }
+    var needle = filterSearch.value.trim().toLowerCase();
+    var result = [];
+    projects.forEach(function(p, i){
+      var matchLoc = !loc || p.location === loc;
+      var matchPrice = !band || p.priceBand === band;
+      var matchSearch = !needle ||
+        p.name.toLowerCase().indexOf(needle) !== -1 ||
+        p.location.toLowerCase().indexOf(needle) !== -1;
+      var matchArea = !committedArea || pointInPolygon([p.lat, p.lng], committedArea);
+      if (matchLoc && matchPrice && matchSearch && matchArea) result.push(i);
     });
-    filterEmpty.classList.toggle('is-active', visibleCount === 0);
+    return result;
+  }
 
-    // Bij 1 of 2 resultaten krimpt het raster naar precies dat aantal
-    // kolommen en centreert het, zodat er geen leeg vlak (met de
+  function sortIndices(indices) {
+    var sort = filterSort.value;
+    if (sort === 'name-asc') return indices.slice();
+    var withPrice = indices.filter(function(i){ return projects[i].priceNum != null; });
+    var withoutPrice = indices.filter(function(i){ return projects[i].priceNum == null; });
+    withPrice.sort(function(a, b){
+      return sort === 'price-asc'
+        ? projects[a].priceNum - projects[b].priceNum
+        : projects[b].priceNum - projects[a].priceNum;
+    });
+    return withPrice.concat(withoutPrice);
+  }
+
+  function updateClearButton() {
+    var active = Boolean(filterLocation.value || filterPrice.value || filterSearch.value.trim() || committedArea);
+    filterClear.hidden = !active;
+  }
+
+  function applyFilters() {
+    updateClearButton();
+    var filteredIdx = getFilteredIndices();
+    var sortedIdx = sortIndices(filteredIdx);
+
+    // Kaart toont het VOLLEDIGE gefilterde resultaat (alle pagina's), niet
+    // enkel de huidige pagina.
+    syncMapMarkers(sortedIdx);
+
+    var pageCount = Math.max(1, Math.ceil(sortedIdx.length / PAGE_SIZE));
+    if (currentPage > pageCount) currentPage = pageCount;
+    var pageStart = (currentPage - 1) * PAGE_SIZE;
+    var pageIdx = sortedIdx.slice(pageStart, pageStart + PAGE_SIZE);
+
+    cards.forEach(function(card){ card.style.display = 'none'; });
+    pageIdx.forEach(function(i){
+      var card = cards[i];
+      card.style.display = '';
+      projectGrid.appendChild(card);
+    });
+
+    filterEmpty.classList.toggle('is-active', sortedIdx.length === 0);
+    resultCount.textContent = sortedIdx.length > 0 ? pluralize(sortedIdx.length) : '';
+
+    // Bij 1 of 2 resultaten op de pagina krimpt het raster naar precies dat
+    // aantal kolommen en centreert het, zodat er geen leeg vlak (met de
     // rasterachtergrond erdoorheen) in de resterende kolom blijft staan.
-    if (visibleCount > 0 && visibleCount < 3) {
-      projectGrid.style.gridTemplateColumns = 'repeat(' + visibleCount + ', minmax(0, min(360px, 90vw)))';
+    if (pageIdx.length > 0 && pageIdx.length < 3) {
+      projectGrid.style.gridTemplateColumns = 'repeat(' + pageIdx.length + ', minmax(0, min(360px, 90vw)))';
       projectGrid.style.width = 'fit-content';
       projectGrid.style.margin = '0 auto';
     } else {
@@ -864,83 +1152,261 @@ __PROJECT_CARDS__
       projectGrid.style.margin = '';
     }
 
-    // Zoomt lichtjes in op de gefilterde regio; zonder resultaten of
-    // filters valt de kaart terug op het volledige overzicht.
-    if (visibleBounds.length === 1) {
-      map.flyTo(visibleBounds[0], 13, { duration: 0.6 });
-    } else if (visibleBounds.length > 1) {
-      map.flyToBounds(visibleBounds, { padding: [80,80], maxZoom: 13, duration: 0.6 });
-    } else {
-      map.flyToBounds(bounds, { padding: [80,80], maxZoom: 10, duration: 0.6 });
+    renderPagination(pageCount);
+  }
+
+  function renderPagination(pageCount) {
+    pagination.innerHTML = '';
+    pagination.hidden = pageCount <= 1;
+    if (pageCount <= 1) return;
+
+    function makeBtn(label, page, opts) {
+      opts = opts || {};
+      var btn = document.createElement('button');
+      btn.type = 'button';
+      btn.textContent = label;
+      if (opts.ariaLabel) btn.setAttribute('aria-label', opts.ariaLabel);
+      if (opts.active) { btn.classList.add('is-active'); btn.setAttribute('aria-current', 'page'); }
+      if (opts.disabled) btn.disabled = true;
+      btn.addEventListener('click', function(){
+        currentPage = page;
+        applyFilters();
+        projectGrid.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
+      return btn;
+    }
+
+    pagination.appendChild(makeBtn('←', currentPage - 1, { ariaLabel: '__I_HUB_PAGINATION_PREV_ARIA__', disabled: currentPage === 1 }));
+    for (var p = 1; p <= pageCount; p++) {
+      pagination.appendChild(makeBtn(String(p), p, { active: p === currentPage }));
+    }
+    pagination.appendChild(makeBtn('→', currentPage + 1, { ariaLabel: '__I_HUB_PAGINATION_NEXT_ARIA__', disabled: currentPage === pageCount }));
+  }
+
+  [filterLocation, filterPrice, filterSort].forEach(function(el){
+    el.addEventListener('change', function(){ currentPage = 1; applyFilters(); });
+  });
+  var searchDebounce;
+  filterSearch.addEventListener('input', function(){
+    clearTimeout(searchDebounce);
+    searchDebounce = setTimeout(function(){ currentPage = 1; applyFilters(); }, 200);
+  });
+  filterClear.addEventListener('click', function(){
+    filterLocation.value = '';
+    filterPrice.value = '';
+    filterSearch.value = '';
+    clearCommittedArea();
+    currentPage = 1;
+    applyFilters();
+  });
+
+  /* ═══════════ KAART-OVERLAY (standaard gesloten, lazy init + tekenen) ═══════════ */
+  var mapModal = document.getElementById('mapModal');
+  var mapOpenBtn = document.getElementById('mapOpenBtn');
+  var mapCloseBtn = document.getElementById('mapCloseBtn');
+  var mapModalCount = document.getElementById('mapModalCount');
+  var mapModalHint = document.getElementById('mapModalHint');
+  var drawStartBtn = document.getElementById('drawStartBtn');
+  var drawDoneBtn = document.getElementById('drawDoneBtn');
+  var drawCancelBtn = document.getElementById('drawCancelBtn');
+  var drawCountEl = document.getElementById('drawCount');
+  var areaClearBtn = document.getElementById('areaClearBtn');
+  var areaChip = document.getElementById('areaChip');
+
+  var map, markers, bounds, icon, drawLayerGroup;
+  var drawing = false;
+  var drawPoints = [];
+
+  function initMap() {
+    if (map) return;
+    // Op touch-toestellen zou 1 vinger op de kaart de kaart verslepen i.p.v.
+    // de pagina laten scrollen - dat maakt de kaart een scroll-val. Sleep-
+    // gedrag staat daarom pas aan na een eerste tik; tot dan glijdt een
+    // swipe gewoon door naar de pagina eronder.
+    var isTouch = ('ontouchstart' in window) || navigator.maxTouchPoints > 0;
+    map = L.map('map', { scrollWheelZoom: false, attributionControl: true, dragging: !isTouch });
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
+      subdomains: 'abcd',
+      maxZoom: 19
+    }).addTo(map);
+
+    if (isTouch) {
+      var mapTouchHint = document.createElement('div');
+      mapTouchHint.className = 'map-touch-hint';
+      mapTouchHint.textContent = '__I_HUB_MAP_TOUCH_HINT__';
+      document.getElementById('map').appendChild(mapTouchHint);
+      map.once('click', function() {
+        if (drawing) return;
+        map.dragging.enable();
+        mapTouchHint.style.opacity = '0';
+        setTimeout(function() { mapTouchHint.remove(); }, 300);
+      });
+    }
+
+    icon = L.divIcon({ className: '', html: '<div class="marker-pin"></div>', iconSize: [14,14] });
+    bounds = [];
+    markers = projects.map(function(p){
+      var marker = L.marker([p.lat, p.lng], { icon: icon });
+      marker.bindPopup(
+        '<div class="map-popup__name">' + p.name + '</div>' +
+        '<div class="map-popup__meta">' + p.location + ' &middot; ' + p.price + '</div>' +
+        '<a class="map-popup__link" href="' + p.href + '">__I_HUB_CARD_CTA__</a>'
+      );
+      marker.bindTooltip(p.name, { direction: 'top', offset: [0, -8], className: 'marker-tooltip' });
+      bounds.push([p.lat, p.lng]);
+      return marker;
+    });
+
+    // Bij een klik op een marker die (op het huidige zoomniveau) tegen
+    // andere markers aan zit, zoomt de kaart lichtjes in zodat ze uit
+    // elkaar getrokken worden. Staat de marker al vrij op zichzelf,
+    // dan blijft de kaart gewoon staan - alleen de popup opent.
+    var CLUSTER_PX = 26;
+    markers.forEach(function(marker){
+      marker.on('click', function(){
+        if (drawing) return;
+        var point = map.latLngToContainerPoint(marker.getLatLng());
+        var isClustered = markers.some(function(other){
+          if (other === marker || !map.hasLayer(other)) return false;
+          return point.distanceTo(map.latLngToContainerPoint(other.getLatLng())) < CLUSTER_PX;
+        });
+        if (isClustered) {
+          map.flyTo(marker.getLatLng(), Math.min(map.getZoom() + 2, 15), { duration: 0.5 });
+        }
+      });
+    });
+
+    drawLayerGroup = L.layerGroup().addTo(map);
+
+    map.on('click', function(e){
+      if (!drawing) return;
+      drawPoints.push([e.latlng.lat, e.latlng.lng]);
+      redrawPreview();
+      drawCountEl.textContent = String(drawPoints.length);
+      drawDoneBtn.disabled = drawPoints.length < 3;
+    });
+  }
+
+  function redrawPreview() {
+    drawLayerGroup.clearLayers();
+    drawPoints.forEach(function(pt){
+      L.circleMarker(pt, { radius: 5, color: '#0E1318', weight: 2, fillColor: '#C4A97D', fillOpacity: 1 }).addTo(drawLayerGroup);
+    });
+    if (drawPoints.length >= 2) {
+      L.polygon(drawPoints, { color: '#C4A97D', weight: 2, fillColor: '#C4A97D', fillOpacity: 0.15 }).addTo(drawLayerGroup);
     }
   }
-  filterLocation.addEventListener('change', applyFilters);
-  filterPrice.addEventListener('change', applyFilters);
 
-  var projects = __MAP_MARKERS_JSON__;
-
-  // Op touch-toestellen zou 1 vinger op de kaart de kaart verslepen i.p.v.
-  // de pagina laten scrollen - dat maakt de kaart een scroll-val. Sleep-
-  // gedrag staat daarom pas aan na een eerste tik; tot dan glijdt een
-  // swipe gewoon door naar de pagina eronder. L.Browser.touch ligt er in
-  // moderne Chrome-versies naast (herkent PointerEvent-steun als "touch",
-  // ook op desktop zonder aanraakscherm) - vandaar de eigen check.
-  var isTouch = ('ontouchstart' in window) || navigator.maxTouchPoints > 0;
-  var map = L.map('map', { scrollWheelZoom: false, attributionControl: true, dragging: !isTouch });
-  L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
-    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
-    subdomains: 'abcd',
-    maxZoom: 19
-  }).addTo(map);
-
-  if (isTouch) {
-    var mapTouchHint = document.createElement('div');
-    mapTouchHint.className = 'map-touch-hint';
-    mapTouchHint.textContent = '__I_HUB_MAP_TOUCH_HINT__';
-    document.getElementById('map').appendChild(mapTouchHint);
-    map.once('click', function() {
-      map.dragging.enable();
-      mapTouchHint.style.opacity = '0';
-      setTimeout(function() { mapTouchHint.remove(); }, 300);
+  function syncMapMarkers(filteredIdx) {
+    if (!map) return;
+    var filteredSet = {};
+    filteredIdx.forEach(function(i){ filteredSet[i] = true; });
+    var visibleBounds = [];
+    markers.forEach(function(marker, i){
+      var show = Boolean(filteredSet[i]);
+      var onMap = map.hasLayer(marker);
+      if (show && !onMap) marker.addTo(map);
+      else if (!show && onMap) map.removeLayer(marker);
+      if (show) visibleBounds.push([projects[i].lat, projects[i].lng]);
     });
-  }
-
-  var icon = L.divIcon({ className: '', html: '<div class="marker-pin"></div>', iconSize: [14,14] });
-  var bounds = [];
-  var markers = projects.map(function(p){
-    var marker = L.marker([p.lat, p.lng], { icon: icon }).addTo(map);
-    marker.bindPopup(
-      '<div class="map-popup__name">' + p.name + '</div>' +
-      '<div class="map-popup__meta">' + p.location + ' &middot; ' + p.price + '</div>' +
-      '<a class="map-popup__link" href="' + p.href + '">__I_HUB_CARD_CTA__</a>'
-    );
-    marker.bindTooltip(p.name, { direction: 'top', offset: [0, -8], className: 'marker-tooltip' });
-    bounds.push([p.lat, p.lng]);
-    return marker;
-  });
-  if (bounds.length === 1) {
-    map.setView(bounds[0], 10);
-  } else {
-    map.fitBounds(bounds, { padding: [80,80], maxZoom: 10 });
-  }
-
-  // Bij een klik op een marker die (op het huidige zoomniveau) tegen
-  // andere markers aan zit, zoomt de kaart lichtjes in zodat ze uit
-  // elkaar getrokken worden. Staat de marker al vrij op zichzelf,
-  // dan blijft de kaart gewoon staan - alleen de popup opent.
-  var CLUSTER_PX = 26;
-  markers.forEach(function(marker){
-    marker.on('click', function(){
-      var point = map.latLngToContainerPoint(marker.getLatLng());
-      var isClustered = markers.some(function(other){
-        if (other === marker || !map.hasLayer(other)) return false;
-        return point.distanceTo(map.latLngToContainerPoint(other.getLatLng())) < CLUSTER_PX;
-      });
-      if (isClustered) {
-        map.flyTo(marker.getLatLng(), Math.min(map.getZoom() + 2, 15), { duration: 0.5 });
+    mapModalCount.textContent = pluralize(filteredIdx.length);
+    if (!mapModal.hidden) {
+      // Zoomt lichtjes in op de gefilterde regio; zonder resultaten of
+      // filters valt de kaart terug op het volledige overzicht.
+      if (visibleBounds.length === 1) {
+        map.flyTo(visibleBounds[0], 13, { duration: 0.6 });
+      } else if (visibleBounds.length > 1) {
+        map.flyToBounds(visibleBounds, { padding: [80,80], maxZoom: 13, duration: 0.6 });
+      } else if (bounds.length) {
+        map.flyToBounds(bounds, { padding: [80,80], maxZoom: 10, duration: 0.6 });
       }
-    });
+    }
+  }
+
+  function openMap() {
+    initMap();
+    mapModal.hidden = false;
+    document.body.style.overflow = 'hidden';
+    setTimeout(function(){
+      map.invalidateSize();
+      if (bounds.length === 1) map.setView(bounds[0], 10);
+      else if (bounds.length > 1) map.fitBounds(bounds, { padding: [80,80], maxZoom: 10 });
+      applyFilters(); // her-sync markers/telling nu de kaart zichtbaar is
+    }, 50);
+  }
+  function closeMap() {
+    cancelDrawing();
+    mapModal.hidden = true;
+    document.body.style.overflow = '';
+  }
+  mapOpenBtn.addEventListener('click', openMap);
+  mapCloseBtn.addEventListener('click', closeMap);
+  document.addEventListener('keydown', function(e){
+    if (e.key === 'Escape' && !mapModal.hidden) closeMap();
   });
+
+  function startDrawing() {
+    // Teken tegen de volledige (niet-gebiedgefilterde) set markers, niet
+    // tegen wat een vorige vorm al had ingeperkt.
+    committedArea = null;
+    drawPoints = [];
+    drawing = true;
+    mapModal.classList.add('is-drawing');
+    drawStartBtn.hidden = true;
+    drawDoneBtn.hidden = false;
+    drawDoneBtn.disabled = true;
+    drawCancelBtn.hidden = false;
+    areaClearBtn.hidden = true;
+    mapModalHint.hidden = false;
+    drawCountEl.textContent = '0';
+    redrawPreview();
+    currentPage = 1;
+    applyFilters();
+    updateAreaChip();
+  }
+  function finishDrawing() {
+    if (drawPoints.length >= 3) committedArea = drawPoints.slice();
+    drawing = false;
+    drawPoints = [];
+    mapModal.classList.remove('is-drawing');
+    drawStartBtn.hidden = false;
+    drawDoneBtn.hidden = true;
+    drawCancelBtn.hidden = true;
+    mapModalHint.hidden = true;
+    areaClearBtn.hidden = !committedArea;
+    currentPage = 1;
+    applyFilters();
+    updateAreaChip();
+  }
+  function cancelDrawing() {
+    if (!drawing) return;
+    drawing = false;
+    drawPoints = [];
+    mapModal.classList.remove('is-drawing');
+    drawStartBtn.hidden = false;
+    drawDoneBtn.hidden = true;
+    drawCancelBtn.hidden = true;
+    mapModalHint.hidden = true;
+    if (drawLayerGroup && !committedArea) drawLayerGroup.clearLayers();
+    applyFilters();
+  }
+  function clearCommittedArea() {
+    committedArea = null;
+    if (drawLayerGroup) drawLayerGroup.clearLayers();
+    areaClearBtn.hidden = true;
+    updateAreaChip();
+  }
+  function updateAreaChip() {
+    areaChip.hidden = !committedArea;
+  }
+  drawStartBtn.addEventListener('click', startDrawing);
+  drawDoneBtn.addEventListener('click', finishDrawing);
+  drawCancelBtn.addEventListener('click', cancelDrawing);
+  areaClearBtn.addEventListener('click', function(){ clearCommittedArea(); currentPage = 1; applyFilters(); });
+  areaChip.addEventListener('click', function(){ clearCommittedArea(); currentPage = 1; applyFilters(); });
+
+  applyFilters();
 
   /* ═══════════ LEAD DOCK (algemene aanvraag, geen specifiek project) ═══════════ */
 
