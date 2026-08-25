@@ -113,7 +113,10 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   to { opacity: 1; transform: translateY(0); }
 }
 
-/* ── Page header (lichter dan een projecthero: geen achtergrondfoto) ── */
+/* ── Page header: vlakke achtergrondkleur i.p.v. een fotocarrousel, met
+   een rustige, autonome goud/teal gloed erachter (zie de aurora-drift in
+   de JS hieronder - drift op sinuscurves, licht gesmoord richting de
+   cursor, zelfde recept als de aurora op investinspain-website). ── */
 .page-header {
   position: relative;
   min-height: clamp(340px, 56vh, 500px);
@@ -123,29 +126,17 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   padding: clamp(3rem, 9vw, 4.5rem) clamp(1.5rem, 5vw, 3rem) clamp(1.5rem, 4vw, 2.5rem);
   text-align: center;
   overflow: hidden;
+  background: var(--bg);
 }
-.hero-rotator { position: absolute; inset: 0; z-index: 0; }
-.hero-rotator__slide {
+.hero-aurora {
   position: absolute;
   inset: 0;
-  background-size: cover;
-  background-position: center 55%;
-  opacity: 0;
-  transition: opacity 1.8s var(--ease);
-}
-.hero-rotator__slide.is-active { opacity: 1; }
-.hero-rotator::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    to bottom,
-    var(--bg) 0%,
-    rgba(14,19,24,0.6) 22%,
-    rgba(14,19,24,0.72) 55%,
-    rgba(14,19,24,0.8) 85%,
-    var(--bg) 100%
-  );
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(480px 320px at var(--ax, 25%) var(--ay, 35%), rgba(196, 169, 125, 0.28), transparent 62%),
+    radial-gradient(560px 380px at var(--bx, 75%) var(--by, 65%), rgba(45, 106, 122, 0.3), transparent 62%),
+    radial-gradient(380px 280px at var(--cx, 50%) var(--cy, 80%), rgba(196, 169, 125, 0.14), transparent 65%);
 }
 .page-header__content { position: relative; z-index: 2; }
 .page-header__title {
@@ -497,9 +488,10 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   margin: 0;
 }
 .map-modal__hint[hidden] { display: none; }
-.map-modal__body { position: relative; flex: 1; min-height: 0; }
+.map-modal__body { position: relative; flex: 1; min-height: 0; display: flex; }
 .map-modal__body #map {
-  width: 100%;
+  flex: 1;
+  min-width: 0;
   height: 100%;
   border: none;
   box-shadow: none;
@@ -510,6 +502,69 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   border-radius: 50%;
   background: var(--gold);
   border: 2px solid var(--bg);
+}
+
+/* ── Projectenlijst naast de kaart (zodra een gebied getekend is) ── */
+.map-modal__list {
+  width: 340px;
+  flex: 0 0 340px;
+  overflow-y: auto;
+  background: var(--bg);
+  border-right: 1px solid var(--line);
+}
+.map-modal__list[hidden] { display: none; }
+.map-list-item {
+  display: flex;
+  gap: 0.75rem;
+  padding: 0.85rem 1rem;
+  border-bottom: 1px solid var(--line);
+  transition: background-color 0.2s ease;
+}
+.map-list-item:hover { background: var(--bg-el); }
+.map-list-item img { width: 64px; height: 64px; object-fit: cover; flex-shrink: 0; }
+.map-list-item > div {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  min-width: 0;
+  justify-content: center;
+}
+.map-list-item__location {
+  font-size: 0.65rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.map-list-item__name {
+  font-size: 0.85rem;
+  color: var(--text);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.map-list-item__price { font-size: 0.75rem; color: var(--gold); }
+.map-list-empty {
+  color: var(--text-muted);
+  font-size: 0.8rem;
+  letter-spacing: 0.03em;
+  text-align: center;
+  margin: 0;
+  padding: 2rem 1.5rem;
+}
+@media (max-width: 780px) {
+  .map-modal__body { flex-direction: column; }
+  .map-modal__list {
+    width: 100%;
+    flex: 0 0 auto;
+    max-height: 40vh;
+    border-right: none;
+    border-bottom: 1px solid var(--line);
+  }
+  .map-modal__body #map { flex: 1; min-height: 200px; }
 }
 
 /* ── Projectenraster ── */
@@ -808,7 +863,7 @@ footer a { color: var(--gold-dim); text-underline-offset: 2px; }
 <div class="frame" aria-hidden="true"></div>
 
 <div class="page-header">
-  <div class="hero-rotator" id="heroRotator" role="img" aria-label="Sfeerbeelden van onze recentste projecten"></div>
+  <div class="hero-aurora" id="heroAurora" aria-hidden="true"></div>
   <div class="page-header__content">
     <span class="page-eyebrow">COSTA DEL SOL</span>
     <h1 class="page-header__title">PROJECTEN</h1>
@@ -837,7 +892,8 @@ footer a { color: var(--gold-dim); text-underline-offset: 2px; }
       <div class="filter-select">
         <select id="filterPrice" aria-label="Filter op prijs">
           <option value="">Alle prijzen</option>
-        <option value="tot-500k">Tot € 500.000</option>
+        <option value="tot-200k">Tot € 200.000</option>
+        <option value="200k-500k">€ 200.000 – € 500.000</option>
         <option value="500k-1m">€ 500.000 – € 1.000.000</option>
         <option value="1m-2m">€ 1.000.000 – € 2.000.000</option>
         <option value="2m-plus">€ 2.000.000 en meer</option>
@@ -871,7 +927,7 @@ footer a { color: var(--gold-dim); text-underline-offset: 2px; }
 <div class="content--wide">
   <p class="result-count" id="resultCount"></p>
   <div class="project-grid" id="projectGrid">
-    <a class="project-card" href="/maralto/" data-location="Estepona" data-price-band="tot-500k">
+    <a class="project-card" href="/maralto/" data-location="Estepona" data-price-band="200k-500k">
       <div class="project-card__img-wrap">
         <img class="project-card__img" src="https://projects.investinspain.be/images/maralto/thumb.webp" alt="Maralto" loading="lazy" decoding="async">
       </div>
@@ -881,7 +937,7 @@ footer a { color: var(--gold-dim); text-underline-offset: 2px; }
         <div class="project-card__price">Vanaf € 460.000</div>
       </div>
     </a>
-    <a class="project-card" href="/360/" data-location="Mijas" data-price-band="tot-500k">
+    <a class="project-card" href="/360/" data-location="Mijas" data-price-band="200k-500k">
       <div class="project-card__img-wrap">
         <img class="project-card__img" src="https://projects.investinspain.be/images/360/thumb.webp" alt="360°" loading="lazy" decoding="async">
       </div>
@@ -941,7 +997,7 @@ footer a { color: var(--gold-dim); text-underline-offset: 2px; }
         <div class="project-card__price">Vanaf € 1.480.000</div>
       </div>
     </a>
-    <a class="project-card" href="/birdie-hills/" data-location="Estepona" data-price-band="tot-500k">
+    <a class="project-card" href="/birdie-hills/" data-location="Estepona" data-price-band="200k-500k">
       <div class="project-card__img-wrap">
         <img class="project-card__img" src="https://projects.investinspain.be/images/birdie-hills/thumb.webp" alt="Birdie Hills" loading="lazy" decoding="async">
       </div>
@@ -991,7 +1047,7 @@ footer a { color: var(--gold-dim); text-underline-offset: 2px; }
         <div class="project-card__price">Vanaf € 754.000</div>
       </div>
     </a>
-    <a class="project-card" href="/etherna-homes/" data-location="Estepona" data-price-band="tot-500k">
+    <a class="project-card" href="/etherna-homes/" data-location="Estepona" data-price-band="200k-500k">
       <div class="project-card__img-wrap">
         <img class="project-card__img" src="https://projects.investinspain.be/images/etherna-homes/thumb.webp" alt="Etherna Homes" loading="lazy" decoding="async">
       </div>
@@ -1051,7 +1107,7 @@ footer a { color: var(--gold-dim); text-underline-offset: 2px; }
         <div class="project-card__price">Prijs op aanvraag</div>
       </div>
     </a>
-    <a class="project-card" href="/marine-hills/" data-location="Estepona" data-price-band="tot-500k">
+    <a class="project-card" href="/marine-hills/" data-location="Estepona" data-price-band="200k-500k">
       <div class="project-card__img-wrap">
         <img class="project-card__img" src="https://projects.investinspain.be/images/marine-hills/thumb.webp" alt="Marine Hills" loading="lazy" decoding="async">
       </div>
@@ -1061,7 +1117,7 @@ footer a { color: var(--gold-dim); text-underline-offset: 2px; }
         <div class="project-card__price">Vanaf € 464.000</div>
       </div>
     </a>
-    <a class="project-card" href="/morasol/" data-location="Manilva" data-price-band="tot-500k">
+    <a class="project-card" href="/morasol/" data-location="Manilva" data-price-band="200k-500k">
       <div class="project-card__img-wrap">
         <img class="project-card__img" src="https://projects.investinspain.be/images/morasol/thumb.webp" alt="Morasol" loading="lazy" decoding="async">
       </div>
@@ -1121,7 +1177,7 @@ footer a { color: var(--gold-dim); text-underline-offset: 2px; }
         <div class="project-card__price">Vanaf € 795.000</div>
       </div>
     </a>
-    <a class="project-card" href="/riviera-hill/" data-location="Mijas Costa" data-price-band="tot-500k">
+    <a class="project-card" href="/riviera-hill/" data-location="Mijas Costa" data-price-band="200k-500k">
       <div class="project-card__img-wrap">
         <img class="project-card__img" src="https://projects.investinspain.be/images/riviera-hill/thumb.webp" alt="Riviera Hill" loading="lazy" decoding="async">
       </div>
@@ -1171,7 +1227,7 @@ footer a { color: var(--gold-dim); text-underline-offset: 2px; }
         <div class="project-card__price">Vanaf € 2.950.000</div>
       </div>
     </a>
-    <a class="project-card" href="/skye/" data-location="Casares" data-price-band="tot-500k">
+    <a class="project-card" href="/skye/" data-location="Casares" data-price-band="200k-500k">
       <div class="project-card__img-wrap">
         <img class="project-card__img" src="https://projects.investinspain.be/images/skye/thumb.webp" alt="Skye" loading="lazy" decoding="async">
       </div>
@@ -1201,7 +1257,7 @@ footer a { color: var(--gold-dim); text-underline-offset: 2px; }
         <div class="project-card__price">Vanaf € 1.500.000</div>
       </div>
     </a>
-    <a class="project-card" href="/the-grove/" data-location="San Pedro de Alcántara" data-price-band="tot-500k">
+    <a class="project-card" href="/the-grove/" data-location="San Pedro de Alcántara" data-price-band="200k-500k">
       <div class="project-card__img-wrap">
         <img class="project-card__img" src="https://projects.investinspain.be/images/the-grove/thumb.webp" alt="The Grove" loading="lazy" decoding="async">
       </div>
@@ -1211,7 +1267,7 @@ footer a { color: var(--gold-dim); text-underline-offset: 2px; }
         <div class="project-card__price">Vanaf € 390.000</div>
       </div>
     </a>
-    <a class="project-card" href="/the-kove/" data-location="Mijas" data-price-band="tot-500k">
+    <a class="project-card" href="/the-kove/" data-location="Mijas" data-price-band="200k-500k">
       <div class="project-card__img-wrap">
         <img class="project-card__img" src="https://projects.investinspain.be/images/the-kove/thumb.webp" alt="The Kove" loading="lazy" decoding="async">
       </div>
@@ -1251,7 +1307,7 @@ footer a { color: var(--gold-dim); text-underline-offset: 2px; }
         <div class="project-card__price">Vanaf € 3.550.000</div>
       </div>
     </a>
-    <a class="project-card" href="/vanian-park/" data-location="Estepona" data-price-band="tot-500k">
+    <a class="project-card" href="/vanian-park/" data-location="Estepona" data-price-band="200k-500k">
       <div class="project-card__img-wrap">
         <img class="project-card__img" src="https://projects.investinspain.be/images/vanian-park/thumb.webp" alt="Vanian Park" loading="lazy" decoding="async">
       </div>
@@ -1261,7 +1317,7 @@ footer a { color: var(--gold-dim); text-underline-offset: 2px; }
         <div class="project-card__price">Vanaf € 469.000</div>
       </div>
     </a>
-    <a class="project-card" href="/vesta-mare/" data-location="Manilva" data-price-band="tot-500k">
+    <a class="project-card" href="/vesta-mare/" data-location="Manilva" data-price-band="200k-500k">
       <div class="project-card__img-wrap">
         <img class="project-card__img" src="https://projects.investinspain.be/images/vesta-mare/thumb.webp" alt="Vesta Mare" loading="lazy" decoding="async">
       </div>
@@ -1321,6 +1377,7 @@ footer a { color: var(--gold-dim); text-underline-offset: 2px; }
   </div>
   <p class="map-modal__hint" id="mapModalHint" hidden>Klik op de kaart om punten te plaatsen — klik op “Klaar” zodra je gebied rond is (minstens 3 punten).</p>
   <div class="map-modal__body">
+    <div class="map-modal__list" id="mapModalList" hidden></div>
     <div id="map" role="img" aria-label="Kaart met de locaties van onze projecten"></div>
   </div>
 </div>
@@ -1471,23 +1528,44 @@ footer a { color: var(--gold-dim); text-underline-offset: 2px; }
   }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
   document.querySelectorAll('.reveal').forEach(function(el){ observer.observe(el); });
 
-  /* ═══════════ ROTERENDE HERO (laatste 5 projecten) ═══════════ */
-  var heroSlides = [{"name": "Soul Marbella", "thumb": "https://projects.investinspain.be/images/soul-marbella/thumb.webp", "href": "/soul-marbella/"}, {"name": "Sierra Blanca by the Sea", "thumb": "https://projects.investinspain.be/images/sierra-blanca-by-the-sea/thumb.webp", "href": "/sierra-blanca-by-the-sea/"}, {"name": "Palo Alto", "thumb": "https://projects.investinspain.be/images/palo-alto/thumb.webp", "href": "/palo-alto/"}, {"name": "Ocho de Oro", "thumb": "https://projects.investinspain.be/images/ocho-de-oro/thumb.webp", "href": "/ocho-de-oro/"}, {"name": "Marbella Design Hills", "thumb": "https://projects.investinspain.be/images/marbella-design-hills/thumb.webp", "href": "/marbella-design-hills/"}];
-  var rotator = document.getElementById('heroRotator');
-  heroSlides.forEach(function(p, i){
-    var slide = document.createElement('div');
-    slide.className = 'hero-rotator__slide' + (i === 0 ? ' is-active' : '');
-    slide.style.backgroundImage = "url('" + p.thumb + "')";
-    rotator.appendChild(slide);
-  });
-  if (heroSlides.length > 1) {
-    var slideEls = rotator.querySelectorAll('.hero-rotator__slide');
-    var current = 0;
-    setInterval(function(){
-      slideEls[current].classList.remove('is-active');
-      current = (current + 1) % slideEls.length;
-      slideEls[current].classList.add('is-active');
-    }, 5000);
+  /* ═══════════ AURORA-GLOED (vlakke hero, geen foto) ═══════════
+     Drie zachte goud/teal blobs die op onafhankelijke sinuscurves
+     drijven, licht getrokken richting de cursor. De autonome drift
+     blijft de basisbeweging (zodat de hero niet levenloos aanvoelt
+     voor een bezoeker die de muis nog niet bewogen heeft) - de cursor
+     voegt enkel een gesmoorde, begrensde offset toe bovenop die drift. */
+  var aurora = document.getElementById('heroAurora');
+  if (aurora && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    var POINTER_INFLUENCE = 16; // max % dat de cursor een blob van zijn drift-pad mag trekken
+    var POINTER_EASE = 0.06;    // smoothing per frame richting de echte cursorpositie
+    var targetX = 50, targetY = 50, smoothX = 50, smoothY = 50, t = 0;
+
+    window.addEventListener('pointermove', function(e){
+      targetX = (e.clientX / window.innerWidth) * 100;
+      targetY = (e.clientY / window.innerHeight) * 100;
+    });
+
+    (function tick(){
+      t += 0.006;
+      smoothX += (targetX - smoothX) * POINTER_EASE;
+      smoothY += (targetY - smoothY) * POINTER_EASE;
+      var offsetX = ((smoothX - 50) / 50) * POINTER_INFLUENCE;
+      var offsetY = ((smoothY - 50) / 50) * POINTER_INFLUENCE;
+
+      var ax = 50 + 28 * Math.sin(t * 0.6) + offsetX;
+      var ay = 45 + 22 * Math.cos(t * 0.5) + offsetY;
+      var bx = 50 - 26 * Math.sin(t * 0.42 + 1.4) + offsetX;
+      var by = 55 + 24 * Math.cos(t * 0.65 + 2.1) + offsetY;
+      var cx = 50 + 20 * Math.sin(t * 0.3 + 3) + offsetX * 0.5;
+      var cy = 75 + 12 * Math.cos(t * 0.35 + 0.5) + offsetY * 0.5;
+      aurora.style.setProperty('--ax', ax + '%');
+      aurora.style.setProperty('--ay', ay + '%');
+      aurora.style.setProperty('--bx', bx + '%');
+      aurora.style.setProperty('--by', by + '%');
+      aurora.style.setProperty('--cx', cx + '%');
+      aurora.style.setProperty('--cy', cy + '%');
+      requestAnimationFrame(tick);
+    })();
   }
 
   /* ═══════════ FILTERS + PAGINATIE (locatie, prijs, zoek, sorteer, gebied) ═══════════ */
@@ -1501,7 +1579,7 @@ footer a { color: var(--gold-dim); text-underline-offset: 2px; }
   var resultCount = document.getElementById('resultCount');
   var pagination = document.getElementById('pagination');
   var cards = Array.prototype.slice.call(document.querySelectorAll('.project-card'));
-  var projects = [{"name": "Maralto", "location": "Estepona", "price": "Vanaf € 460.000", "priceNum": 460000, "priceBand": "tot-500k", "href": "/maralto/", "lat": 36.425704, "lng": -5.1626803}, {"name": "360°", "location": "Mijas", "price": "Vanaf € 400.000", "priceNum": 400000, "priceBand": "tot-500k", "href": "/360/", "lat": 36.5269758, "lng": -4.6646297}, {"name": "Adagio", "location": "Cancelada", "price": "Vanaf € 512.000", "priceNum": 512000, "priceBand": "500k-1m", "href": "/adagio/", "lat": 36.4651772, "lng": -5.0599806}, {"name": "Altezza Suites", "location": "Estepona", "price": "Vanaf € 795.000", "priceNum": 795000, "priceBand": "500k-1m", "href": "/altezza-suites/", "lat": 36.4770737, "lng": -5.0765539}, {"name": "Australy Aures", "location": "Estepona", "price": "Vanaf € 688.000", "priceNum": 688000, "priceBand": "500k-1m", "href": "/australy-aures/", "lat": 36.46162316773, "lng": -5.0828572014322}, {"name": "Australy Thera", "location": "Estepona", "price": "Binnenkort beschikbaar", "priceNum": null, "priceBand": "", "href": "/australy-thera/", "lat": 36.463867007738, "lng": -5.0873780250549}, {"name": "Beyond Homes", "location": "Estepona", "price": "Vanaf € 1.480.000", "priceNum": 1480000, "priceBand": "1m-2m", "href": "/beyond-homes/", "lat": 36.4186770196193, "lng": -5.173404476101808}, {"name": "Birdie Hills", "location": "Estepona", "price": "Vanaf € 320.000", "priceNum": 320000, "priceBand": "tot-500k", "href": "/birdie-hills/", "lat": 36.408795614625, "lng": -5.2107139740973}, {"name": "Casatalaya", "location": "Benalmádena", "price": "Vanaf € 900.000", "priceNum": 900000, "priceBand": "500k-1m", "href": "/casatalaya/", "lat": 36.580969929598, "lng": -4.5706188754204}, {"name": "Dunique", "location": "Marbella", "price": "Vanaf € 3.350.000", "priceNum": 3350000, "priceBand": "2m-plus", "href": "/dunique/", "lat": 36.5006105, "lng": -4.8113747}, {"name": "Emare", "location": "Estepona", "price": "Uitverkocht", "priceNum": null, "priceBand": "", "href": "/emare/", "lat": 36.4395, "lng": -5.098}, {"name": "Essence Residence", "location": "Estepona", "price": "Vanaf € 754.000", "priceNum": 754000, "priceBand": "500k-1m", "href": "/essence-residence/", "lat": 36.4680914, "lng": -5.0495274}, {"name": "Etherna Homes", "location": "Estepona", "price": "Vanaf € 302.000", "priceNum": 302000, "priceBand": "tot-500k", "href": "/etherna-homes/", "lat": 36.428940219532, "lng": -5.200425298379}, {"name": "Haiku Estepona", "location": "Estepona", "price": "Vanaf € 500.000", "priceNum": 500000, "priceBand": "500k-1m", "href": "/haiku-estepona/", "lat": 36.466856444687, "lng": -5.0597456901361}, {"name": "Ikkil Bay", "location": "Estepona", "price": "Vanaf € 3.003.000", "priceNum": 3003000, "priceBand": "2m-plus", "href": "/ikkil-bay/", "lat": 36.417125823855, "lng": -5.1652550752558}, {"name": "Las Mesas Blue Horizon", "location": "Estepona", "price": "Vanaf € 705.000", "priceNum": 705000, "priceBand": "500k-1m", "href": "/las-mesas-blue-horizon/", "lat": 36.4262544, "lng": -5.1578951}, {"name": "Marbella Club Hills", "location": "Benahavís", "price": "Vanaf € 830.000", "priceNum": 830000, "priceBand": "500k-1m", "href": "/marbella-club-hills/", "lat": 36.5145, "lng": -5.018}, {"name": "Marbella Design Hills", "location": "Marbella", "price": "Prijs op aanvraag", "priceNum": null, "priceBand": "", "href": "/marbella-design-hills/", "lat": 36.51075073, "lng": -4.94405865}, {"name": "Marine Hills", "location": "Estepona", "price": "Vanaf € 464.000", "priceNum": 464000, "priceBand": "tot-500k", "href": "/marine-hills/", "lat": 36.4603322, "lng": -5.0854119}, {"name": "Morasol", "location": "Manilva", "price": "Vanaf € 351.520", "priceNum": 351520, "priceBand": "tot-500k", "href": "/morasol/", "lat": 36.321681748191, "lng": -5.2482868359576}, {"name": "Nacaré", "location": "Estepona", "price": "Vanaf € 2.500.000", "priceNum": 2500000, "priceBand": "2m-plus", "href": "/nacare/", "lat": 36.42980056060396, "lng": -5.134549942285611}, {"name": "Nubay", "location": "Manilva", "price": "Vanaf € 1.050.000", "priceNum": 1050000, "priceBand": "1m-2m", "href": "/nubay/", "lat": 36.368092531788, "lng": -5.22610050921}, {"name": "Ocean View Marbella", "location": "Marbella", "price": "Vanaf € 960.000", "priceNum": 960000, "priceBand": "500k-1m", "href": "/ocean-view-marbella/", "lat": 36.522046516712, "lng": -4.7387156894166}, {"name": "Ocho de Oro", "location": "Nueva Andalucía", "price": "Vanaf € 11.500.000", "priceNum": 11500000, "priceBand": "2m-plus", "href": "/ocho-de-oro/", "lat": 36.5238841, "lng": -4.9696537}, {"name": "Palo Alto", "location": "Ojén", "price": "Vanaf € 795.000", "priceNum": 795000, "priceBand": "500k-1m", "href": "/palo-alto/", "lat": 36.545, "lng": -4.895}, {"name": "Riviera Hill", "location": "Mijas Costa", "price": "Vanaf € 290.000", "priceNum": 290000, "priceBand": "tot-500k", "href": "/riviera-hill/", "lat": 36.50408526137212, "lng": -4.713392670308849}, {"name": "Romero", "location": "Real de la Quinta", "price": "Vanaf € 1.150.000", "priceNum": 1150000, "priceBand": "1m-2m", "href": "/romero/", "lat": 36.5353281, "lng": -4.9791269}, {"name": "Salvia", "location": "San Pedro de Alcántara", "price": "Vanaf € 880.000", "priceNum": 880000, "priceBand": "500k-1m", "href": "/salvia/", "lat": 36.480207272882, "lng": -4.9903263749755}, {"name": "Santa Clara Homes", "location": "Marbella", "price": "Vanaf € 1.345.000", "priceNum": 1345000, "priceBand": "1m-2m", "href": "/santa-clara-homes/", "lat": 36.510965152537, "lng": -4.8326216557053}, {"name": "Sierra Blanca by the Sea", "location": "Estepona", "price": "Vanaf € 2.950.000", "priceNum": 2950000, "priceBand": "2m-plus", "href": "/sierra-blanca-by-the-sea/", "lat": 36.430101, "lng": -5.123605}, {"name": "Skye", "location": "Casares", "price": "Vanaf € 423.000", "priceNum": 423000, "priceBand": "tot-500k", "href": "/skye/", "lat": 36.395767123581, "lng": -5.2269923686981}, {"name": "Solenne", "location": "Benahavís", "price": "Vanaf € 990.000", "priceNum": 990000, "priceBand": "500k-1m", "href": "/solenne/", "lat": 36.505856521457, "lng": -5.0096572906735}, {"name": "Soul Marbella", "location": "Marbella", "price": "Vanaf € 1.500.000", "priceNum": 1500000, "priceBand": "1m-2m", "href": "/soul-marbella/", "lat": 36.5124, "lng": -4.83}, {"name": "The Grove", "location": "San Pedro de Alcántara", "price": "Vanaf € 390.000", "priceNum": 390000, "priceBand": "tot-500k", "href": "/the-grove/", "lat": 36.4873997, "lng": -4.9843947}, {"name": "The Kove", "location": "Mijas", "price": "Vanaf € 410.000", "priceNum": 410000, "priceBand": "tot-500k", "href": "/the-kove/", "lat": 36.5208373, "lng": -4.6509914}, {"name": "The Sky Marbella", "location": "Benahavís", "price": "Vanaf € 1.495.000", "priceNum": 1495000, "priceBand": "1m-2m", "href": "/the-sky-marbella/", "lat": 36.5226179, "lng": -4.9993343}, {"name": "The View Marbella", "location": "Benahavís", "price": "Vanaf € 899.000", "priceNum": 899000, "priceBand": "500k-1m", "href": "/the-view/", "lat": 36.4666272, "lng": -5.0836161}, {"name": "Tyrian", "location": "Estepona", "price": "Vanaf € 3.550.000", "priceNum": 3550000, "priceBand": "2m-plus", "href": "/tyrian/", "lat": 36.428903398234844, "lng": -5.134858087115643}, {"name": "Vanian Park", "location": "Estepona", "price": "Vanaf € 469.000", "priceNum": 469000, "priceBand": "tot-500k", "href": "/vanian-park/", "lat": 36.461726779115, "lng": -5.0844278829287}, {"name": "Vesta Mare", "location": "Manilva", "price": "Vanaf € 435.000", "priceNum": 435000, "priceBand": "tot-500k", "href": "/vesta-mare/", "lat": 36.3518754, "lng": -5.2332776}, {"name": "Vivace Villas", "location": "Estepona", "price": "Prijs op aanvraag", "priceNum": null, "priceBand": "", "href": "/vivace-villas/", "lat": 36.423702016702, "lng": -5.19424670248}, {"name": "Zenity Azure", "location": "Estepona", "price": "Vanaf € 550.000", "priceNum": 550000, "priceBand": "500k-1m", "href": "/zenity-azure/", "lat": 36.4139368, "lng": -5.1836025}, {"name": "ZEW Elviria", "location": "Elviria", "price": "Vanaf € 770.000", "priceNum": 770000, "priceBand": "500k-1m", "href": "/zew-elviria/", "lat": 36.5075665, "lng": -4.787271}];
+  var projects = [{"name": "Maralto", "location": "Estepona", "price": "Vanaf € 460.000", "priceNum": 460000, "priceBand": "200k-500k", "href": "/maralto/", "lat": 36.425704, "lng": -5.1626803, "thumb": "https://projects.investinspain.be/images/maralto/thumb.webp"}, {"name": "360°", "location": "Mijas", "price": "Vanaf € 400.000", "priceNum": 400000, "priceBand": "200k-500k", "href": "/360/", "lat": 36.5269758, "lng": -4.6646297, "thumb": "https://projects.investinspain.be/images/360/thumb.webp"}, {"name": "Adagio", "location": "Cancelada", "price": "Vanaf € 512.000", "priceNum": 512000, "priceBand": "500k-1m", "href": "/adagio/", "lat": 36.4651772, "lng": -5.0599806, "thumb": "https://projects.investinspain.be/images/adagio/thumb.webp"}, {"name": "Altezza Suites", "location": "Estepona", "price": "Vanaf € 795.000", "priceNum": 795000, "priceBand": "500k-1m", "href": "/altezza-suites/", "lat": 36.4770737, "lng": -5.0765539, "thumb": "https://projects.investinspain.be/images/altezza-suites/thumb.webp"}, {"name": "Australy Aures", "location": "Estepona", "price": "Vanaf € 688.000", "priceNum": 688000, "priceBand": "500k-1m", "href": "/australy-aures/", "lat": 36.46162316773, "lng": -5.0828572014322, "thumb": "https://projects.investinspain.be/images/australy-aures/thumb.webp"}, {"name": "Australy Thera", "location": "Estepona", "price": "Binnenkort beschikbaar", "priceNum": null, "priceBand": "", "href": "/australy-thera/", "lat": 36.463867007738, "lng": -5.0873780250549, "thumb": "https://projects.investinspain.be/images/australy-thera/thumb.webp"}, {"name": "Beyond Homes", "location": "Estepona", "price": "Vanaf € 1.480.000", "priceNum": 1480000, "priceBand": "1m-2m", "href": "/beyond-homes/", "lat": 36.4186770196193, "lng": -5.173404476101808, "thumb": "https://projects.investinspain.be/images/beyond-homes/thumb.webp"}, {"name": "Birdie Hills", "location": "Estepona", "price": "Vanaf € 320.000", "priceNum": 320000, "priceBand": "200k-500k", "href": "/birdie-hills/", "lat": 36.408795614625, "lng": -5.2107139740973, "thumb": "https://projects.investinspain.be/images/birdie-hills/thumb.webp"}, {"name": "Casatalaya", "location": "Benalmádena", "price": "Vanaf € 900.000", "priceNum": 900000, "priceBand": "500k-1m", "href": "/casatalaya/", "lat": 36.580969929598, "lng": -4.5706188754204, "thumb": "https://projects.investinspain.be/images/casatalaya/thumb.webp"}, {"name": "Dunique", "location": "Marbella", "price": "Vanaf € 3.350.000", "priceNum": 3350000, "priceBand": "2m-plus", "href": "/dunique/", "lat": 36.5006105, "lng": -4.8113747, "thumb": "https://projects.investinspain.be/images/dunique/thumb.webp"}, {"name": "Emare", "location": "Estepona", "price": "Uitverkocht", "priceNum": null, "priceBand": "", "href": "/emare/", "lat": 36.4395, "lng": -5.098, "thumb": "https://projects.investinspain.be/images/emare/thumb.webp"}, {"name": "Essence Residence", "location": "Estepona", "price": "Vanaf € 754.000", "priceNum": 754000, "priceBand": "500k-1m", "href": "/essence-residence/", "lat": 36.4680914, "lng": -5.0495274, "thumb": "https://projects.investinspain.be/images/essence-residence/thumb.webp"}, {"name": "Etherna Homes", "location": "Estepona", "price": "Vanaf € 302.000", "priceNum": 302000, "priceBand": "200k-500k", "href": "/etherna-homes/", "lat": 36.428940219532, "lng": -5.200425298379, "thumb": "https://projects.investinspain.be/images/etherna-homes/thumb.webp"}, {"name": "Haiku Estepona", "location": "Estepona", "price": "Vanaf € 500.000", "priceNum": 500000, "priceBand": "500k-1m", "href": "/haiku-estepona/", "lat": 36.466856444687, "lng": -5.0597456901361, "thumb": "https://projects.investinspain.be/images/haiku-estepona/thumb.webp"}, {"name": "Ikkil Bay", "location": "Estepona", "price": "Vanaf € 3.003.000", "priceNum": 3003000, "priceBand": "2m-plus", "href": "/ikkil-bay/", "lat": 36.417125823855, "lng": -5.1652550752558, "thumb": "https://projects.investinspain.be/images/ikkil-bay/thumb.webp"}, {"name": "Las Mesas Blue Horizon", "location": "Estepona", "price": "Vanaf € 705.000", "priceNum": 705000, "priceBand": "500k-1m", "href": "/las-mesas-blue-horizon/", "lat": 36.4262544, "lng": -5.1578951, "thumb": "https://projects.investinspain.be/images/las-mesas-blue-horizon/thumb.webp"}, {"name": "Marbella Club Hills", "location": "Benahavís", "price": "Vanaf € 830.000", "priceNum": 830000, "priceBand": "500k-1m", "href": "/marbella-club-hills/", "lat": 36.5145, "lng": -5.018, "thumb": "https://projects.investinspain.be/images/marbella-club-hills/thumb.webp"}, {"name": "Marbella Design Hills", "location": "Marbella", "price": "Prijs op aanvraag", "priceNum": null, "priceBand": "", "href": "/marbella-design-hills/", "lat": 36.51075073, "lng": -4.94405865, "thumb": "https://projects.investinspain.be/images/marbella-design-hills/thumb.webp"}, {"name": "Marine Hills", "location": "Estepona", "price": "Vanaf € 464.000", "priceNum": 464000, "priceBand": "200k-500k", "href": "/marine-hills/", "lat": 36.4603322, "lng": -5.0854119, "thumb": "https://projects.investinspain.be/images/marine-hills/thumb.webp"}, {"name": "Morasol", "location": "Manilva", "price": "Vanaf € 351.520", "priceNum": 351520, "priceBand": "200k-500k", "href": "/morasol/", "lat": 36.321681748191, "lng": -5.2482868359576, "thumb": "https://projects.investinspain.be/images/morasol/thumb.webp"}, {"name": "Nacaré", "location": "Estepona", "price": "Vanaf € 2.500.000", "priceNum": 2500000, "priceBand": "2m-plus", "href": "/nacare/", "lat": 36.42980056060396, "lng": -5.134549942285611, "thumb": "https://projects.investinspain.be/images/nacare/thumb.webp"}, {"name": "Nubay", "location": "Manilva", "price": "Vanaf € 1.050.000", "priceNum": 1050000, "priceBand": "1m-2m", "href": "/nubay/", "lat": 36.368092531788, "lng": -5.22610050921, "thumb": "https://projects.investinspain.be/images/nubay/thumb.webp"}, {"name": "Ocean View Marbella", "location": "Marbella", "price": "Vanaf € 960.000", "priceNum": 960000, "priceBand": "500k-1m", "href": "/ocean-view-marbella/", "lat": 36.522046516712, "lng": -4.7387156894166, "thumb": "https://projects.investinspain.be/images/ocean-view-marbella/thumb.webp"}, {"name": "Ocho de Oro", "location": "Nueva Andalucía", "price": "Vanaf € 11.500.000", "priceNum": 11500000, "priceBand": "2m-plus", "href": "/ocho-de-oro/", "lat": 36.5238841, "lng": -4.9696537, "thumb": "https://projects.investinspain.be/images/ocho-de-oro/thumb.webp"}, {"name": "Palo Alto", "location": "Ojén", "price": "Vanaf € 795.000", "priceNum": 795000, "priceBand": "500k-1m", "href": "/palo-alto/", "lat": 36.545, "lng": -4.895, "thumb": "https://projects.investinspain.be/images/palo-alto/thumb.webp"}, {"name": "Riviera Hill", "location": "Mijas Costa", "price": "Vanaf € 290.000", "priceNum": 290000, "priceBand": "200k-500k", "href": "/riviera-hill/", "lat": 36.50408526137212, "lng": -4.713392670308849, "thumb": "https://projects.investinspain.be/images/riviera-hill/thumb.webp"}, {"name": "Romero", "location": "Real de la Quinta", "price": "Vanaf € 1.150.000", "priceNum": 1150000, "priceBand": "1m-2m", "href": "/romero/", "lat": 36.5353281, "lng": -4.9791269, "thumb": "https://projects.investinspain.be/images/romero/thumb.webp"}, {"name": "Salvia", "location": "San Pedro de Alcántara", "price": "Vanaf € 880.000", "priceNum": 880000, "priceBand": "500k-1m", "href": "/salvia/", "lat": 36.480207272882, "lng": -4.9903263749755, "thumb": "https://projects.investinspain.be/images/salvia/thumb.webp"}, {"name": "Santa Clara Homes", "location": "Marbella", "price": "Vanaf € 1.345.000", "priceNum": 1345000, "priceBand": "1m-2m", "href": "/santa-clara-homes/", "lat": 36.510965152537, "lng": -4.8326216557053, "thumb": "https://projects.investinspain.be/images/santa-clara-homes/thumb.webp"}, {"name": "Sierra Blanca by the Sea", "location": "Estepona", "price": "Vanaf € 2.950.000", "priceNum": 2950000, "priceBand": "2m-plus", "href": "/sierra-blanca-by-the-sea/", "lat": 36.430101, "lng": -5.123605, "thumb": "https://projects.investinspain.be/images/sierra-blanca-by-the-sea/thumb.webp"}, {"name": "Skye", "location": "Casares", "price": "Vanaf € 423.000", "priceNum": 423000, "priceBand": "200k-500k", "href": "/skye/", "lat": 36.395767123581, "lng": -5.2269923686981, "thumb": "https://projects.investinspain.be/images/skye/thumb.webp"}, {"name": "Solenne", "location": "Benahavís", "price": "Vanaf € 990.000", "priceNum": 990000, "priceBand": "500k-1m", "href": "/solenne/", "lat": 36.505856521457, "lng": -5.0096572906735, "thumb": "https://projects.investinspain.be/images/solenne/thumb.webp"}, {"name": "Soul Marbella", "location": "Marbella", "price": "Vanaf € 1.500.000", "priceNum": 1500000, "priceBand": "1m-2m", "href": "/soul-marbella/", "lat": 36.5124, "lng": -4.83, "thumb": "https://projects.investinspain.be/images/soul-marbella/thumb.webp"}, {"name": "The Grove", "location": "San Pedro de Alcántara", "price": "Vanaf € 390.000", "priceNum": 390000, "priceBand": "200k-500k", "href": "/the-grove/", "lat": 36.4873997, "lng": -4.9843947, "thumb": "https://projects.investinspain.be/images/the-grove/thumb.webp"}, {"name": "The Kove", "location": "Mijas", "price": "Vanaf € 410.000", "priceNum": 410000, "priceBand": "200k-500k", "href": "/the-kove/", "lat": 36.5208373, "lng": -4.6509914, "thumb": "https://projects.investinspain.be/images/the-kove/thumb.webp"}, {"name": "The Sky Marbella", "location": "Benahavís", "price": "Vanaf € 1.495.000", "priceNum": 1495000, "priceBand": "1m-2m", "href": "/the-sky-marbella/", "lat": 36.5226179, "lng": -4.9993343, "thumb": "https://projects.investinspain.be/images/the-sky-marbella/thumb.webp"}, {"name": "The View Marbella", "location": "Benahavís", "price": "Vanaf € 899.000", "priceNum": 899000, "priceBand": "500k-1m", "href": "/the-view/", "lat": 36.4666272, "lng": -5.0836161, "thumb": "https://projects.investinspain.be/images/the-view/thumb.webp"}, {"name": "Tyrian", "location": "Estepona", "price": "Vanaf € 3.550.000", "priceNum": 3550000, "priceBand": "2m-plus", "href": "/tyrian/", "lat": 36.428903398234844, "lng": -5.134858087115643, "thumb": "https://projects.investinspain.be/images/tyrian/thumb.webp"}, {"name": "Vanian Park", "location": "Estepona", "price": "Vanaf € 469.000", "priceNum": 469000, "priceBand": "200k-500k", "href": "/vanian-park/", "lat": 36.461726779115, "lng": -5.0844278829287, "thumb": "https://projects.investinspain.be/images/vanian-park/thumb.webp"}, {"name": "Vesta Mare", "location": "Manilva", "price": "Vanaf € 435.000", "priceNum": 435000, "priceBand": "200k-500k", "href": "/vesta-mare/", "lat": 36.3518754, "lng": -5.2332776, "thumb": "https://projects.investinspain.be/images/vesta-mare/thumb.webp"}, {"name": "Vivace Villas", "location": "Estepona", "price": "Prijs op aanvraag", "priceNum": null, "priceBand": "", "href": "/vivace-villas/", "lat": 36.423702016702, "lng": -5.19424670248, "thumb": "https://projects.investinspain.be/images/vivace-villas/thumb.webp"}, {"name": "Zenity Azure", "location": "Estepona", "price": "Vanaf € 550.000", "priceNum": 550000, "priceBand": "500k-1m", "href": "/zenity-azure/", "lat": 36.4139368, "lng": -5.1836025, "thumb": "https://projects.investinspain.be/images/zenity-azure/thumb.webp"}, {"name": "ZEW Elviria", "location": "Elviria", "price": "Vanaf € 770.000", "priceNum": 770000, "priceBand": "500k-1m", "href": "/zew-elviria/", "lat": 36.5075665, "lng": -4.787271, "thumb": "https://projects.investinspain.be/images/zew-elviria/thumb.webp"}];
 
   var PAGE_SIZE = 24;
   var currentPage = 1;
@@ -1526,10 +1604,19 @@ footer a { color: var(--gold-dim); text-underline-offset: 2px; }
     return n + ' ' + (n === 1 ? 'project gevonden' : 'projecten gevonden');
   }
 
+  // Het levende gebied waartegen gefilterd wordt: de gecommitte vorm zodra
+  // "Klaar" is ingedrukt, maar al de vorm-in-opbouw zodra er genoeg punten
+  // staan om een echte polygon te vormen (3+) - zo werkt de lijst/telling/
+  // raster al mee terwijl je nog aan het tekenen bent, niet pas na "Klaar".
+  function activeArea() {
+    return committedArea || (drawing && drawPoints.length >= 3 ? drawPoints : null);
+  }
+
   function getFilteredIndices() {
     var loc = filterLocation.value;
     var band = filterPrice.value;
     var needle = filterSearch.value.trim().toLowerCase();
+    var area = activeArea();
     var result = [];
     projects.forEach(function(p, i){
       var matchLoc = !loc || p.location === loc;
@@ -1537,7 +1624,7 @@ footer a { color: var(--gold-dim); text-underline-offset: 2px; }
       var matchSearch = !needle ||
         p.name.toLowerCase().indexOf(needle) !== -1 ||
         p.location.toLowerCase().indexOf(needle) !== -1;
-      var matchArea = !committedArea || pointInPolygon([p.lat, p.lng], committedArea);
+      var matchArea = !area || pointInPolygon([p.lat, p.lng], area);
       if (matchLoc && matchPrice && matchSearch && matchArea) result.push(i);
     });
     return result;
@@ -1569,6 +1656,7 @@ footer a { color: var(--gold-dim); text-underline-offset: 2px; }
     // Kaart toont het VOLLEDIGE gefilterde resultaat (alle pagina's), niet
     // enkel de huidige pagina.
     syncMapMarkers(sortedIdx);
+    renderMapList(sortedIdx);
 
     var pageCount = Math.max(1, Math.ceil(sortedIdx.length / PAGE_SIZE));
     if (currentPage > pageCount) currentPage = pageCount;
@@ -1658,10 +1746,38 @@ footer a { color: var(--gold-dim); text-underline-offset: 2px; }
   var drawCountEl = document.getElementById('drawCount');
   var areaClearBtn = document.getElementById('areaClearBtn');
   var areaChip = document.getElementById('areaChip');
+  var mapModalList = document.getElementById('mapModalList');
 
   var map, markers, bounds, icon, drawLayerGroup;
   var drawing = false;
   var drawPoints = [];
+
+  // Zodra een gebied getekend/gecommit is, toont dit wat er echt in valt
+  // als een lijst naast de kaart - i.p.v. enkel zichtbaar te zijn na het
+  // sluiten van de kaart en scrollen naar het raster.
+  function renderMapList(indices) {
+    if (!activeArea()) {
+      mapModalList.hidden = true;
+      mapModalList.innerHTML = '';
+      return;
+    }
+    mapModalList.hidden = false;
+    if (indices.length === 0) {
+      mapModalList.innerHTML = '<p class="map-list-empty">Geen projecten binnen dit gebied.</p>';
+      return;
+    }
+    mapModalList.innerHTML = indices.map(function(i){
+      var p = projects[i];
+      return '<a class="map-list-item" href="' + p.href + '">' +
+        '<img src="' + p.thumb + '" alt="' + p.name + '" loading="lazy">' +
+        '<div>' +
+          '<span class="map-list-item__location">' + p.location + '</span>' +
+          '<span class="map-list-item__name">' + p.name + '</span>' +
+          '<span class="map-list-item__price">' + p.price + '</span>' +
+        '</div>' +
+      '</a>';
+    }).join('');
+  }
 
   function initMap() {
     if (map) return;
@@ -1731,6 +1847,9 @@ footer a { color: var(--gold-dim); text-underline-offset: 2px; }
       redrawPreview();
       drawCountEl.textContent = String(drawPoints.length);
       drawDoneBtn.disabled = drawPoints.length < 3;
+      // Filtert/toont de lijst al live zodra de vorm-in-opbouw 3+ punten
+      // heeft (zie activeArea) - niet pas na "Klaar".
+      applyFilters();
     });
   }
 
@@ -1757,7 +1876,10 @@ footer a { color: var(--gold-dim); text-underline-offset: 2px; }
       if (show) visibleBounds.push([projects[i].lat, projects[i].lng]);
     });
     mapModalCount.textContent = pluralize(filteredIdx.length);
-    if (!mapModal.hidden) {
+    // Niet meebewegen terwijl er getekend wordt - anders schuift de kaart
+    // onder de muis van de bezoeker weg net terwijl die een punt probeert
+    // te plaatsen.
+    if (!mapModal.hidden && !drawing) {
       // Zoomt lichtjes in op de gefilterde regio; zonder resultaten of
       // filters valt de kaart terug op het volledige overzicht.
       if (visibleBounds.length === 1) {

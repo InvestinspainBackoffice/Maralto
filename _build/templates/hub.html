@@ -113,7 +113,10 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   to { opacity: 1; transform: translateY(0); }
 }
 
-/* ── Page header (lichter dan een projecthero: geen achtergrondfoto) ── */
+/* ── Page header: vlakke achtergrondkleur i.p.v. een fotocarrousel, met
+   een rustige, autonome goud/teal gloed erachter (zie de aurora-drift in
+   de JS hieronder - drift op sinuscurves, licht gesmoord richting de
+   cursor, zelfde recept als de aurora op investinspain-website). ── */
 .page-header {
   position: relative;
   min-height: clamp(340px, 56vh, 500px);
@@ -123,29 +126,17 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   padding: clamp(3rem, 9vw, 4.5rem) clamp(1.5rem, 5vw, 3rem) clamp(1.5rem, 4vw, 2.5rem);
   text-align: center;
   overflow: hidden;
+  background: var(--bg);
 }
-.hero-rotator { position: absolute; inset: 0; z-index: 0; }
-.hero-rotator__slide {
+.hero-aurora {
   position: absolute;
   inset: 0;
-  background-size: cover;
-  background-position: center 55%;
-  opacity: 0;
-  transition: opacity 1.8s var(--ease);
-}
-.hero-rotator__slide.is-active { opacity: 1; }
-.hero-rotator::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    to bottom,
-    var(--bg) 0%,
-    rgba(14,19,24,0.6) 22%,
-    rgba(14,19,24,0.72) 55%,
-    rgba(14,19,24,0.8) 85%,
-    var(--bg) 100%
-  );
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(480px 320px at var(--ax, 25%) var(--ay, 35%), rgba(196, 169, 125, 0.28), transparent 62%),
+    radial-gradient(560px 380px at var(--bx, 75%) var(--by, 65%), rgba(45, 106, 122, 0.3), transparent 62%),
+    radial-gradient(380px 280px at var(--cx, 50%) var(--cy, 80%), rgba(196, 169, 125, 0.14), transparent 65%);
 }
 .page-header__content { position: relative; z-index: 2; }
 .page-header__title {
@@ -497,9 +488,10 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   margin: 0;
 }
 .map-modal__hint[hidden] { display: none; }
-.map-modal__body { position: relative; flex: 1; min-height: 0; }
+.map-modal__body { position: relative; flex: 1; min-height: 0; display: flex; }
 .map-modal__body #map {
-  width: 100%;
+  flex: 1;
+  min-width: 0;
   height: 100%;
   border: none;
   box-shadow: none;
@@ -510,6 +502,69 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   border-radius: 50%;
   background: var(--gold);
   border: 2px solid var(--bg);
+}
+
+/* ── Projectenlijst naast de kaart (zodra een gebied getekend is) ── */
+.map-modal__list {
+  width: 340px;
+  flex: 0 0 340px;
+  overflow-y: auto;
+  background: var(--bg);
+  border-right: 1px solid var(--line);
+}
+.map-modal__list[hidden] { display: none; }
+.map-list-item {
+  display: flex;
+  gap: 0.75rem;
+  padding: 0.85rem 1rem;
+  border-bottom: 1px solid var(--line);
+  transition: background-color 0.2s ease;
+}
+.map-list-item:hover { background: var(--bg-el); }
+.map-list-item img { width: 64px; height: 64px; object-fit: cover; flex-shrink: 0; }
+.map-list-item > div {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  min-width: 0;
+  justify-content: center;
+}
+.map-list-item__location {
+  font-size: 0.65rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.map-list-item__name {
+  font-size: 0.85rem;
+  color: var(--text);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.map-list-item__price { font-size: 0.75rem; color: var(--gold); }
+.map-list-empty {
+  color: var(--text-muted);
+  font-size: 0.8rem;
+  letter-spacing: 0.03em;
+  text-align: center;
+  margin: 0;
+  padding: 2rem 1.5rem;
+}
+@media (max-width: 780px) {
+  .map-modal__body { flex-direction: column; }
+  .map-modal__list {
+    width: 100%;
+    flex: 0 0 auto;
+    max-height: 40vh;
+    border-right: none;
+    border-bottom: 1px solid var(--line);
+  }
+  .map-modal__body #map { flex: 1; min-height: 200px; }
 }
 
 /* ── Projectenraster ── */
@@ -807,7 +862,7 @@ __CARD_EXTRA_CSS__
 <div class="frame" aria-hidden="true"></div>
 
 <div class="page-header">
-  <div class="hero-rotator" id="heroRotator" role="img" aria-label="__I_HUB_ROTATOR_ARIA__"></div>
+  <div class="hero-aurora" id="heroAurora" aria-hidden="true"></div>
   <div class="page-header__content">
     <span class="page-eyebrow">__I_HUB_EYEBROW__</span>
     <h1 class="page-header__title">__I_HUB_HERO_TITLE__</h1>
@@ -875,6 +930,7 @@ __PROJECT_CARDS__
   </div>
   <p class="map-modal__hint" id="mapModalHint" hidden>__I_HUB_MAP_DRAW_HINT__</p>
   <div class="map-modal__body">
+    <div class="map-modal__list" id="mapModalList" hidden></div>
     <div id="map" role="img" aria-label="__I_HUB_MAP_ARIA__"></div>
   </div>
 </div>
@@ -1025,23 +1081,44 @@ __PROJECT_CARDS__
   }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
   document.querySelectorAll('.reveal').forEach(function(el){ observer.observe(el); });
 
-  /* ═══════════ ROTERENDE HERO (laatste 5 projecten) ═══════════ */
-  var heroSlides = __HERO_ROTATION_JSON__;
-  var rotator = document.getElementById('heroRotator');
-  heroSlides.forEach(function(p, i){
-    var slide = document.createElement('div');
-    slide.className = 'hero-rotator__slide' + (i === 0 ? ' is-active' : '');
-    slide.style.backgroundImage = "url('" + p.thumb + "')";
-    rotator.appendChild(slide);
-  });
-  if (heroSlides.length > 1) {
-    var slideEls = rotator.querySelectorAll('.hero-rotator__slide');
-    var current = 0;
-    setInterval(function(){
-      slideEls[current].classList.remove('is-active');
-      current = (current + 1) % slideEls.length;
-      slideEls[current].classList.add('is-active');
-    }, 5000);
+  /* ═══════════ AURORA-GLOED (vlakke hero, geen foto) ═══════════
+     Drie zachte goud/teal blobs die op onafhankelijke sinuscurves
+     drijven, licht getrokken richting de cursor. De autonome drift
+     blijft de basisbeweging (zodat de hero niet levenloos aanvoelt
+     voor een bezoeker die de muis nog niet bewogen heeft) - de cursor
+     voegt enkel een gesmoorde, begrensde offset toe bovenop die drift. */
+  var aurora = document.getElementById('heroAurora');
+  if (aurora && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    var POINTER_INFLUENCE = 16; // max % dat de cursor een blob van zijn drift-pad mag trekken
+    var POINTER_EASE = 0.06;    // smoothing per frame richting de echte cursorpositie
+    var targetX = 50, targetY = 50, smoothX = 50, smoothY = 50, t = 0;
+
+    window.addEventListener('pointermove', function(e){
+      targetX = (e.clientX / window.innerWidth) * 100;
+      targetY = (e.clientY / window.innerHeight) * 100;
+    });
+
+    (function tick(){
+      t += 0.006;
+      smoothX += (targetX - smoothX) * POINTER_EASE;
+      smoothY += (targetY - smoothY) * POINTER_EASE;
+      var offsetX = ((smoothX - 50) / 50) * POINTER_INFLUENCE;
+      var offsetY = ((smoothY - 50) / 50) * POINTER_INFLUENCE;
+
+      var ax = 50 + 28 * Math.sin(t * 0.6) + offsetX;
+      var ay = 45 + 22 * Math.cos(t * 0.5) + offsetY;
+      var bx = 50 - 26 * Math.sin(t * 0.42 + 1.4) + offsetX;
+      var by = 55 + 24 * Math.cos(t * 0.65 + 2.1) + offsetY;
+      var cx = 50 + 20 * Math.sin(t * 0.3 + 3) + offsetX * 0.5;
+      var cy = 75 + 12 * Math.cos(t * 0.35 + 0.5) + offsetY * 0.5;
+      aurora.style.setProperty('--ax', ax + '%');
+      aurora.style.setProperty('--ay', ay + '%');
+      aurora.style.setProperty('--bx', bx + '%');
+      aurora.style.setProperty('--by', by + '%');
+      aurora.style.setProperty('--cx', cx + '%');
+      aurora.style.setProperty('--cy', cy + '%');
+      requestAnimationFrame(tick);
+    })();
   }
 
   /* ═══════════ FILTERS + PAGINATIE (locatie, prijs, zoek, sorteer, gebied) ═══════════ */
@@ -1080,10 +1157,19 @@ __PROJECT_CARDS__
     return n + ' ' + (n === 1 ? '__I_HUB_RESULT_COUNT_SINGULAR__' : '__I_HUB_RESULT_COUNT_PLURAL__');
   }
 
+  // Het levende gebied waartegen gefilterd wordt: de gecommitte vorm zodra
+  // "Klaar" is ingedrukt, maar al de vorm-in-opbouw zodra er genoeg punten
+  // staan om een echte polygon te vormen (3+) - zo werkt de lijst/telling/
+  // raster al mee terwijl je nog aan het tekenen bent, niet pas na "Klaar".
+  function activeArea() {
+    return committedArea || (drawing && drawPoints.length >= 3 ? drawPoints : null);
+  }
+
   function getFilteredIndices() {
     var loc = filterLocation.value;
     var band = filterPrice.value;
     var needle = filterSearch.value.trim().toLowerCase();
+    var area = activeArea();
     var result = [];
     projects.forEach(function(p, i){
       var matchLoc = !loc || p.location === loc;
@@ -1091,7 +1177,7 @@ __PROJECT_CARDS__
       var matchSearch = !needle ||
         p.name.toLowerCase().indexOf(needle) !== -1 ||
         p.location.toLowerCase().indexOf(needle) !== -1;
-      var matchArea = !committedArea || pointInPolygon([p.lat, p.lng], committedArea);
+      var matchArea = !area || pointInPolygon([p.lat, p.lng], area);
       if (matchLoc && matchPrice && matchSearch && matchArea) result.push(i);
     });
     return result;
@@ -1123,6 +1209,7 @@ __PROJECT_CARDS__
     // Kaart toont het VOLLEDIGE gefilterde resultaat (alle pagina's), niet
     // enkel de huidige pagina.
     syncMapMarkers(sortedIdx);
+    renderMapList(sortedIdx);
 
     var pageCount = Math.max(1, Math.ceil(sortedIdx.length / PAGE_SIZE));
     if (currentPage > pageCount) currentPage = pageCount;
@@ -1212,10 +1299,38 @@ __PROJECT_CARDS__
   var drawCountEl = document.getElementById('drawCount');
   var areaClearBtn = document.getElementById('areaClearBtn');
   var areaChip = document.getElementById('areaChip');
+  var mapModalList = document.getElementById('mapModalList');
 
   var map, markers, bounds, icon, drawLayerGroup;
   var drawing = false;
   var drawPoints = [];
+
+  // Zodra een gebied getekend/gecommit is, toont dit wat er echt in valt
+  // als een lijst naast de kaart - i.p.v. enkel zichtbaar te zijn na het
+  // sluiten van de kaart en scrollen naar het raster.
+  function renderMapList(indices) {
+    if (!activeArea()) {
+      mapModalList.hidden = true;
+      mapModalList.innerHTML = '';
+      return;
+    }
+    mapModalList.hidden = false;
+    if (indices.length === 0) {
+      mapModalList.innerHTML = '<p class="map-list-empty">__I_HUB_MAP_LIST_EMPTY__</p>';
+      return;
+    }
+    mapModalList.innerHTML = indices.map(function(i){
+      var p = projects[i];
+      return '<a class="map-list-item" href="' + p.href + '">' +
+        '<img src="' + p.thumb + '" alt="' + p.name + '" loading="lazy">' +
+        '<div>' +
+          '<span class="map-list-item__location">' + p.location + '</span>' +
+          '<span class="map-list-item__name">' + p.name + '</span>' +
+          '<span class="map-list-item__price">' + p.price + '</span>' +
+        '</div>' +
+      '</a>';
+    }).join('');
+  }
 
   function initMap() {
     if (map) return;
@@ -1285,6 +1400,9 @@ __PROJECT_CARDS__
       redrawPreview();
       drawCountEl.textContent = String(drawPoints.length);
       drawDoneBtn.disabled = drawPoints.length < 3;
+      // Filtert/toont de lijst al live zodra de vorm-in-opbouw 3+ punten
+      // heeft (zie activeArea) - niet pas na "Klaar".
+      applyFilters();
     });
   }
 
@@ -1311,7 +1429,10 @@ __PROJECT_CARDS__
       if (show) visibleBounds.push([projects[i].lat, projects[i].lng]);
     });
     mapModalCount.textContent = pluralize(filteredIdx.length);
-    if (!mapModal.hidden) {
+    // Niet meebewegen terwijl er getekend wordt - anders schuift de kaart
+    // onder de muis van de bezoeker weg net terwijl die een punt probeert
+    // te plaatsen.
+    if (!mapModal.hidden && !drawing) {
       // Zoomt lichtjes in op de gefilterde regio; zonder resultaten of
       // filters valt de kaart terug op het volledige overzicht.
       if (visibleBounds.length === 1) {

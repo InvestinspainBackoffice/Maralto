@@ -176,9 +176,12 @@ CHRONOLOGICAL = [
 HERO_ROTATION_COUNT = 5
 
 # Prijsbanden voor de filter op /projecten/. Grenzen in euro; de bovengrens
-# van elke band is exclusief (net als de "max" hieronder aangeeft).
+# van elke band is exclusief (net als de "max" hieronder aangeeft). Onderkant
+# van de eerste band (€200.000) volgt het budget dat IIS elders al hanteert
+# als startpunt (zie de prijsslider op investinspain-website.vercel.app).
 PRICE_BANDS = [
-    ("tot-500k", "Tot € 500.000", None, 500_000),
+    ("tot-200k", "Tot € 200.000", None, 200_000),
+    ("200k-500k", "€ 200.000 – € 500.000", 200_000, 500_000),
     ("500k-1m", "€ 500.000 – € 1.000.000", 500_000, 1_000_000),
     ("1m-2m", "€ 1.000.000 – € 2.000.000", 1_000_000, 2_000_000),
     ("2m-plus", "€ 2.000.000 en meer", 2_000_000, None),
@@ -321,6 +324,7 @@ def build(lang):
             "href": e["HREF"],
             "lat": e["LAT"],
             "lng": e["LNG"],
+            "thumb": e["THUMB"],
         }
         for e in entries
     ]
