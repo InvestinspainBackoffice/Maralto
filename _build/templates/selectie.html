@@ -495,6 +495,38 @@ a.sel-card:hover { background: #182029; }
 .sel-locked-note svg {
   width: 13px; height: 13px; stroke: var(--gold); stroke-width: 1.5; fill: none;
 }
+
+/* ── Scroll-to-unlock banner ───────────────────────────────────────────── */
+.sel-scroll-unlock {
+  position: sticky; bottom: 1.25rem; z-index: 50;
+  display: none;
+  align-items: center; justify-content: center; gap: 0.75rem;
+  margin: 1.5rem auto 0;
+  max-width: 320px;
+  padding: 0.85rem 1.4rem;
+  background: var(--cta);
+  color: var(--white);
+  font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase;
+  font-weight: 500;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.55);
+  pointer-events: none;
+  animation: unlock-bob 1.8s ease-in-out infinite;
+}
+.sel-scroll-unlock svg {
+  width: 14px; height: 14px; stroke: currentColor;
+  stroke-width: 2; fill: none; flex-shrink: 0;
+  animation: unlock-arrow 1.8s ease-in-out infinite;
+}
+@keyframes unlock-bob {
+  0%,100% { transform: translateY(0); }
+  50%      { transform: translateY(-4px); }
+}
+@keyframes unlock-arrow {
+  0%,100% { transform: translateY(0); opacity: 1; }
+  50%      { transform: translateY(3px); opacity: 0.7; }
+}
+/* Toon enkel op het teaser-scherm, verdwijnt via JS als formulier zichtbaar is */
+#selTeaser:not([hidden]) .sel-scroll-unlock { display: flex; }
 .sel-relaxed {
   font-size: 0.75rem; color: var(--text-muted); line-height: 1.6;
   border-left: 1px solid var(--gold-dim); padding-left: 0.9rem; margin-bottom: 1.5rem;
@@ -708,6 +740,13 @@ __STEPS__
         __I_SEL_TEASER_LOCKED__
       </p>
       <p class="body-text" style="margin-bottom:2.25rem">__I_SEL_TEASER_INTRO__</p>
+
+      <!-- Sticky unlock-hint: verdwijnt zodra het formulier in beeld scrollt -->
+      <div class="sel-scroll-unlock" aria-hidden="true">
+        <svg viewBox="0 0 24 24"><path d="M12 5v14"/><path d="M5 12l7 7 7-7"/></svg>
+        __I_SEL_SCROLL_UNLOCK__
+        <svg viewBox="0 0 24 24"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
+      </div>
 
       <form id="selForm" novalidate>
         <div class="sel-form__row">
@@ -1292,6 +1331,18 @@ __PHONE_OPTGROUPS__
       if (sel.querySelector('option[value="' + code + '"]')) sel.value = code;
     })
     .catch(function () {});
+
+  /* ── Scroll-to-unlock: verberg banner zodra formulier zichtbaar is ─────── */
+  var scrollUnlock = document.querySelector('.sel-scroll-unlock');
+  if (scrollUnlock && 'IntersectionObserver' in window) {
+    var formObserver = new IntersectionObserver(function(entries) {
+      entries.forEach(function(e) {
+        if (e.isIntersecting) scrollUnlock.style.display = 'none';
+        else scrollUnlock.style.display = '';
+      });
+    }, { threshold: 0.15 });
+    formObserver.observe(form);
+  }
 
   /* ── Cookiebalk ───────────────────────────────────────────────────────── */
   var cookieBar = document.getElementById('cookieBar');
