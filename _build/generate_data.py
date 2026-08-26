@@ -111,10 +111,20 @@ def build_project(project_file):
     slug = mod.DATA["SLUG"]
     price_num = generate.parse_price_number(mod.DATA["PRICE_FROM"])
 
+    nl_data = data_for_lang(mod, "nl")
     entry = {
         "slug": slug,
         "price_num": price_num,
         "budget": generate.budget_bucket(price_num),
+        # Voor de projectkaartjes op /selectie/ (zie api/match.js).
+        # THUMB (uit het optionele HUB-dict) eerst: dat is bij de oudere
+        # projecten de enige zelf-gehoste (WebP) variant - hun OG_IMAGE/
+        # HERO_BG linkt daar nog rechtstreeks naar investinspain.be, wat we
+        # juist nooit willen (zie CLAUDE.md). Met deze volgorde heeft elk
+        # van de 128 projecten een zelf-gehoste foto.
+        "image": getattr(mod, "HUB", {}).get("THUMB")
+        or nl_data.get("HERO_BG")
+        or nl_data.get("OG_IMAGE", ""),
     }
 
     for lang in ("nl", "en"):
@@ -135,6 +145,15 @@ def build_project(project_file):
             **parsed,
         }
         entry.setdefault("coords", parsed["coords"])
+
+    # De coördinaten komen normaal uit de Google-Maps-link in het body-fragment.
+    # Een enkel project heeft die kaart niet; daar valt het terug op LAT/LNG
+    # uit het HUB-dict. /selectie/ leidt de regio (Málaga/Marbella/Estepona/
+    # Sotogrande) af uit de lengtegraad, dus zonder coördinaten valt een
+    # project uit elke regiofilter.
+    hub = getattr(mod, "HUB", {})
+    if not entry.get("coords") and hub.get("LAT") is not None:
+        entry["coords"] = f"{hub['LAT']},{hub['LNG']}"
 
     return entry if "nl" in entry else None
 

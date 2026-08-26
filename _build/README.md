@@ -43,3 +43,26 @@ Gebruik `https://www.google.com/maps?q=<lat>,<lng>&z=15&output=embed` — geen
 API-key nodig. Haal de coördinaten van het echte project op (niet gokken):
 open de WordPress-projectpagina en zoek in de HTML naar een
 `lat,lng`-patroon (`36.xxxxx,-5.xxxxx`).
+
+## De selectiepagina (/selectie/, /en/selection/)
+
+Eigen vervanger voor de Typeform-vragenlijst: tien vragen, één per scherm, en
+op het eind meteen de best passende projecten als klikbare kaartjes.
+
+- `python3 _build/generate_selectie.py` bouwt beide taalversies uit
+  `_build/templates/selectie.html`. Draai eerst `generate_data.py`: de
+  vanaf-prijzen per regio op de kaart bij vraag 1 komen uit
+  `api/_projects.json`, niet uit een handmatig lijstje.
+- De vragen en antwoordopties staan in `QUESTIONS` in
+  `generate_selectie.py` — dat is inhoud van die ene pagina en hoort dus niet
+  in `_build/i18n.py` (dat blijft beperkt tot gedeelde UI-tekst).
+- Het matchen zelf gebeurt in `api/match.js`. De browser stuurt alleen de
+  antwoorden door; naam, prijs, foto en URL komen daar uit `_projects.json`,
+  zodat een kaartje nooit verzonnen data kan tonen.
+- Harde filters zijn alleen regio (uit de coördinaten), budget en woningtype.
+  Slaapkamers, oppervlakte, ligging en uitzicht wegen mee in de rangschikking
+  maar filteren niet: die staan in vrije tekst en zijn lang niet voor elk
+  project af te leiden. Buitenruimte in m² staat nergens in de data en telt
+  daarom helemaal niet mee — die vraag dient alleen de opvolging.
+- Een vraag toevoegen: zet hem in `QUESTIONS` met een `param` die `match.js`
+  kent, of met `param: ""` als het antwoord alleen met de lead mee moet.

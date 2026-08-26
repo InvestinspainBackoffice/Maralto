@@ -1,0 +1,1537 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vind uw ideale woning aan de Costa del Sol &mdash; INVESTINSPAIN.BE</title>
+<meta name="description" content="Beantwoord 10 korte vragen en zie meteen welke van onze nieuwbouwprojecten aan de Costa del Sol bij u passen.">
+<meta property="og:title" content="Vind uw ideale woning aan de Costa del Sol">
+<meta property="og:description" content="Beantwoord 10 korte vragen en zie meteen welke van onze nieuwbouwprojecten aan de Costa del Sol bij u passen.">
+<meta property="og:image" content="https://projects.investinspain.be/images/selectie/hero.webp">
+<meta property="og:type" content="website">
+<meta name="robots" content="noindex, follow">
+<!-- Vercel Web Analytics - cookieless, geen persoonsgegevens, dus geen consent nodig -->
+<script defer src="/_vercel/insights/script.js"></script>
+<!-- Vercel Speed Insights - cookieless performance-metingen, geen consent nodig -->
+<script defer src="/_vercel/speed-insights/script.js"></script>
+<!-- Google tag (gtag.js) - analytics_storage staat pas op 'granted' na akkoord via de cookiebalk -->
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('consent', 'default', {
+    'ad_storage': 'denied',
+    'ad_user_data': 'denied',
+    'ad_personalization': 'denied',
+    'analytics_storage': 'denied'
+  });
+  try {
+    if (localStorage.getItem('cookie_consent') === 'granted') {
+      gtag('consent', 'update', { 'analytics_storage': 'granted' });
+    }
+  } catch (e) {}
+</script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-ZQJ99DP4N5"></script>
+<script>
+  gtag('js', new Date());
+  gtag('config', 'G-ZQJ99DP4N5');
+</script>
+<!-- Meta Pixel Code - laadt pas na akkoord via de cookiebalk -->
+<script>
+  window.metaPixelLoaded = false;
+  function loadMetaPixel() {
+    if (window.metaPixelLoaded) return;
+    window.metaPixelLoaded = true;
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window, document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', '569820826775985');
+    fbq('track', 'PageView');
+  }
+  try {
+    if (localStorage.getItem('cookie_consent') === 'granted') { loadMetaPixel(); }
+  } catch (e) {}
+</script>
+<!-- End Meta Pixel Code -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="image" href="https://projects.investinspain.be/images/selectie/hero.webp" fetchpriority="high">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+/* De designtokens zijn dezelfde als in head.html/hub.html. Die duplicatie is
+   in dit project bewust (zie CLAUDE.md): elke pagina staat op zichzelf en
+   heeft geen build-pipeline die een gedeelde stylesheet kan bundelen. Wijzigt
+   een token, wijzig hem dan in alle drie. */
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root {
+  --bg: #0E1318;
+  --bg-el: #131920;
+  --text: #EDE8E0;
+  --text-muted: #8A96A3;
+  --gold: #C4A97D;
+  --gold-dim: #9E8968;
+  --line: #1F2830;
+  --line-light: #2A3644;
+  --cta: #2D6A7A;
+  --cta-hover: #387F91;
+  --white: #FEFCF9;
+  --font: 'Sora', system-ui, -apple-system, sans-serif;
+  --ease: cubic-bezier(0.16, 1, 0.3, 1);
+}
+html { -webkit-text-size-adjust: 100%; }
+body {
+  font-family: var(--font);
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.65;
+  font-weight: 300;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+img { display: block; max-width: 100%; height: auto; }
+a { color: inherit; text-decoration: none; }
+button { font-family: inherit; cursor: pointer; border: none; background: none; color: inherit; }
+
+.frame {
+  position: fixed; inset: 0; pointer-events: none; z-index: 100;
+  border: 1px solid var(--line);
+  opacity: 0; animation: frame-in 1.5s var(--ease) 0.8s forwards;
+}
+@keyframes frame-in { to { opacity: 1; } }
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.label {
+  font-size: 0.6rem; letter-spacing: 0.3em; text-transform: uppercase;
+  color: var(--gold-dim); margin-bottom: 1.5rem;
+  position: relative; padding-left: 2rem;
+}
+.label::before {
+  content: ''; position: absolute; left: 0; top: 50%;
+  width: 1.2rem; height: 1px; background: var(--gold-dim);
+}
+.heading {
+  font-size: clamp(1.6rem, 4vw, 2.8rem);
+  font-weight: 300; line-height: 1.25; letter-spacing: -0.01em;
+  margin-bottom: 1.5rem;
+}
+.heading em { font-style: normal; color: var(--gold); }
+.body-text {
+  font-size: clamp(0.9rem, 1.8vw, 1.05rem);
+  color: var(--text-muted); line-height: 1.75; max-width: 60ch;
+}
+.body-text strong { color: var(--text); font-weight: 400; }
+
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem;
+  padding: 1rem 2.5rem;
+  background: var(--cta); color: var(--white);
+  font-size: 0.75rem; font-weight: 500; letter-spacing: 0.15em;
+  text-transform: uppercase; border: none; cursor: pointer;
+  transition: background 0.3s, transform 0.2s;
+}
+.btn:hover { background: var(--cta-hover); }
+.btn:active { transform: scale(0.98); }
+.btn[disabled] { opacity: 0.55; cursor: default; }
+.btn--outline {
+  background: transparent; border: 1px solid var(--line-light); color: var(--text);
+}
+.btn--outline:hover { border-color: var(--gold-dim); background: transparent; }
+
+/* ── Voortgangsbalk + teller ───────────────────────────────────────────── */
+.sel-topbar {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 90;
+  background: rgba(14,19,24,0.92);
+  backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--line);
+  opacity: 0; pointer-events: none;
+  transition: opacity 0.4s var(--ease);
+}
+.sel-topbar.is-visible { opacity: 1; pointer-events: auto; }
+.sel-progress { height: 2px; background: var(--line); }
+.sel-progress__bar {
+  height: 100%; width: 0; background: var(--gold);
+  transition: width 0.5s var(--ease);
+}
+.sel-topbar__row {
+  position: relative;
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 1rem; padding: 0.55rem clamp(1rem, 4vw, 2rem);
+}
+.sel-topbar__back {
+  display: inline-flex; align-items: center; gap: 0.45rem;
+  font-size: 0.62rem; letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--text-muted); transition: color 0.2s;
+}
+.sel-topbar__back:hover { color: var(--text); }
+.sel-topbar__back svg { width: 12px; height: 12px; stroke: currentColor; stroke-width: 1.5; fill: none; }
+.sel-topbar__back[hidden] { display: none; }
+
+/* De live teller. Het getal is het enige dat verandert, dus alleen dát krijgt
+   een accentkleur - anders trekt de hele regel bij elke stap de aandacht weg
+   van de vraag. */
+.sel-count {
+  font-size: 0.62rem; letter-spacing: 0.12em;
+  color: var(--text-muted); text-align: right; line-height: 1.4;
+}
+.sel-count__n {
+  color: var(--gold); font-size: 0.85rem; font-weight: 400;
+  letter-spacing: 0.05em; display: inline-block;
+}
+.sel-count.is-bumped .sel-count__n { animation: count-bump 0.45s var(--ease); }
+@keyframes count-bump {
+  0% { transform: scale(1); }
+  40% { transform: scale(1.28); }
+  100% { transform: scale(1); }
+}
+.sel-count[hidden] { display: none; }
+
+/* ── Layout ────────────────────────────────────────────────────────────── */
+.sel {
+  min-height: 100svh;
+  display: flex; flex-direction: column; justify-content: center;
+  padding: clamp(4.5rem, 12vw, 7rem) clamp(1.25rem, 5vw, 3rem) clamp(3rem, 8vw, 5rem);
+}
+.sel__inner { width: 100%; max-width: 780px; margin: 0 auto; }
+.sel-screen[hidden] { display: none; }
+.sel-screen { animation: fade-up 0.6s var(--ease); }
+
+/* ── Welkomstscherm ────────────────────────────────────────────────────── */
+.sel-welcome__img {
+  /* Full-bleed breakout + optrekken tot de bovenkant van .sel */
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100vw;
+  max-width: 100vw; /* overschrijft globale img { max-width: 100% } */
+  height: clamp(220px, 36vw, 460px);
+  object-fit: cover; object-position: center 62%;
+  /* trekt foto omhoog over de top-padding van .sel heen + 2px voor frame-border */
+  margin-top: calc(-1 * clamp(4.5rem, 12vw, 7rem) - 2px);
+  margin-bottom: clamp(2rem, 4vw, 2.5rem);
+  display: block;
+}
+
+/* ── Grote project-teller in het midden van het vraagscherm ───────────── */
+.sel-project-count {
+  display: flex; flex-direction: column; align-items: center;
+  gap: 0.65rem; margin-bottom: 2rem;
+}
+/* Zorg dat het hidden-attribuut het altijd wint van display:flex */
+.sel-project-count[hidden] { display: none !important; }
+.flip-clock { /* perspective via transform-functie in animaties */ }
+.flip-card { position: relative; width: 96px; height: 84px; }
+
+/* Statische achtergrond: altijd het correcte getal, nooit geanimeerd.
+   Flexbox-centrering vermijdt pixel-berekeningen voor lettertypes. */
+.flip-static {
+  position: absolute; inset: 0;
+  background: #16212e; border-radius: 6px;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 4px 18px rgba(0,0,0,0.65), inset 0 1px 0 rgba(255,255,255,0.04);
+  border: 1px solid #0c1520;
+}
+.flip-static span {
+  font-size: 52px; font-weight: 200; color: var(--gold);
+  line-height: 1; letter-spacing: -0.03em; font-family: var(--font);
+}
+/* Horizontale naad */
+.flip-divider {
+  position: absolute; left: 0; right: 0; top: 42px;
+  height: 1px; background: #06101a; z-index: 20; pointer-events: none;
+}
+/* Flappen: volledige kaartgrootte, clip-path bepaalt welke helft zichtbaar is.
+   clip-path werkt in lokale 2D-ruimte en roteert mee → correcte split-flap.
+   transform-origin: center 50% (standaard) = hartlijn van de kaart.           */
+.flip-flap {
+  position: absolute; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  backface-visibility: hidden; -webkit-backface-visibility: hidden;
+  border-radius: 6px; z-index: 5;
+}
+.flip-flap span {
+  font-size: 52px; font-weight: 200; color: var(--gold);
+  line-height: 1; letter-spacing: -0.03em; font-family: var(--font);
+  pointer-events: none;
+}
+.flip-flap--front {
+  background: #16212e; border: 1px solid #0c1520;
+  clip-path: inset(0 0 50% 0 round 6px 6px 0 0); /* bovenste helft */
+}
+.flip-flap--back {
+  background: #18283c; border: 1px solid #0c1520;
+  clip-path: inset(50% 0 0 0 round 0 0 6px 6px); /* onderste helft */
+  transform: perspective(300px) rotateX(90deg);   /* begin verborgen */
+}
+/* Animaties – perspective() in de transform zelf voor betrouwbare 3D */
+.flip-card.is-flipping .flip-flap--front {
+  animation: fc-fold   0.28s cubic-bezier(0.55,0,1,0.45) forwards;
+}
+.flip-card.is-flipping .flip-flap--back {
+  animation: fc-reveal 0.28s cubic-bezier(0,0.55,0.45,1) 0.24s forwards;
+}
+@keyframes fc-fold {
+  from { transform: perspective(300px) rotateX(0deg); }
+  to   { transform: perspective(300px) rotateX(-90deg); }
+}
+@keyframes fc-reveal {
+  from { transform: perspective(300px) rotateX(90deg); }
+  to   { transform: perspective(300px) rotateX(0deg); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .flip-flap--front, .flip-flap--back { animation: none !important; }
+}
+/* Label onder de flip card */
+.sel-project-count__label {
+  font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase;
+  color: var(--text-muted); line-height: 1.4;
+}
+
+/* ── Vraagscherm ───────────────────────────────────────────────────────── */
+.sel-step__count {
+  /* Verborgen voor schermlezers (countdown geeft de positie al aan), maar
+     behouden voor toegankelijkheids-context via aria-label op de stap. */
+  display: none;
+}
+.sel-step__q {
+  font-size: clamp(1.35rem, 3.6vw, 2.1rem);
+  font-weight: 300; line-height: 1.3; letter-spacing: -0.01em;
+  margin-bottom: 0.6rem;
+}
+/* Koppen krijgen tabindex="-1" zodat de focus er bij een stapwissel naartoe
+   kan. Ze zijn niet met Tab bereikbaar, dus een focusring zou hier alleen
+   maar een rand om een titel tekenen zonder iets te betekenen. */
+h1[tabindex="-1"]:focus, h2[tabindex="-1"]:focus { outline: none; }
+.sel-step__hint {
+  font-size: 0.7rem; letter-spacing: 0.1em; color: var(--text-muted);
+  margin-bottom: 0.5rem;
+}
+.sel-step__error {
+  font-size: 0.65rem; color: #c0392b; letter-spacing: 0.05em; margin-top: 0.9rem;
+}
+.sel-step__error[hidden] { display: none; }
+
+.sel-options { display: grid; gap: 0.6rem; margin-top: 1.75rem; }
+@media (min-width: 620px) {
+  .sel-options { grid-template-columns: 1fr 1fr; }
+  /* Een oneven laatste optie mag niet half zo breed naast een gat staan. */
+  .sel-options > :last-child:nth-child(odd) { grid-column: 1 / -1; }
+}
+
+.sel-option {
+  position: relative;
+  display: flex; align-items: center; gap: 0.9rem;
+  width: 100%; padding: 0.95rem 1.1rem; text-align: left;
+  background: var(--bg-el); border: 1px solid var(--line);
+  transition: border-color 0.25s, background 0.25s, transform 0.15s;
+}
+.sel-option:hover { border-color: var(--gold-dim); }
+.sel-option:active { transform: scale(0.99); }
+.sel-option:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+.sel-option[aria-checked="true"] {
+  border-color: var(--gold); background: rgba(196,169,125,0.07);
+}
+.sel-option__letter {
+  flex-shrink: 0;
+  width: 26px; height: 26px;
+  display: flex; align-items: center; justify-content: center;
+  border: 1px solid var(--line-light);
+  font-size: 0.62rem; letter-spacing: 0.05em; color: var(--text-muted);
+  transition: border-color 0.25s, color 0.25s;
+}
+.sel-option[aria-checked="true"] .sel-option__letter {
+  border-color: var(--gold); color: var(--gold);
+}
+.sel-option__label {
+  flex: 1; font-size: 0.9rem; font-weight: 300; line-height: 1.4;
+}
+.sel-option__tick {
+  flex-shrink: 0; width: 14px; height: 14px; position: relative; opacity: 0;
+  transition: opacity 0.25s;
+}
+.sel-option[aria-checked="true"] .sel-option__tick { opacity: 1; }
+.sel-option__tick::after {
+  content: ''; position: absolute; left: 4px; top: 0;
+  width: 5px; height: 10px;
+  border: solid var(--gold); border-width: 0 1.5px 1.5px 0;
+  transform: rotate(45deg);
+}
+
+/* Fotokaartjes (vraag 2) */
+.sel-options--photo { gap: 0.75rem; }
+@media (min-width: 620px) {
+  .sel-options--photo { grid-template-columns: repeat(3, 1fr); }
+  .sel-options--photo > :last-child:nth-child(odd) { grid-column: auto; }
+}
+.sel-option--photo {
+  flex-direction: column; align-items: stretch; gap: 0; padding: 0;
+  overflow: hidden;
+}
+.sel-option__img {
+  display: block; width: 100%; height: clamp(88px, 20vw, 118px);
+  background-size: cover; background-position: center;
+  filter: grayscale(0.45) brightness(0.8);
+  transition: filter 0.35s var(--ease);
+}
+.sel-option--photo:hover .sel-option__img,
+.sel-option--photo[aria-checked="true"] .sel-option__img {
+  filter: grayscale(0) brightness(1);
+}
+.sel-option--photo .sel-option__letter {
+  position: absolute; top: 0.55rem; left: 0.55rem;
+  background: rgba(14,19,24,0.8); backdrop-filter: blur(4px);
+}
+.sel-option--photo .sel-option__label {
+  flex: none; padding: 0.8rem 0.9rem; font-size: 0.82rem;
+}
+.sel-option--photo .sel-option__tick {
+  position: absolute; top: 0.75rem; right: 0.75rem;
+}
+
+/* ── Gemeente-kaart (vraag 1): SVG Costa del Sol ──────────────────────── */
+.sel-map-wrap { margin-top: 1.25rem; border: 1px solid var(--line); overflow: hidden; }
+.sel-map { width: 100%; display: block; }
+.sel-map__sea { fill: #060e18; }
+.sel-map__land { fill: var(--bg-el); }
+.sel-map__coast { stroke: var(--line-light); stroke-width: 1.2; }
+.sel-map__inland-line { stroke: var(--line); stroke-width: 1; stroke-dasharray: 3 3; }
+.sel-map__dot {
+  fill: var(--bg); stroke: var(--line-light); stroke-width: 1.5;
+  transition: fill 0.18s, stroke 0.18s, r 0.18s;
+}
+.sel-map__muni { cursor: pointer; outline: none; }
+.sel-map__muni:hover .sel-map__dot,
+.sel-map__muni:focus .sel-map__dot { stroke: var(--gold-dim); fill: rgba(196,169,125,0.12); }
+.sel-map__muni[aria-checked="true"] .sel-map__dot { fill: var(--gold); stroke: var(--gold); }
+.sel-map__name {
+  font-size: 9.5px; fill: var(--text-muted);
+  font-family: var(--font); font-weight: 400;
+  pointer-events: none;
+  transition: fill 0.18s;
+}
+.sel-map__muni:hover .sel-map__name,
+.sel-map__muni:focus .sel-map__name { fill: var(--text); }
+.sel-map__muni[aria-checked="true"] .sel-map__name { fill: var(--gold); font-weight: 500; }
+.sel-map__price {
+  font-size: 7.5px; fill: #4a5a6a;
+  font-family: var(--font);
+  pointer-events: none;
+}
+.sel-map__muni[aria-checked="true"] .sel-map__price { fill: var(--gold-dim); }
+.sel-map__dir { font-size: 7px; fill: #2a3a4a; font-family: var(--font); letter-spacing: 0.03em; }
+.sel-map__muni:focus-visible .sel-map__dot { stroke: var(--gold); stroke-width: 2.5; }
+
+/* ── Projectkaartjes ───────────────────────────────────────────────────── */
+.sel-cards {
+  display: grid; gap: 1px; background: var(--line);
+  border: 1px solid var(--line); margin: 2rem 0;
+}
+@media (min-width: 700px) {
+  .sel-cards { grid-template-columns: repeat(3, 1fr); }
+  /* Bij minder dan drie treffers blijven er anders lege cellen over, en die
+     kleuren mee met de achtergrond die de 1px-scheidingslijnen tekent - één
+     resultaat zag eruit als één kaartje naast een groot grijs vlak. De
+     container krimpt dan mee met de kaartjes. Browsers zonder :has() vallen
+     terug op drie kolommen; dat is de oude situatie, niet erger. */
+  .sel-cards:has(> :last-child:nth-child(-n+2)) {
+    grid-template-columns: repeat(auto-fit, minmax(200px, 280px));
+    justify-content: start;
+    width: fit-content;
+    max-width: 100%;
+  }
+}
+.sel-card {
+  display: flex; flex-direction: column;
+  background: var(--bg-el);
+  transition: background 0.3s;
+}
+a.sel-card:hover { background: #182029; }
+.sel-card__img {
+  width: 100%; height: clamp(140px, 26vw, 175px); object-fit: cover;
+  background: var(--line);
+}
+.sel-card__body { padding: 1.1rem 1.15rem 1.25rem; flex: 1; display: flex; flex-direction: column; }
+.sel-card__loc {
+  font-size: 0.58rem; letter-spacing: 0.25em; text-transform: uppercase;
+  color: var(--gold-dim); margin-bottom: 0.45rem;
+}
+.sel-card__name {
+  font-size: 1rem; font-weight: 400; line-height: 1.3; margin-bottom: 0.5rem;
+}
+.sel-card__price { font-size: 0.8rem; color: var(--text-muted); }
+.sel-card__cta {
+  margin-top: auto; padding-top: 0.9rem;
+  font-size: 0.62rem; letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--gold);
+}
+
+/* Vervaagde variant op het teaser-scherm: de kaartjes staan er al, maar zijn
+   nog niet leesbaar. Dat is eerlijker dan een leeg vak met een belofte - de
+   bezoeker ziet dat er echt iets klaarstaat. */
+.sel-cards--locked { position: relative; }
+.sel-cards--locked .sel-card {
+  /* Net genoeg vervaging om naam en prijs onleesbaar te maken, en niet meer:
+     de bezoeker moet kunnen zien dát er echte foto's klaarstaan. Een te
+     donkere sluier maakt er drie lege grijze vakken van, en dan lijkt de
+     belofte hol. */
+  filter: blur(5px); opacity: 0.9; pointer-events: none; user-select: none;
+}
+.sel-cards--locked::after {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(to bottom, rgba(14,19,24,0.05), rgba(14,19,24,0.3));
+}
+.sel-locked-note {
+  display: flex; align-items: center; justify-content: center; gap: 0.55rem;
+  margin: -1rem 0 2rem;
+  font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--gold);
+}
+.sel-locked-note svg {
+  width: 13px; height: 13px; stroke: var(--gold); stroke-width: 1.5; fill: none;
+}
+.sel-relaxed {
+  font-size: 0.75rem; color: var(--text-muted); line-height: 1.6;
+  border-left: 1px solid var(--gold-dim); padding-left: 0.9rem; margin-bottom: 1.5rem;
+}
+
+/* ── Formulier ─────────────────────────────────────────────────────────── */
+.form-group { position: relative; margin-bottom: 1.5rem; }
+.form-group input {
+  display: block; width: 100%; padding: 0.9rem 0;
+  background: transparent; border: none; border-bottom: 1px solid var(--line-light);
+  color: var(--text); font-family: var(--font);
+  font-size: 0.9rem; font-weight: 300; outline: none;
+  transition: border-color 0.3s;
+}
+.form-group input::placeholder { color: var(--text-muted); opacity: 0.6; }
+.form-group input:focus { border-bottom-color: var(--gold); }
+.form-group label {
+  position: absolute; top: 0.9rem; left: 0;
+  font-size: 0.75rem; letter-spacing: 0.1em; color: var(--text-muted);
+  pointer-events: none; transition: all 0.3s var(--ease);
+}
+.form-group input:focus + label,
+.form-group input:not(:placeholder-shown) + label {
+  top: -0.6rem; font-size: 0.6rem; color: var(--gold); letter-spacing: 0.15em;
+}
+@media (min-width: 620px) {
+  .sel-form__row { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; }
+}
+.phone-group { display: flex; align-items: end; gap: 0.75rem; }
+.phone-group .form-group { flex: 1; margin-bottom: 0; }
+.phone-prefix {
+  font-size: 0.85rem; color: var(--text-muted);
+  padding: 0 1.1rem 0.9rem 0;
+  border: none; border-bottom: 1px solid var(--line-light);
+  white-space: nowrap; flex-shrink: 0; width: 7.4rem;
+  font-family: var(--font);
+  background: transparent no-repeat right 0.15rem bottom 1.05rem;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' fill='none' stroke='%238A96A3' stroke-width='1.2'/%3E%3C/svg%3E");
+  background-size: 9px 6px;
+  appearance: none; -webkit-appearance: none; cursor: pointer;
+  text-overflow: ellipsis; transition: border-color 0.3s, color 0.3s;
+}
+.phone-prefix:hover { color: var(--text); }
+.phone-prefix:focus { outline: none; border-bottom-color: var(--gold); color: var(--text); }
+.phone-prefix option { background: var(--bg-el); color: var(--text); }
+.phone-prefix optgroup { background: var(--bg); color: var(--text-muted); font-style: normal; }
+
+.consent { display: flex; align-items: flex-start; gap: 0.75rem; margin: 1.5rem 0; }
+.consent input[type="checkbox"] {
+  appearance: none; -webkit-appearance: none;
+  width: 16px; height: 16px; border: 1px solid var(--line-light); border-radius: 2px;
+  flex-shrink: 0; margin-top: 2px; cursor: pointer; position: relative;
+  transition: all 0.2s;
+}
+.consent input[type="checkbox"]:checked { background: var(--gold); border-color: var(--gold); }
+.consent input[type="checkbox"]:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+.consent input[type="checkbox"]:checked::after {
+  content: ''; position: absolute; left: 4px; top: 1px;
+  width: 5px; height: 9px; border: solid var(--bg); border-width: 0 1.5px 1.5px 0;
+  transform: rotate(45deg);
+}
+.consent label { font-size: 0.7rem; color: var(--text-muted); line-height: 1.5; cursor: pointer; }
+.consent a { color: var(--gold-dim); text-decoration: underline; text-underline-offset: 2px; }
+.form-error {
+  font-size: 0.65rem; color: #c0392b; margin-top: 0.4rem;
+  letter-spacing: 0.05em; display: none;
+}
+.form-error.is-active { display: block; }
+.sel-form__note {
+  font-size: 0.68rem; color: var(--text-muted); margin-top: 1rem; line-height: 1.6;
+}
+.sel-form__note svg {
+  width: 12px; height: 12px; stroke: var(--gold-dim); stroke-width: 1.5; fill: none;
+  display: inline-block; vertical-align: -1px; margin-right: 0.3rem;
+}
+
+.sel-result__actions {
+  display: flex; flex-wrap: wrap; gap: 0.9rem; margin-top: 2rem;
+}
+
+/* ── Footer & cookiebalk ───────────────────────────────────────────────── */
+footer {
+  padding: clamp(2rem, 4vw, 3rem) clamp(1.5rem, 5vw, 3rem);
+  text-align: center; font-size: 0.6rem; color: var(--text-muted);
+  letter-spacing: 0.05em; line-height: 2;
+  border-top: 1px solid var(--line);
+}
+footer a { color: var(--gold-dim); text-underline-offset: 2px; }
+.biv-logo { display: block; height: 40px; margin: 1.5rem auto 0; opacity: 0.7; }
+.cookie-bar {
+  position: fixed; left: 1.5rem; bottom: 1.5rem; z-index: 300;
+  max-width: 400px; background: var(--bg-el); border: 1px solid var(--line);
+  padding: 1.5rem; box-shadow: 0 8px 40px rgba(0,0,0,0.55);
+  opacity: 0; transform: translateY(12px); pointer-events: none;
+  transition: opacity 0.4s var(--ease), transform 0.4s var(--ease);
+}
+.cookie-bar.is-visible { opacity: 1; transform: translateY(0); pointer-events: auto; }
+.cookie-bar p { font-size: 0.75rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 1.1rem; }
+.cookie-bar p a { color: var(--gold-dim); text-decoration: underline; text-underline-offset: 2px; }
+.cookie-bar__actions { display: flex; gap: 0.75rem; }
+.cookie-bar__actions .btn { padding: 0.6rem 1.1rem; font-size: 0.62rem; flex: 1; }
+@media (max-width: 600px) {
+  .cookie-bar { left: 1rem; right: 1rem; bottom: 1rem; max-width: none; padding: 1.25rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+  .frame { opacity: 1; }
+}
+
+/* ── Kaart: horizontaal scrollbaar op smal scherm ─────────────────────── */
+@media (max-width: 600px) {
+  .sel-map-wrap {
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none; /* Firefox */
+  }
+  .sel-map-wrap::-webkit-scrollbar { display: none; }
+  /* Vaste breedte zodat de kaart niet platgedrukt wordt op portret */
+  .sel-map { width: 640px; height: auto; }
+  /* Subtiel swipe-hint icoontje */
+  .sel-map-wrap::after {
+    content: '';
+    position: absolute; right: 0; top: 0; bottom: 0; width: 32px;
+    background: linear-gradient(to right, transparent, rgba(14,19,24,0.7));
+    pointer-events: none;
+  }
+}
+.sel-map-wrap { position: relative; }
+</style>
+</head>
+<body class="page-selectie">
+
+<div class="frame" aria-hidden="true"></div>
+
+<div class="sel-topbar" id="selTopbar">
+  <div class="sel-progress" role="progressbar" aria-label="Voortgang"
+       aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="selProgress">
+    <div class="sel-progress__bar" id="selProgressBar"></div>
+  </div>
+  <div class="sel-topbar__row">
+    <button type="button" class="sel-topbar__back" id="selBack" hidden>
+      <svg viewBox="0 0 24 24"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg>
+      Terug
+    </button>
+  </div>
+</div>
+
+<main class="sel">
+  <div class="sel__inner">
+
+    <!-- ═══════════ WELKOM ═══════════ -->
+    <section class="sel-screen sel-welcome" id="selWelcome">
+      <img class="sel-welcome__img" src="https://projects.investinspain.be/images/selectie/hero.webp" alt="" width="1600" height="900" fetchpriority="high">
+      <p class="label">Persoonlijke selectie</p>
+      <h1 class="heading">Vind uw ideale woning aan de<br><em>Costa del Sol</em></h1>
+      <p class="body-text">Beantwoord tien korte vragen en zie <strong>meteen</strong> welke projecten uit onze portefeuille bij u passen &mdash; met foto, locatie en vanaf-prijs.</p>
+      <button type="button" class="btn" id="selStart">Starten</button>
+    </section>
+
+    <!-- ═══════════ VRAGEN ═══════════ -->
+    <div class="sel-screen" id="selSteps" hidden>
+      <!-- Grote project-teller: verschijnt na het eerste antwoord -->
+      <div class="sel-project-count" id="selProjectCount" hidden>
+        <div class="flip-clock">
+          <div class="flip-card" id="flipCard">
+            <div class="flip-static"><span id="flipStatic">&mdash;</span></div>
+            <div class="flip-divider"></div>
+            <div class="flip-flap flip-flap--front"><span id="flipFront">&mdash;</span></div>
+            <div class="flip-flap flip-flap--back"><span id="flipBack">&mdash;</span></div>
+          </div>
+        </div>
+        <p class="sel-project-count__label" id="selCountLabel">projecten passen bij uw antwoorden</p>
+      </div>
+
+      <section class="sel-step" data-step="1" data-id="region"
+               data-param="regions"
+               data-multi="1"
+               data-required="1"
+               hidden>
+        <p class="sel-step__count">Stap 01 <span>van 10</span></p>
+        <h2 class="sel-step__q" tabindex="-1">In welke gemeente(n) bent u ge&iuml;nteresseerd?</h2>
+        <p class="sel-step__hint">Meerdere antwoorden mogelijk</p>
+        <div class="sel-map-wrap" role="group" aria-label="In welke gemeente(n) bent u ge&iuml;nteresseerd?">
+  <svg class="sel-map" viewBox="0 0 840 220" xmlns="http://www.w3.org/2000/svg">
+    <rect class="sel-map__sea" x="0" y="0" width="840" height="220"/>
+    <path class="sel-map__land" d="M 0,0 L 840,0 L 840,133 C 808,136 770,140 730,147 C 672,157 624,163 582,163 C 557,163 530,161 505,159 C 484,157 460,152 432,150 C 408,148 382,151 364,154 C 348,157 332,161 310,161 C 284,161 250,156 220,158 C 193,160 158,162 130,163 C 108,164 72,155 52,158 C 38,161 25,165 0,166 Z"/>
+    <path class="sel-map__coast" d="M 0,166 C 25,165 38,161 52,158 C 72,155 108,164 130,163 C 158,162 193,160 220,158 C 250,156 284,161 310,161 C 332,161 348,157 364,154 C 382,151 408,148 432,150 C 460,152 484,157 505,159 C 530,161 557,163 582,163 C 624,163 672,157 730,147 C 770,140 808,136 840,133" fill="none"/>
+    <g class="sel-option sel-map__muni" data-value="sotogrande" role="checkbox" aria-checked="false" tabindex="0" aria-label="Sotogrande"><rect class="sel-map__hit" x="12" y="127" width="80" height="37" fill="transparent"/><circle class="sel-map__dot" cx="52" cy="158" r="5"/><text class="sel-map__name" x="52" y="133" text-anchor="middle">Sotogrande</text><text class="sel-map__price" x="52" y="120" text-anchor="middle">v.a. € 540.000</text></g>
+    <g class="sel-option sel-map__muni" data-value="manilva" role="checkbox" aria-checked="false" tabindex="0" aria-label="Manilva"><rect class="sel-map__hit" x="95" y="157" width="70" height="45" fill="transparent"/><circle class="sel-map__dot" cx="130" cy="163" r="5"/><text class="sel-map__name" x="130" y="183" text-anchor="middle">Manilva</text><text class="sel-map__price" x="130" y="196" text-anchor="middle">v.a. € 350.000</text></g>
+    <g class="sel-option sel-map__muni" data-value="estepona" role="checkbox" aria-checked="false" tabindex="0" aria-label="Estepona"><rect class="sel-map__hit" x="185" y="127" width="70" height="37" fill="transparent"/><circle class="sel-map__dot" cx="220" cy="158" r="5"/><text class="sel-map__name" x="220" y="133" text-anchor="middle">Estepona</text><text class="sel-map__price" x="220" y="120" text-anchor="middle">v.a. € 300.000</text></g>
+    <g class="sel-option sel-map__muni" data-value="sanpedro" role="checkbox" aria-checked="false" tabindex="0" aria-label="San Pedro"><rect class="sel-map__hit" x="273" y="155" width="74" height="45" fill="transparent"/><circle class="sel-map__dot" cx="310" cy="161" r="5"/><text class="sel-map__name" x="310" y="181" text-anchor="middle">San Pedro</text><text class="sel-map__price" x="310" y="194" text-anchor="middle">v.a. € 390.000</text></g>
+    <g class="sel-option sel-map__muni" data-value="puertobanus" role="checkbox" aria-checked="false" tabindex="0" aria-label="Puerto Banús"><rect class="sel-map__hit" x="318" y="123" width="92" height="37" fill="transparent"/><circle class="sel-map__dot" cx="364" cy="154" r="5"/><text class="sel-map__name" x="364" y="129" text-anchor="middle">Puerto Banús</text><text class="sel-map__price" x="364" y="116" text-anchor="middle">v.a. € 460.000</text></g>
+    <g class="sel-option sel-map__muni" data-value="marbella" role="checkbox" aria-checked="false" tabindex="0" aria-label="Marbella"><rect class="sel-map__hit" x="397" y="144" width="70" height="53" fill="transparent"/><circle class="sel-map__dot" cx="432" cy="150" r="5"/><text class="sel-map__name" x="432" y="178" text-anchor="middle">Marbella</text><text class="sel-map__price" x="432" y="191" text-anchor="middle">v.a. € 410.000</text></g>
+    <g class="sel-option sel-map__muni" data-value="mijascosta" role="checkbox" aria-checked="false" tabindex="0" aria-label="Mijas Costa"><rect class="sel-map__hit" x="462" y="153" width="86" height="45" fill="transparent"/><circle class="sel-map__dot" cx="505" cy="159" r="5"/><text class="sel-map__name" x="505" y="179" text-anchor="middle">Mijas Costa</text><text class="sel-map__price" x="505" y="192" text-anchor="middle">v.a. € 290.000</text></g>
+    <g class="sel-option sel-map__muni" data-value="mijas" role="checkbox" aria-checked="false" tabindex="0" aria-label="Mijas"><line class="sel-map__inland-line" x1="505" y1="103" x2="505" y2="152"/><rect class="sel-map__hit" x="470" y="66" width="70" height="36" fill="transparent"/><circle class="sel-map__dot" cx="505" cy="96" r="5"/><text class="sel-map__name" x="505" y="72" text-anchor="middle">Mijas</text><text class="sel-map__price" x="505" y="59" text-anchor="middle">v.a. € 240.000</text></g>
+    <g class="sel-option sel-map__muni" data-value="fuengirola" role="checkbox" aria-checked="false" tabindex="0" aria-label="Fuengirola"><rect class="sel-map__hit" x="542" y="127" width="80" height="42" fill="transparent"/><circle class="sel-map__dot" cx="582" cy="163" r="5"/><text class="sel-map__name" x="582" y="133" text-anchor="middle">Fuengirola</text><text class="sel-map__price" x="582" y="120" text-anchor="middle">v.a. € 340.000</text></g>
+    <g class="sel-option sel-map__muni" data-value="malaga" role="checkbox" aria-checked="false" tabindex="0" aria-label="Málaga"><rect class="sel-map__hit" x="695" y="116" width="70" height="37" fill="transparent"/><circle class="sel-map__dot" cx="730" cy="147" r="5"/><text class="sel-map__name" x="730" y="122" text-anchor="middle">Málaga</text><text class="sel-map__price" x="730" y="109" text-anchor="middle">v.a. € 350.000</text></g>
+    <text class="sel-map__dir" x="8" y="214">← Sotogrande</text>
+    <text class="sel-map__dir" x="832" y="214" text-anchor="end">Málaga →</text>
+  </svg>
+</div>
+        <p class="sel-step__error" role="alert" hidden>Kies minstens &eacute;&eacute;n antwoord om verder te gaan</p>
+      </section>
+
+      <section class="sel-step" data-step="2" data-id="type"
+               data-param="type"
+               data-multi=""
+               data-required="1"
+               hidden>
+        <p class="sel-step__count">Stap 02 <span>van 10</span></p>
+        <h2 class="sel-step__q" tabindex="-1">Welk type woning zoekt u?</h2>
+        
+        <div class="sel-options sel-options--photo" role="radiogroup" aria-label="Welk type woning zoekt u?">
+          <button type="button" class="sel-option sel-option--photo" data-value="apartment" role="radio" aria-checked="false"><span class="sel-option__img" role="presentation" style="background-image:url('https://projects.investinspain.be/images/oceana-views/hero.webp')"></span><span class="sel-option__letter" aria-hidden="true">A</span><span class="sel-option__label">Nieuw appartement</span><span class="sel-option__tick" aria-hidden="true"></span></button>
+          <button type="button" class="sel-option sel-option--photo" data-value="penthouse" role="radio" aria-checked="false"><span class="sel-option__img" role="presentation" style="background-image:url('https://projects.investinspain.be/images/royal-river/img3.webp')"></span><span class="sel-option__letter" aria-hidden="true">B</span><span class="sel-option__label">Nieuw penthouse</span><span class="sel-option__tick" aria-hidden="true"></span></button>
+          <button type="button" class="sel-option sel-option--photo" data-value="villa" role="radio" aria-checked="false"><span class="sel-option__img" role="presentation" style="background-image:url('https://projects.investinspain.be/images/las-villas-sotogrande/hero.webp')"></span><span class="sel-option__letter" aria-hidden="true">C</span><span class="sel-option__label">Nieuwe villa</span><span class="sel-option__tick" aria-hidden="true"></span></button>
+          <button type="button" class="sel-option sel-option--photo" data-value="townhouse" role="radio" aria-checked="false"><span class="sel-option__img" role="presentation" style="background-image:url('https://projects.investinspain.be/images/the-valley/exterior.webp')"></span><span class="sel-option__letter" aria-hidden="true">D</span><span class="sel-option__label">Nieuwe townhouse</span><span class="sel-option__tick" aria-hidden="true"></span></button>
+          <button type="button" class="sel-option sel-option--photo" data-value="turnkey" role="radio" aria-checked="false"><span class="sel-option__img" role="presentation" style="background-image:url('https://projects.investinspain.be/images/oceana-views/living-1.webp')"></span><span class="sel-option__letter" aria-hidden="true">E</span><span class="sel-option__label">Sleutelklare moderne woning</span><span class="sel-option__tick" aria-hidden="true"></span></button>
+        </div>
+        <p class="sel-step__error" role="alert" hidden>Kies minstens &eacute;&eacute;n antwoord om verder te gaan</p>
+      </section>
+
+      <section class="sel-step" data-step="3" data-id="reason"
+               data-param=""
+               data-multi=""
+               data-required="1"
+               hidden>
+        <p class="sel-step__count">Stap 03 <span>van 10</span></p>
+        <h2 class="sel-step__q" tabindex="-1">Wat is uw belangrijkste reden om te kopen?</h2>
+        
+        <div class="sel-options" role="radiogroup" aria-label="Wat is uw belangrijkste reden om te kopen?">
+          <button type="button" class="sel-option" data-value="investment" role="radio" aria-checked="false"><span class="sel-option__letter" aria-hidden="true">A</span><span class="sel-option__label">Investering</span><span class="sel-option__tick" aria-hidden="true"></span></button>
+          <button type="button" class="sel-option" data-value="personal" role="radio" aria-checked="false"><span class="sel-option__letter" aria-hidden="true">B</span><span class="sel-option__label">Eigen gebruik</span><span class="sel-option__tick" aria-hidden="true"></span></button>
+          <button type="button" class="sel-option" data-value="both" role="radio" aria-checked="false"><span class="sel-option__letter" aria-hidden="true">C</span><span class="sel-option__label">Zowel investering als eigen gebruik</span><span class="sel-option__tick" aria-hidden="true"></span></button>
+          <button type="button" class="sel-option" data-value="move" role="radio" aria-checked="false"><span class="sel-option__letter" aria-hidden="true">D</span><span class="sel-option__label">Permanente verhuis</span><span class="sel-option__tick" aria-hidden="true"></span></button>
+        </div>
+        <p class="sel-step__error" role="alert" hidden>Kies minstens &eacute;&eacute;n antwoord om verder te gaan</p>
+      </section>
+
+      <section class="sel-step" data-step="4" data-id="budget"
+               data-param="budget"
+               data-multi=""
+               data-required="1"
+               hidden>
+        <p class="sel-step__count">Stap 04 <span>van 10</span></p>
+        <h2 class="sel-step__q" tabindex="-1">Wat is uw budget?</h2>
+        
+        <div class="sel-options" role="radiogroup" aria-label="Wat is uw budget?">
+          <button type="button" class="sel-option" data-value="lt200k" role="radio" aria-checked="false"><span class="sel-option__letter" aria-hidden="true">A</span><span class="sel-option__label">Tot &euro; 200.000</span><span class="sel-option__tick" aria-hidden="true"></span></button>
+          <button type="button" class="sel-option" data-value="200-400" role="radio" aria-checked="false"><span class="sel-option__letter" aria-hidden="true">B</span><span class="sel-option__label">&euro; 200.000 &ndash; 400.000</span><span class="sel-option__tick" aria-hidden="true"></span></button>
+          <button type="button" class="sel-option" data-value="400-600" role="radio" aria-checked="false"><span class="sel-option__letter" aria-hidden="true">C</span><span class="sel-option__label">&euro; 400.000 &ndash; 600.000</span><span class="sel-option__tick" aria-hidden="true"></span></button>
+          <button type="button" class="sel-option" data-value="600-1m" role="radio" aria-checked="false"><span class="sel-option__letter" aria-hidden="true">D</span><span class="sel-option__label">&euro; 600.000 &ndash; 1 miljoen</span><span class="sel-option__tick" aria-hidden="true"></span></button>
+          <button type="button" class="sel-option" data-value="1m-3m" role="radio" aria-checked="false"><span class="sel-option__letter" aria-hidden="true">E</span><span class="sel-option__label">&euro; 1 &ndash; 3 miljoen</span><span class="sel-option__tick" aria-hidden="true"></span></button>
+          <button type="button" class="sel-option" data-value="3m-plus" role="radio" aria-checked="false"><span class="sel-option__letter" aria-hidden="true">F</span><span class="sel-option__label">Meer dan &euro; 3 miljoen</span><span class="sel-option__tick" aria-hidden="true"></span></button>
+        </div>
+        <p class="sel-step__error" role="alert" hidden>Kies minstens &eacute;&eacute;n antwoord om verder te gaan</p>
+      </section>
+
+      <section class="sel-step" data-step="5" data-id="timing"
+               data-param=""
+               data-multi="1"
+               data-required="1"
+               hidden>
+        <p class="sel-step__count">Stap 05 <span>van 10</span></p>
+        <h2 class="sel-step__q" tabindex="-1">Wanneer wilt u er intrekken?</h2>
+        <p class="sel-step__hint">Meerdere antwoorden mogelijk</p>
+        <div class="sel-options" role="group" aria-label="Wanneer wilt u er intrekken?">
+          <button type="button" class="sel-option" data-value="2026" role="checkbox" aria-checked="false"><span class="sel-option__letter" aria-hidden="true">A</span><span class="sel-option__label">2026</span><span class="sel-option__tick" aria-hidden="true"></span></button>
+          <button type="button" class="sel-option" data-value="2027" role="checkbox" aria-checked="false"><span class="sel-option__letter" aria-hidden="true">B</span><span class="sel-option__label">2027</span><span class="sel-option__tick" aria-hidden="true"></span></button>
+          <button type="button" class="sel-option" data-value="2028" role="checkbox" aria-checked="false"><span class="sel-option__letter" aria-hidden="true">C</span><span class="sel-option__label">2028 of later</span><span class="sel-option__tick" aria-hidden="true"></span></button>
+        </div>
+        <p class="sel-step__error" role="alert" hidden>Kies minstens &eacute;&eacute;n antwoord om verder te gaan</p>
+      </section>
+
+      <section class="sel-step" data-step="6" data-id="bedrooms"
+               data-param="bedrooms"
+               data-multi=""
+               data-required=""
+               hidden>
+        <p class="sel-step__count">Stap 06 <span>van 10</span></p>
+        <h2 class="sel-step__q" tabindex="-1">Hoeveel slaapkamers heeft u het liefst?</h2>
+        
+        <div class="sel-options" role="radiogroup" aria-label="Hoeveel slaapkamers heeft u het liefst?">
+          <button type="button" class="sel-option" data-value="1" role="radio" aria-checked="false"><span class="sel-option__letter" aria-hidden="true">A</span><span class="sel-option__label">1</span><span class="sel-option__tick" aria-hidden="true"></span></button>
+          <button type="button" class="sel-option" data-value="2" role="radio" aria-checked="false"><span class="sel-option__letter" aria-hidden="true">B</span><span class="sel-option__label">2</span><span class="sel-option__tick" aria-hidden="true"></span></button>
+          <button type="button" class="sel-option" data-value="3" role="radio" aria-checked="false"><span class="sel-option__letter" aria-hidden="true">C</span><span class="sel-option__label">3</span><span class="sel-option__tick" aria-hidden="true"></span></button>
+          <button type="button" class="sel-option" data-value="4plus" role="radio" aria-checked="false"><span class="sel-option__letter" aria-hidden="true">D</span><span class="sel-option__label">4 of meer</span><span class="sel-option__tick" aria-hidden="true"></span></button>
+        </div>
+        <p class="sel-step__error" role="alert" hidden>Kies minstens &eacute;&eacute;n antwoord om verder te gaan</p>
+      </section>
+
+      <section class="sel-step" data-step="7" data-id="location"
+               data-param="location"
+               data-multi=""
+               data-required=""
+               hidden>
+        <p class="sel-step__count">Stap 07 <span>van 10</span></p>
+        <h2 class="sel-step__q" tabindex="-1">Wat voor ligging zoekt u?</h2>
+        
+        <div class="sel-options" role="radiogroup" aria-label="Wat voor ligging zoekt u?">
+          <button type="button" class="sel-option" data-value="quiet" role="radio" aria-checked="false"><span class="sel-option__letter" aria-hidden="true">A</span><span class="sel-option__label">Rustig gelegen</span><span class="sel-option__tick" aria-hidden="true"></span></button>
+          <button type="button" class="sel-option" data-value="city" role="radio" aria-checked="false"><span class="sel-option__letter" aria-hidden="true">B</span><span class="sel-option__label">In het centrum</span><span class="sel-option__tick" aria-hidden="true"></span></button>
+          <button type="button" class="sel-option" data-value="golf" role="radio" aria-checked="false"><span class="sel-option__letter" aria-hidden="true">C</span><span class="sel-option__label">Aan een golfbaan</span><span class="sel-option__tick" aria-hidden="true"></span></button>
+          <button type="button" class="sel-option" data-value="beach" role="radio" aria-checked="false"><span class="sel-option__letter" aria-hidden="true">D</span><span class="sel-option__label">Aan het strand</span><span class="sel-option__tick" aria-hidden="true"></span></button>
+          <button type="button" class="sel-option" data-value="countryside" role="radio" aria-checked="false"><span class="sel-option__letter" aria-hidden="true">E</span><span class="sel-option__label">In het groen</span><span class="sel-option__tick" aria-hidden="true"></span></button>
+        </div>
+        <p class="sel-step__error" role="alert" hidden>Kies minstens &eacute;&eacute;n antwoord om verder te gaan</p>
+      </section>
+
+      <section class="sel-step" data-step="8" data-id="view"
+               data-param="view"
+               data-multi=""
+               data-required=""
+               hidden>
+        <p class="sel-step__count">Stap 08 <span>van 10</span></p>
+        <h2 class="sel-step__q" tabindex="-1">Welk uitzicht heeft uw voorkeur?</h2>
+        
+        <div class="sel-options" role="radiogroup" aria-label="Welk uitzicht heeft uw voorkeur?">
+          <button type="button" class="sel-option" data-value="sea" role="radio" aria-checked="false"><span class="sel-option__letter" aria-hidden="true">A</span><span class="sel-option__label">Zeezicht</span><span class="sel-option__tick" aria-hidden="true"></span></button>
+          <button type="button" class="sel-option" data-value="mountain" role="radio" aria-checked="false"><span class="sel-option__letter" aria-hidden="true">B</span><span class="sel-option__label">Bergzicht</span><span class="sel-option__tick" aria-hidden="true"></span></button>
+          <button type="button" class="sel-option" data-value="none" role="radio" aria-checked="false"><span class="sel-option__letter" aria-hidden="true">C</span><span class="sel-option__label">Geen voorkeur</span><span class="sel-option__tick" aria-hidden="true"></span></button>
+        </div>
+        <p class="sel-step__error" role="alert" hidden>Kies minstens &eacute;&eacute;n antwoord om verder te gaan</p>
+      </section>
+
+      <section class="sel-step" data-step="9" data-id="indoor"
+               data-param="indoor"
+               data-multi=""
+               data-required="1"
+               hidden>
+        <p class="sel-step__count">Stap 09 <span>van 10</span></p>
+        <h2 class="sel-step__q" tabindex="-1">Hoeveel woonoppervlak zoekt u? (m&sup2;)</h2>
+        
+        <div class="sel-options" role="radiogroup" aria-label="Hoeveel woonoppervlak zoekt u? (m&sup2;)">
+          <button type="button" class="sel-option" data-value="lt100" role="radio" aria-checked="false"><span class="sel-option__letter" aria-hidden="true">A</span><span class="sel-option__label">Minder dan 100</span><span class="sel-option__tick" aria-hidden="true"></span></button>
+          <button type="button" class="sel-option" data-value="100-150" role="radio" aria-checked="false"><span class="sel-option__letter" aria-hidden="true">B</span><span class="sel-option__label">100 &ndash; 150</span><span class="sel-option__tick" aria-hidden="true"></span></button>
+          <button type="button" class="sel-option" data-value="150plus" role="radio" aria-checked="false"><span class="sel-option__letter" aria-hidden="true">C</span><span class="sel-option__label">150 of meer</span><span class="sel-option__tick" aria-hidden="true"></span></button>
+        </div>
+        <p class="sel-step__error" role="alert" hidden>Kies minstens &eacute;&eacute;n antwoord om verder te gaan</p>
+      </section>
+
+      <section class="sel-step" data-step="10" data-id="outdoor"
+               data-param=""
+               data-multi=""
+               data-required="1"
+               hidden>
+        <p class="sel-step__count">Stap 10 <span>van 10</span></p>
+        <h2 class="sel-step__q" tabindex="-1">Hoeveel buitenruimte zoekt u? (m&sup2;)</h2>
+        
+        <div class="sel-options" role="radiogroup" aria-label="Hoeveel buitenruimte zoekt u? (m&sup2;)">
+          <button type="button" class="sel-option" data-value="0-25" role="radio" aria-checked="false"><span class="sel-option__letter" aria-hidden="true">A</span><span class="sel-option__label">0 &ndash; 25</span><span class="sel-option__tick" aria-hidden="true"></span></button>
+          <button type="button" class="sel-option" data-value="25-100" role="radio" aria-checked="false"><span class="sel-option__letter" aria-hidden="true">B</span><span class="sel-option__label">25 &ndash; 100</span><span class="sel-option__tick" aria-hidden="true"></span></button>
+          <button type="button" class="sel-option" data-value="100plus" role="radio" aria-checked="false"><span class="sel-option__letter" aria-hidden="true">C</span><span class="sel-option__label">100 of meer</span><span class="sel-option__tick" aria-hidden="true"></span></button>
+        </div>
+        <p class="sel-step__error" role="alert" hidden>Kies minstens &eacute;&eacute;n antwoord om verder te gaan</p>
+      </section>
+    </div>
+
+    <!-- ═══════════ TEASER + CONTACTGEGEVENS ═══════════ -->
+    <section class="sel-screen sel-teaser" id="selTeaser" hidden>
+      <p class="label">Uw selectie</p>
+      <h2 class="heading" id="selTeaserHead" tabindex="-1">
+        We vonden <em id="selTeaserN">&mdash;</em>
+        <em id="selTeaserWord">passende projecten</em>
+      </h2>
+      <p class="sel-relaxed" id="selRelaxed" hidden>Binnen dit budget hebben we vandaag niets in portefeuille. Dit zijn de projecten die er het dichtst bij komen.</p>
+      <div class="sel-cards sel-cards--locked" id="selTeaserCards" aria-hidden="true"></div>
+      <p class="sel-locked-note" id="selLockedNote">
+        <svg viewBox="0 0 24 24"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
+        Ontgrendel uw selectie
+      </p>
+      <p class="body-text" style="margin-bottom:2.25rem">Vul uw gegevens in en u ziet ze meteen &mdash; hier op het scherm, niet pas in uw mailbox. We sturen de volledige lijst ook door en nemen kort contact op.</p>
+
+      <form id="selForm" novalidate>
+        <div class="sel-form__row">
+          <div class="form-group">
+            <input type="text" id="s-fname" name="fname" placeholder=" " required autocomplete="given-name">
+            <label for="s-fname">Voornaam</label>
+          </div>
+          <div class="form-group">
+            <input type="text" id="s-lname" name="lname" placeholder=" " required autocomplete="family-name">
+            <label for="s-lname">Achternaam</label>
+          </div>
+        </div>
+        <div class="form-group">
+          <input type="email" id="s-email" name="email" placeholder=" " required autocomplete="email">
+          <label for="s-email">E-mailadres</label>
+        </div>
+        <div class="phone-group">
+          <select class="phone-prefix" id="s-country" name="country" required aria-label="Landcode">
+<optgroup label="Veelgekozen">
+                <option value="+32" data-country="België" selected>🇧🇪 +32</option>
+                <option value="+31" data-country="Nederland">🇳🇱 +31</option>
+                <option value="+352" data-country="Luxemburg">🇱🇺 +352</option>
+                <option value="+34" data-country="Spanje">🇪🇸 +34</option>
+                <option value="+33" data-country="Frankrijk">🇫🇷 +33</option>
+                <option value="+49" data-country="Duitsland">🇩🇪 +49</option>
+                <option value="+44" data-country="Verenigd Koninkrijk">🇬🇧 +44</option>
+              </optgroup>
+              <optgroup label="Alle landen">
+                <option value="+971" data-country="Ver. Arabische Emiraten">🇦🇪 +971</option>
+                <option value="+43" data-country="Oostenrijk">🇦🇹 +43</option>
+                <option value="+61" data-country="Australië">🇦🇺 +61</option>
+                <option value="+359" data-country="Bulgarije">🇧🇬 +359</option>
+                <option value="+55" data-country="Brazilië">🇧🇷 +55</option>
+                <option value="+1" data-country="Canada">🇨🇦 +1</option>
+                <option value="+41" data-country="Zwitserland">🇨🇭 +41</option>
+                <option value="+86" data-country="China">🇨🇳 +86</option>
+                <option value="+357" data-country="Cyprus">🇨🇾 +357</option>
+                <option value="+420" data-country="Tsjechië">🇨🇿 +420</option>
+                <option value="+45" data-country="Denemarken">🇩🇰 +45</option>
+                <option value="+372" data-country="Estland">🇪🇪 +372</option>
+                <option value="+358" data-country="Finland">🇫🇮 +358</option>
+                <option value="+30" data-country="Griekenland">🇬🇷 +30</option>
+                <option value="+385" data-country="Kroatië">🇭🇷 +385</option>
+                <option value="+36" data-country="Hongarije">🇭🇺 +36</option>
+                <option value="+353" data-country="Ierland">🇮🇪 +353</option>
+                <option value="+972" data-country="Israël">🇮🇱 +972</option>
+                <option value="+91" data-country="India">🇮🇳 +91</option>
+                <option value="+354" data-country="IJsland">🇮🇸 +354</option>
+                <option value="+39" data-country="Italië">🇮🇹 +39</option>
+                <option value="+81" data-country="Japan">🇯🇵 +81</option>
+                <option value="+370" data-country="Litouwen">🇱🇹 +370</option>
+                <option value="+371" data-country="Letland">🇱🇻 +371</option>
+                <option value="+212" data-country="Marokko">🇲🇦 +212</option>
+                <option value="+356" data-country="Malta">🇲🇹 +356</option>
+                <option value="+52" data-country="Mexico">🇲🇽 +52</option>
+                <option value="+47" data-country="Noorwegen">🇳🇴 +47</option>
+                <option value="+48" data-country="Polen">🇵🇱 +48</option>
+                <option value="+351" data-country="Portugal">🇵🇹 +351</option>
+                <option value="+40" data-country="Roemenië">🇷🇴 +40</option>
+                <option value="+381" data-country="Servië">🇷🇸 +381</option>
+                <option value="+7" data-country="Rusland">🇷🇺 +7</option>
+                <option value="+46" data-country="Zweden">🇸🇪 +46</option>
+                <option value="+386" data-country="Slovenië">🇸🇮 +386</option>
+                <option value="+421" data-country="Slowakije">🇸🇰 +421</option>
+                <option value="+90" data-country="Turkije">🇹🇷 +90</option>
+                <option value="+380" data-country="Oekraïne">🇺🇦 +380</option>
+                <option value="+1" data-country="Verenigde Staten">🇺🇸 +1</option>
+                <option value="+27" data-country="Zuid-Afrika">🇿🇦 +27</option>
+              </optgroup>
+          </select>
+          <div class="form-group">
+            <input type="tel" id="s-phone" name="phone" placeholder=" " required autocomplete="tel-national">
+            <label for="s-phone">GSM-nummer</label>
+          </div>
+        </div>
+        <div class="consent">
+          <input type="checkbox" id="s-consent" required>
+          <label for="s-consent">Ja, ik ga akkoord met het <a href="https://investinspain.be/privacy-policy/" target="_blank" rel="noopener">privacybeleid</a> en de <a href="https://investinspain.be/algemene-voorwaarden/" target="_blank" rel="noopener">algemene voorwaarden</a>.</label>
+        </div>
+        <button type="submit" class="btn" id="selSubmit">Toon mijn selectie</button>
+        <p class="form-error" id="selFormError" role="alert">Er ging iets mis bij het verzenden. Probeer het opnieuw of bel ons op +32 15 25 73 10.</p>
+      </form>
+    </section>
+
+    <!-- ═══════════ RESULTAAT ═══════════ -->
+    <section class="sel-screen sel-result" id="selResult" hidden>
+      <p class="label">Uw selectie</p>
+      <h2 class="heading">Dit past bij <em>uw antwoorden</em></h2>
+      <p class="body-text">Klik door op een project voor prijzen, plattegronden en beschikbaarheid. De volledige lijst is ook onderweg naar uw mailbox.</p>
+      <div class="sel-cards" id="selResultCards"></div>
+      <div class="sel-result__actions">
+        <a class="btn" href="/">Bekijk alle projecten</a>
+        <button type="button" class="btn btn--outline" id="selRestart">Opnieuw beginnen</button>
+      </div>
+    </section>
+
+  </div>
+</main>
+
+<footer>
+  <p>&copy; INVESTINSPAIN.BE 2026 &mdash; Alle rechten voorbehouden</p>
+  <p>BA en borgstelling via NV AXA Belgium (polisnr. 730.390.160)</p>
+  <p><a href="https://investinspain.be/privacy-policy/" target="_blank" rel="noopener">Privacybeleid</a> &middot; <a href="https://investinspain.be/algemene-voorwaarden/" target="_blank" rel="noopener">Algemene voorwaarden</a> &middot; <a href="/en/selection/">EN</a></p>
+  <img src="https://investinspain.be/wp-content/uploads/2026/07/BIV2.0.png" alt="BIV erkend vastgoedmakelaar" class="biv-logo" loading="lazy">
+</footer>
+
+<div class="cookie-bar" id="cookieBar" role="dialog" aria-label="Cookievoorkeuren">
+  <p>We gebruiken cookies om het bezoek van deze website te analyseren via Google Analytics. Meer info in ons <a href="https://investinspain.be/privacy-policy/" target="_blank" rel="noopener">privacybeleid</a>.</p>
+  <div class="cookie-bar__actions">
+    <button type="button" class="btn btn--outline" id="cookieDecline">Weigeren</button>
+    <button type="button" class="btn" id="cookieAccept">Accepteren</button>
+  </div>
+</div>
+
+<script>
+(function () {
+  'use strict';
+
+  var LANG = 'nl';
+  var TOTAL = 10;
+  var stepEls = Array.prototype.slice.call(document.querySelectorAll('.sel-step'));
+
+  var screens = {
+    welcome: document.getElementById('selWelcome'),
+    steps: document.getElementById('selSteps'),
+    teaser: document.getElementById('selTeaser'),
+    result: document.getElementById('selResult')
+  };
+  var topbar = document.getElementById('selTopbar');
+  var progressBar = document.getElementById('selProgressBar');
+  var progress = document.getElementById('selProgress');
+  var backBtn      = document.getElementById('selBack');
+  var projectCount = document.getElementById('selProjectCount');
+  var flipCard     = document.getElementById('flipCard');
+  var flipStatic   = document.getElementById('flipStatic');
+  var flipFront    = document.getElementById('flipFront');
+  var flipBack     = document.getElementById('flipBack');
+  var countLabel   = document.getElementById('selCountLabel');
+  var form = document.getElementById('selForm');
+  var submitBtn = document.getElementById('selSubmit');
+  var formError = document.getElementById('selFormError');
+
+  // Project-teller is uit de topbar verwijderd; constanten bewaard voor lead-payload.
+  var COUNT_ONE = 'project past bij uw antwoorden';
+  var COUNT_MANY = 'projecten passen bij uw antwoorden';
+
+  // Antwoorden per vraag-id. Meerkeuzevragen houden een array bij, de rest
+  // één waarde.
+  var answers = {};
+  // -1 = welkom, 0..TOTAL-1 = de vragen, TOTAL = teaser, TOTAL+1 = resultaat
+  var current = -1;
+  var lastCount = null;
+  var teaserCards = [];
+  var teaserRelaxed = false;
+
+  /* ── UTM-parameters ────────────────────────────────────────────────────
+   * De advertenties linken naar deze pagina mét utm_source/medium/campaign/
+   * term/content. De flow navigeert niet weg, maar de bezoeker kan wel
+   * herladen of terugkomen, dus we bewaren ze meteen in sessionStorage en
+   * lezen ze bij het verzenden daar weer uit. */
+  var UTM_KEYS = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content'];
+  var UTM_STORE = 'iis_selectie_utm';
+
+  function captureUtm() {
+    var params = new URLSearchParams(window.location.search);
+    var found = {};
+    var any = false;
+    UTM_KEYS.forEach(function (key) {
+      var value = params.get(key);
+      if (value) { found[key] = value.slice(0, 200); any = true; }
+    });
+    if (any) {
+      try { sessionStorage.setItem(UTM_STORE, JSON.stringify(found)); } catch (e) {}
+      return found;
+    }
+    try {
+      var stored = sessionStorage.getItem(UTM_STORE);
+      if (stored) return JSON.parse(stored);
+    } catch (e) {}
+    return {};
+  }
+  var utm = captureUtm();
+
+  /* ── Query voor /api/match ─────────────────────────────────────────── */
+  function matchQuery(limit) {
+    var params = new URLSearchParams();
+    params.set('lang', LANG);
+    params.set('limit', String(limit));
+    stepEls.forEach(function (el) {
+      var param = el.getAttribute('data-param');
+      if (!param) return; // vraag telt niet mee in de matching
+      var value = answers[el.getAttribute('data-id')];
+      if (value === undefined || value === null) return;
+      params.set(param, Array.isArray(value) ? value.join(',') : value);
+    });
+    return params.toString();
+  }
+
+  // De budgetstap levert een URL-veilige code ('3m-plus'); /api/match geeft
+  // de bijhorende Salesforce-code ('3m+') terug. Die omzetting hoort op één
+  // plek te staan, en dat is daar - niet nog eens hier in de pagina.
+  var budgetSf = '';
+
+  function fetchMatches(limit) {
+    return fetch('/api/match?' + matchQuery(limit))
+      .then(function (r) { return r.ok ? r.json() : null; })
+      .then(function (data) {
+        if (data && data.budget_sf) budgetSf = data.budget_sf;
+        return data;
+      })
+      .catch(function () { return null; });
+  }
+
+  /* ── Live teller ──────────────────────────────────────────────────────
+   * Draait mee vanaf de eerste beantwoorde vraag. Bewust dezelfde endpoint
+   * als het eindresultaat, zodat het getal dat meeloopt exact het aantal is
+   * dat de bezoeker straks ontgrendelt. */
+  // Meerkeuzevragen krijgen bij het opstarten al een lege array, dus het
+  // aantal sleutels in `answers` zegt niets over of er al iets beantwoord is.
+  function hasAnswer() {
+    return Object.keys(answers).some(function (id) {
+      var value = answers[id];
+      return Array.isArray(value) ? value.length > 0 : Boolean(value);
+    });
+  }
+
+  function flipTo(next) {
+    if (!flipCard || !flipStatic) return;
+    var cur = flipStatic.textContent;
+    if (cur === next) return;
+    if (flipFront) flipFront.textContent = cur;
+    if (flipBack)  flipBack.textContent  = next;
+    flipStatic.textContent = next;
+    flipCard.classList.remove('is-flipping');
+    void flipCard.offsetWidth;
+    flipCard.classList.add('is-flipping');
+    setTimeout(function () {
+      flipCard.classList.remove('is-flipping');
+      // Sync de voorste flap naar het nieuwe getal zodat hij na de animatie
+      // het juiste getal toont (anders snapt hij terug naar de oude waarde).
+      if (flipFront) flipFront.textContent = next;
+    }, 560);
+  }
+
+  function refreshCount() {
+    if (current < 0 || current >= TOTAL || !hasAnswer()) return;
+    fetchMatches(3).then(function (data) {
+      if (!data) return;
+      lastCount = data.count;
+      flipTo(String(data.count));
+      if (countLabel) countLabel.textContent = data.count === 1 ? COUNT_ONE : COUNT_MANY;
+      if (projectCount) projectCount.hidden = false;
+    });
+  }
+
+  /* ── Navigatie ────────────────────────────────────────────────────────── */
+  function show(name) {
+    Object.keys(screens).forEach(function (key) {
+      screens[key].hidden = key !== name;
+    });
+  }
+
+  function updateChrome() {
+    var done = Math.max(0, Math.min(current, TOTAL));
+    var pct = current < 0 ? 0 : Math.round((done / TOTAL) * 100);
+    progressBar.style.width = pct + '%';
+    progress.setAttribute('aria-valuenow', String(pct));
+    topbar.classList.toggle('is-visible', current >= 0);
+    backBtn.hidden = current < 0 || current > TOTAL;
+    if (projectCount && (current < 0 || current >= TOTAL)) projectCount.hidden = true;
+  }
+
+
+  /* ── GA event helper ──────────────────────────────────────────────────── */
+  function gaEvent(name, params) {
+    try {
+      if (window.gtag) window.gtag('event', name, params || {});
+    } catch (e) { /* analytics nooit kritiek */ }
+  }
+
+  function goTo(index) {
+    var prev = current;
+    current = index;
+    if (index < 0) {
+      show('welcome');
+    } else if (index < TOTAL) {
+      show('steps');
+      stepEls.forEach(function (el, i) { el.hidden = i !== index; });
+    } else if (index === TOTAL) {
+      show('teaser');
+      loadTeaser();
+    } else {
+      show('result');
+    }
+    updateChrome();
+    window.scrollTo({ top: 0, behavior: 'auto' });
+
+    // GA: stap afgerond als we vooruit gaan vanuit een stap
+    if (prev >= 0 && prev < TOTAL && index > prev) {
+      var stepEl = stepEls[prev];
+      gaEvent('sel_step_complete', {
+        step: prev + 1,
+        step_id: stepEl ? stepEl.getAttribute('data-id') : '',
+        total: TOTAL
+      });
+    }
+    // GA: teaser bereikt = alle vragen afgerond
+    if (index === TOTAL) {
+      gaEvent('sel_flow_complete', { total: TOTAL });
+    }
+
+    // Focus naar het nieuwe scherm
+    var heading = null;
+    if (index < 0) heading = screens.welcome.querySelector('h1');
+    else if (index < TOTAL) heading = stepEls[index].querySelector('.sel-step__q');
+    else if (index === TOTAL) heading = screens.teaser.querySelector('.heading');
+    else heading = screens.result.querySelector('.heading');
+    if (heading) {
+      if (!heading.hasAttribute('tabindex')) heading.setAttribute('tabindex', '-1');
+      heading.focus({ preventScroll: true });
+    }
+  }
+
+  function stepValid(el) {
+    if (el.getAttribute('data-required') !== '1') return true;
+    var value = answers[el.getAttribute('data-id')];
+    if (Array.isArray(value)) return value.length > 0;
+    return value !== undefined && value !== null && value !== '';
+  }
+
+  function advance() {
+    var el = stepEls[current];
+    var error = el.querySelector('.sel-step__error');
+    if (!stepValid(el)) { error.hidden = false; return; }
+    error.hidden = true;
+    goTo(current + 1);
+  }
+
+  /* ── Antwoorden ───────────────────────────────────────────────────────── */
+  stepEls.forEach(function (el) {
+    var id = el.getAttribute('data-id');
+    var multi = el.getAttribute('data-multi') === '1';
+    if (multi) answers[id] = [];
+
+    el.querySelectorAll('.sel-option').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var value = btn.getAttribute('data-value');
+
+        if (multi) {
+          var list = answers[id];
+          var at = list.indexOf(value);
+          if (at === -1) list.push(value); else list.splice(at, 1);
+          btn.setAttribute('aria-checked', at === -1 ? 'true' : 'false');
+        } else {
+          answers[id] = value;
+          el.querySelectorAll('.sel-option').forEach(function (other) {
+            other.setAttribute('aria-checked', String(other === btn));
+          });
+        }
+
+        el.querySelector('.sel-step__error').hidden = true;
+        refreshCount();
+
+        // Enkelvoudige keuze gaat vanzelf door - dat is de hele reden dat
+        // deze vorm sneller aanvoelt dan een lang formulier. Meerkeuze niet:
+        // daar is de klik nog geen afgerond antwoord.
+        if (!multi) {
+          window.setTimeout(function () {
+            if (current === stepEls.indexOf(el)) advance();
+          }, 260);
+        }
+      });
+    });
+
+    // Meerkeuzevragen krijgen hun eigen doorgaan-knop, onderaan de opties.
+    if (multi) {
+      var next = document.createElement('button');
+      next.type = 'button';
+      next.className = 'btn';
+      next.style.marginTop = '1.75rem';
+      next.textContent = 'Volgende';
+      next.addEventListener('click', advance);
+      el.appendChild(next);
+    }
+  });
+
+  /* ── Toetsenbordondersteuning SVG-kaart ──────────────────────────────── */
+  /* SVG <g>-elementen zijn niet van nature activeerbaar met Enter/Spatie;
+     dit voegt dat gedrag toe zodat de kaart volledig bedienbaar is zonder muis. */
+  document.querySelectorAll('.sel-map__muni').forEach(function (g) {
+    g.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); g.click(); }
+    });
+  });
+
+  /* ── Kaartjes ─────────────────────────────────────────────────────────── */
+  function cardMarkup(card, linked) {
+    var tag = linked ? 'a' : 'div';
+    var href = linked ? ' href="' + escapeAttr(card.url) + '"' : '';
+    var cta = linked ? '<span class="sel-card__cta">Bekijk project &rarr;</span>' : '';
+    return '<' + tag + ' class="sel-card"' + href + '>' +
+      // Niet lazy: het gaat om hoogstens drie foto's die meteen in beeld
+      // staan op precies het moment dat ze het werk moeten doen. Uitstellen
+      // levert hier alleen zichtbare lege vakken op.
+      '<img class="sel-card__img" src="' + escapeAttr(card.image) + '" alt="" width="800" height="600">' +
+      '<span class="sel-card__body">' +
+        '<span class="sel-card__loc">' + escapeHtml(card.location) + '</span>' +
+        '<span class="sel-card__name">' + escapeHtml(card.name) + '</span>' +
+        '<span class="sel-card__price">' + escapeHtml(card.price) + '</span>' +
+        cta +
+      '</span>' +
+    '</' + tag + '>';
+  }
+  // De kaartjesdata komt van onze eigen /api/match, maar wordt hier alsnog
+  // ge-escaped: HTML samenstellen uit waarden die uit een fetch komen hoort
+  // niet af te hangen van de aanname dat die bron nooit iets raars bevat.
+  function escapeHtml(value) {
+    return String(value == null ? '' : value)
+      .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  }
+  function escapeAttr(value) {
+    return escapeHtml(value).replace(/"/g, '&quot;');
+  }
+
+  function loadTeaser() {
+    var target = document.getElementById('selTeaserCards');
+    var nEl = document.getElementById('selTeaserN');
+    var wordEl = document.getElementById('selTeaserWord');
+    var relaxedEl = document.getElementById('selRelaxed');
+
+    fetchMatches(3).then(function (data) {
+      if (!data) {
+        // Lukt het ophalen niet, laat dan geen "We vonden — projecten" met
+        // drie lege vakken staan: verberg de belofte en toon gewoon het
+        // formulier. Het versturen werkt los hiervan.
+        document.getElementById('selTeaserHead').hidden = true;
+        target.hidden = true;
+        document.getElementById('selLockedNote').hidden = true;
+        return;
+      }
+      teaserCards = data.cards || [];
+      teaserRelaxed = Boolean(data.relaxed);
+      relaxedEl.hidden = !teaserRelaxed;
+      // Bij een verruimde zoekopdracht is `count` 0; het getal in de kop moet
+      // dan het aantal getoonde alternatieven zijn, niet nul.
+      var shown = teaserRelaxed ? teaserCards.length : data.count;
+      nEl.textContent = String(shown);
+      wordEl.innerHTML = shown === 1
+        ? 'passend project'
+        : 'passende projecten';
+      target.innerHTML = teaserCards.map(function (c) {
+        return cardMarkup(c, false);
+      }).join('');
+    });
+  }
+
+  function showResult() {
+    document.getElementById('selResultCards').innerHTML =
+      teaserCards.map(function (c) { return cardMarkup(c, true); }).join('');
+    goTo(TOTAL + 1);
+  }
+
+  /* ── Formulier ────────────────────────────────────────────────────────── */
+  function countryOf() {
+    var sel = document.getElementById('s-country');
+    var opt = sel.options[sel.selectedIndex];
+    return { code: sel.value, name: opt ? opt.getAttribute('data-country') : '' };
+  }
+
+  function clearError(el) {
+    var container = el.closest('.phone-group') || el.closest('.form-group') || el.parentElement;
+    var err = container.nextElementSibling;
+    if (err && err.classList && err.classList.contains('form-error')) err.classList.remove('is-active');
+    el.style.borderBottomColor = '';
+    el.style.borderColor = '';
+  }
+  function showError(el, msg) {
+    var container = el.closest('.phone-group') || el.closest('.form-group') || el.parentElement;
+    var err = container.nextElementSibling;
+    if (!err || !err.classList.contains('form-error')) {
+      err = document.createElement('p');
+      err.className = 'form-error';
+      err.setAttribute('role', 'alert');
+      container.after(err);
+    }
+    err.textContent = msg;
+    err.classList.add('is-active');
+    if (el.type === 'checkbox') el.style.borderColor = '#c0392b';
+    else el.style.borderBottomColor = '#c0392b';
+  }
+
+  form.querySelectorAll('input:not([type="checkbox"])').forEach(function (input) {
+    input.addEventListener('input', function () { clearError(input); });
+  });
+  document.getElementById('s-consent').addEventListener('change', function () {
+    this.style.borderColor = '';
+    var err = this.closest('.consent').nextElementSibling;
+    if (err && err.classList.contains('form-error')) err.classList.remove('is-active');
+  });
+
+  // Alle antwoorden in één regel, zodat de opvolger in de leadsheet meteen
+  // ziet waar deze aanvraag vandaan komt zonder de flow te moeten reconstrueren.
+  function answerSummary() {
+    return stepEls.map(function (el) {
+      var id = el.getAttribute('data-id');
+      var value = answers[id];
+      if (value === undefined || value === null || (Array.isArray(value) && !value.length)) return null;
+      return id + '=' + (Array.isArray(value) ? value.join('/') : value);
+    }).filter(Boolean).join(', ');
+  }
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    var valid = true;
+    formError.classList.remove('is-active');
+
+    form.querySelectorAll('input[required]:not([type="checkbox"])').forEach(function (input) {
+      if (!input.value.trim()) { valid = false; showError(input, 'Dit veld is verplicht'); }
+      else if (input.type === 'email' && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(input.value)) {
+        valid = false; showError(input, 'Ongeldig e-mailadres');
+      }
+    });
+
+    var consent = document.getElementById('s-consent');
+    if (!consent.checked) {
+      valid = false;
+      var wrap = consent.closest('.consent');
+      var err = wrap.nextElementSibling;
+      if (!err || !err.classList.contains('form-error')) {
+        err = document.createElement('p');
+        err.className = 'form-error';
+        err.setAttribute('role', 'alert');
+        wrap.after(err);
+      }
+      err.textContent = 'U moet akkoord gaan om verder te gaan';
+      err.classList.add('is-active');
+      consent.style.borderColor = '#c0392b';
+    }
+    if (!valid) return;
+
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = 'Bezig&hellip;';
+
+    var data = new FormData(form);
+    var land = countryOf();
+    var phone = data.get('phone') || '';
+    var payload = {
+      first_name: data.get('fname') || '',
+      last_name: data.get('lname') || '',
+      email: data.get('email') || '',
+      mobile_phone: land.code + phone,
+      mobile_phone_unformatted: land.code.replace('+', '') + phone,
+      country: land.name,
+      lead_source: 'Selectiepagina',
+      // De Salesforce-budgetcode komt van /api/match, niet uit deze pagina:
+      // de omzetting van 'lt200k' naar '<200k' hoort op één plek te staan.
+      budget: budgetSf,
+      form_source: 'selectie',
+      project_name: (teaserCards[0] && teaserCards[0].name) || '',
+      answers: answerSummary(),
+      page_url: window.location.href
+    };
+    UTM_KEYS.forEach(function (key) { if (utm[key]) payload[key] = utm[key]; });
+
+    gaEvent('sel_lead_submitted', { budget: budgetSf });
+
+    fetch('/api/lead', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    }).then(function (r) {
+      if (!r.ok) throw new Error('lead');
+      showResult();
+    }).catch(function () {
+      // De selectie is al berekend en de bezoeker heeft er recht op; een
+      // haperende Zap mag dat niet tegenhouden. We tonen het resultaat dus
+      // toch, en melden alleen dat het versturen misging.
+      formError.classList.add('is-active');
+      showResult();
+    }).then(function () {
+      submitBtn.disabled = false;
+      submitBtn.innerHTML = 'Toon mijn selectie';
+    });
+  });
+
+  /* ── Knoppen ──────────────────────────────────────────────────────────── */
+  document.getElementById('selStart').addEventListener('click', function () {
+    gaEvent('sel_flow_start');
+    goTo(0);
+  });
+
+  /* GA abandon: fire wanneer de pagina verborgen wordt (tab wisselen,
+   * sluiten) terwijl de bezoeker midden in de flow zit. pagehide is
+   * betrouwbaarder dan beforeunload in mobiele browsers. */
+  document.addEventListener('visibilitychange', function () {
+    if (document.visibilityState === 'hidden' && current >= 0 && current < TOTAL) {
+      gaEvent('sel_step_abandon', { step: current + 1, total: TOTAL });
+    }
+  });
+  backBtn.addEventListener('click', function () { goTo(current - 1); });
+  document.getElementById('selRestart').addEventListener('click', function () {
+    window.location.href = '/selectie/';
+  });
+
+  document.addEventListener('keydown', function (e) {
+    if (current < 0 || current >= TOTAL) return;
+    // Staat de focus al op een knop, laat die dan gewoon zijn werk doen.
+    // Zonder deze uitzondering activeert Enter op een gefocuste optie zowel
+    // die optie (native knopgedrag) als advance() hieronder, en springt de
+    // flow twee stappen tegelijk.
+    if (e.target && e.target.closest && e.target.closest('button, input, select, a')) return;
+    if (e.metaKey || e.ctrlKey || e.altKey) return;
+
+    // Cijfertoetsen selecteren de zoveelste optie - sneller dan mikken.
+    var n = parseInt(e.key, 10);
+    var options = stepEls[current].querySelectorAll('.sel-option');
+    if (n >= 1 && n <= options.length) {
+      e.preventDefault();
+      options[n - 1].click();
+      return;
+    }
+    if (e.key === 'Enter') { e.preventDefault(); advance(); }
+  });
+
+  /* ── Landcode voorinvullen ───────────────────────────────────────────── */
+  fetch('https://ipapi.co/json/')
+    .then(function (r) { return r.json(); })
+    .then(function (data) {
+      var code = data && data.country_calling_code;
+      if (!code) return;
+      var sel = document.getElementById('s-country');
+      if (sel.querySelector('option[value="' + code + '"]')) sel.value = code;
+    })
+    .catch(function () {});
+
+  /* ── Cookiebalk ───────────────────────────────────────────────────────── */
+  var cookieBar = document.getElementById('cookieBar');
+  function storedConsent() { try { return localStorage.getItem('cookie_consent'); } catch (e) { return null; } }
+  if (!storedConsent()) {
+    setTimeout(function () { cookieBar.classList.add('is-visible'); }, 1000);
+  }
+  document.getElementById('cookieAccept').addEventListener('click', function () {
+    try { localStorage.setItem('cookie_consent', 'granted'); } catch (e) {}
+    if (typeof gtag === 'function') {
+      gtag('consent', 'update', {
+        'ad_storage': 'granted', 'ad_user_data': 'granted',
+        'ad_personalization': 'granted', 'analytics_storage': 'granted'
+      });
+    }
+    if (typeof loadMetaPixel === 'function') { loadMetaPixel(); }
+    cookieBar.classList.remove('is-visible');
+  });
+  document.getElementById('cookieDecline').addEventListener('click', function () {
+    try { localStorage.setItem('cookie_consent', 'denied'); } catch (e) {}
+    cookieBar.classList.remove('is-visible');
+  });
+
+  goTo(-1);
+})();
+</script>
+</body>
+</html>
