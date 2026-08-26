@@ -8,11 +8,9 @@ Draait automatisch via GitHub Actions, of handmatig:
   DROPBOX_TOKEN=xxx python3 _build/sync_prices.py --dry-run
 
 Vereisten:
-  pip install dropbox pdfplumber
+  pip install requests pdfplumber
 
 GitHub Actions secret: DROPBOX_TOKEN
-  → maak een Dropbox App-token aan op https://www.dropbox.com/developers/apps
-    met scopes: files.metadata.read, files.content.read
 """
 
 import os
@@ -24,116 +22,160 @@ import unicodedata
 from pathlib import Path
 
 try:
-    import dropbox
-    import dropbox.common
-    from dropbox.exceptions import ApiError
-    from dropbox.files import FolderMetadata, FileMetadata
+    import requests
 except ImportError:
-    sys.exit("pip install dropbox")
+    sys.exit("pip install requests")
 
 try:
     import pdfplumber
 except ImportError:
     sys.exit("pip install pdfplumber")
 
-# ── configuratie ────────────────────────────────────────────────────────────
+# ── configuratie ─────────────────────────────────────────────────────────────
 
-DROPBOX_TOKEN = os.environ.get("DROPBOX_TOKEN", "")
-DRY_RUN = "--dry-run" in sys.argv
+DROPBOX_TOKEN    = os.environ.get("DROPBOX_TOKEN", "")
+DRY_RUN          = "--dry-run" in sys.argv
 
-ROOT = Path(__file__).parent.parent
-PROJECTS_JSON = ROOT / "api" / "_projects.json"
+ROOT             = Path(__file__).parent.parent
+PROJECTS_JSON    = ROOT / "api" / "_projects.json"
 
-# Namespace ID van de gedeelde "IIS Projects" map in Dropbox
-# (gevonden via de MCP Dropbox-tool: ns:7492713440)
+# Namespace-ID van de gedeelde "IIS Projects" Dropbox-map
 IIS_NAMESPACE_ID = "7492713440"
 
 # Regio-submappen relatief aan de IIS Projects namespace root
-REGION_PATHS = [
+REGION_SUBPATHS  = [
     "/01 Costa del Sol",
     "/02 Costa Blanca",
     "/03 Costa Almeria",
     "/04 Mallorca",
 ]
 
-# Mapnamen die we overslaan (geen projectmappen)
+# Dropbox API endpoints
+LIST_FOLDER_URL     = "https://api.dropboxapi.com/2/files/list_folder"
+LIST_CONTINUE_URL   = "https://api.dropboxapi.com/2/files/list_folder/continue"
+DOWNLOAD_URL        = "https://content.dropboxapi.com/2/files/download"
+
+# Mapnamen die we overslaan
 SKIP_FOLDERS = {
     "00 admin", "01 existing property", "02 verhuur",
     "collaboration", "kycprev", "kyc", "0) reservation",
     "1) pbc", "s4lesagents",
 }
 
-# ── hulpfuncties ─────────────────────────────────────────────────────────────
+# ── Dropbox API helpers ───────────────────────────────────────────────────────
+
+def _headers(extra: dict | None = None) -> dict:
+    h = {
+        "Authorization": f"Bearer {DROPBOX_TOKEN}",
+        "Content-Type": "application/json",
+        # Gebruik de namespace als pad-root
+        "Dropbox-API-Path-Root": json.dumps({
+            ".tag": "namespace_id",
+            "namespace_id": IIS_NAMESPACE_ID
+        }),
+    }
+    if extra:
+        h.update(extra)
+    return h
+
+
+def list_folder(path: str) -> list[dict]:
+    """Geeft alle entries terug in een Dropbox-map (paginering inbegrepen)."""
+    resp = requests.post(
+        LIST_FOLDER_URL,
+        headers=_headers(),
+        json={"path": path, "recursive": False},
+    )
+    if not resp.ok:
+        raise RuntimeError(f"list_folder({path}): {resp.status_code} {resp.text[:200]}")
+    data = resp.json()
+    entries = data.get("entries", [])
+    while data.get("has_more"):
+        resp = requests.post(LIST_CONTINUE_URL, headers=_headers(),
+                             json={"cursor": data["cursor"]})
+        data = resp.json()
+        entries.extend(data.get("entries", []))
+    return entries
+
+
+def download_file(path: str) -> bytes | None:
+    """Download een bestand vanuit de IIS namespace."""
+    resp = requests.post(
+        DOWNLOAD_URL,
+        headers={
+            "Authorization": f"Bearer {DROPBOX_TOKEN}",
+            "Dropbox-API-Arg": json.dumps({
+                "path": path,
+            }),
+            "Dropbox-API-Path-Root": json.dumps({
+                ".tag": "namespace_id",
+                "namespace_id": IIS_NAMESPACE_ID,
+            }),
+        },
+    )
+    if not resp.ok:
+        print(f"    ⚠ Download mislukt ({path}): {resp.status_code}")
+        return None
+    return resp.content
+
+
+def subfolders(path: str) -> list[tuple[str, str]]:
+    """Geeft [(name, path)] terug voor alle submappen van path."""
+    try:
+        entries = list_folder(path)
+    except RuntimeError as e:
+        print(f"  ⚠ {e}")
+        return []
+    return [
+        (e["name"], e["path_display"])
+        for e in entries
+        if e[".tag"] == "folder"
+    ]
+
+# ── prijsextractie ────────────────────────────────────────────────────────────
 
 def normalize(name: str) -> str:
-    """Verwijder accenten, lowercase, spaties → koppeltekens."""
     nfkd = unicodedata.normalize("NFKD", name)
     ascii_str = nfkd.encode("ascii", "ignore").decode()
     return re.sub(r"[^a-z0-9]+", "-", ascii_str.lower()).strip("-")
 
 
-def extract_lowest_price(text: str) -> int | None:
-    """
-    Extraheer de laagste beschikbare prijs uit de PDF-tekst.
-    Regels met RESERVADO of Sold worden overgeslagen.
-    Zoekt naar patronen als '500.000 €' of '€ 500.000'.
-    """
-    PRICE_RE = re.compile(r"(\d{1,3}(?:[.,]\d{3})+)\s*€")
-    prices = []
-    for line in text.splitlines():
-        upper = line.upper()
-        if "RESERVADO" in upper or "SOLD" in upper or "VENDIDO" in upper:
-            continue
-        for match in PRICE_RE.finditer(line):
-            raw = match.group(1).replace(".", "").replace(",", "")
-            num = int(raw)
-            if 50_000 < num < 50_000_000:
-                prices.append(num)
-    return min(prices) if prices else None
-
-
-def find_pricelist_pdf(dbx: dropbox.Dropbox, project_path: str) -> str | None:
-    """
-    Zoek de actuele prijslijst PDF in een projectmap.
-    Kijkt in: Prices/, Pricelist/, Prijslijst/ (niet in dated/-submappen).
-    Geeft het path_display terug van de meest recente PDF.
-    """
-    candidate_folders = ["Prices", "Pricelist", "Prijslijst", "Price list"]
-    for folder_name in candidate_folders:
+def find_pricelist_pdf(project_path: str) -> str | None:
+    """Zoek de actuele prijslijst PDF (niet in dated/-submap)."""
+    for folder_name in ["Prices", "Pricelist", "Prijslijst", "Price list"]:
         folder_path = f"{project_path}/{folder_name}"
         try:
-            result = dbx.files_list_folder(folder_path)
-        except ApiError:
+            entries = list_folder(folder_path)
+        except RuntimeError:
             continue
-        pdfs: list[tuple[str, str]] = []
-        for entry in result.entries:
-            if isinstance(entry, FileMetadata) and entry.name.lower().endswith(".pdf"):
-                if "dated" not in entry.path_lower:
-                    pdfs.append((entry.server_modified, entry.path_display))
+        pdfs = [
+            (e["server_modified"], e["path_display"])
+            for e in entries
+            if e[".tag"] == "file"
+            and e["name"].lower().endswith(".pdf")
+            and "dated" not in e["path_display"].lower()
+        ]
         if pdfs:
             pdfs.sort(reverse=True)
             return pdfs[0][1]
     return None
 
 
-def pdf_to_text(dbx: dropbox.Dropbox, path: str) -> str | None:
-    """Download PDF van Dropbox en extraheer tekst met pdfplumber."""
-    try:
-        _, response = dbx.files_download(path)
-    except ApiError as e:
-        print(f"    ⚠ Download mislukt: {e}")
+def pdf_to_text(path: str) -> str | None:
+    content = download_file(path)
+    if not content:
         return None
     with tempfile.NamedTemporaryFile(suffix=".pdf", delete=False) as tmp:
-        tmp.write(response.content)
+        tmp.write(content)
         tmp_path = tmp.name
     try:
-        text_parts = []
+        parts = []
         with pdfplumber.open(tmp_path) as pdf:
             for page in pdf.pages:
                 t = page.extract_text()
                 if t:
-                    text_parts.append(t)
-        return "\n".join(text_parts)
+                    parts.append(t)
+        return "\n".join(parts)
     except Exception as e:
         print(f"    ⚠ PDF-parsing mislukt: {e}")
         return None
@@ -141,87 +183,79 @@ def pdf_to_text(dbx: dropbox.Dropbox, path: str) -> str | None:
         os.unlink(tmp_path)
 
 
-def format_price_nl(price: int) -> str:
-    return f"Vanaf € {price:,.0f}".replace(",", ".")
+def extract_lowest_price(text: str) -> int | None:
+    PRICE_RE = re.compile(r"(\d{1,3}(?:[.,]\d{3})+)\s*€")
+    prices = []
+    for line in text.splitlines():
+        upper = line.upper()
+        if any(w in upper for w in ("RESERVADO", "SOLD", "VENDIDO")):
+            continue
+        for m in PRICE_RE.finditer(line):
+            num = int(m.group(1).replace(".", "").replace(",", ""))
+            if 50_000 < num < 50_000_000:
+                prices.append(num)
+    return min(prices) if prices else None
 
+# ── prijsformattering ─────────────────────────────────────────────────────────
 
-def format_price_en(price: int) -> str:
-    return f"From € {price:,}"
+def fmt_nl(p: int) -> str:
+    return f"Vanaf € {p:,.0f}".replace(",", ".")
 
+def fmt_en(p: int) -> str:
+    return f"From € {p:,}"
 
-def budget_bucket(price: int) -> str:
-    if price < 200_000:   return "under-200k"
-    if price < 400_000:   return "200k-400k"
-    if price < 600_000:   return "400k-600k"
-    if price < 800_000:   return "600k-800k"
-    if price < 1_200_000: return "800k-1.2m"
-    if price < 2_000_000: return "1.2m-2m"
+def budget_bucket(p: int) -> str:
+    if p < 200_000:   return "under-200k"
+    if p < 400_000:   return "200k-400k"
+    if p < 600_000:   return "400k-600k"
+    if p < 800_000:   return "600k-800k"
+    if p < 1_200_000: return "800k-1.2m"
+    if p < 2_000_000: return "1.2m-2m"
     return "2m-plus"
 
+# ── hoofd-synchronisatie ──────────────────────────────────────────────────────
 
-# ── hoofdlogica ──────────────────────────────────────────────────────────────
-
-def list_subfolders(dbx: dropbox.Dropbox, path: str) -> list[tuple[str, str]]:
-    folders = []
-    try:
-        result = dbx.files_list_folder(path)
-        while True:
-            for entry in result.entries:
-                if isinstance(entry, FolderMetadata):
-                    folders.append((entry.name, entry.path_display))
-            if not result.has_more:
-                break
-            result = dbx.files_list_folder_continue(result.cursor)
-    except ApiError as e:
-        print(f"  ⚠ Kan map niet lezen ({path}): {e}")
-    return folders
-
-
-def sync(dbx: dropbox.Dropbox, projects: dict) -> dict:
+def sync(projects: dict) -> dict[str, int]:
     slug_by_norm: dict[str, str] = {}
     for slug in projects:
         try:
-            nl_name = projects[slug]["nl"]["name"]
-            slug_by_norm[normalize(nl_name)] = slug
+            slug_by_norm[normalize(projects[slug]["nl"]["name"])] = slug
         except (KeyError, TypeError):
             pass
         slug_by_norm[slug] = slug
 
     changes: dict[str, int] = {}
 
-    for region_path in REGION_PATHS:
+    for region_path in REGION_SUBPATHS:
         print(f"\n📍 Regio: {region_path.strip('/')}")
-        developers = list_subfolders(dbx, region_path)
+        developers = subfolders(region_path)
 
         for dev_name, dev_path in sorted(developers):
             if normalize(dev_name) in SKIP_FOLDERS:
                 continue
+            project_list = subfolders(dev_path) or [(dev_name, dev_path)]
 
-            project_folders = list_subfolders(dbx, dev_path)
-            if not project_folders:
-                project_folders = [(dev_name, dev_path)]
-
-            for proj_name, proj_path in project_folders:
+            for proj_name, proj_path in project_list:
                 norm = normalize(proj_name)
                 if norm in SKIP_FOLDERS:
                     continue
 
                 slug = slug_by_norm.get(norm)
                 if not slug:
-                    short = re.sub(r"-(residences|homes|properties|villas|suites|living|views|golf|beach|park|hills|bay|gardens)$", "", norm)
+                    short = re.sub(
+                        r"-(residences|homes|properties|villas|suites|living|"
+                        r"views|golf|beach|park|hills|bay|gardens)$", "", norm)
                     slug = slug_by_norm.get(short)
-
                 if not slug:
                     continue
 
                 print(f"  🔍 {proj_name} → {slug}")
-
-                pdf_path = find_pricelist_pdf(dbx, proj_path)
+                pdf_path = find_pricelist_pdf(proj_path)
                 if not pdf_path:
-                    print(f"     ⚠ Geen prijslijst gevonden")
+                    print("     ⚠ Geen prijslijst gevonden")
                     continue
 
-                text = pdf_to_text(dbx, pdf_path)
+                text = pdf_to_text(pdf_path)
                 if not text:
                     continue
 
@@ -232,9 +266,9 @@ def sync(dbx: dropbox.Dropbox, projects: dict) -> dict:
 
                 current = projects[slug].get("price_num")
                 if current == lowest:
-                    print(f"     ✓ Prijs ongewijzigd: {format_price_nl(lowest)}")
+                    print(f"     ✓ Ongewijzigd: {fmt_nl(lowest)}")
                 else:
-                    print(f"     💰 {format_price_nl(current or 0)} → {format_price_nl(lowest)}")
+                    print(f"     💰 {fmt_nl(current or 0)} → {fmt_nl(lowest)}")
                     changes[slug] = lowest
 
     return changes
@@ -243,11 +277,11 @@ def sync(dbx: dropbox.Dropbox, projects: dict) -> dict:
 def apply_changes(projects: dict, changes: dict[str, int]) -> dict:
     for slug, price in changes.items():
         projects[slug]["price_num"] = price
-        projects[slug]["budget"] = budget_bucket(price)
+        projects[slug]["budget"]    = budget_bucket(price)
         if "nl" in projects[slug]:
-            projects[slug]["nl"]["price"] = format_price_nl(price)
+            projects[slug]["nl"]["price"] = fmt_nl(price)
         if "en" in projects[slug]:
-            projects[slug]["en"]["price"] = format_price_en(price)
+            projects[slug]["en"]["price"] = fmt_en(price)
     return projects
 
 
@@ -255,17 +289,14 @@ def main():
     if not DROPBOX_TOKEN:
         sys.exit("❌ Stel DROPBOX_TOKEN in als omgevingsvariabele.")
 
-    print("🔗 Verbinden met Dropbox...")
-    dbx_base = dropbox.Dropbox(DROPBOX_TOKEN)
-    try:
-        account = dbx_base.users_get_current_account()
-        print(f"✓ Ingelogd als {account.email}")
-    except Exception as e:
-        sys.exit(f"❌ Dropbox-authenticatie mislukt: {e}")
-
-    # Gebruik namespace-aware client zodat paden relatief aan IIS Projects werken
-    path_root = dropbox.common.PathRoot.namespace_id(IIS_NAMESPACE_ID)
-    dbx = dbx_base.with_path_root(path_root)
+    # Verbindingstest
+    resp = requests.post(
+        "https://api.dropboxapi.com/2/users/get_current_account",
+        headers={"Authorization": f"Bearer {DROPBOX_TOKEN}"},
+    )
+    if not resp.ok:
+        sys.exit(f"❌ Dropbox-authenticatie mislukt: {resp.text}")
+    print(f"✓ Ingelogd als {resp.json().get('email')}")
 
     print(f"\n📂 Laden: {PROJECTS_JSON}")
     with open(PROJECTS_JSON) as f:
@@ -273,7 +304,7 @@ def main():
     projects = data["projects"]
     print(f"   {len(projects)} projecten geladen")
 
-    changes = sync(dbx, projects)
+    changes = sync(projects)
 
     print(f"\n{'─' * 50}")
     if not changes:
@@ -282,7 +313,7 @@ def main():
 
     print(f"🔄 {len(changes)} prijswijziging(en):")
     for slug, price in changes.items():
-        print(f"   {slug}: {format_price_nl(price)}")
+        print(f"   {slug}: {fmt_nl(price)}")
 
     if DRY_RUN:
         print("\n⚠ DRY RUN – geen bestanden gewijzigd.")
@@ -298,7 +329,7 @@ def main():
     for script in ["generate.py", "generate_hub.py"]:
         result = subprocess.run(
             ["python3", str(ROOT / "_build" / script)],
-            capture_output=True, text=True
+            capture_output=True, text=True,
         )
         if result.returncode != 0:
             print(f"   ⚠ {script}: {result.stderr[:200]}")

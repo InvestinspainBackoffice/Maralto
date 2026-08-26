@@ -21,7 +21,7 @@ jobs:
           python-version: "3.12"
 
       - name: Afhankelijkheden installeren
-        run: pip install dropbox pdfplumber
+        run: pip install requests pdfplumber
 
       - name: Prijzen synchroniseren
         env:
