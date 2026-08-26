@@ -666,15 +666,15 @@ footer a { color: var(--gold-dim); text-underline-offset: 2px; }
             fill="rgba(196,169,125,0.14)"/>
     <!-- Telefoon + 270°-rotatieaanwijzer als één groep -->
     <g class="rp-group">
-      <!-- 270° arc: start rechtsboven, loopt met de klok mee naar rechtsonder,
-           zodat duidelijk is dat de telefoon naar links kantelt.
-           Center (70,70), radius 58.
-           Start (70,12) = boven, eindigt (12,70) = links. -->
-      <path d="M 70,12 A 58,58 0 1 1 12,70"
+      <!-- 270° arc: center (70,70), radius 56.
+           Start rechtsonder (114,96), loopt TEGEN de klok in (sweep=0, large-arc=1)
+           naar rechtsboven (114,44). Pijlpunt aan het START-punt (rechtsboven)
+           wijst de richting van de rotatie: omhoog/rechts. -->
+      <path d="M 114,96 A 56,56 0 1 0 114,44"
             stroke="#C4A97D" stroke-width="2" stroke-linecap="round" fill="none"
-            opacity="0.55"/>
-      <!-- Pijlpunt aan het einde van de arc (punt links, richting = naar beneden) -->
-      <polyline points="5,63 12,70 19,63"
+            opacity="0.6"/>
+      <!-- Pijlpunt aan het einde (114,44): richting omhoog langs de rechterkant -->
+      <polyline points="107,52 114,44 121,52"
                 stroke="#C4A97D" stroke-width="2"
                 stroke-linecap="round" stroke-linejoin="round" fill="none"/>
       <!-- Telefoonbehuizing — gecentreerd op (70,70) -->
