@@ -609,87 +609,29 @@ footer a { color: var(--gold-dim); text-underline-offset: 2px; }
   .frame { opacity: 1; }
 }
 
-/* ── Rotate-prompt: alleen op mobiel in portretmodus ──────────────────── */
-.rotate-prompt {
-  display: none;
-  position: fixed; inset: 0; z-index: 9999;
-  background: var(--bg);
-  flex-direction: column; align-items: center; justify-content: center;
-  gap: 2rem; text-align: center; padding: 2rem;
+/* ── Kaart: horizontaal scrollbaar op smal scherm ─────────────────────── */
+@media (max-width: 600px) {
+  .sel-map-wrap {
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none; /* Firefox */
+  }
+  .sel-map-wrap::-webkit-scrollbar { display: none; }
+  /* Vaste breedte zodat de kaart niet platgedrukt wordt op portret */
+  .sel-map { width: 640px; height: auto; }
+  /* Subtiel swipe-hint icoontje */
+  .sel-map-wrap::after {
+    content: '';
+    position: absolute; right: 0; top: 0; bottom: 0; width: 32px;
+    background: linear-gradient(to right, transparent, rgba(14,19,24,0.7));
+    pointer-events: none;
+  }
 }
-/* Eén SVG-groep roteert: telefoon + pijl bewegen altijd samen */
-.rp-group {
-  animation: rp-spin 3.2s cubic-bezier(0.65,0,0.35,1) infinite;
-  transform-origin: 70px 70px; /* center van de 140×140 viewBox */
-}
-@keyframes rp-spin {
-  0%   { transform: rotate(0deg);   opacity: 1; }
-  40%  { transform: rotate(-90deg); opacity: 1; }
-  60%  { transform: rotate(-90deg); opacity: 1; }
-  80%  { transform: rotate(-90deg); opacity: 0; }
-  81%  { transform: rotate(0deg);   opacity: 0; }
-  100% { transform: rotate(0deg);   opacity: 1; }
-}
-/* Gloedring: oplicht wanneer liggend */
-.rp-glow {
-  transform-origin: 70px 70px;
-  animation: rp-glow 3.2s ease-out infinite;
-}
-@keyframes rp-glow {
-  0%   { opacity: 0; r: 30px; }
-  42%  { opacity: 0; r: 30px; }
-  56%  { opacity: 1; r: 44px; }
-  76%  { opacity: 0; r: 52px; }
-  100% { opacity: 0; }
-}
-.rotate-prompt p {
-  font-size: 0.85rem; color: var(--text-muted); line-height: 1.65; max-width: 26ch;
-}
-@media screen and (max-width: 900px) and (orientation: portrait) {
-  .rotate-prompt { display: flex; }
-}
+.sel-map-wrap { position: relative; }
 </style>
 </head>
 <body class="page-selectie">
-
-<div class="rotate-prompt" role="status">
-  <!--
-    Één SVG, 120×120 viewBox. Alles zit in .rp-group zodat telefoon en
-    pijl exact samen roteren — geen twee losse elementen die uit de pas lopen.
-    Het rotatiepunt is het midden van de viewBox (60,60), dat samenvalt
-    met het midden van de telefoon.
-  -->
-  <svg width="140" height="140" viewBox="0 0 140 140" fill="none"
-       xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-    <!-- Gloedring (roteert NIET mee) -->
-    <circle class="rp-glow" cx="70" cy="70" r="38"
-            fill="rgba(196,169,125,0.14)"/>
-    <!-- Telefoon + 270°-rotatieaanwijzer als één groep -->
-    <g class="rp-group">
-      <!-- 270° arc: center (70,70), radius 56.
-           Start rechtsonder (114,96), loopt TEGEN de klok in (sweep=0, large-arc=1)
-           naar rechtsboven (114,44). Pijlpunt aan het START-punt (rechtsboven)
-           wijst de richting van de rotatie: omhoog/rechts. -->
-      <path d="M 114,96 A 56,56 0 1 0 114,44"
-            stroke="#C4A97D" stroke-width="2" stroke-linecap="round" fill="none"
-            opacity="0.6"/>
-      <!-- Pijlpunt aan het einde (114,44): richting omhoog langs de rechterkant -->
-      <polyline points="107,52 114,44 121,52"
-                stroke="#C4A97D" stroke-width="2"
-                stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-      <!-- Telefoonbehuizing — gecentreerd op (70,70) -->
-      <rect x="46" y="24" width="48" height="84" rx="7"
-            stroke="#C4A97D" stroke-width="1.6" fill="#0E1318"/>
-      <!-- Scherm -->
-      <rect x="51" y="34" width="38" height="62" rx="2" fill="#131920"/>
-      <!-- Speaker -->
-      <rect x="60" y="27" width="20" height="2.5" rx="1.25" fill="#C4A97D" opacity="0.3"/>
-      <!-- Home pill -->
-      <rect x="61" y="100" width="18" height="3" rx="1.5" fill="#C4A97D" opacity="0.3"/>
-    </g>
-  </svg>
-  <p>Rotate your phone to landscape for the best experience</p>
-</div>
 
 <div class="frame" aria-hidden="true"></div>
 
