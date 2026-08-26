@@ -103,6 +103,7 @@ EXCLUDE = [
     "waterfall-residences",        # Batch 33 - offline
     "granados-2-slaapkamer-appartement-met-tuin",  # tijdelijk offline (aug 2026)
     "marbella-club-hills",          # uit hub: foto's mogen niet gebruikt worden (aug 2026)
+    "palo-alto",                    # uit hub: foto's mogen niet gebruikt worden (aug 2026)
     # Batches 22-44: tijdelijk uit de hub (terug naar 44-project staat van vóór aug 2026)
     "abril",
     "aida",
@@ -177,15 +178,15 @@ CHRONOLOGICAL = [
 HERO_ROTATION_COUNT = 5
 
 # Prijsbanden voor de filter op /projecten/. Grenzen in euro; de bovengrens
-# van elke band is exclusief (net als de "max" hieronder aangeeft). Onderkant
-# van de eerste band (€200.000) volgt het budget dat IIS elders al hanteert
-# als startpunt (zie de prijsslider op investinspain-website.vercel.app).
+# van elke band is exclusief (net als de "max" hieronder aangeeft). Exacte
+# grenzen zoals IIS ze zelf hanteert (aangeleverd aug 2026), niet afgeleid
+# van de generieke €200k-€10M-slider op de hoofdsite.
 PRICE_BANDS = [
-    ("tot-200k", "Tot € 200.000", None, 200_000),
-    ("200k-500k", "€ 200.000 – € 500.000", 200_000, 500_000),
-    ("500k-1m", "€ 500.000 – € 1.000.000", 500_000, 1_000_000),
-    ("1m-2m", "€ 1.000.000 – € 2.000.000", 1_000_000, 2_000_000),
-    ("2m-plus", "€ 2.000.000 en meer", 2_000_000, None),
+    ("200k-400k", "€ 200.000 – € 400.000", 200_000, 400_000),
+    ("400k-600k", "€ 400.000 – € 600.000", 400_000, 600_000),
+    ("600k-1m", "€ 600.000 – € 1.000.000", 600_000, 1_000_000),
+    ("1m-3m", "€ 1.000.000 – € 3.000.000", 1_000_000, 3_000_000),
+    ("3m-plus", "€ 3.000.000 en meer", 3_000_000, None),
 ]
 
 
