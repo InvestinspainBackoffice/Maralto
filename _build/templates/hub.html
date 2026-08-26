@@ -1729,11 +1729,15 @@ __PROJECT_CARDS__
   // en zoals pointInPolygon hieronder ze verwacht); enkel vlak vóór een
   // MapLibre-aanroep zetten we om naar diens [lng,lat]-volgorde.
   function toLngLat(pt) { return [pt[1], pt[0]]; }
-  // Vaste standaardweergave van de kaart: de Costa del Sol-kust (Sotogrande
-  // tot Málaga). Projecten op Tenerife/Ibiza/Mallorca zijn er wel, maar
-  // tellen niet mee voor de standaardzoom - anders toont de kaart bij het
-  // openen heel West-Europa/Noord-Afrika i.p.v. onze eigen regio.
-  var COSTA_DEL_SOL_VIEW = { center: [36.5, -4.95], zoom: 10 };
+  // Vaste standaardweergave van de kaart: een geografische begrenzing (geen
+  // vast zoomgetal!) rond de Costa del Sol-kust, Sotogrande tot Málaga.
+  // Een vast zoomgetal toont op een groot scherm (bredere/hogere #map-div)
+  // een veel groter gebied dan op een klein scherm bij exact dezelfde
+  // zoom - fitBounds op een vaste kader past zich wél aan de containergrootte
+  // aan en toont altijd hetzelfde stuk kust. Projecten op Tenerife/Ibiza/
+  // Mallorca vallen hier bewust buiten; die blijf je gewoon bereiken via de
+  // locatiefilter of door zelf uit te zoomen.
+  var COSTA_DEL_SOL_BOUNDS = [[-5.35, 36.28], [-4.35, 36.75]]; // [ [swLng,swLat], [neLng,neLat] ]
   var drawing = false;
   var drawPoints = [];
   var currentSortedIdx = []; // laatst berekende (locatie/prijs/zoek/gebied-)filtering, vóór paginering
@@ -1791,8 +1795,8 @@ __PROJECT_CARDS__
     map = new maplibregl.Map({
       container: 'map',
       style: 'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json',
-      center: toLngLat(COSTA_DEL_SOL_VIEW.center),
-      zoom: COSTA_DEL_SOL_VIEW.zoom,
+      bounds: COSTA_DEL_SOL_BOUNDS,
+      fitBoundsOptions: { padding: 20 },
       scrollZoom: false,
       dragPan: !isTouch,
       dragRotate: false,
@@ -1927,7 +1931,7 @@ __PROJECT_CARDS__
       // trekt een los project op Tenerife/Ibiza/Mallorca de kaart open tot
       // heel West-Europa/Noord-Afrika.
       if (!hasActiveFilter()) {
-        map.flyTo({ center: toLngLat(COSTA_DEL_SOL_VIEW.center), zoom: COSTA_DEL_SOL_VIEW.zoom, duration: 600 });
+        map.fitBounds(COSTA_DEL_SOL_BOUNDS, { padding: 20, duration: 600 });
       } else if (visibleBounds.length === 1) {
         map.flyTo({ center: toLngLat(visibleBounds[0]), zoom: 13, duration: 600 });
       } else if (visibleBounds.length > 1) {
@@ -1935,7 +1939,7 @@ __PROJECT_CARDS__
         visibleBounds.forEach(function(pt){ b.extend(toLngLat(pt)); });
         map.fitBounds(b, { padding: 80, maxZoom: 13, duration: 600 });
       } else if (bounds.length) {
-        map.flyTo({ center: toLngLat(COSTA_DEL_SOL_VIEW.center), zoom: COSTA_DEL_SOL_VIEW.zoom, duration: 600 });
+        map.fitBounds(COSTA_DEL_SOL_BOUNDS, { padding: 20, duration: 600 });
       }
     }
   }
@@ -1954,7 +1958,7 @@ __PROJECT_CARDS__
           // Mallorca de kaart helemaal open tot heel West-Europa/Noord-Afrika.
           // Die eilandprojecten blijf je gewoon bereiken via de locatiefilter
           // of door zelf uit te zoomen.
-          map.jumpTo({ center: toLngLat(COSTA_DEL_SOL_VIEW.center), zoom: COSTA_DEL_SOL_VIEW.zoom });
+          map.fitBounds(COSTA_DEL_SOL_BOUNDS, { padding: 20, duration: 0 });
           applyFilters(); // her-sync markers/telling nu de kaart zichtbaar is
         }, 50);
       });
