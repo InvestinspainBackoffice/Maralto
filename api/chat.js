@@ -26,6 +26,7 @@ const DATA = require('./_projects.json');
 const { forwardToZapier } = require('./_zapier.js');
 const { PLAYBOOK } = require('./_playbook.js');
 const { AREAS } = require('./_areas.js');
+const { landmarkDistances, findLandmark, haversine } = require('./_landmarks.js');
 
 const GATEWAY_URL = 'https://ai-gateway.vercel.sh/v1/chat/completions';
 const MODEL = process.env.AI_MODEL || 'anthropic/claude-sonnet-4-6';
@@ -101,12 +102,15 @@ function projectIndex(lang, rich) {
     const p = entry[lang] || entry.nl;
     if (!p) continue;
     const types = p.types && p.types.length ? p.types.join('/') : '?';
+    // Bereken afstanden tot landmarks op basis van project-coördinaten.
+    // landmarkDistances() geeft een lege string als er geen coords zijn.
+    const distances = entry.coords ? landmarkDistances(entry.coords) : '';
     // slug staat vooraan en apart, want dat is het enige stukje dat het
     // model letterlijk moet overnemen in een PROJECTEN:-regel (zie
     // systemPrompt) - naam/prijs mogen daar losjes uit de tekst komen.
     rows.push(rich
-      ? `[${entry.slug}] ${p.name} | ${p.location} | ${types} | ${p.price} | ${p.url}\n   ${p.summary}`
-      : `[${entry.slug}] ${p.name} | ${p.location} | ${types} | ${p.price} | ${p.url}`);
+      ? `[${entry.slug}] ${p.name} | ${p.location} | ${types} | ${p.price} | ${p.url}\n   ${p.summary}${distances ? '\n' + distances : ''}`
+      : `[${entry.slug}] ${p.name} | ${p.location} | ${types} | ${p.price} | ${p.url}${distances ? '\n' + distances : ''}`);
   }
   rows.sort();
   indexCache[key] = rows.join('\n');
@@ -274,6 +278,18 @@ lead straks correct binnen, ongeacht welk project uiteindelijk aanbevolen wordt)
 OPTIES: Tot € 200.000 | € 200.000 - 400.000 | € 400.000 - 600.000 | € 600.000 - 1.000.000 | € 1.000.000 - 3.000.000 | Meer dan € 3.000.000
 In het Engels vertaal je alleen de bewoording, nooit de bedragen of grenzen:
 OPTIES: Up to € 200,000 | € 200,000 - 400,000 | € 400,000 - 600,000 | € 600,000 - 1,000,000 | € 1,000,000 - 3,000,000 | More than € 3,000,000
+
+LIGGING OP BASIS VAN SPECIFIEKE PLAATSEN
+Vermeldt een bezoeker een concreet referentiepunt — zoals "op 5 minuten van de haven",
+"dicht bij Puerto Banús", "strand op wandelafstand", "vlak bij La Cañada", "nabij het
+centrum van Estepona" — gebruik dan de "Afstanden:"-regel per project in de aanbodlijst
+hieronder om te filteren en te rangschikken.
+Vuistregels voor afstand (tenzij de bezoeker zelf een afstand noemt):
+- "op wandelafstand" / "vlak bij" = ≤ 1,5 km
+- "dicht bij" / "vlakbij" = ≤ 4 km
+- "nabij" / "in de buurt" = ≤ 8 km
+Vind je geen enkel project binnen de gewenste afstand, zeg dat eerlijk en vraag of de
+bezoeker iets ruimer wil zoeken. Verzin nooit een afstand die niet in de aanbodlijst staat.
 
 CONTACTGEGEVENS NATUURLIJK VERZAMELEN
 Je hebt uiteindelijk voornaam, achternaam, e-mailadres en telefoonnummer nodig — maar
