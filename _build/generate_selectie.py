@@ -147,13 +147,13 @@ QUESTIONS = [
     {
         "id": "bedrooms",
         "param": "bedrooms",
-        "nl": {"q": "Hoeveel slaapkamers heeft u het liefst?"},
-        "en": {"q": "Preferred number of bedrooms"},
+        "nl": {"q": "Minimum aantal slaapkamers?"},
+        "en": {"q": "Minimum number of bedrooms?"},
         "options": [
-            {"value": "1", "nl": "1", "en": "1"},
-            {"value": "2", "nl": "2", "en": "2"},
-            {"value": "3", "nl": "3", "en": "3"},
-            {"value": "4plus", "nl": "4 of meer", "en": "4 or more"},
+            {"value": "1plus", "nl": "Minstens 1", "en": "At least 1"},
+            {"value": "2plus", "nl": "Minstens 2", "en": "At least 2"},
+            {"value": "3plus", "nl": "Minstens 3", "en": "At least 3"},
+            {"value": "4plus", "nl": "Minstens 4", "en": "At least 4"},
         ],
     },
     {
