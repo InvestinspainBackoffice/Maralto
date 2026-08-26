@@ -25,6 +25,7 @@ from pathlib import Path
 
 try:
     import dropbox
+    import dropbox.common
     from dropbox.exceptions import ApiError
     from dropbox.files import FolderMetadata, FileMetadata
 except ImportError:
@@ -43,12 +44,16 @@ DRY_RUN = "--dry-run" in sys.argv
 ROOT = Path(__file__).parent.parent
 PROJECTS_JSON = ROOT / "api" / "_projects.json"
 
-# Regio-mappen in Dropbox (bewaar de exacte display-paden)
+# Namespace ID van de gedeelde "IIS Projects" map in Dropbox
+# (gevonden via de MCP Dropbox-tool: ns:7492713440)
+IIS_NAMESPACE_ID = "7492713440"
+
+# Regio-submappen relatief aan de IIS Projects namespace root
 REGION_PATHS = [
-    "/Gunther De Vleeschouwer/IIS Projects/01 Costa del Sol",
-    "/Gunther De Vleeschouwer/IIS Projects/02 Costa Blanca",
-    "/Gunther De Vleeschouwer/IIS Projects/03 Costa Almeria",
-    "/Gunther De Vleeschouwer/IIS Projects/04 Mallorca",
+    "/01 Costa del Sol",
+    "/02 Costa Blanca",
+    "/03 Costa Almeria",
+    "/04 Mallorca",
 ]
 
 # Mapnamen die we overslaan (geen projectmappen)
@@ -185,7 +190,7 @@ def sync(dbx: dropbox.Dropbox, projects: dict) -> dict:
     changes: dict[str, int] = {}
 
     for region_path in REGION_PATHS:
-        print(f"\n📍 Regio: {region_path.split('/')[-1]}")
+        print(f"\n📍 Regio: {region_path.strip('/')}")
         developers = list_subfolders(dbx, region_path)
 
         for dev_name, dev_path in sorted(developers):
@@ -251,12 +256,16 @@ def main():
         sys.exit("❌ Stel DROPBOX_TOKEN in als omgevingsvariabele.")
 
     print("🔗 Verbinden met Dropbox...")
-    dbx = dropbox.Dropbox(DROPBOX_TOKEN)
+    dbx_base = dropbox.Dropbox(DROPBOX_TOKEN)
     try:
-        account = dbx.users_get_current_account()
+        account = dbx_base.users_get_current_account()
         print(f"✓ Ingelogd als {account.email}")
     except Exception as e:
         sys.exit(f"❌ Dropbox-authenticatie mislukt: {e}")
+
+    # Gebruik namespace-aware client zodat paden relatief aan IIS Projects werken
+    path_root = dropbox.common.PathRoot.namespace_id(IIS_NAMESPACE_ID)
+    dbx = dbx_base.with_path_root(path_root)
 
     print(f"\n📂 Laden: {PROJECTS_JSON}")
     with open(PROJECTS_JSON) as f:
