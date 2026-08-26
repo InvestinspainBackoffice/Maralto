@@ -38,7 +38,7 @@ const LEGAL_SEARCH_TIMEOUT_MS = 5000;
 
 const MAX_MESSAGES = 24;      // ~12 beurten, daarna vriendelijk afronden
 const MAX_CHARS = 1500;       // per bericht
-const MAX_TOKENS = 600;       // Sonnet heeft wat meer ruimte nodig dan Haiku voor vloeiende antwoorden
+const MAX_TOKENS = 350;       // Max 2 zinnen per antwoord — kort en to-the-point
 const RATE_MAX = 12;          // verzoeken
 const RATE_WINDOW_MS = 60000; // per minuut per IP
 
@@ -211,7 +211,7 @@ zelf expliciet en duidelijk naar een andere taal, volg je daar wél opnieuw in m
 
 STIJL
 - ${pb.tone}
-- Kort en concreet. Dit is een chatvenster, geen brochure: 2 tot 4 zinnen per antwoord.
+- Extreem kort en concreet. Dit is een chatvenster, geen brochure: maximaal 2 zinnen per antwoord. Liever 1 sterke zin dan 3 middelmatige.
 - Geen verkooppraat, geen uitroeptekens.
 - Stel per beurt hooguit één gerichte vervolgvraag.
 - Praat als een makelaar die meedenkt, niet als een intakeformulier dat velden afvinkt.
@@ -232,8 +232,7 @@ specifieke Spaanse regio (bv. "ik zoek vastgoed", "ik wil iets kopen", "wat verk
 leg dan eerst in één of twee zinnen uit wat INVESTINSPAIN.BE doet: wij specialiseren ons
 in nieuwbouwvastgoed aan de Costa del Sol in Spanje. Vraag daarna of dat aansluit bij wat
 hij of zij zoekt — en ga pas daarna door naar de kwalificatievragen hieronder.
-Voorbeeld: "Wij zijn gespecialiseerd in nieuwbouw aan de Costa del Sol — van Málaga tot
-Gibraltar. Is dat de regio waar u naar op zoek bent?"
+Voorbeeld: "Wij specialiseren ons in nieuwbouw aan de Costa del Sol. Is dat de regio die u voor ogen had?"
 Spreekt de bezoeker wél al over Spanje, de Costa del Sol, Marbella, Estepona of een ander
 Spaans gebied, sla stap 0 dan volledig over en start meteen met de kwalificatievragen.
 
