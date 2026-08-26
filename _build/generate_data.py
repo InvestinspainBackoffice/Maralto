@@ -20,7 +20,8 @@ import sys
 from datetime import date
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-import generate  # noqa: E402  (hergebruikt load_module, budget_bucket, ...)
+import generate        # noqa: E402  (hergebruikt load_module, budget_bucket, ...)
+import generate_hub    # noqa: E402  (EXCLUDE-lijst - zelfde projecten als op de hub)
 
 ROOT = generate.ROOT
 PROJECTS_DIR = generate.PROJECTS_DIR
@@ -109,8 +110,9 @@ def build_project(project_file):
         return None  # alleen een HUB-vermelding, geen eigen pagina
     if not hasattr(mod, "HUB"):
         return None  # niet zichtbaar op de hub — chatbot toont enkel hub-projecten
-
     slug = mod.DATA["SLUG"]
+    if slug in generate_hub.EXCLUDE:
+        return None  # tijdelijk offline of uitgesloten van hub
     price_num = generate.parse_price_number(mod.DATA["PRICE_FROM"])
 
     nl_data = data_for_lang(mod, "nl")
