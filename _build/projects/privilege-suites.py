@@ -33,4 +33,14 @@ DATA_EN = {
     "OG_DESCRIPTION": "15 spacious residences with private gardens, wide terraces and duplex penthouses with private pool, within walking distance of the beach in Casares.",
     "HERO_BG_ALT": "Privilege Suites — luxury apartment complex with sea views in Casares",
 }
-# NOTE: geen HUB-dict - dit project komt (voorlopig) niet op de projectenoverzichtspagina
+
+# Gebruikt door de /projecten/ overzichtspagina (kaart + kaartjes)
+HUB = {
+    "NAME": PROJECT_NAME,
+    "LOCATION": "Casares",
+    "PRICE": PRICE_FROM,
+    "THUMB": "https://projects.investinspain.be/images/privilege-suites/hero.webp",
+    "LAT": 36.397359,
+    "LNG": -5.225527,
+    "HREF": "/privilege-suites/",
+}

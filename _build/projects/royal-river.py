@@ -33,4 +33,14 @@ DATA_EN = {
     "OG_DESCRIPTION": "16 exclusive homes with spa, pool and sun terrace in the prestigious Golf Río Real urbanisation in Marbella.",
     "HERO_BG_ALT": "Royal River — aerial view of the luxury residence project in Golf Río Real, Marbella",
 }
-# NOTE: geen HUB-dict - dit project komt (voorlopig) niet op de projectenoverzichtspagina
+
+# Gebruikt door de /projecten/ overzichtspagina (kaart + kaartjes)
+HUB = {
+    "NAME": PROJECT_NAME,
+    "LOCATION": "Marbella",
+    "PRICE": PRICE_FROM,
+    "THUMB": "https://projects.investinspain.be/images/royal-river/hero.webp",
+    "LAT": 36.502843,
+    "LNG": -4.913942,
+    "HREF": "/royal-river/",
+}

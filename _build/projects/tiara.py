@@ -34,4 +34,14 @@ DATA_EN = {
     "HERO_BG_ALT": "Tiara — exclusive apartment complex in Benahavís",
 }
 
-# NOTE: geen HUB-dict - dit project komt (voorlopig) niet op de projectenoverzichtspagina
+
+# Gebruikt door de /projecten/ overzichtspagina (kaart + kaartjes)
+HUB = {
+    "NAME": PROJECT_NAME,
+    "LOCATION": "Benahavís",
+    "PRICE": PRICE_FROM,
+    "THUMB": "https://projects.investinspain.be/images/tiara/hero.webp",
+    "LAT": 36.499363,
+    "LNG": -5.029471,
+    "HREF": "/tiara/",
+}

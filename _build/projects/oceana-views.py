@@ -39,5 +39,13 @@ DATA_EN = {
     "PRICE_AMOUNT": "€ 460,000 Furniture incl.",
 }
 
-# NOTE: geen HUB-dict - dit project komt (voorlopig) niet op de
-# projectenoverzichtspagina, op uitdrukkelijk verzoek.
+# Gebruikt door de /projecten/ overzichtspagina (kaart + kaartjes)
+HUB = {
+    "NAME": PROJECT_NAME,
+    "LOCATION": "Cancelada",
+    "PRICE": PRICE_FROM,
+    "THUMB": "https://projects.investinspain.be/images/oceana-views/hero.webp",
+    "LAT": 36.465177,
+    "LNG": -5.059981,
+    "HREF": "/oceana-views/",
+}

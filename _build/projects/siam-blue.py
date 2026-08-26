@@ -33,3 +33,14 @@ DATA_EN = {
     "OG_DESCRIPTION": "Siam Blue in Costa Adeje, Tenerife: 10 modern luxury villas with infinity pool, panoramic sea views and premium finishes. Located opposite Siam Park. From € 3,650,000.",
     "HERO_BG_ALT": "Siam Blue Tenerife exterior modern villa with sea views",
 }
+
+# Gebruikt door de /projecten/ overzichtspagina (kaart + kaartjes)
+HUB = {
+    "NAME": PROJECT_NAME,
+    "LOCATION": "Costa Adeje, Tenerife",
+    "PRICE": PRICE_FROM,
+    "THUMB": "https://projects.investinspain.be/images/siam-blue/hero.webp",
+    "LAT": 28.1225,
+    "LNG": -16.726,
+    "HREF": "/siam-blue/",
+}

@@ -33,3 +33,14 @@ DATA_EN = {
     "OG_DESCRIPTION": "Turnkey villa directly on the beach in Cortijo Blanco, 1.5 km from Puerto Banús. 4 levels, indoor pool, cinema room, rooftop solarium. Designed by Ismael Mérida.",
     "HERO_BG_ALT": "Privilege By Marein frontline beach villa San Pedro Cortijo Blanco",
 }
+
+# Gebruikt door de /projecten/ overzichtspagina (kaart + kaartjes)
+HUB = {
+    "NAME": PROJECT_NAME,
+    "LOCATION": "Cortijo Blanco, San Pedro",
+    "PRICE": PRICE_FROM,
+    "THUMB": "https://projects.investinspain.be/images/privilege-by-marein-villa/hero.webp",
+    "LAT": 36.478,
+    "LNG": -4.978,
+    "HREF": "/privilege-by-marein-villa/",
+}

@@ -34,5 +34,13 @@ DATA_EN = {
     "HERO_BG_ALT": "Organic — infinity pool with sea views at sunset",
 }
 
-# NOTE: geen HUB-dict - dit project komt (voorlopig) niet op de
-# projectenoverzichtspagina, op uitdrukkelijk verzoek.
+# Gebruikt door de /projecten/ overzichtspagina (kaart + kaartjes)
+HUB = {
+    "NAME": PROJECT_NAME,
+    "LOCATION": "Fuengirola",
+    "PRICE": PRICE_FROM,
+    "THUMB": "https://projects.investinspain.be/images/organic-higueron/hero.webp",
+    "LAT": 36.570048,
+    "LNG": -4.609375,
+    "HREF": "/organic-higueron/",
+}

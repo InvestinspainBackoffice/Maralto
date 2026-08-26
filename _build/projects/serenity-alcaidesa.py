@@ -34,4 +34,14 @@ DATA_EN = {
     "HERO_BG_ALT": "Serenity Alcaidesa — modern apartment complex in La Alcaidesa",
 }
 
-# NOTE: geen HUB-dict - dit project komt (voorlopig) niet op de projectenoverzichtspagina
+
+# Gebruikt door de /projecten/ overzichtspagina (kaart + kaartjes)
+HUB = {
+    "NAME": PROJECT_NAME,
+    "LOCATION": "La Alcaidesa",
+    "PRICE": PRICE_FROM,
+    "THUMB": "https://projects.investinspain.be/images/serenity-alcaidesa/hero.webp",
+    "LAT": 36.245,
+    "LNG": -5.281,
+    "HREF": "/serenity-alcaidesa/",
+}

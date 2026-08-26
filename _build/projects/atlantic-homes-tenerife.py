@@ -33,3 +33,14 @@ DATA_EN = {
     "OG_DESCRIPTION": "Atlantic Homes in Costa Adeje, Tenerife: contemporary apartments with 1-2-3 bedrooms, panoramic views over the Atlantic Ocean, pool and walking distance to the beach. From € 500,000.",
     "HERO_BG_ALT": "Atlantic Homes Tenerife exterior apartments Costa Adeje",
 }
+
+# Gebruikt door de /projecten/ overzichtspagina (kaart + kaartjes)
+HUB = {
+    "NAME": PROJECT_NAME,
+    "LOCATION": "Costa Adeje, Tenerife",
+    "PRICE": PRICE_FROM,
+    "THUMB": "https://projects.investinspain.be/images/atlantic-homes-tenerife/hero.webp",
+    "LAT": 28.1225,
+    "LNG": -16.726,
+    "HREF": "/atlantic-homes-tenerife/",
+}

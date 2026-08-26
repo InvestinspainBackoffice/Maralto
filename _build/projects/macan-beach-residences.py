@@ -34,4 +34,14 @@ DATA_EN = {
     "HERO_BG_ALT": "Macan Beach Residences — beachfront apartments with spectacular sea views",
 }
 
-# NOTE: geen HUB-dict - dit project komt (voorlopig) niet op de projectenoverzichtspagina
+
+# Gebruikt door de /projecten/ overzichtspagina (kaart + kaartjes)
+HUB = {
+    "NAME": PROJECT_NAME,
+    "LOCATION": "Torre del Mar",
+    "PRICE": PRICE_FROM,
+    "THUMB": "https://projects.investinspain.be/images/macan-beach-residences/hero.webp",
+    "LAT": 36.7434,
+    "LNG": -4.0947,
+    "HREF": "/macan-beach-residences/",
+}

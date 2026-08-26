@@ -34,5 +34,13 @@ DATA_EN = {
     "HERO_BG_ALT": "Las Villas Sotogrande — villa with pool in a lush garden",
 }
 
-# NOTE: geen HUB-dict - dit project komt (voorlopig) niet op de
-# projectenoverzichtspagina, op uitdrukkelijk verzoek.
+# Gebruikt door de /projecten/ overzichtspagina (kaart + kaartjes)
+HUB = {
+    "NAME": PROJECT_NAME,
+    "LOCATION": "Sotogrande",
+    "PRICE": PRICE_FROM,
+    "THUMB": "https://projects.investinspain.be/images/las-villas-sotogrande/hero.webp",
+    "LAT": 36.283,
+    "LNG": -5.283,
+    "HREF": "/las-villas-sotogrande/",
+}

@@ -33,3 +33,14 @@ DATA_EN = {
     "OG_DESCRIPTION": "South Sand near Estepona: contemporary apartments and penthouses with sea views, spacious terraces and communal amenities close to the beach. From € 702,000.",
     "HERO_BG_ALT": "South Sand apartments with sea views Estepona",
 }
+
+# Gebruikt door de /projecten/ overzichtspagina (kaart + kaartjes)
+HUB = {
+    "NAME": PROJECT_NAME,
+    "LOCATION": "Estepona",
+    "PRICE": PRICE_FROM,
+    "THUMB": "https://projects.investinspain.be/images/south-sand/hero.webp",
+    "LAT": 36.439006,
+    "LNG": -5.126186,
+    "HREF": "/south-sand/",
+}

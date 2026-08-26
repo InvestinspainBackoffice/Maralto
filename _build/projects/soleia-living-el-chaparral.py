@@ -33,3 +33,14 @@ DATA_EN = {
     "OG_DESCRIPTION": "Soleia Living El Chaparral in La Cala de Mijas: 69 Andalusian-style villas with private pool, garden, sauna, gym, coworking and free golf membership at El Chaparral Golf. From € 957,000.",
     "HERO_BG_ALT": "Soleia Living El Chaparral villa exterior La Cala de Mijas",
 }
+
+# Gebruikt door de /projecten/ overzichtspagina (kaart + kaartjes)
+HUB = {
+    "NAME": PROJECT_NAME,
+    "LOCATION": "La Cala de Mijas",
+    "PRICE": PRICE_FROM,
+    "THUMB": "https://projects.investinspain.be/images/soleia-living-el-chaparral/hero.webp",
+    "LAT": 36.5561,
+    "LNG": -4.8159,
+    "HREF": "/soleia-living-el-chaparral/",
+}

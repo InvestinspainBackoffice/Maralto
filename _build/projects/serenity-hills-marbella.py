@@ -34,5 +34,13 @@ DATA_EN = {
     "HERO_BG_ALT": "Serenity Hills Marbella — luxury home with sea views on the hills of Marbella",
 }
 
-# NOTE: geen HUB-dict - dit project komt (voorlopig) niet op de
-# projectenoverzichtspagina, op uitdrukkelijk verzoek.
+# Gebruikt door de /projecten/ overzichtspagina (kaart + kaartjes)
+HUB = {
+    "NAME": PROJECT_NAME,
+    "LOCATION": "Marbella",
+    "PRICE": PRICE_FROM,
+    "THUMB": "https://projects.investinspain.be/images/serenity-hills-marbella/hero.webp",
+    "LAT": 36.502843,
+    "LNG": -4.913942,
+    "HREF": "/serenity-hills-marbella/",
+}

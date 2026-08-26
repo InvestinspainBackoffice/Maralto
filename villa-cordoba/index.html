@@ -1060,6 +1060,310 @@ footer a {
   .cookie-bar { left: 1rem; right: 1rem; bottom: 1rem; max-width: none; padding: 1.25rem; }
 }
 
+/* ═══════════ AI-CHATWIDGET ═══════════
+   Bewust lichter dan de pagina (--bg is #0E1318): het paneel moet als een
+   opgetild vlak lezen, niet als onderdeel van de achtergrond. Verder volgt
+   het de folio-taal - rechte hoeken, haarlijnen, Sora 300. Ronde bubbels
+   zoals in een doorsnee chatwidget zouden hier volstrekt vreemd ogen. */
+:root {
+  --chat-surface: #1A222B;
+  --chat-block: #212B36;
+}
+
+/* De chat neemt de plek van de lead-dock in. USE_AI_CHAT in tail.html op
+   false zetten haalt deze class weg en zet het oude paneel terug. */
+html.ai-chat-on .lead-dock { display: none; }
+
+/* ── Launcher ── */
+.chat-fab {
+  position: fixed;
+  right: 1.5rem;
+  bottom: calc(1.5rem + 52px + 0.75rem);
+  z-index: 96;
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.7rem 1.1rem;
+  background: var(--chat-surface);
+  border: 1px solid var(--line-light);
+  border-top: 1px solid var(--gold-dim);
+  color: var(--text);
+  font-family: var(--font);
+  font-size: 0.62rem;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  cursor: pointer;
+  opacity: 0;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.45);
+  transition: bottom 0.5s var(--ease), background 0.3s, opacity 0.4s var(--ease);
+  animation: fade-up 0.6s var(--ease) 2.5s forwards;
+}
+.chat-fab.is-raised { bottom: calc(1.5rem + 56px + 52px + 0.75rem); }
+.chat-fab:hover { background: var(--chat-block); }
+.chat-fab svg {
+  width: 15px; height: 15px;
+  stroke: var(--gold); stroke-width: 1.5; fill: none;
+}
+.chat-fab.is-hidden { opacity: 0; pointer-events: none; }
+
+/* ── Paneel ── */
+.chat-panel {
+  position: fixed;
+  right: 1.5rem;
+  bottom: 1.5rem;
+  z-index: 150;
+  width: 380px;
+  max-width: calc(100vw - 3rem);
+  height: min(580px, calc(100vh - 3rem));
+  display: flex;
+  flex-direction: column;
+  background: var(--chat-surface);
+  border: 1px solid var(--line-light);
+  border-top: 2px solid var(--gold);
+  box-shadow: 0 12px 48px rgba(0,0,0,0.55);
+  opacity: 0;
+  transform: translateY(12px);
+  pointer-events: none;
+  transition: opacity 0.35s var(--ease), transform 0.35s var(--ease);
+}
+.chat-panel.is-open { opacity: 1; transform: translateY(0); pointer-events: auto; }
+
+.chat-panel__head {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  padding: 1.1rem 1.25rem 0.9rem;
+  border-bottom: 1px solid var(--line);
+}
+.chat-panel__title {
+  font-size: 0.7rem; font-weight: 500;
+  letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--text); margin: 0 0 0.3rem;
+}
+.chat-panel__sub {
+  font-size: 0.62rem; color: var(--text-muted);
+  letter-spacing: 0.05em; margin: 0;
+}
+.chat-panel__close {
+  margin-left: auto; background: none; border: none;
+  color: var(--text-muted); font-size: 1.4rem; line-height: 1;
+  cursor: pointer; padding: 0 0.2rem; transition: color 0.3s;
+}
+.chat-panel__close:hover { color: var(--text); }
+
+/* ── Berichten ── */
+.chat-log {
+  flex: 1; overflow-y: auto;
+  padding: 1.1rem 1.25rem;
+  display: flex; flex-direction: column; gap: 0.85rem;
+  scrollbar-width: thin;
+  scrollbar-color: var(--line-light) transparent;
+}
+.chat-log::-webkit-scrollbar { width: 4px; }
+.chat-log::-webkit-scrollbar-thumb { background: var(--line-light); }
+
+.chat-msg-row {
+  display: flex;
+  align-items: flex-end;
+  gap: 0.5rem;
+  max-width: 92%;
+  animation: fade-up 0.4s var(--ease) forwards;
+}
+.chat-msg-row--bot { align-self: flex-start; }
+.chat-avatar {
+  width: 24px; height: 24px; border-radius: 50%;
+  object-fit: cover; flex-shrink: 0;
+  border: 1px solid var(--line-light);
+}
+.chat-msg {
+  font-size: 0.82rem; font-weight: 300; line-height: 1.65;
+  padding: 0.7rem 0.9rem; max-width: 88%;
+  animation: fade-up 0.4s var(--ease) forwards;
+}
+.chat-msg-row .chat-msg { max-width: 100%; animation: none; }
+.chat-msg--bot {
+  background: var(--chat-block);
+  border-left: 2px solid var(--gold-dim);
+  color: var(--text);
+}
+.chat-msg--user {
+  background: rgba(45,106,122,0.22);
+  border-right: 2px solid var(--cta);
+  color: var(--text);
+  align-self: flex-end;
+}
+.chat-msg a { color: var(--gold); text-decoration: underline; text-underline-offset: 2px; }
+.chat-msg--error { border-left-color: #B4544A; color: var(--text-muted); }
+
+.chat-msg-col { display: flex; flex-direction: column; gap: 0.4rem; max-width: 100%; }
+.chat-chips { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+.chat-chip {
+  padding: 0.4rem 0.75rem;
+  background: transparent;
+  border: 1px solid var(--line-light);
+  color: var(--text);
+  font-family: var(--font);
+  font-size: 0.72rem; font-weight: 400;
+  letter-spacing: 0.01em;
+  cursor: pointer;
+  transition: border-color 0.3s, color 0.3s, background 0.3s;
+}
+.chat-chip:hover { border-color: var(--gold-dim); color: var(--gold); background: var(--chat-block); }
+.chat-chip:disabled { opacity: 0.4; cursor: default; }
+.chat-chip.is-picked {
+  border-color: var(--gold); color: var(--gold);
+  background: var(--chat-block);
+  box-shadow: inset 0 0 0 1px var(--gold-dim);
+}
+.chat-chip.is-picked::before { content: '✓ '; }
+.chat-chips__hint {
+  width: 100%;
+  font-size: 0.58rem; letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--text-muted); margin: 0 0 0.1rem;
+}
+.chat-chips__confirm {
+  padding: 0.4rem 0.9rem;
+  background: var(--cta); border: none;
+  color: var(--white); font-family: var(--font);
+  font-size: 0.7rem; font-weight: 500; letter-spacing: 0.06em;
+  cursor: pointer; transition: background 0.3s, opacity 0.3s;
+}
+.chat-chips__confirm:hover:not(:disabled) { background: var(--cta-hover); }
+.chat-chips__confirm:disabled { opacity: 0.3; cursor: default; }
+
+/* ── Projectkaartjes (glassy, lichte 3D-tilt) bij een aanbeveling ── */
+.chat-cards { display: flex; flex-wrap: wrap; gap: 0.6rem; margin-top: 0.1rem; }
+.chat-card {
+  width: 134px;
+  padding: 0;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 10px;
+  overflow: hidden;
+  cursor: pointer;
+  text-align: left;
+  font-family: var(--font);
+  background: linear-gradient(160deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.02));
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  transform: perspective(700px) rotateX(0deg);
+  transition: transform 0.35s var(--ease), box-shadow 0.35s var(--ease), border-color 0.35s;
+}
+.chat-card:hover, .chat-card:focus-visible {
+  transform: perspective(700px) rotateX(-6deg) translateY(-3px);
+  border-color: var(--gold-dim);
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.45), 0 0 0 1px rgba(197, 164, 107, 0.25),
+    inset 0 1px 0 rgba(255, 255, 255, 0.12);
+}
+.chat-card:disabled { opacity: 0.45; cursor: default; transform: none; }
+.chat-card.is-selected {
+  border-color: var(--gold);
+  box-shadow: 0 0 0 1px var(--gold), 0 10px 24px rgba(0, 0, 0, 0.4);
+}
+.chat-card__img {
+  display: block;
+  width: 100%;
+  height: 72px;
+  background-size: cover;
+  background-position: center;
+  background-color: rgba(255, 255, 255, 0.05);
+}
+.chat-card__body { display: block; padding: 0.5rem 0.55rem 0.6rem; }
+.chat-card__name { display: block; font-size: 0.68rem; font-weight: 600; color: var(--text); line-height: 1.3; }
+.chat-card__loc {
+  display: block; font-size: 0.56rem; letter-spacing: 0.05em; text-transform: uppercase;
+  color: var(--text-muted); margin-top: 0.15rem;
+}
+.chat-card__price { display: block; font-size: 0.62rem; color: var(--gold); margin-top: 0.3rem; font-weight: 500; }
+@media (prefers-reduced-motion: reduce) {
+  .chat-card, .chat-card:hover, .chat-card:focus-visible { transition: none; transform: none; }
+}
+
+.chat-typing-row { display: flex; align-items: center; gap: 0.5rem; align-self: flex-start; }
+.chat-typing {
+  font-size: 0.6rem; letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--text-muted); padding: 0.4rem 0;
+}
+.chat-typing i { animation: chat-blink 1.4s infinite; font-style: normal; }
+.chat-typing i:nth-child(2) { animation-delay: 0.2s; }
+.chat-typing i:nth-child(3) { animation-delay: 0.4s; }
+@keyframes chat-blink { 0%, 60%, 100% { opacity: 0.25; } 30% { opacity: 1; } }
+
+/* ── "Liever met een verkoper spreken" ── */
+.chat-talk-btn {
+  display: block;
+  width: calc(100% - 2.5rem);
+  margin: 0 1.25rem 0.6rem;
+  padding: 0.55rem 0.75rem;
+  background: transparent;
+  border: 1px solid var(--line-light);
+  color: var(--text-muted);
+  font-family: var(--font);
+  font-size: 0.68rem;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-align: center;
+  cursor: pointer;
+  transition: border-color 0.3s, color 0.3s;
+  flex-shrink: 0;
+}
+.chat-talk-btn:hover { border-color: var(--gold-dim); color: var(--gold); }
+
+/* ── Invoer ── */
+.chat-foot { border-top: 1px solid var(--line); padding: 0.5rem 1.25rem 0.9rem; }
+.chat-form { display: flex; align-items: flex-end; gap: 0.6rem; }
+.chat-form textarea {
+  flex: 1; display: block; width: 100%;
+  padding: 0.7rem 0; max-height: 100px;
+  background: transparent; border: none;
+  border-bottom: 1px solid var(--line-light);
+  color: var(--text); font-family: var(--font);
+  font-size: 0.82rem; font-weight: 300; line-height: 1.5;
+  resize: none; outline: none; transition: border-color 0.3s;
+}
+.chat-form textarea:focus { border-bottom-color: var(--gold-dim); }
+.chat-form textarea::placeholder { color: var(--text-muted); }
+.chat-send {
+  flex-shrink: 0; width: 38px; height: 38px;
+  display: flex; align-items: center; justify-content: center;
+  background: var(--cta); border: none; cursor: pointer;
+  transition: background 0.3s, opacity 0.3s;
+}
+.chat-send:hover { background: var(--cta-hover); }
+.chat-send:disabled { opacity: 0.35; cursor: default; }
+.chat-send svg { width: 16px; height: 16px; stroke: var(--white); stroke-width: 1.8; fill: none; }
+
+.chat-foot__meta {
+  display: flex; justify-content: space-between; align-items: center;
+  gap: 0.75rem; margin-top: 0.6rem;
+}
+.chat-foot__meta p { font-size: 0.55rem; color: var(--text-muted); line-height: 1.5; margin: 0; }
+.chat-foot__meta a {
+  font-size: 0.58rem; letter-spacing: 0.08em;
+  color: var(--gold-dim); text-decoration: underline;
+  text-underline-offset: 2px; white-space: nowrap;
+  transition: color 0.3s;
+}
+.chat-foot__meta a:hover { color: var(--gold); }
+
+@media (max-width: 600px) {
+  .chat-fab { right: 1rem; bottom: calc(1rem + 52px + 0.75rem); }
+  .chat-fab.is-raised { bottom: calc(1rem + 56px + 52px + 0.75rem); }
+  .chat-panel {
+    right: 0.75rem; left: 0.75rem; bottom: 0.75rem;
+    width: auto; max-width: none;
+    height: min(78vh, calc(100vh - 1.5rem));
+    /* dvh volgt de écht zichtbare hoogte (min. het toetsenbord meegerekend);
+       browsers zonder dvh-steun vallen terug op de vh-regel hierboven. */
+    height: min(78dvh, calc(100dvh - 1.5rem));
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .chat-msg, .chat-fab { animation: none; opacity: 1; }
+  .chat-typing i { animation: none; opacity: 0.6; }
+}
+
 </style>
 </head>
 <body class="page-villa-cordoba">
@@ -1345,6 +1649,41 @@ footer a {
    target="_blank" rel="noopener" class="wa-fab" aria-label="Contact via WhatsApp">
   <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.625.846 5.059 2.284 7.034L.789 23.492a.5.5 0 00.612.638l4.67-1.404A11.945 11.945 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-2.24 0-4.31-.726-5.993-1.955l-.348-.262-3.278.986.93-3.156-.28-.373A9.935 9.935 0 012 12C2 6.486 6.486 2 12 2s10 4.486 10 10-4.486 10-10 10z"/></svg>
 </a>
+
+<!-- ═══════════ AI-CHATWIDGET ═══════════ -->
+<button type="button" class="chat-fab" id="chatFab" aria-label="Chat over dit project"
+        aria-expanded="false" aria-controls="chatPanel">
+  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.4 8.4 0 0 1-3.8-.9L3 21l1.9-5.7a8.4 8.4 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.4 8.4 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+  Chat met ons
+</button>
+
+<div class="chat-panel" id="chatPanel" role="dialog" aria-label="Chat over dit project">
+  <div class="chat-panel__head">
+    <div>
+      <p class="chat-panel__title">Uw persoonlijke AI</p>
+      <p class="chat-panel__sub">Antwoord binnen enkele seconden</p>
+    </div>
+    <button type="button" class="chat-panel__close" id="chatClose" aria-label="Chat sluiten">&times;</button>
+  </div>
+
+  <div class="chat-log" id="chatLog" role="log" aria-live="polite"></div>
+
+  <button type="button" class="chat-talk-btn" id="chatTalkToAgent">Liever met een adviseur spreken</button>
+
+  <div class="chat-foot">
+    <form class="chat-form" id="chatForm" novalidate>
+      <textarea id="chatInput" rows="1" maxlength="1500"
+                placeholder="Typ uw vraag&hellip;" aria-label="Typ uw vraag&hellip;"></textarea>
+      <button type="submit" class="chat-send" id="chatSend" aria-label="Versturen">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22 2 11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>
+      </button>
+    </form>
+    <div class="chat-foot__meta">
+      <p>AI-assistent &mdash; gesprekken worden bewaard om onze dienstverlening te verbeteren.</p>
+      <a href="https://wa.me/32496571397?text=Hallo%2C%20ik%20heb%20interesse%20in%20Villa%20C%C3%B3rdoba.%20Kan%20ik%20meer%20informatie%20ontvangen%3F" target="_blank" rel="noopener">Liever WhatsApp?</a>
+    </div>
+  </div>
+</div>
 
 <!-- ═══════════ COOKIEBALK ═══════════ -->
 <div class="cookie-bar" id="cookieBar" role="dialog" aria-label="Cookievoorkeuren">
@@ -1714,13 +2053,17 @@ footer a {
   var pastHero = false;
   var atFooter = false;
 
+  var chatFabEl = document.getElementById('chatFab');
+
   function updateStickyBar() {
     if (pastHero && !atFooter) {
       stickyBar.classList.add('is-visible');
       if (waFab) waFab.classList.add('is-raised');
+      if (chatFabEl) chatFabEl.classList.add('is-raised');
     } else {
       stickyBar.classList.remove('is-visible');
       if (waFab) waFab.classList.remove('is-raised');
+      if (chatFabEl) chatFabEl.classList.remove('is-raised');
     }
     updateDock();
   }
@@ -1973,6 +2316,409 @@ footer a {
   document.getElementById('cookieDecline').addEventListener('click', function() {
     try { localStorage.setItem(COOKIE_KEY, 'denied'); } catch (e) {}
     cookieBar.classList.remove('is-visible');
+  });
+})();
+
+/* ═══════════ AI-CHATWIDGET ═══════════
+   Op false zetten schakelt de chat uit en zet de lead-dock terug; de markup
+   van beide blijft staan, zodat terugschakelen één regel is. */
+var USE_AI_CHAT = true;
+
+(function() {
+  var fab = document.getElementById('chatFab');
+  var panel = document.getElementById('chatPanel');
+  if (!fab || !panel) return;
+
+  if (!USE_AI_CHAT) { fab.remove(); panel.remove(); return; }
+  document.documentElement.classList.add('ai-chat-on');
+
+  var log = document.getElementById('chatLog');
+  var form = document.getElementById('chatForm');
+  var input = document.getElementById('chatInput');
+  var sendBtn = document.getElementById('chatSend');
+  var closeBtn = document.getElementById('chatClose');
+  var talkToAgentBtn = document.getElementById('chatTalkToAgent');
+
+  var SLUG = 'villa-cordoba';
+  var LANG = 'nl';
+  var AGENT_PHOTO = 'https://investinspain.be/wp-content/uploads/2020/01/Gunther-De-Vleeschouwer-INVESTINSPAIN.jpg';
+  var GREETING = "Hoi, ik ben uw persoonlijke AI. Waarmee kan ik u vandaag helpen?";
+  var THINKING = 'Aan het typen';
+  var ERROR_TEXT = 'Er ging iets mis. Probeer het opnieuw of bel ons op +32 496 57 13 97.';
+  var MULTI_HINT = 'Meerdere mogelijk';
+  var MULTI_CONFIRM = 'Verder';
+
+  var history = [];   // wat er naar de API gaat
+  var busy = false;
+  var opened = false;
+
+  /* Modelantwoorden nooit als HTML invoegen. We escapen alles en maken
+     daarna alleen echte http(s)-links klikbaar. */
+  function escapeHtml(str) {
+    return str.replace(/[&<>"']/g, function(c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+    });
+  }
+  function render(text) {
+    return escapeHtml(text).replace(/(https?:\/\/[^\s<]+[^\s<.,;:!?)])/g,
+      '<a href="$1" target="_blank" rel="noopener">$1</a>');
+  }
+
+  // De bot mag een antwoord afsluiten met een eigen regel "OPTIES: a | b | c"
+  // om budget/regio/type als klikbare snelkeuzes aan te bieden i.p.v. de
+  // bezoeker te laten typen. Die regel wordt hier eruit gehaald en nooit
+  // als tekst getoond.
+  // "OPTIES: a | b" = één keuze, "OPTIES-MEER: a | b" = meerdere mogelijk
+  // (bv. regio, voor wie nog twijfelt tussen gebieden). Zelfde vergevings-
+  // gezinde aanpak als bij PROJECTEN: regel mag overal staan.
+  var OPTIONS_LINE = /(^|\n)[ \t]*OPTIES(-MEER)?:[ \t]*([^\n]+)/i;
+
+  function extractOptions(text) {
+    var match = text.match(OPTIONS_LINE);
+    if (!match) return { clean: text, options: [], multi: false };
+    var options = match[3].split('|')
+      .map(function(s) { return s.trim(); })
+      .filter(Boolean)
+      .slice(0, 6);
+    var clean = (text.slice(0, match.index) + ' ' + text.slice(match.index + match[0].length))
+      .replace(/[ \t]+/g, ' ').replace(/\n{3,}/g, '\n\n').trim();
+    return { clean: clean, options: options, multi: !!match[2] };
+  }
+
+  function sendQuick(text) {
+    if (busy || !text) return;
+    input.value = text;
+    form.requestSubmit ? form.requestSubmit() : form.dispatchEvent(new Event('submit'));
+  }
+
+  function buildChips(options, multi) {
+    var chips = document.createElement('div');
+    chips.className = 'chat-chips';
+
+    function lockAll() {
+      Array.prototype.forEach.call(chips.querySelectorAll('button'), function(b) { b.disabled = true; });
+    }
+
+    if (!multi) {
+      options.forEach(function(opt) {
+        var chip = document.createElement('button');
+        chip.type = 'button';
+        chip.className = 'chat-chip';
+        chip.textContent = opt;
+        chip.addEventListener('click', function() { lockAll(); sendQuick(opt); });
+        chips.appendChild(chip);
+      });
+      return chips;
+    }
+
+    // Meerkeuze: aan/uit klikken, daarna pas versturen met de knop.
+    var hint = document.createElement('p');
+    hint.className = 'chat-chips__hint';
+    hint.textContent = MULTI_HINT;
+    chips.appendChild(hint);
+
+    var picked = [];
+    var confirm = document.createElement('button');
+    confirm.type = 'button';
+    confirm.className = 'chat-chips__confirm';
+    confirm.textContent = MULTI_CONFIRM;
+    confirm.disabled = true;
+
+    options.forEach(function(opt) {
+      var chip = document.createElement('button');
+      chip.type = 'button';
+      chip.className = 'chat-chip';
+      chip.textContent = opt;
+      chip.setAttribute('aria-pressed', 'false');
+      chip.addEventListener('click', function() {
+        var i = picked.indexOf(opt);
+        if (i === -1) { picked.push(opt); } else { picked.splice(i, 1); }
+        var on = picked.indexOf(opt) !== -1;
+        chip.classList.toggle('is-picked', on);
+        chip.setAttribute('aria-pressed', String(on));
+        confirm.disabled = picked.length === 0;
+      });
+      chips.appendChild(chip);
+    });
+
+    confirm.addEventListener('click', function() {
+      if (!picked.length) return;
+      lockAll();
+      sendQuick(picked.join(', '));
+    });
+    chips.appendChild(confirm);
+    return chips;
+  }
+
+  // Zelfde principe als OPTIES, maar dan "PROJECTEN: slug1 | slug2 | slug3"
+  // voor de aanbevolen projecten. De widget haalt naam/prijs/foto altijd zelf
+  // op bij /api/project-cards - het model geeft alleen de slug door, nooit
+  // die gegevens zelf, zodat een kaartje nooit iets verzonnens kan tonen.
+  // Bewust vergevingsgezind: het model zet deze regel niet altijd netjes
+  // onderaan, neemt soms de [blokhaken] uit de aanbodlijst mee, en schrijft
+  // er soms nog een zin achter. We matchen daarom precies de reeks slugs en
+  // laten al het andere gewoon in de zichtbare tekst staan.
+  var PROJECT_SLUG_LINE =
+    /(^|\n)[ \t]*PROJECTEN:[ \t]*((?:\[?[a-z0-9][a-z0-9-]*\]?[ \t]*\|[ \t]*)*\[?[a-z0-9][a-z0-9-]*\]?)/i;
+
+  function extractProjectSlugs(text) {
+    var match = text.match(PROJECT_SLUG_LINE);
+    if (!match) return { clean: text, slugs: [] };
+    var slugs = match[2].split('|')
+      .map(function(s) { return s.trim().replace(/[\[\]]/g, '').trim(); })
+      .filter(Boolean)
+      .slice(0, 4);
+    var tail = text.slice(match.index + match[0].length).replace(/^[ \t]*[.,;:!?]+/, '');
+    var clean = (text.slice(0, match.index) + ' ' + tail)
+      .replace(/[ \t]+/g, ' ').replace(/\n{3,}/g, '\n\n').trim();
+    return { clean: clean, slugs: slugs };
+  }
+
+  function renderProjectCards(col, slugs) {
+    var wrap = document.createElement('div');
+    wrap.className = 'chat-cards';
+    col.appendChild(wrap);
+    fetch('/api/project-cards?slugs=' + encodeURIComponent(slugs.join(',')) + '&lang=' + LANG)
+      .then(function(r) { return r.json(); })
+      .then(function(data) {
+        var cards = (data && data.cards) || [];
+        cards.forEach(function(p) {
+          var card = document.createElement('button');
+          card.type = 'button';
+          card.className = 'chat-card';
+
+          var img = document.createElement('span');
+          img.className = 'chat-card__img';
+          if (p.image) img.style.backgroundImage = 'url(' + JSON.stringify(p.image) + ')';
+
+          var name = document.createElement('span');
+          name.className = 'chat-card__name';
+          name.textContent = p.name;
+          var loc = document.createElement('span');
+          loc.className = 'chat-card__loc';
+          loc.textContent = p.location;
+          var price = document.createElement('span');
+          price.className = 'chat-card__price';
+          price.textContent = p.price;
+
+          var body = document.createElement('span');
+          body.className = 'chat-card__body';
+          body.appendChild(name);
+          body.appendChild(loc);
+          body.appendChild(price);
+
+          card.appendChild(img);
+          card.appendChild(body);
+          card.addEventListener('click', function() {
+            Array.prototype.forEach.call(wrap.querySelectorAll('.chat-card'), function(b) { b.disabled = true; });
+            card.classList.add('is-selected');
+            sendQuick(p.name);
+          });
+          wrap.appendChild(card);
+        });
+        // Kaartjes laden async: scroll de eerste kaart in beeld zodat de
+        // bezoeker ze ziet zonder zelf te hoeven scrollen.
+        var firstCard = wrap.querySelector('.chat-card');
+        if (firstCard) firstCard.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+      })
+      .catch(function(err) {
+        console.warn('[chat] projectkaartjes konden niet geladen worden', err);
+      });
+  }
+
+  function addMessage(text, who, isError) {
+    var options = [];
+    var optionsMulti = false;
+    var projectSlugs = [];
+    if (who === 'bot' && !isError) {
+      var pOpts = extractOptions(text);
+      var pProj = extractProjectSlugs(pOpts.clean);
+      text = pProj.clean;
+      options = pOpts.options;
+      optionsMulti = pOpts.multi;
+      projectSlugs = pProj.slugs;
+    }
+
+    var bubble = document.createElement('div');
+    bubble.className = 'chat-msg chat-msg--' + who + (isError ? ' chat-msg--error' : '');
+    bubble.innerHTML = render(text);
+
+    if (who === 'bot') {
+      // Bot-berichten krijgen Gunthers foto als avatar - versterkt "uw
+      // persoonlijke AI" i.p.v. een anonieme bot te voelen.
+      var row = document.createElement('div');
+      row.className = 'chat-msg-row chat-msg-row--bot';
+      var avatar = document.createElement('img');
+      avatar.className = 'chat-avatar';
+      avatar.src = AGENT_PHOTO;
+      avatar.alt = '';
+      avatar.loading = 'lazy';
+      row.appendChild(avatar);
+
+      var col = document.createElement('div');
+      col.className = 'chat-msg-col';
+      col.appendChild(bubble);
+
+      if (options.length) {
+        col.appendChild(buildChips(options, optionsMulti));
+      }
+
+      if (projectSlugs.length) {
+        renderProjectCards(col, projectSlugs);
+      }
+
+      row.appendChild(col);
+      log.appendChild(row);
+      // Scroll de bovenkant van het nieuwe botbericht in beeld, niet de onderkant.
+      // Zo ziet de bezoeker altijd het begin van het antwoord.
+      row.scrollIntoView({ block: 'start', behavior: 'smooth' });
+    } else {
+      log.appendChild(bubble);
+      log.scrollTop = log.scrollHeight;
+    }
+    return bubble;
+  }
+
+  function showTyping() {
+    var row = document.createElement('div');
+    row.className = 'chat-typing-row';
+    row.id = 'chatTyping';
+    var avatar = document.createElement('img');
+    avatar.className = 'chat-avatar';
+    avatar.src = AGENT_PHOTO;
+    avatar.alt = '';
+    avatar.loading = 'lazy';
+    var el = document.createElement('div');
+    el.className = 'chat-typing';
+    el.innerHTML = THINKING + ' <i>.</i><i>.</i><i>.</i>';
+    row.appendChild(avatar);
+    row.appendChild(el);
+    log.appendChild(row);
+    log.scrollTop = log.scrollHeight;
+  }
+  function hideTyping() {
+    var el = document.getElementById('chatTyping');
+    if (el) el.remove();
+  }
+
+  function openPanel() {
+    panel.classList.add('is-open');
+    fab.classList.add('is-hidden');
+    fab.setAttribute('aria-expanded', 'true');
+    if (!opened) {
+      opened = true;
+      // Begroeting staat alleen in beeld, niet in de history: scheelt tokens
+      // en het model kent de context al uit de systeemprompt.
+      addMessage(GREETING, 'bot');
+    }
+    // Alleen automatisch focussen op toestellen zonder virtueel toetsenbord:
+    // op mobiel duwt het meteen opduikende toetsenbord de zichtbare hoogte
+    // samen en schuift het begin van het gesprek uit beeld. Op mobiel tikt
+    // de bezoeker zelf op het invoerveld wanneer die wil typen.
+    if (window.matchMedia && window.matchMedia('(min-width: 601px)').matches) {
+      setTimeout(function() { input.focus(); }, 350);
+    }
+  }
+  function closePanel() {
+    panel.classList.remove('is-open');
+    fab.classList.remove('is-hidden');
+    fab.setAttribute('aria-expanded', 'false');
+  }
+
+  fab.addEventListener('click', openPanel);
+  closeBtn.addEventListener('click', closePanel);
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape' && panel.classList.contains('is-open')) closePanel();
+  });
+
+  // Opent de chat automatisch bij het eerste bezoek van deze sessie, met
+  // een korte vertraging zodat de pagina eerst even kan "landen" en het niet
+  // aanvoelt als een pop-up die meteen in het gezicht springt. Niet meer bij
+  // elke volgende pagina, anders springt hij telkens weer open terwijl
+  // iemand van project naar project surft.
+  try {
+    if (!sessionStorage.getItem('aiChatAutoOpened')) {
+      sessionStorage.setItem('aiChatAutoOpened', '1');
+      setTimeout(openPanel, 4000);
+    }
+  } catch (e) { /* privémodus zonder sessionStorage: gewoon niet auto-openen */ }
+
+  // "Liever met een verkoper spreken" - sluit de AI-chat en scrollt meteen
+  // naar het gewone hoofdformulier onderaan de pagina (#contact), in plaats
+  // van het meescrollende zijpaneel te openen.
+  if (talkToAgentBtn) {
+    talkToAgentBtn.addEventListener('click', function() {
+      closePanel();
+      var contactSection = document.getElementById('contact');
+      if (contactSection) {
+        contactSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        var firstField = document.getElementById('fname');
+        if (firstField) setTimeout(function() { firstField.focus(); }, 450);
+      }
+    });
+  }
+
+  // Invoerveld groeit mee met de tekst
+  input.addEventListener('input', function() {
+    input.style.height = 'auto';
+    input.style.height = Math.min(input.scrollHeight, 100) + 'px';
+  });
+  input.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      form.requestSubmit ? form.requestSubmit() : form.dispatchEvent(new Event('submit'));
+    }
+  });
+
+  form.addEventListener('submit', function(e) {
+    e.preventDefault();
+    var text = input.value.trim();
+    if (!text || busy) return;
+
+    addMessage(text, 'user');
+    history.push({ role: 'user', content: text });
+    input.value = '';
+    input.style.height = 'auto';
+
+    busy = true;
+    sendBtn.disabled = true;
+    showTyping();
+
+    fetch('/api/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        slug: SLUG, lang: LANG, url: window.location.href, messages: history
+      })
+    })
+      .then(function(r) { return r.json().then(function(d) { return { ok: r.ok, data: d }; }); })
+      .then(function(res) {
+        hideTyping();
+        var reply = (res.data && res.data.reply) || '';
+        if (!reply) { addMessage(ERROR_TEXT, 'bot', true); return; }
+
+        addMessage(reply, 'bot', !res.ok);
+        if (res.ok) history.push({ role: 'assistant', content: reply });
+
+        // Lead ging server-side al naar Zapier; hier alleen nog het GA4-event,
+        // zodat chatleads in dezelfde rapportage vallen als de formulieren.
+        if (res.data.lead_captured && typeof gtag === 'function') {
+          gtag('event', 'generate_lead', {
+            currency: 'EUR',
+            lead_source: 'AI-chat',
+            project: 'Villa Córdoba'
+          });
+        }
+      })
+      .catch(function() {
+        hideTyping();
+        addMessage(ERROR_TEXT, 'bot', true);
+      })
+      .finally(function() {
+        busy = false;
+        sendBtn.disabled = false;
+        input.focus();
+      });
   });
 })();
 </script>

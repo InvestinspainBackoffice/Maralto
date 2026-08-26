@@ -33,3 +33,14 @@ DATA_EN = {
     "OG_DESCRIPTION": "Mãla Kai in Estepona: luxury apartments and penthouses with Mediterranean sea views, fitness, yoga room, communal pools, gastrobar and chill-out zone. Walking distance to the beach. From € 725,000.",
     "HERO_BG_ALT": "Mãla Kai Estepona exterior apartments and penthouses daytime",
 }
+
+# Gebruikt door de /projecten/ overzichtspagina (kaart + kaartjes)
+HUB = {
+    "NAME": PROJECT_NAME,
+    "LOCATION": "Estepona",
+    "PRICE": PRICE_FROM,
+    "THUMB": "https://projects.investinspain.be/images/mala-kai/hero.webp",
+    "LAT": 36.439006,
+    "LNG": -5.126186,
+    "HREF": "/mala-kai/",
+}

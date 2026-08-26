@@ -34,4 +34,14 @@ DATA_EN = {
     "HERO_BG_ALT": "Spinto Hills — exclusive villas with panoramic views in Estepona",
 }
 
-# NOTE: geen HUB-dict - dit project komt (voorlopig) niet op de projectenoverzichtspagina
+
+# Gebruikt door de /projecten/ overzichtspagina (kaart + kaartjes)
+HUB = {
+    "NAME": PROJECT_NAME,
+    "LOCATION": "Estepona",
+    "PRICE": PRICE_FROM,
+    "THUMB": "https://projects.investinspain.be/images/spinto-hills/hero.webp",
+    "LAT": 36.439006,
+    "LNG": -5.126186,
+    "HREF": "/spinto-hills/",
+}

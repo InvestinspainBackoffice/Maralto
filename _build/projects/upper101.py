@@ -34,4 +34,14 @@ DATA_EN = {
     "HERO_BG_ALT": "Upper101 — modern residential project in San Pedro",
 }
 
-# NOTE: geen HUB-dict - dit project komt (voorlopig) niet op de projectenoverzichtspagina
+
+# Gebruikt door de /projecten/ overzichtspagina (kaart + kaartjes)
+HUB = {
+    "NAME": PROJECT_NAME,
+    "LOCATION": "San Pedro de Alcántara",
+    "PRICE": PRICE_FROM,
+    "THUMB": "https://projects.investinspain.be/images/upper101/hero.webp",
+    "LAT": 36.486461,
+    "LNG": -4.991505,
+    "HREF": "/upper101/",
+}

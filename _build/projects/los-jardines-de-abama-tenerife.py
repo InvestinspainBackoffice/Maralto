@@ -33,3 +33,14 @@ DATA_EN = {
     "OG_DESCRIPTION": "Los Jardines de Abama at Abama Resort in Tenerife: luxury apartments with sea views, golf and world-class amenities in a unique 5-star resort. From € 980,000.",
     "HERO_BG_ALT": "Los Jardines de Abama Tenerife exterior at Abama Resort",
 }
+
+# Gebruikt door de /projecten/ overzichtspagina (kaart + kaartjes)
+HUB = {
+    "NAME": PROJECT_NAME,
+    "LOCATION": "Tenerife",
+    "PRICE": PRICE_FROM,
+    "THUMB": "https://projects.investinspain.be/images/los-jardines-de-abama-tenerife/hero.webp",
+    "LAT": 28.05,
+    "LNG": -16.73,
+    "HREF": "/los-jardines-de-abama-tenerife/",
+}

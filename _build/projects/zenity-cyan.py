@@ -33,3 +33,14 @@ DATA_EN = {
     "OG_DESCRIPTION": "Zenity Cyan in Estepona: exclusive villas with private pool, sea views and premium finishes in a gated community. Ultimate luxury living on the Costa del Sol. From € 1,779,000.",
     "HERO_BG_ALT": "Zenity Cyan Estepona luxury villa with private pool",
 }
+
+# Gebruikt door de /projecten/ overzichtspagina (kaart + kaartjes)
+HUB = {
+    "NAME": PROJECT_NAME,
+    "LOCATION": "Estepona",
+    "PRICE": PRICE_FROM,
+    "THUMB": "https://projects.investinspain.be/images/zenity-cyan/hero.webp",
+    "LAT": 36.439006,
+    "LNG": -5.126186,
+    "HREF": "/zenity-cyan/",
+}

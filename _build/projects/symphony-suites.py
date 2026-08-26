@@ -34,4 +34,14 @@ DATA_EN = {
     "HERO_BG_ALT": "Symphony Suites — modern apartment complex with sea views in Cancelada",
 }
 
-# NOTE: geen HUB-dict - dit project komt (voorlopig) niet op de projectenoverzichtspagina
+
+# Gebruikt door de /projecten/ overzichtspagina (kaart + kaartjes)
+HUB = {
+    "NAME": PROJECT_NAME,
+    "LOCATION": "Cancelada",
+    "PRICE": PRICE_FROM,
+    "THUMB": "https://projects.investinspain.be/images/symphony-suites/hero.webp",
+    "LAT": 36.465177,
+    "LNG": -5.059981,
+    "HREF": "/symphony-suites/",
+}

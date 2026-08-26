@@ -34,4 +34,14 @@ DATA_EN = {
     "HERO_BG_ALT": "Omnia — modern apartments in El Campanario, Estepona",
 }
 
-# NOTE: geen HUB-dict - dit project komt (voorlopig) niet op de projectenoverzichtspagina
+
+# Gebruikt door de /projecten/ overzichtspagina (kaart + kaartjes)
+HUB = {
+    "NAME": PROJECT_NAME,
+    "LOCATION": "El Campanario, Estepona",
+    "PRICE": PRICE_FROM,
+    "THUMB": "https://projects.investinspain.be/images/omnia/hero.webp",
+    "LAT": 36.455,
+    "LNG": -5.045,
+    "HREF": "/omnia/",
+}

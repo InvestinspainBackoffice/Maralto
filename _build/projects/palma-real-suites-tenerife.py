@@ -33,3 +33,14 @@ DATA_EN = {
     "OG_DESCRIPTION": "Palma Real Suites in Palm Mar, Tenerife: 160 apartments and penthouses (1-2 bedrooms) with tropical gardens, heated pool and panoramic views. Close to beach and golf. From € 645,000.",
     "HERO_BG_ALT": "Palma Real Suites Tenerife communal pool",
 }
+
+# Gebruikt door de /projecten/ overzichtspagina (kaart + kaartjes)
+HUB = {
+    "NAME": PROJECT_NAME,
+    "LOCATION": "Palm Mar, Tenerife",
+    "PRICE": PRICE_FROM,
+    "THUMB": "https://projects.investinspain.be/images/palma-real-suites-tenerife/hero.webp",
+    "LAT": 28.0645,
+    "LNG": -16.728,
+    "HREF": "/palma-real-suites-tenerife/",
+}

@@ -33,4 +33,14 @@ DATA_EN = {
     "OG_DESCRIPTION": "68 south-facing terraced homes with terrace, garden, sea views and shared pool in the sought-after La Cala de Mijas.",
     "HERO_BG_ALT": "Cala Serena Sun — communal pool with sun loungers and Mediterranean gardens",
 }
-# NOTE: geen HUB-dict - dit project komt (voorlopig) niet op de projectenoverzichtspagina
+
+# Gebruikt door de /projecten/ overzichtspagina (kaart + kaartjes)
+HUB = {
+    "NAME": PROJECT_NAME,
+    "LOCATION": "La Cala de Mijas",
+    "PRICE": PRICE_FROM,
+    "THUMB": "https://projects.investinspain.be/images/cala-serena-sun/hero.webp",
+    "LAT": 36.5561,
+    "LNG": -4.8159,
+    "HREF": "/cala-serena-sun/",
+}

@@ -35,3 +35,14 @@ DATA_EN = {
     "OG_DESCRIPTION": "72 south-facing apartments 2 min from the beach in La Cala de Mijas. Sea views, ground-floor units with garden, penthouses with generous terrace. From € 451,000.",
     "HERO_BG_ALT": "Vitta Marina terrace with sea views La Cala de Mijas",
 }
+
+# Gebruikt door de /projecten/ overzichtspagina (kaart + kaartjes)
+HUB = {
+    "NAME": PROJECT_NAME,
+    "LOCATION": "La Cala de Mijas",
+    "PRICE": PRICE_FROM,
+    "THUMB": "https://projects.investinspain.be/images/vitta-marina/hero.webp",
+    "LAT": 36.5561,
+    "LNG": -4.8159,
+    "HREF": "/vitta-marina/",
+}

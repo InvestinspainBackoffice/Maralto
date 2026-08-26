@@ -33,3 +33,14 @@ DATA_EN = {
     "OG_DESCRIPTION": "Higueron Bay Residences in Benalmádena: 60 apartments with 2 or 3 bedrooms in the sought-after El Higuerón neighbourhood. Heated pool, jacuzzis, coworking space and 500m from the beach promenade and 300m from Carvajal train station. From € 570,000.",
     "HERO_BG_ALT": "Higueron Bay Residences Benalmádena exterior apartments El Higuerón",
 }
+
+# Gebruikt door de /projecten/ overzichtspagina (kaart + kaartjes)
+HUB = {
+    "NAME": PROJECT_NAME,
+    "LOCATION": "Higuerón, Benalmádena",
+    "PRICE": PRICE_FROM,
+    "THUMB": "https://projects.investinspain.be/images/higueron-bay-residences/hero.webp",
+    "LAT": 36.593,
+    "LNG": -4.618,
+    "HREF": "/higueron-bay-residences/",
+}

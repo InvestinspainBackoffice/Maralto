@@ -34,5 +34,13 @@ DATA_EN = {
     "HERO_BG_ALT": "Almare — building with panoramic sea views",
 }
 
-# NOTE: geen HUB-dict - dit project komt (voorlopig) niet op de
-# projectenoverzichtspagina, op uitdrukkelijk verzoek.
+# Gebruikt door de /projecten/ overzichtspagina (kaart + kaartjes)
+HUB = {
+    "NAME": PROJECT_NAME,
+    "LOCATION": "La Cala de Mijas",
+    "PRICE": PRICE_FROM,
+    "THUMB": "https://projects.investinspain.be/images/almare/hero.webp",
+    "LAT": 36.5561,
+    "LNG": -4.8159,
+    "HREF": "/almare/",
+}

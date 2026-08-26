@@ -33,3 +33,14 @@ DATA_EN = {
     "OG_DESCRIPTION": "MARE near Puerto Banús: contemporary apartments with sea views, spacious terraces and communal amenities. Prime Costa del Sol location. From € 720,000.",
     "HERO_BG_ALT": "MARE apartments with sea views San Pedro de Alcántara",
 }
+
+# Gebruikt door de /projecten/ overzichtspagina (kaart + kaartjes)
+HUB = {
+    "NAME": PROJECT_NAME,
+    "LOCATION": "San Pedro de Alcántara",
+    "PRICE": PRICE_FROM,
+    "THUMB": "https://projects.investinspain.be/images/mare/hero.webp",
+    "LAT": 36.486461,
+    "LNG": -4.991505,
+    "HREF": "/mare/",
+}

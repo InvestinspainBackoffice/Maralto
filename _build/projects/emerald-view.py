@@ -34,5 +34,13 @@ DATA_EN = {
     "HERO_BG_ALT": "Emerald View — homes with panoramic sea views in Mijas Pueblo",
 }
 
-# NOTE: geen HUB-dict - dit project komt (voorlopig) niet op de
-# projectenoverzichtspagina, op uitdrukkelijk verzoek.
+# Gebruikt door de /projecten/ overzichtspagina (kaart + kaartjes)
+HUB = {
+    "NAME": PROJECT_NAME,
+    "LOCATION": "Mijas Pueblo",
+    "PRICE": PRICE_FROM,
+    "THUMB": "https://projects.investinspain.be/images/emerald-view/hero.webp",
+    "LAT": 36.5958,
+    "LNG": -4.6372,
+    "HREF": "/emerald-view/",
+}

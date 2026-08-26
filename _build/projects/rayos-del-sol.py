@@ -33,3 +33,14 @@ DATA_EN = {
     "OG_DESCRIPTION": "Rayos del Sol in Las Lagunas de Mijas: contemporary apartments with sea views, spacious terraces and communal amenities near the beach and golf. From € 520,000.",
     "HERO_BG_ALT": "Rayos del Sol Las Lagunas de Mijas exterior with sea views",
 }
+
+# Gebruikt door de /projecten/ overzichtspagina (kaart + kaartjes)
+HUB = {
+    "NAME": PROJECT_NAME,
+    "LOCATION": "Las Lagunas de Mijas",
+    "PRICE": PRICE_FROM,
+    "THUMB": "https://projects.investinspain.be/images/rayos-del-sol/hero.webp",
+    "LAT": 36.5075,
+    "LNG": -4.6472,
+    "HREF": "/rayos-del-sol/",
+}

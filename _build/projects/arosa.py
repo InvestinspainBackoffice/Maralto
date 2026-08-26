@@ -34,5 +34,13 @@ DATA_EN = {
     "HERO_BG_ALT": "Arosa — aerial view of the complex on the Torrenueva coastline",
 }
 
-# NOTE: geen HUB-dict - dit project komt (voorlopig) niet op de
-# projectenoverzichtspagina, op uitdrukkelijk verzoek.
+# Gebruikt door de /projecten/ overzichtspagina (kaart + kaartjes)
+HUB = {
+    "NAME": PROJECT_NAME,
+    "LOCATION": "Mijas Costa",
+    "PRICE": PRICE_FROM,
+    "THUMB": "https://projects.investinspain.be/images/arosa/hero.webp",
+    "LAT": 36.512963,
+    "LNG": -4.686583,
+    "HREF": "/arosa/",
+}

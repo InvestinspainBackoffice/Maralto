@@ -33,3 +33,14 @@ DATA_EN = {
     "OG_DESCRIPTION": "Palo Alto Marbella: 2-bedroom apartments in a unique gated resort in Ojén with golf, pools, nature and luxury finishes. 10 minutes from Marbella town centre.",
     "HERO_BG_ALT": "Palo Alto Marbella 2-bedroom apartment in gated resort Ojén",
 }
+
+# Gebruikt door de /projecten/ overzichtspagina (kaart + kaartjes)
+HUB = {
+    "NAME": PROJECT_NAME,
+    "LOCATION": "Ojén",
+    "PRICE": PRICE_FROM,
+    "THUMB": "https://projects.investinspain.be/images/palo-alto-2-slaapkamer/hero.webp",
+    "LAT": 36.543594,
+    "LNG": -4.878056,
+    "HREF": "/palo-alto-2-slaapkamer/",
+}

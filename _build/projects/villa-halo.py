@@ -33,4 +33,14 @@ DATA_EN = {
     "OG_DESCRIPTION": "Energy-neutral luxury villa with 5 bedrooms, 93m² private pool and panoramic golf and sea views in La Reserva de Sotogrande.",
     "HERO_BG_ALT": "Villa Halo — ultra-modern design villa with sea views in La Reserva de Sotogrande",
 }
-# NOTE: geen HUB-dict - dit project komt (voorlopig) niet op de projectenoverzichtspagina
+
+# Gebruikt door de /projecten/ overzichtspagina (kaart + kaartjes)
+HUB = {
+    "NAME": PROJECT_NAME,
+    "LOCATION": "Sotogrande",
+    "PRICE": PRICE_FROM,
+    "THUMB": "https://projects.investinspain.be/images/villa-halo/hero.webp",
+    "LAT": 36.283,
+    "LNG": -5.283,
+    "HREF": "/villa-halo/",
+}

@@ -34,4 +34,14 @@ DATA_EN = {
     "HERO_BG_ALT": "Villa Europa 6 — luxury villa with infinity pool in La Cala Golf, Mijas",
 }
 
-# NOTE: geen HUB-dict - dit project komt (voorlopig) niet op de projectenoverzichtspagina
+
+# Gebruikt door de /projecten/ overzichtspagina (kaart + kaartjes)
+HUB = {
+    "NAME": PROJECT_NAME,
+    "LOCATION": "La Cala Golf, Mijas",
+    "PRICE": PRICE_FROM,
+    "THUMB": "https://projects.investinspain.be/images/villa-europa-6/hero.webp",
+    "LAT": 36.5252,
+    "LNG": -4.7434,
+    "HREF": "/villa-europa-6/",
+}

@@ -34,4 +34,14 @@ DATA_EN = {
     "HERO_BG_ALT": "Wyndham Grand La Cala Golf Residences — luxury residences on the golf course in Mijas",
 }
 
-# NOTE: geen HUB-dict - dit project komt (voorlopig) niet op de projectenoverzichtspagina
+
+# Gebruikt door de /projecten/ overzichtspagina (kaart + kaartjes)
+HUB = {
+    "NAME": PROJECT_NAME,
+    "LOCATION": "Mijas",
+    "PRICE": PRICE_FROM,
+    "THUMB": "https://projects.investinspain.be/images/wyndham-grand-la-cala-golf-residences-2/hero.webp",
+    "LAT": 36.530481,
+    "LNG": -4.652558,
+    "HREF": "/wyndham-grand-la-cala-golf-residences-2/",
+}

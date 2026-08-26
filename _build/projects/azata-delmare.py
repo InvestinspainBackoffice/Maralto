@@ -35,3 +35,14 @@ DATA_EN = {
     "OG_DESCRIPTION": "74 apartments and penthouses 250 m from the beach in Casares Costa. Infinity pool, sea views, gated community. From € 430,250.",
     "HERO_BG_ALT": "Azata Delmare apartments with sea views Casares Costa",
 }
+
+# Gebruikt door de /projecten/ overzichtspagina (kaart + kaartjes)
+HUB = {
+    "NAME": PROJECT_NAME,
+    "LOCATION": "Casares Costa",
+    "PRICE": PRICE_FROM,
+    "THUMB": "https://projects.investinspain.be/images/azata-delmare/hero.webp",
+    "LAT": 36.4235,
+    "LNG": -5.1994,
+    "HREF": "/azata-delmare/",
+}

@@ -33,3 +33,14 @@ DATA_EN = {
     "OG_DESCRIPTION": "Just 5 ultra-luxury villas in Sierra Blanca, Marbella. Designed in collaboration with Elie Saab: ±1,000 m², stunning sea views, private pool, jacuzzi, sauna and elevator.",
     "HERO_BG_ALT": "Elie Saab Villas Sierra Blanca Marbella infinity pool sea views",
 }
+
+# Gebruikt door de /projecten/ overzichtspagina (kaart + kaartjes)
+HUB = {
+    "NAME": PROJECT_NAME,
+    "LOCATION": "Sierra Blanca, Marbella",
+    "PRICE": PRICE_FROM,
+    "THUMB": "https://projects.investinspain.be/images/elie-saab-villas/hero.webp",
+    "LAT": 36.517,
+    "LNG": -4.916,
+    "HREF": "/elie-saab-villas/",
+}

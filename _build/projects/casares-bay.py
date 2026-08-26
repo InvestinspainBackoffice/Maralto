@@ -34,5 +34,13 @@ DATA_EN = {
     "HERO_BG_ALT": "Casares Bay — modern apartments with sea views in Casares Costa",
 }
 
-# NOTE: geen HUB-dict - dit project komt (voorlopig) niet op de
-# projectenoverzichtspagina, op uitdrukkelijk verzoek.
+# Gebruikt door de /projecten/ overzichtspagina (kaart + kaartjes)
+HUB = {
+    "NAME": PROJECT_NAME,
+    "LOCATION": "Casares",
+    "PRICE": PRICE_FROM,
+    "THUMB": "https://projects.investinspain.be/images/casares-bay/hero.webp",
+    "LAT": 36.397359,
+    "LNG": -5.225527,
+    "HREF": "/casares-bay/",
+}

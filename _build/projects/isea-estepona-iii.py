@@ -33,3 +33,14 @@ DATA_EN = {
     "OG_DESCRIPTION": "Third phase of ISEA Estepona: 79 homes with 1-3 bedrooms in Arroyo Enmedio. Pool, gym, sauna, social club and green surroundings on the Costa del Sol.",
     "HERO_BG_ALT": "ISEA Estepona III apartments Arroyo Enmedio exterior",
 }
+
+# Gebruikt door de /projecten/ overzichtspagina (kaart + kaartjes)
+HUB = {
+    "NAME": PROJECT_NAME,
+    "LOCATION": "Arroyo Enmedio, Estepona",
+    "PRICE": PRICE_FROM,
+    "THUMB": "https://projects.investinspain.be/images/isea-estepona-iii/hero.webp",
+    "LAT": 36.465,
+    "LNG": -5.03,
+    "HREF": "/isea-estepona-iii/",
+}

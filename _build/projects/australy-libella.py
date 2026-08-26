@@ -35,3 +35,14 @@ DATA_EN = {
     "OG_DESCRIPTION": "67 homes with 2 and 3 bedrooms in Selwo, Estepona. Penthouses with solarium, ground-floor apartments with garden, generous terraces with sea views. From € 665,000.",
     "HERO_BG_ALT": "Australy Libella terrace with sea views Estepona",
 }
+
+# Gebruikt door de /projecten/ overzichtspagina (kaart + kaartjes)
+HUB = {
+    "NAME": PROJECT_NAME,
+    "LOCATION": "Selwo, Estepona",
+    "PRICE": PRICE_FROM,
+    "THUMB": "https://projects.investinspain.be/images/australy-libella/hero.webp",
+    "LAT": 36.442,
+    "LNG": -5.038,
+    "HREF": "/australy-libella/",
+}

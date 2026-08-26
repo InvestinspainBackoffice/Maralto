@@ -34,5 +34,13 @@ DATA_EN = {
     "HERO_BG_ALT": "Brightbay Villas — aerial view of the villas on the bay of La Herradura",
 }
 
-# NOTE: geen HUB-dict - dit project komt (voorlopig) niet op de
-# projectenoverzichtspagina, op uitdrukkelijk verzoek.
+# Gebruikt door de /projecten/ overzichtspagina (kaart + kaartjes)
+HUB = {
+    "NAME": PROJECT_NAME,
+    "LOCATION": "La Herradura",
+    "PRICE": PRICE_FROM,
+    "THUMB": "https://projects.investinspain.be/images/brightbay-villas/hero.webp",
+    "LAT": 36.728,
+    "LNG": -3.733,
+    "HREF": "/brightbay-villas/",
+}

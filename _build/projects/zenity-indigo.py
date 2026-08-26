@@ -33,3 +33,14 @@ DATA_EN = {
     "OG_DESCRIPTION": "Zenity Indigo in Estepona: 33 spacious homes with 2, 3 or 4 bedrooms and terraces up to 120m². Sea views, fitness, gym, social club and underground parking. Walking distance to the beach. From € 607,000.",
     "HERO_BG_ALT": "Zenity Indigo Estepona exterior apartments with sea views",
 }
+
+# Gebruikt door de /projecten/ overzichtspagina (kaart + kaartjes)
+HUB = {
+    "NAME": PROJECT_NAME,
+    "LOCATION": "Estepona",
+    "PRICE": PRICE_FROM,
+    "THUMB": "https://projects.investinspain.be/images/zenity-indigo/hero.webp",
+    "LAT": 36.439006,
+    "LNG": -5.126186,
+    "HREF": "/zenity-indigo/",
+}

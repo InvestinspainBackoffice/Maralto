@@ -33,3 +33,14 @@ DATA_EN = {
     "OG_DESCRIPTION": "Almazara Views in Istán: 23 townhouses with 3 bedrooms at the foot of La Concha, surrounded by the Sierra de las Nieves. Panoramic sea and mountain views, communal pool and native gardens. From € 620,000.",
     "HERO_BG_ALT": "Almazara Views Istán townhouses exterior panoramic view",
 }
+
+# Gebruikt door de /projecten/ overzichtspagina (kaart + kaartjes)
+HUB = {
+    "NAME": PROJECT_NAME,
+    "LOCATION": "Istán",
+    "PRICE": PRICE_FROM,
+    "THUMB": "https://projects.investinspain.be/images/almazara-views/hero.webp",
+    "LAT": 36.583,
+    "LNG": -4.973,
+    "HREF": "/almazara-views/",
+}

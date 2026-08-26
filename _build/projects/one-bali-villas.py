@@ -33,3 +33,14 @@ DATA_EN = {
     "OG_DESCRIPTION": "19 villas in a secured estate in La Cala de Mijas. Cinema room, spa and private pool. Discover this exclusive project via INVESTINSPAIN.BE.",
     "HERO_BG_ALT": "One Bali Villas La Cala de Mijas villa exterior",
 }
+
+# Gebruikt door de /projecten/ overzichtspagina (kaart + kaartjes)
+HUB = {
+    "NAME": PROJECT_NAME,
+    "LOCATION": "La Cala de Mijas",
+    "PRICE": PRICE_FROM,
+    "THUMB": "https://projects.investinspain.be/images/one-bali-villas/hero.webp",
+    "LAT": 36.5561,
+    "LNG": -4.8159,
+    "HREF": "/one-bali-villas/",
+}

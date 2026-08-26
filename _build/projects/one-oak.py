@@ -34,4 +34,14 @@ DATA_EN = {
     "HERO_BG_ALT": "One Oak — modern apartments with sea views in Torremolinos",
 }
 
-# NOTE: geen HUB-dict - dit project komt (voorlopig) niet op de projectenoverzichtspagina
+
+# Gebruikt door de /projecten/ overzichtspagina (kaart + kaartjes)
+HUB = {
+    "NAME": PROJECT_NAME,
+    "LOCATION": "Torremolinos",
+    "PRICE": PRICE_FROM,
+    "THUMB": "https://projects.investinspain.be/images/one-oak/hero.webp",
+    "LAT": 36.6281,
+    "LNG": -4.5032,
+    "HREF": "/one-oak/",
+}

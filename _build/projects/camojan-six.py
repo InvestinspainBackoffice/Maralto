@@ -33,3 +33,14 @@ DATA_EN = {
     "OG_DESCRIPTION": "Camojan Six in Marbella: six luxurious villas at the highest point of the gated community Cascada de Camojan. Panoramic mountain and sea views, private pool, gym, 24/7 security and fully surrounded by nature. From € 5,650,000.",
     "HERO_BG_ALT": "Camojan Six Marbella villa solarium Golden Mile",
 }
+
+# Gebruikt door de /projecten/ overzichtspagina (kaart + kaartjes)
+HUB = {
+    "NAME": PROJECT_NAME,
+    "LOCATION": "Golden Mile, Marbella",
+    "PRICE": PRICE_FROM,
+    "THUMB": "https://projects.investinspain.be/images/camojan-six/hero.webp",
+    "LAT": 36.497,
+    "LNG": -4.937,
+    "HREF": "/camojan-six/",
+}

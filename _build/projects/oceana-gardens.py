@@ -34,5 +34,13 @@ DATA_EN = {
     "HERO_BG_ALT": "Oceana Gardens — modern apartment on the New Golden Mile in Cancelada",
 }
 
-# NOTE: geen HUB-dict - dit project komt (voorlopig) niet op de
-# projectenoverzichtspagina, op uitdrukkelijk verzoek.
+# Gebruikt door de /projecten/ overzichtspagina (kaart + kaartjes)
+HUB = {
+    "NAME": PROJECT_NAME,
+    "LOCATION": "Cancelada",
+    "PRICE": PRICE_FROM,
+    "THUMB": "https://projects.investinspain.be/images/oceana-gardens/hero.webp",
+    "LAT": 36.465177,
+    "LNG": -5.059981,
+    "HREF": "/oceana-gardens/",
+}
