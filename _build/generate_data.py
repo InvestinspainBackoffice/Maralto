@@ -107,6 +107,8 @@ def build_project(project_file):
     mod = generate.load_module(project_file)
     if not hasattr(mod, "DATA"):
         return None  # alleen een HUB-vermelding, geen eigen pagina
+    if not hasattr(mod, "HUB"):
+        return None  # niet zichtbaar op de hub — chatbot toont enkel hub-projecten
 
     slug = mod.DATA["SLUG"]
     price_num = generate.parse_price_number(mod.DATA["PRICE_FROM"])
