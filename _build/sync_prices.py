@@ -190,9 +190,13 @@ def extract_lowest_price(text: str) -> int | None:
         upper = line.upper()
         if any(w in upper for w in ("RESERVADO", "SOLD", "VENDIDO")):
             continue
-        for m in PRICE_RE.finditer(line):
+        # Neem alleen de EERSTE prijs per rij (dat is altijd de woningprijs,
+        # niet de IVA, reservatiebedragen of termijnbetalingen die erna volgen)
+        m = PRICE_RE.search(line)
+        if m:
             num = int(m.group(1).replace(".", "").replace(",", ""))
-            if 50_000 < num < 50_000_000:
+            # Minimum € 248.000: filtert reservatiebedragen & termijnbetalingen
+            if 248_000 <= num < 50_000_000:
                 prices.append(num)
     return min(prices) if prices else None
 
