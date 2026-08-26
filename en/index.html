@@ -215,9 +215,15 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   border: 1px solid var(--line-light);
   border-radius: 0;
   box-shadow: 0 8px 30px rgba(0,0,0,0.5);
+  padding: 0;
+  overflow: hidden;
 }
 .leaflet-popup-tip { background: var(--bg-el); box-shadow: none; }
-.leaflet-popup-content { margin: 0.9rem 1rem; font-family: var(--font); }
+/* Standaard Leaflet-marge weggehaald zodat de foto edge-to-edge loopt;
+   de tekst-body krijgt zijn eigen padding (zie .map-popup__body). */
+.leaflet-popup-content { margin: 0; font-family: var(--font); }
+.map-popup__img { display: block; width: 100%; height: 110px; object-fit: cover; }
+.map-popup__body { padding: 0.75rem 0.9rem 0.9rem; }
 .map-popup__name { font-size: 0.9rem; color: var(--text); margin-bottom: 0.15rem; }
 .map-popup__meta { font-size: 0.7rem; color: var(--text-muted); margin-bottom: 0.6rem; }
 .map-popup__link {
@@ -228,7 +234,13 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   border-bottom: 1px solid var(--gold-dim);
   padding-bottom: 1px;
 }
-.leaflet-popup-close-button { color: var(--text-muted) !important; }
+.leaflet-popup-close-button {
+  color: var(--text) !important;
+  background: rgba(14,19,24,0.55) !important;
+  border-radius: 50%;
+  width: 20px !important; height: 20px !important;
+  top: 6px !important; right: 6px !important;
+}
 .leaflet-container { background: var(--bg) !important; font-family: var(--font) !important; }
 /* Blijft aanwezig (OpenStreetMap/CARTO vereisen attributie), maar zo
    onopvallend mogelijk: piepklein en bijna doorzichtig in de hoek. */
@@ -1547,7 +1559,11 @@ footer a { color: var(--gold-dim); text-underline-offset: 2px; }
       css.href = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.css';
       css.integrity = 'sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=';
       css.crossOrigin = '';
-      document.head.appendChild(css);
+      // Vooraan in <head> ingevoegd (niet appendChild) - anders landt
+      // Leaflet's eigen stylesheet NA onze <style>-tag in de cascade en
+      // wint zijn witte standaard-popup het van onze eigen dark-mode
+      // overrides (zelfde specificiteit, later gedefinieerd wint).
+      document.head.insertBefore(css, document.head.firstChild);
 
       var script = document.createElement('script');
       script.src = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js';
@@ -1694,7 +1710,8 @@ footer a { color: var(--gold-dim); text-underline-offset: 2px; }
     // Kaart toont het VOLLEDIGE gefilterde resultaat (alle pagina's), niet
     // enkel de huidige pagina.
     syncMapMarkers(sortedIdx);
-    renderMapList(sortedIdx);
+    currentSortedIdx = sortedIdx;
+    updateMapList();
 
     var pageCount = Math.max(1, Math.ceil(sortedIdx.length / PAGE_SIZE));
     if (currentPage > pageCount) currentPage = pageCount;
@@ -1790,6 +1807,23 @@ footer a { color: var(--gold-dim); text-underline-offset: 2px; }
   var map, markers, bounds, icon, drawLayerGroup;
   var drawing = false;
   var drawPoints = [];
+  var currentSortedIdx = []; // laatst berekende (locatie/prijs/zoek/gebied-)filtering, vóór paginering
+
+  // De lijst volgt het huidige kaartkader zodra de bezoeker zelf pant/
+  // zoomt, zonder dat daarvoor een gebied getekend hoeft te zijn - net
+  // zoals Idealista/Airbnb's "zoek in dit gebied". Een getekend/gecommit
+  // gebied (activeArea) heeft voorrang op het kader: dat is een bewuste
+  // keuze van de bezoeker, puur pannen/zoomen niet.
+  function updateMapList() {
+    var indices = currentSortedIdx;
+    if (map && !mapModal.hidden && !activeArea()) {
+      var viewBounds = map.getBounds();
+      indices = indices.filter(function(i){
+        return viewBounds.contains(L.latLng(projects[i].lat, projects[i].lng));
+      });
+    }
+    renderMapList(indices);
+  }
 
   // Zodra een gebied getekend/gecommit is, toont dit wat er echt in valt
   // als een lijst naast de kaart - i.p.v. enkel zichtbaar te zijn na het
@@ -1847,9 +1881,13 @@ footer a { color: var(--gold-dim); text-underline-offset: 2px; }
     markers = projects.map(function(p){
       var marker = L.marker([p.lat, p.lng], { icon: icon });
       marker.bindPopup(
-        '<div class="map-popup__name">' + p.name + '</div>' +
-        '<div class="map-popup__meta">' + p.location + ' &middot; ' + p.price + '</div>' +
-        '<a class="map-popup__link" href="' + p.href + '">View project &rarr;</a>'
+        '<img class="map-popup__img" src="' + p.thumb + '" alt="' + p.name + '" loading="lazy">' +
+        '<div class="map-popup__body">' +
+          '<div class="map-popup__name">' + p.name + '</div>' +
+          '<div class="map-popup__meta">' + p.location + ' &middot; ' + p.price + '</div>' +
+          '<a class="map-popup__link" href="' + p.href + '">View project &rarr;</a>' +
+        '</div>',
+        { maxWidth: 220 }
       );
       marker.bindTooltip(p.name, { direction: 'top', offset: [0, -8], className: 'marker-tooltip' });
       bounds.push([p.lat, p.lng]);
@@ -1876,6 +1914,10 @@ footer a { color: var(--gold-dim); text-underline-offset: 2px; }
     });
 
     drawLayerGroup = L.layerGroup().addTo(map);
+
+    // Lijst volgt mee zodra de bezoeker zelf pant/zoomt (zie updateMapList) -
+    // 'moveend' vat zowel pan als zoom in Leaflet.
+    map.on('moveend', updateMapList);
 
     map.on('click', function(e){
       if (!drawing) return;
