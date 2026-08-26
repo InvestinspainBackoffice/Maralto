@@ -1,7 +1,4 @@
 {
-  "redirects": [
-    { "source": "/", "destination": "/selectie/", "permanent": false }
-  ],
   "headers": [
     {
       "source": "/(.*)",
