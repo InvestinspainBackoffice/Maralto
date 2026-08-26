@@ -104,6 +104,7 @@ EXCLUDE = [
     "granados-2-slaapkamer-appartement-met-tuin",  # tijdelijk offline (aug 2026)
     "marbella-club-hills",          # uit hub: foto's mogen niet gebruikt worden (aug 2026)
     "palo-alto",                    # uit hub: foto's mogen niet gebruikt worden (aug 2026)
+    "zenity-azure",                 # uit hub (aug 2026)
     # Batches 22-44: tijdelijk uit de hub (terug naar 44-project staat van vóór aug 2026)
     "abril",
     "aida",
