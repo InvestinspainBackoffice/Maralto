@@ -71,26 +71,32 @@ STRINGS = {
         "DOCK_CLOSE_ARIA": "Sluiten",
         "DOCK_ARIA": "Ontvang projectinformatie",
 
-        "CHAT_TRIGGER": "Stel een vraag",
+        "CHAT_TRIGGER": "Chat met ons",
         "CHAT_ARIA": "Chat over dit project",
-        "CHAT_TITLE": "Vraag het ons",
+        "CHAT_TITLE": "Uw persoonlijke AI",
         "CHAT_SUBTITLE": "Antwoord binnen enkele seconden",
         "CHAT_CLOSE_ARIA": "Chat sluiten",
         # Let op: deze tekst gaat via JS door escapeHtml() heen (net als elk
         # modelantwoord), dus hier letterlijke tekens gebruiken en geen
         # HTML-entities - die zouden als &mdash; in beeld komen.
-        "CHAT_GREETING": "Goeiedag. Ik help u graag met vragen over __PROJECT_NAME__ — prijzen, ligging, faciliteiten of het aankoopproces in Spanje. Waar kan ik u mee helpen?",
+        "CHAT_GREETING": "Hoi, ik ben uw persoonlijke AI. Waarmee kan ik u vandaag helpen?",
         "CHAT_PLACEHOLDER": "Typ uw vraag&hellip;",
         "CHAT_SEND_ARIA": "Versturen",
         "CHAT_THINKING": "Aan het typen",
-        "CHAT_ERROR": "Er ging iets mis. Probeer het opnieuw of bel Gunther op +32 496 57 13 97.",
+        "CHAT_ERROR": "Er ging iets mis. Probeer het opnieuw of bel ons op +32 496 57 13 97.",
         "CHAT_DISCLAIMER": "AI-assistent &mdash; gesprekken worden bewaard om onze dienstverlening te verbeteren.",
         "CHAT_WA": "Liever WhatsApp?",
-        # Hub: geen huidig project, dus een begroeting gericht op kiezen.
-        # Ook deze gaat door escapeHtml(): geen HTML-entities gebruiken.
-        "CHAT_HUB_TITLE": "Zoek mee",
+        "CHAT_TALK_TO_AGENT": "Liever met een adviseur spreken",
+        # Meerkeuze-snelkeuzes (bv. regio): iemand die nog niet weet waar hij
+        # wil zoeken, moet meerdere gebieden kunnen aanduiden.
+        "CHAT_MULTI_HINT": "Meerdere mogelijk",
+        "CHAT_MULTI_CONFIRM": "Verder",
+        # Hub: geen huidig project, maar dezelfde begroeting (consistent met
+        # de projectpagina's, op vraag van het team). Ook deze gaat door
+        # escapeHtml(): geen HTML-entities gebruiken.
+        "CHAT_HUB_TITLE": "Uw persoonlijke AI",
         "CHAT_HUB_SUBTITLE": "Vind het project dat bij u past",
-        "CHAT_HUB_GREETING": "Goeiedag. Er staan meer dan honderd projecten aan de Costa del Sol op deze site. Vertel me waar u naar zoekt — streek, budget, eigen gebruik of verhuur — en ik zet de passende projecten voor u op een rij.",
+        "CHAT_HUB_GREETING": "Hoi, ik ben uw persoonlijke AI. Waarmee kan ik u vandaag helpen?",
 
         "HUB_HERO_TITLE": "PROJECTEN",
         "HUB_HERO_INTRO": "Ontdek onze actuele nieuwbouwprojecten aan de Costa del Sol &mdash; op kaart, en op naam.",
@@ -250,23 +256,26 @@ STRINGS = {
         "DOCK_CLOSE_ARIA": "Close",
         "DOCK_ARIA": "Receive project information",
 
-        "CHAT_TRIGGER": "Ask a question",
+        "CHAT_TRIGGER": "Chat with us",
         "CHAT_ARIA": "Chat about this project",
-        "CHAT_TITLE": "Ask us",
+        "CHAT_TITLE": "Your personal AI",
         "CHAT_SUBTITLE": "Answers within seconds",
         "CHAT_CLOSE_ARIA": "Close chat",
         # Zie de NL-variant: gaat door escapeHtml(), dus geen HTML-entities.
-        "CHAT_GREETING": "Hello. I'm happy to help with questions about __PROJECT_NAME__ — prices, location, amenities or the buying process in Spain. What would you like to know?",
+        "CHAT_GREETING": "Hi, I'm your personal AI. How can I assist you today?",
         "CHAT_PLACEHOLDER": "Type your question&hellip;",
         "CHAT_SEND_ARIA": "Send",
         "CHAT_THINKING": "Typing",
-        "CHAT_ERROR": "Something went wrong. Please try again or call Gunther on +32 496 57 13 97.",
+        "CHAT_ERROR": "Something went wrong. Please try again or call us on +32 496 57 13 97.",
         "CHAT_DISCLAIMER": "AI assistant &mdash; conversations are stored to help us improve our service.",
         "CHAT_WA": "Prefer WhatsApp?",
-        # Zie de NL-variant: hub-begroeting, gaat door escapeHtml().
-        "CHAT_HUB_TITLE": "Find yours",
+        "CHAT_TALK_TO_AGENT": "Prefer to talk to an advisor",
+        "CHAT_MULTI_HINT": "Select one or more",
+        "CHAT_MULTI_CONFIRM": "Continue",
+        # Zie de NL-variant: hub-begroeting, nu gelijk aan de projectpagina's.
+        "CHAT_HUB_TITLE": "Your personal AI",
         "CHAT_HUB_SUBTITLE": "Find the project that suits you",
-        "CHAT_HUB_GREETING": "Hello. There are over a hundred projects on the Costa del Sol on this site. Tell me what you're looking for — area, budget, own use or rental — and I'll line up the ones that fit.",
+        "CHAT_HUB_GREETING": "Hi, I'm your personal AI. How can I assist you today?",
 
         "HUB_HERO_TITLE": "PROJECTS",
         "HUB_HERO_INTRO": "Discover our current new-build projects on the Costa del Sol &mdash; by map, and by name.",
