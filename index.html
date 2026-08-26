@@ -3607,11 +3607,14 @@ html.ai-chat-on .lead-dock { display: none; }
     // gedrag staat daarom pas aan na een eerste tik; tot dan glijdt een
     // swipe gewoon door naar de pagina eronder.
     var isTouch = ('ontouchstart' in window) || navigator.maxTouchPoints > 0;
+    // Geen `bounds`/`fitBoundsOptions` hier in de constructor: dat start een
+    // eigen, asynchrone positionering die soms na de expliciete fitBounds()
+    // hieronder (in openMap) afvuurt en die overschrijft - met een veel te
+    // ver uitgezoomd resultaat tot gevolg. Eén duidelijke plek (openMap) die
+    // de camera zet, geen twee die met elkaar wedijveren.
     map = new maplibregl.Map({
       container: 'map',
       style: 'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json',
-      bounds: COSTA_DEL_SOL_BOUNDS,
-      fitBoundsOptions: { padding: 20 },
       scrollZoom: false,
       dragPan: !isTouch,
       dragRotate: false,
