@@ -242,7 +242,11 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   top: 6px !important; right: 6px !important;
 }
 .leaflet-container { background: var(--bg) !important; font-family: var(--font) !important; }
-/* Blijft aanwezig (OpenStreetMap/CARTO vereisen attributie), maar zo
+/* OpenStreetMap levert enkel lichte tegels zonder API-key; dit filter maakt
+   er een donkere kaart van die bij het ontwerp past (CARTO's kant-en-klare
+   dark-tegels vereisen intussen een account/key). */
+.leaflet-tile-pane { filter: grayscale(1) invert(1) brightness(0.9) contrast(1.15); }
+/* Blijft aanwezig (OpenStreetMap vereist attributie), maar zo
    onopvallend mogelijk: piepklein en bijna doorzichtig in de hoek. */
 .leaflet-control-attribution {
   background: transparent !important;
@@ -3412,9 +3416,12 @@ html.ai-chat-on .lead-dock { display: none; }
     return withPrice.concat(withoutPrice);
   }
 
+  function hasActiveFilter() {
+    return Boolean(filterLocation.value || filterPrice.value || filterSearch.value.trim() || committedArea);
+  }
+
   function updateClearButton() {
-    var active = Boolean(filterLocation.value || filterPrice.value || filterSearch.value.trim() || committedArea);
-    filterClear.hidden = !active;
+    filterClear.hidden = !hasActiveFilter();
   }
 
   function applyFilters() {
@@ -3520,6 +3527,11 @@ html.ai-chat-on .lead-dock { display: none; }
   var mapModalList = document.getElementById('mapModalList');
 
   var map, markers, bounds, icon, drawLayerGroup;
+  // Vaste standaardweergave van de kaart: de Costa del Sol-kust (Sotogrande
+  // tot Málaga). Projecten op Tenerife/Ibiza/Mallorca zijn er wel, maar
+  // tellen niet mee voor de standaardzoom - anders toont de kaart bij het
+  // openen heel West-Europa/Noord-Afrika i.p.v. onze eigen regio.
+  var COSTA_DEL_SOL_VIEW = { center: [36.5, -4.95], zoom: 10 };
   var drawing = false;
   var drawPoints = [];
   var currentSortedIdx = []; // laatst berekende (locatie/prijs/zoek/gebied-)filtering, vóór paginering
@@ -3572,9 +3584,14 @@ html.ai-chat-on .lead-dock { display: none; }
     // swipe gewoon door naar de pagina eronder.
     var isTouch = ('ontouchstart' in window) || navigator.maxTouchPoints > 0;
     map = L.map('map', { scrollWheelZoom: false, attributionControl: true, dragging: !isTouch });
-    L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
-      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
-      subdomains: 'abcd',
+    // CARTO's gratis dark-tegels vereisen intussen een API-key (zonder key
+    // tonen ze een "API KEY REQUIRED"-watermerk i.p.v. de kaart). We
+    // gebruiken daarom OpenStreetMap's gewone, key-loze tegels en maken ze
+    // via CSS (.leaflet-tile-pane) donker, zodat de kaart bij het huidige
+    // ontwerp blijft passen zonder een externe account nodig te hebben.
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+      subdomains: 'abc',
       maxZoom: 19
     }).addTo(map);
 
@@ -3673,14 +3690,19 @@ html.ai-chat-on .lead-dock { display: none; }
     // onder de muis van de bezoeker weg net terwijl die een punt probeert
     // te plaatsen.
     if (!mapModal.hidden && !drawing) {
-      // Zoomt lichtjes in op de gefilterde regio; zonder resultaten of
-      // filters valt de kaart terug op het volledige overzicht.
-      if (visibleBounds.length === 1) {
+      // Zoomt enkel in op de gefilterde regio als er ook echt een filter
+      // actief is. Zonder filter (het volledige, ongefilterde overzicht)
+      // blijft de kaart op de vaste Costa del Sol-weergave staan - anders
+      // trekt een los project op Tenerife/Ibiza/Mallorca de kaart open tot
+      // heel West-Europa/Noord-Afrika.
+      if (!hasActiveFilter()) {
+        map.flyTo(COSTA_DEL_SOL_VIEW.center, COSTA_DEL_SOL_VIEW.zoom, { duration: 0.6 });
+      } else if (visibleBounds.length === 1) {
         map.flyTo(visibleBounds[0], 13, { duration: 0.6 });
       } else if (visibleBounds.length > 1) {
         map.flyToBounds(visibleBounds, { padding: [80,80], maxZoom: 13, duration: 0.6 });
       } else if (bounds.length) {
-        map.flyToBounds(bounds, { padding: [80,80], maxZoom: 10, duration: 0.6 });
+        map.flyTo(COSTA_DEL_SOL_VIEW.center, COSTA_DEL_SOL_VIEW.zoom, { duration: 0.6 });
       }
     }
   }
@@ -3694,8 +3716,12 @@ html.ai-chat-on .lead-dock { display: none; }
       initMap();
       setTimeout(function(){
         map.invalidateSize();
-        if (bounds.length === 1) map.setView(bounds[0], 10);
-        else if (bounds.length > 1) map.fitBounds(bounds, { padding: [80,80], maxZoom: 10 });
+        // Vaste standaardweergave op de Costa del Sol i.p.v. fitBounds over
+        // alle markers - anders trekt een enkel project op Tenerife/Ibiza/
+        // Mallorca de kaart helemaal open tot heel West-Europa/Noord-Afrika.
+        // Die eilandprojecten blijf je gewoon bereiken via de locatiefilter
+        // of door zelf uit te zoomen.
+        map.setView(COSTA_DEL_SOL_VIEW.center, COSTA_DEL_SOL_VIEW.zoom);
         applyFilters(); // her-sync markers/telling nu de kaart zichtbaar is
       }, 50);
     });
