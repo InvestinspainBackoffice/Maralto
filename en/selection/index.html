@@ -610,25 +610,42 @@ footer a { color: var(--gold-dim); text-underline-offset: 2px; }
 }
 
 /* ── Kaart: horizontaal scrollbaar op smal scherm ─────────────────────── */
+.sel-map-wrap { position: relative; }
 @media (max-width: 600px) {
   .sel-map-wrap {
     overflow-x: auto;
     overflow-y: hidden;
     -webkit-overflow-scrolling: touch;
-    scrollbar-width: none; /* Firefox */
+    scrollbar-width: none;
   }
   .sel-map-wrap::-webkit-scrollbar { display: none; }
-  /* Vaste breedte zodat de kaart niet platgedrukt wordt op portret */
   .sel-map { width: 640px; height: auto; }
-  /* Subtiel swipe-hint icoontje */
+  /* Fade-gradient rechts: aanduiding dat de kaart doorloopt */
   .sel-map-wrap::after {
     content: '';
-    position: absolute; right: 0; top: 0; bottom: 0; width: 32px;
-    background: linear-gradient(to right, transparent, rgba(14,19,24,0.7));
-    pointer-events: none;
+    position: absolute; right: 0; top: 0; bottom: 0; width: 48px;
+    background: linear-gradient(to right, transparent, rgba(14,19,24,0.85));
+    pointer-events: none; z-index: 2;
   }
+  /* Swipe-hint balk onder de kaart */
+  .sel-map-hint { display: flex; }
 }
-.sel-map-wrap { position: relative; }
+.sel-map-hint {
+  display: none;
+  align-items: center; justify-content: center; gap: 0.5rem;
+  margin-top: 0.55rem;
+  font-size: 0.62rem; letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--text-muted);
+  animation: hint-pulse 2s ease-in-out 0.6s 3;
+}
+.sel-map-hint svg {
+  width: 14px; height: 14px; stroke: var(--gold-dim);
+  stroke-width: 1.5; fill: none; flex-shrink: 0;
+}
+@keyframes hint-pulse {
+  0%,100% { opacity: 0.5; }
+  50%      { opacity: 1; }
+}
 </style>
 </head>
 <body class="page-selectie">
@@ -702,6 +719,11 @@ footer a { color: var(--gold-dim); text-underline-offset: 2px; }
     <text class="sel-map__dir" x="832" y="214" text-anchor="end">Málaga →</text>
   </svg>
 </div>
+<p class="sel-map-hint" aria-hidden="true">
+  <svg viewBox="0 0 24 24"><path d="M19 12H5"/><path d="M12 5l7 7-7 7"/></svg>
+  Swipe to explore the map
+  <svg viewBox="0 0 24 24"><path d="M5 12h14"/><path d="M12 19l7-7-7-7"/></svg>
+</p>
         <p class="sel-step__error" role="alert" hidden>Choose at least one answer to continue</p>
       </section>
 

@@ -411,7 +411,12 @@ def render_region_options(question, lang, strings, prices):
         f'    <text class="sel-map__dir" x="8" y="214">← Sotogrande</text>\n'
         f'    <text class="sel-map__dir" x="832" y="214" text-anchor="end">Málaga →</text>\n'
         f'  </svg>\n'
-        f'</div>'
+        f'</div>\n'
+        f'<p class="sel-map-hint" aria-hidden="true">\n'
+        f'  <svg viewBox="0 0 24 24"><path d="M19 12H5"/><path d="M12 5l7 7-7 7"/></svg>\n'
+        f'  {strings["SEL_MAP_SWIPE"]}\n'
+        f'  <svg viewBox="0 0 24 24"><path d="M5 12h14"/><path d="M12 19l7-7-7-7"/></svg>\n'
+        f'</p>'
     )
 
 
