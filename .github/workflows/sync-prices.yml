@@ -1,0 +1,43 @@
+name: Sync Dropbox Prijslijsten
+
+on:
+  schedule:
+    # Elke dag om 06:00 UTC (08:00 Belgische zomertijd)
+    - cron: "0 6 * * *"
+  workflow_dispatch:
+    # Laat ook handmatig starten via GitHub → Actions → Run workflow
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Python instellen
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Afhankelijkheden installeren
+        run: pip install dropbox pdfplumber
+
+      - name: Prijzen synchroniseren
+        env:
+          DROPBOX_TOKEN: ${{ secrets.DROPBOX_TOKEN }}
+        run: python3 _build/sync_prices.py
+
+      - name: Commit & push als er iets veranderd is
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add api/_projects.json selectie/index.html en/selection/index.html \
+                  hub/ || true
+          if git diff --cached --quiet; then
+            echo "Geen wijzigingen — niets te committen."
+          else
+            DATUM=$(date -u +"%Y-%m-%d")
+            git commit -m "chore: automatische prijsupdate Dropbox $DATUM [skip ci]"
+            git push
+          fi
