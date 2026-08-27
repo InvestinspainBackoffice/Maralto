@@ -166,9 +166,15 @@ a { color: inherit; text-decoration: none; }
   opacity: 0;
   animation: logo-converge-center 0.7s var(--ease) 0.65s forwards,
              logo-lock-ring 0.5s var(--ease) 1.3s forwards;
+  transition: transform 0.3s var(--ease), box-shadow 0.3s var(--ease);
 }
 .logo-strip__item:nth-child(1) { animation-name: logo-converge-left, logo-lock-ring; animation-delay: 0.55s, 1.3s; }
 .logo-strip__item:nth-child(3) { animation-name: logo-converge-right, logo-lock-ring; animation-delay: 0.55s, 1.3s; }
+.logo-strip__item:hover,
+.logo-strip__item:focus-visible {
+  transform: translateY(-6px) scale(1.05);
+  box-shadow: 0 16px 36px rgba(0,0,0,0.45), 0 0 0 3px rgba(196,169,125,0.45);
+}
 .logo-strip__item img { width: 100%; height: 100%; object-fit: contain; }
 
 /* ── Content blocks ── */
@@ -389,6 +395,7 @@ footer a { color: var(--gold-dim); text-underline-offset: 2px; }
   .logo-strip__item {
     animation: none; opacity: 1; transform: none; box-shadow: 0 8px 30px rgba(0,0,0,0.35);
   }
+  .logo-strip__item:hover, .logo-strip__item:focus-visible { transform: none; }
   .video-frame--hero {
     animation: none; opacity: 1; clip-path: none; transform: none;
   }
