@@ -24,6 +24,12 @@ LANGUAGES = ["nl", "en"]
 
 HUB_OG_IMAGE = "https://investinspain.be/wp-content/uploads/2026/07/SOLENNE-001-scaled.jpg"
 
+# Maps JavaScript API-key (client-side, dus sowieso zichtbaar in de
+# paginabron - beveiliging zit in de website-restricties op de key zelf in
+# de Google Cloud Console, niet in geheimhouding). Hergebruikt van de oude
+# IIS-website.
+GOOGLE_MAPS_API_KEY = "AIzaSyDXFRui_EYhiYQebkyCxcEBnU7cPtEMiCs"
+
 HUB_TEXT = {
     "nl": {
         "TITLE": "Onze projecten — INVESTINSPAIN.BE",
@@ -363,6 +369,7 @@ def build(lang):
     page = page.replace("__LOCATION_OPTIONS__", render_location_options(entries))
     page = page.replace("__PRICE_OPTIONS__", render_price_options())
     page = page.replace("__MAP_MARKERS_JSON__", json.dumps(markers, ensure_ascii=False))
+    page = page.replace("__GOOGLE_MAPS_API_KEY__", GOOGLE_MAPS_API_KEY)
     page = page.replace("__HERO_ROTATION_JSON__", json.dumps(hero_rotation, ensure_ascii=False))
     page = page.replace("__CARD_EXTRA_CSS__", card_extra_css)
 

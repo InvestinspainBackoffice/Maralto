@@ -63,9 +63,9 @@
 <link rel="preconnect" href="https://unpkg.com" crossorigin>
 <link rel="preload" as="image" href="https://projects.investinspain.be/images/maralto/thumb.webp" fetchpriority="high">
 <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600&display=swap" rel="stylesheet">
-<!-- MapLibre GL (CSS+JS) laadt pas zodra de bezoeker de kaart-overlay opent
-     (zie loadMapLibre() in de JS onderaan) - de kaart staat nu standaard
-     dicht, dus dit hoeft de eerste render niet meer te blokkeren. -->
+<!-- Google Maps JS laadt pas zodra de bezoeker de kaart-overlay opent (zie
+     loadGoogleMaps() in de JS onderaan) - de kaart staat nu standaard dicht,
+     dus dit hoeft de eerste render niet meer te blokkeren. -->
 <style>
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
 :root {
@@ -210,19 +210,22 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   box-shadow: 0 20px 60px rgba(0,0,0,0.5);
   filter: saturate(0.9);
 }
-.maplibregl-popup-content {
-  background: var(--bg-el);
-  border: 1px solid var(--line-light);
-  border-radius: 0;
-  box-shadow: 0 8px 30px rgba(0,0,0,0.5);
-  padding: 0;
-  overflow: hidden;
-  font-family: var(--font);
+/* Google Maps' InfoWindow-DOM is niet officieel gedocumenteerd, maar deze
+   klassen zijn al jaren stabiel gebleken over API-versies heen. */
+.gm-style-iw-c {
+  background: var(--bg-el) !important;
+  border: 1px solid var(--line-light) !important;
+  border-radius: 0 !important;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.5) !important;
+  padding: 0 !important;
+  max-width: 220px !important;
 }
-.maplibregl-popup-anchor-top .maplibregl-popup-tip { border-bottom-color: var(--line-light); }
-.maplibregl-popup-anchor-bottom .maplibregl-popup-tip { border-top-color: var(--line-light); }
-.maplibregl-popup-anchor-left .maplibregl-popup-tip { border-right-color: var(--line-light); }
-.maplibregl-popup-anchor-right .maplibregl-popup-tip { border-left-color: var(--line-light); }
+.gm-style-iw-d { overflow: hidden !important; padding: 0 !important; }
+/* Het driehoekige "staartje" onder de InfoWindow verbergen i.p.v. herkleuren -
+   eenvoudiger dan Google's interne tail-opbouw natrekken over versies heen. */
+.gm-style-iw-tail, .gm-style-iw-t::after { display: none !important; }
+.gm-ui-hover-effect { top: 4px !important; right: 4px !important; opacity: 1 !important; }
+.gm-ui-hover-effect > span { background-color: var(--text) !important; }
 .map-popup__img { display: block; width: 100%; height: 110px; object-fit: cover; }
 .map-popup__body { padding: 0.75rem 0.9rem 0.9rem; }
 .map-popup__name { font-size: 0.9rem; color: var(--text); margin-bottom: 0.15rem; }
@@ -235,78 +238,14 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   border-bottom: 1px solid var(--gold-dim);
   padding-bottom: 1px;
 }
-.maplibregl-popup-close-button {
-  color: var(--text) !important;
-  background: rgba(14,19,24,0.55) !important;
-  border-radius: 50%;
-  width: 20px !important; height: 20px !important;
-  line-height: 20px !important;
-  top: 6px !important; right: 6px !important;
-}
-.maplibregl-map { background: var(--bg) !important; font-family: var(--font) !important; }
-/* Blijft aanwezig (CARTO/OpenStreetMap vereisen attributie), maar zo
-   onopvallend mogelijk: piepklein en bijna doorzichtig in de hoek. */
-.maplibregl-ctrl-attrib {
-  background: transparent !important;
-  color: rgba(138,150,163,0.35) !important;
-  font-size: 8px !important;
-  line-height: 1.2;
-  padding: 1px 4px !important;
-}
-.maplibregl-ctrl-attrib a { color: rgba(158,137,104,0.4) !important; }
-.maplibregl-ctrl-attrib-button { display: none !important; }
-.maplibregl-ctrl-group {
+/* Zoomknoppen donker gestyled. Google's copyright/logo-attributie in de
+   hoeken blijft overal ongemoeid - dat mag niet verborgen worden van
+   Google (verplicht in hun gebruiksvoorwaarden). */
+.gm-bundled-control .gmnoprint > div {
   background: var(--bg-el) !important;
   border: 1px solid var(--line-light) !important;
-  border-radius: 0 !important;
-  box-shadow: none !important;
 }
-.maplibregl-ctrl-group button + button { border-top: 1px solid var(--line-light) !important; }
-.maplibregl-ctrl-icon { filter: invert(1) brightness(1.6); }
-.marker-wrap { position: relative; cursor: pointer; }
-.marker-pin {
-  width: 14px; height: 14px;
-  border-radius: 50%;
-  background: var(--gold);
-  border: 2px solid var(--bg);
-  box-shadow: 0 0 0 2px var(--gold-dim);
-}
-.marker-tooltip {
-  position: absolute;
-  bottom: 100%;
-  left: 50%;
-  transform: translateX(-50%) translateY(-8px);
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.15s;
-  background: var(--bg-el);
-  border: 1px solid var(--line-light);
-  box-shadow: 0 6px 20px rgba(0,0,0,0.5);
-  color: var(--text);
-  font-family: var(--font);
-  font-size: 0.75rem;
-  white-space: nowrap;
-  padding: 0.4rem 0.7rem;
-}
-.marker-wrap:hover .marker-tooltip { opacity: 1; }
-
-/* ── Aanraakhint (mobiel): 1 vinger scrollt de pagina, tik om de kaart te bedienen ── */
-.map-touch-hint {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background: rgba(14,19,24,0.8);
-  color: var(--text);
-  font-size: 0.68rem;
-  letter-spacing: 0.05em;
-  padding: 0.65rem 1.2rem;
-  border: 1px solid var(--line-light);
-  white-space: nowrap;
-  pointer-events: none;
-  z-index: 500;
-  transition: opacity 0.3s;
-}
+.gm-control-active img { filter: invert(1) brightness(1.6); }
 
 /* ── Eyebrow boven de titel ── */
 .page-eyebrow {
@@ -3273,38 +3212,23 @@ html.ai-chat-on .lead-dock { display: none; }
 })();
 
 (function(){
-  /* ═══════════ MAPLIBRE GL (lazy geladen, pas bij openen kaart-overlay) ═══════════
-     De kaart staat standaard dicht - CSS + JS van een kaartbibliotheek
-     onvoorwaardelijk in elke pageload meenemen was pure render-blocking
-     overhead voor bezoekers die "Bekijk op kaart" nooit aanklikken.
-     MapLibre GL i.p.v. Leaflet: rendert CARTO's eigen (gratis, key-loze)
-     "Dark Matter"-vectorstijl - dezelfde look als de kaart altijd had,
-     zonder de watermerk-quota van CARTO's oude platte tegel-CDN en zonder
-     een CSS-filter-truc op gewone OpenStreetMap-tegels. */
-  var mapLibrePromise = null;
-  function loadMapLibre() {
-    if (window.maplibregl) return Promise.resolve();
-    if (mapLibrePromise) return mapLibrePromise;
-    mapLibrePromise = new Promise(function(resolve){
-      var css = document.createElement('link');
-      css.rel = 'stylesheet';
-      css.href = 'https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css';
-      css.integrity = 'sha256-V2sIX92Uh6ZaGSFTKMHghsB85b9toJtmazgG09AI2uk=';
-      css.crossOrigin = '';
-      // Vooraan in <head> ingevoegd (niet appendChild) - anders landt
-      // MapLibre's eigen stylesheet NA onze <style>-tag in de cascade en
-      // wint zijn standaard-popup het van onze eigen dark-mode overrides
-      // (zelfde specificiteit, later gedefinieerd wint).
-      document.head.insertBefore(css, document.head.firstChild);
-
+  /* ═══════════ GOOGLE MAPS (lazy geladen, pas bij openen kaart-overlay) ═══════════
+     De kaart staat standaard dicht - de kaart-JS onvoorwaardelijk in elke
+     pageload meenemen was pure render-blocking overhead voor bezoekers die
+     "Bekijk op kaart" nooit aanklikken. */
+  var googleMapsPromise = null;
+  function loadGoogleMaps() {
+    if (window.google && window.google.maps) return Promise.resolve();
+    if (googleMapsPromise) return googleMapsPromise;
+    googleMapsPromise = new Promise(function(resolve){
+      window.__onGoogleMapsLoaded = function(){ resolve(); };
       var script = document.createElement('script');
-      script.src = 'https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js';
-      script.integrity = 'sha256-vpYzxNhw4m+zfxz+XFp3GBZnEUAD6hYgeseFDY2ordE=';
-      script.crossOrigin = '';
-      script.onload = function(){ resolve(); };
+      // Geen Subresource Integrity mogelijk: Google's eigen loader-script
+      // is bewust dynamisch/versieloos en ondersteunt geen vaste hash.
+      script.src = 'https://maps.googleapis.com/maps/api/js?key=AIzaSyDXFRui_EYhiYQebkyCxcEBnU7cPtEMiCs&loading=async&callback=__onGoogleMapsLoaded';
       document.head.appendChild(script);
     });
-    return mapLibrePromise;
+    return googleMapsPromise;
   }
 
   var observer = new IntersectionObserver(function(entries){
@@ -3539,11 +3463,8 @@ html.ai-chat-on .lead-dock { display: none; }
   var areaChip = document.getElementById('areaChip');
   var mapModalList = document.getElementById('mapModalList');
 
-  var map, markers, markerVisible, bounds;
-  // App-brede coördinaten blijven overal [lat,lng] (zoals Leaflet ze gebruikte
-  // en zoals pointInPolygon hieronder ze verwacht); enkel vlak vóór een
-  // MapLibre-aanroep zetten we om naar diens [lng,lat]-volgorde.
-  function toLngLat(pt) { return [pt[1], pt[0]]; }
+  var map, markers, markerVisible, bounds, infoWindow, projHelper;
+  var drawPolygon, drawPointMarkers = [];
   // Vaste standaardweergave van de kaart: een geografische begrenzing (geen
   // vast zoomgetal!) rond de Costa del Sol-kust, Sotogrande tot Málaga.
   // Een vast zoomgetal toont op een groot scherm (bredere/hogere #map-div)
@@ -3552,7 +3473,9 @@ html.ai-chat-on .lead-dock { display: none; }
   // aan en toont altijd hetzelfde stuk kust. Projecten op Tenerife/Ibiza/
   // Mallorca vallen hier bewust buiten; die blijf je gewoon bereiken via de
   // locatiefilter of door zelf uit te zoomen.
-  var COSTA_DEL_SOL_BOUNDS = [[-5.35, 36.28], [-4.35, 36.75]]; // [ [swLng,swLat], [neLng,neLat] ]
+  var COSTA_DEL_SOL_SW = { lat: 36.28, lng: -5.35 };
+  var COSTA_DEL_SOL_NE = { lat: 36.75, lng: -4.35 };
+  function costaDelSolBounds() { return new google.maps.LatLngBounds(COSTA_DEL_SOL_SW, COSTA_DEL_SOL_NE); }
   var drawing = false;
   var drawPoints = [];
   var currentSortedIdx = []; // laatst berekende (locatie/prijs/zoek/gebied-)filtering, vóór paginering
@@ -3566,9 +3489,11 @@ html.ai-chat-on .lead-dock { display: none; }
     var indices = currentSortedIdx;
     if (map && !mapModal.hidden && !activeArea()) {
       var viewBounds = map.getBounds();
-      indices = indices.filter(function(i){
-        return viewBounds.contains([projects[i].lng, projects[i].lat]);
-      });
+      if (viewBounds) {
+        indices = indices.filter(function(i){
+          return viewBounds.contains({ lat: projects[i].lat, lng: projects[i].lng });
+        });
+      }
     }
     renderMapList(indices);
   }
@@ -3600,143 +3525,167 @@ html.ai-chat-on .lead-dock { display: none; }
   // initMap is async (de kaartstijl moet eerst laden) en roept `done` pas
   // aan zodra markers/teken-lagen echt klaarstaan; op een tweede open()
   // bestaat de kaart al en wordt `done` meteen aangeroepen.
+  // Onzichtbare OverlayView, enkel om via getProjection() lat/lng naar
+  // pixelposities om te zetten (nodig voor de klik-declustering hieronder) -
+  // Google's eigen aanbevolen manier om aan zo'n projectie te komen.
+  function makeProjectionHelper() {
+    function Helper() {}
+    Helper.prototype = new google.maps.OverlayView();
+    Helper.prototype.onAdd = function(){};
+    Helper.prototype.onRemove = function(){};
+    Helper.prototype.draw = function(){};
+    var helper = new Helper();
+    helper.setMap(map);
+    return helper;
+  }
+
+  function popupHtml(p) {
+    return '<img class="map-popup__img" src="' + p.thumb + '" alt="' + p.name + '" loading="lazy">' +
+      '<div class="map-popup__body">' +
+        '<div class="map-popup__name">' + p.name + '</div>' +
+        '<div class="map-popup__meta">' + p.location + ' &middot; ' + p.price + '</div>' +
+        '<a class="map-popup__link" href="' + p.href + '">View project &rarr;</a>' +
+      '</div>';
+  }
+
+  // Ronde gouden pin als SVG, zelfde kleuren als de rest van de site -
+  // klassieke google.maps.Marker rendert via een afbeelding, niet via
+  // stijlbare DOM zoals de vorige MapLibre-versie, dus geen losse CSS-klasse
+  // meer voor het pinnetje.
+  // Als functies i.p.v. constanten: `google` bestaat pas nadat de Maps-JS
+  // geladen is (loadGoogleMaps), en deze IIFE draait al bij elke pageload,
+  // dus meteen bij het inladen `google.maps.Size` aanroepen zou altijd
+  // crashen vóór de kaart ooit geopend is.
+  function markerIcon() {
+    return {
+      url: 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(
+        '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">' +
+        '<circle cx="12" cy="12" r="10" fill="none" stroke="#9E8968" stroke-width="2"/>' +
+        '<circle cx="12" cy="12" r="7" fill="#C4A97D" stroke="#0E1318" stroke-width="2"/>' +
+        '</svg>'
+      ),
+      scaledSize: new google.maps.Size(24, 24),
+      anchor: new google.maps.Point(12, 12)
+    };
+  }
+  function drawPointIcon() {
+    return {
+      path: google.maps.SymbolPath.CIRCLE,
+      scale: 5,
+      fillColor: '#C4A97D',
+      fillOpacity: 1,
+      strokeColor: '#0E1318',
+      strokeWeight: 2
+    };
+  }
+  // Sobere, donkere kaartstijl in dezelfde kleuren als de rest van de site
+  // (Google levert zelf geen kant-en-klare "dark mode" zoals CARTO dat had).
+  var GOOGLE_MAP_DARK_STYLE = [
+    { elementType: 'geometry', stylers: [{ color: '#0e1318' }] },
+    { elementType: 'labels.icon', stylers: [{ visibility: 'off' }] },
+    { elementType: 'labels.text.fill', stylers: [{ color: '#8a96a3' }] },
+    { elementType: 'labels.text.stroke', stylers: [{ color: '#0e1318' }] },
+    { featureType: 'administrative', elementType: 'geometry', stylers: [{ color: '#2a3644' }] },
+    { featureType: 'administrative.land_parcel', stylers: [{ visibility: 'off' }] },
+    { featureType: 'administrative.locality', elementType: 'labels.text.fill', stylers: [{ color: '#c4a97d' }] },
+    { featureType: 'poi', stylers: [{ visibility: 'off' }] },
+    { featureType: 'road', elementType: 'geometry', stylers: [{ color: '#1c232c' }] },
+    { featureType: 'road', elementType: 'geometry.stroke', stylers: [{ color: '#0e1318' }] },
+    { featureType: 'road', elementType: 'labels.text.fill', stylers: [{ color: '#8a96a3' }] },
+    { featureType: 'road.highway', elementType: 'geometry', stylers: [{ color: '#2a3644' }] },
+    { featureType: 'transit', stylers: [{ visibility: 'off' }] },
+    { featureType: 'water', elementType: 'geometry', stylers: [{ color: '#1a2530' }] },
+    { featureType: 'water', elementType: 'labels.text.fill', stylers: [{ color: '#4e5d6c' }] }
+  ];
+
+  // initMap is synchroon (in tegenstelling tot de vorige MapLibre-versie
+  // hoeft hier niet gewacht te worden op een async 'load'-event) - `done`
+  // wordt dus meteen aangeroepen. Op een tweede open() bestaat de kaart al
+  // en wordt `done` ook meteen aangeroepen.
   function initMap(done) {
     if (map) { done(); return; }
     // Op touch-toestellen zou 1 vinger op de kaart de kaart verslepen i.p.v.
-    // de pagina laten scrollen - dat maakt de kaart een scroll-val. Sleep-
-    // gedrag staat daarom pas aan na een eerste tik; tot dan glijdt een
-    // swipe gewoon door naar de pagina eronder.
-    var isTouch = ('ontouchstart' in window) || navigator.maxTouchPoints > 0;
-    // Geen `bounds`/`fitBoundsOptions` hier in de constructor: dat start een
-    // eigen, asynchrone positionering die soms na de expliciete fitBounds()
-    // hieronder (in openMap) afvuurt en die overschrijft - met een veel te
-    // ver uitgezoomd resultaat tot gevolg. Eén duidelijke plek (openMap) die
-    // de camera zet, geen twee die met elkaar wedijveren.
-    map = new maplibregl.Map({
-      container: 'map',
-      style: 'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json',
-      scrollZoom: false,
-      dragPan: !isTouch,
-      dragRotate: false,
-      pitchWithRotate: false,
-      touchPitch: false,
-      attributionControl: { compact: false }
+    // de pagina laten scrollen - dat maakt de kaart een scroll-val.
+    // gestureHandling:'cooperative' lost dit op mét Google's eigen ingebouwde
+    // hint ("gebruik twee vingers"/"ctrl+scroll om te zoomen"), dus geen
+    // eigen aanraakhint-element meer nodig zoals bij de vorige kaartlagen.
+    map = new google.maps.Map(document.getElementById('map'), {
+      center: COSTA_DEL_SOL_SW, // voorlopig; openMap() roept meteen fitBounds aan
+      zoom: 10,
+      styles: GOOGLE_MAP_DARK_STYLE,
+      disableDefaultUI: true,
+      zoomControl: true,
+      gestureHandling: 'cooperative',
+      clickableIcons: false
     });
-    map.touchZoomRotate.disableRotation();
-    map.addControl(new maplibregl.NavigationControl({ showCompass: false }), 'top-left');
 
-    map.on('load', function(){
-      if (isTouch) {
-        var mapTouchHint = document.createElement('div');
-        mapTouchHint.className = 'map-touch-hint';
-        mapTouchHint.textContent = 'Tap to use the map';
-        document.getElementById('map').appendChild(mapTouchHint);
-        map.once('click', function() {
-          if (drawing) return;
-          map.dragPan.enable();
-          mapTouchHint.style.opacity = '0';
-          setTimeout(function() { mapTouchHint.remove(); }, 300);
+    bounds = [];
+    markerVisible = [];
+    infoWindow = new google.maps.InfoWindow({ maxWidth: 220 });
+    projHelper = makeProjectionHelper();
+
+    // Bij een klik op een marker die (op het huidige zoomniveau) tegen
+    // andere markers aan zit, zoomt de kaart lichtjes in zodat ze uit
+    // elkaar getrokken worden - de popup gaat sowieso altijd open.
+    var CLUSTER_PX = 26;
+    markers = projects.map(function(p, i){
+      var marker = new google.maps.Marker({ position: { lat: p.lat, lng: p.lng }, icon: markerIcon(), title: p.name });
+      markerVisible[i] = false;
+      bounds.push([p.lat, p.lng]);
+
+      marker.addListener('click', function(){
+        if (drawing) return;
+        infoWindow.setContent(popupHtml(p));
+        infoWindow.open({ anchor: marker, map: map });
+        var proj = projHelper.getProjection();
+        if (!proj) return;
+        var point = proj.fromLatLngToContainerPixel(marker.getPosition());
+        var isClustered = projects.some(function(other, j){
+          if (j === i || !markerVisible[j]) return false;
+          var op = proj.fromLatLngToContainerPixel(markers[j].getPosition());
+          return Math.hypot(point.x - op.x, point.y - op.y) < CLUSTER_PX;
         });
-      }
-
-      bounds = [];
-      markerVisible = [];
-      // Bij een klik op een marker die (op het huidige zoomniveau) tegen
-      // andere markers aan zit, zoomt de kaart lichtjes in zodat ze uit
-      // elkaar getrokken worden. Staat de marker al vrij op zichzelf,
-      // dan blijft de kaart gewoon staan - alleen de popup opent.
-      var CLUSTER_PX = 26;
-      markers = projects.map(function(p, i){
-        var el = document.createElement('div');
-        el.className = 'marker-wrap';
-        var tooltip = document.createElement('div');
-        tooltip.className = 'marker-tooltip';
-        tooltip.textContent = p.name;
-        el.innerHTML = '<div class="marker-pin"></div>';
-        el.appendChild(tooltip);
-
-        var popup = new maplibregl.Popup({ offset: 12, maxWidth: '220px' }).setHTML(
-          '<img class="map-popup__img" src="' + p.thumb + '" alt="' + p.name + '" loading="lazy">' +
-          '<div class="map-popup__body">' +
-            '<div class="map-popup__name">' + p.name + '</div>' +
-            '<div class="map-popup__meta">' + p.location + ' &middot; ' + p.price + '</div>' +
-            '<a class="map-popup__link" href="' + p.href + '">View project &rarr;</a>' +
-          '</div>'
-        );
-        var marker = new maplibregl.Marker({ element: el }).setLngLat([p.lng, p.lat]).setPopup(popup);
-        markerVisible[i] = false;
-        bounds.push([p.lat, p.lng]);
-
-        el.addEventListener('click', function(){
-          if (drawing) return;
-          var point = map.project([p.lng, p.lat]);
-          var isClustered = projects.some(function(other, j){
-            if (j === i || !markerVisible[j]) return false;
-            var op = map.project([other.lng, other.lat]);
-            return Math.hypot(point.x - op.x, point.y - op.y) < CLUSTER_PX;
-          });
-          if (isClustered) {
-            map.flyTo({ center: [p.lng, p.lat], zoom: Math.min(map.getZoom() + 2, 15), duration: 500 });
-          }
-        });
-
-        return marker;
-      });
-
-      // Teken-lagen (punten + polygoon-voorbeeld van "Teken gebied") als
-      // lege GeoJSON-bronnen; redrawPreview() vult ze bij elke klik.
-      map.addSource('draw-points', { type: 'geojson', data: { type: 'FeatureCollection', features: [] } });
-      map.addLayer({
-        id: 'draw-points-circle', type: 'circle', source: 'draw-points',
-        paint: { 'circle-radius': 5, 'circle-color': '#C4A97D', 'circle-stroke-width': 2, 'circle-stroke-color': '#0E1318' }
-      });
-      map.addSource('draw-polygon', { type: 'geojson', data: { type: 'FeatureCollection', features: [] } });
-      map.addLayer({ id: 'draw-polygon-fill', type: 'fill', source: 'draw-polygon', paint: { 'fill-color': '#C4A97D', 'fill-opacity': 0.15 } });
-      map.addLayer({ id: 'draw-polygon-line', type: 'line', source: 'draw-polygon', paint: { 'line-color': '#C4A97D', 'line-width': 2 } });
-
-      // Lijst volgt mee zodra de bezoeker zelf pant/zoomt (zie updateMapList).
-      map.on('moveend', updateMapList);
-
-      // Extra vangnet bovenop de dubbele requestAnimationFrame in openMap():
-      // bij een echte resize (browservenster verslepen, of - zeldzamer - een
-      // late reflow die we net misten) valt de kaart terug op de vaste Costa
-      // del Sol-weergave zolang er geen filter/getekend gebied actief is en
-      // er niet net getekend wordt. Zo blijft "geen filter" altijd exact
-      // hetzelfde stuk kust tonen, ongeacht schermformaat of tussentijdse
-      // layout-hikken.
-      map.on('resize', function(){
-        if (!drawing && !hasActiveFilter() && !mapModal.hidden) {
-          map.fitBounds(COSTA_DEL_SOL_BOUNDS, { padding: 20, duration: 0 });
+        if (isClustered) {
+          map.panTo(marker.getPosition());
+          map.setZoom(Math.min(map.getZoom() + 2, 15));
         }
       });
 
-      map.on('click', function(e){
-        if (!drawing) return;
-        drawPoints.push([e.lngLat.lat, e.lngLat.lng]);
-        redrawPreview();
-        drawCountEl.textContent = String(drawPoints.length);
-        drawDoneBtn.disabled = drawPoints.length < 3;
-        // Filtert/toont de lijst al live zodra de vorm-in-opbouw 3+ punten
-        // heeft (zie activeArea) - niet pas na "Klaar".
-        applyFilters();
-      });
-
-      done();
+      return marker;
     });
+
+    // Teken-laag ("Teken gebied"): 1 polygoon (bijgewerkt via setPath) +
+    // losse puntmarkers, allebei leeg tot redrawPreview() ze vult.
+    drawPolygon = new google.maps.Polygon({
+      map: map, paths: [], strokeColor: '#C4A97D', strokeWeight: 2,
+      fillColor: '#C4A97D', fillOpacity: 0.15, clickable: false
+    });
+    drawPointMarkers = [];
+
+    // Google's dichtstbijzijnde equivalent van Leaflet/MapLibre's 'moveend':
+    // 'idle' vuurt af zodra pan/zoom/resize helemaal tot rust zijn gekomen.
+    google.maps.event.addListener(map, 'idle', updateMapList);
+
+    map.addListener('click', function(e){
+      if (!drawing) return;
+      drawPoints.push([e.latLng.lat(), e.latLng.lng()]);
+      redrawPreview();
+      drawCountEl.textContent = String(drawPoints.length);
+      drawDoneBtn.disabled = drawPoints.length < 3;
+      // Filtert/toont de lijst al live zodra de vorm-in-opbouw 3+ punten
+      // heeft (zie activeArea) - niet pas na "Klaar".
+      applyFilters();
+    });
+
+    done();
   }
 
   function redrawPreview() {
-    var pointsGeo = { type: 'FeatureCollection', features: drawPoints.map(function(pt){
-      return { type: 'Feature', geometry: { type: 'Point', coordinates: toLngLat(pt) }, properties: {} };
-    }) };
-    var polyGeo = { type: 'FeatureCollection', features: [] };
-    if (drawPoints.length >= 2) {
-      var ring = drawPoints.map(toLngLat);
-      ring.push(ring[0]);
-      polyGeo.features.push({ type: 'Feature', geometry: { type: 'Polygon', coordinates: [ring] }, properties: {} });
-    }
-    map.getSource('draw-points').setData(pointsGeo);
-    map.getSource('draw-polygon').setData(polyGeo);
+    drawPointMarkers.forEach(function(m){ m.setMap(null); });
+    drawPointMarkers = drawPoints.map(function(pt){
+      return new google.maps.Marker({ position: { lat: pt[0], lng: pt[1] }, map: map, icon: drawPointIcon(), clickable: false });
+    });
+    drawPolygon.setPath(drawPoints.map(function(pt){ return { lat: pt[0], lng: pt[1] }; }));
   }
 
   function syncMapMarkers(filteredIdx) {
@@ -3747,8 +3696,8 @@ html.ai-chat-on .lead-dock { display: none; }
     markers.forEach(function(marker, i){
       var show = Boolean(filteredSet[i]);
       var onMap = markerVisible[i];
-      if (show && !onMap) { marker.addTo(map); markerVisible[i] = true; }
-      else if (!show && onMap) { marker.remove(); markerVisible[i] = false; }
+      if (show && !onMap) { marker.setMap(map); markerVisible[i] = true; }
+      else if (!show && onMap) { marker.setMap(null); markerVisible[i] = false; }
       if (show) visibleBounds.push([projects[i].lat, projects[i].lng]);
     });
     mapModalCount.textContent = pluralize(filteredIdx.length);
@@ -3762,15 +3711,16 @@ html.ai-chat-on .lead-dock { display: none; }
       // trekt een los project op Tenerife/Ibiza/Mallorca de kaart open tot
       // heel West-Europa/Noord-Afrika.
       if (!hasActiveFilter()) {
-        map.fitBounds(COSTA_DEL_SOL_BOUNDS, { padding: 20, duration: 600 });
+        map.fitBounds(costaDelSolBounds(), 20);
       } else if (visibleBounds.length === 1) {
-        map.flyTo({ center: toLngLat(visibleBounds[0]), zoom: 13, duration: 600 });
+        map.panTo({ lat: visibleBounds[0][0], lng: visibleBounds[0][1] });
+        map.setZoom(13);
       } else if (visibleBounds.length > 1) {
-        var b = new maplibregl.LngLatBounds();
-        visibleBounds.forEach(function(pt){ b.extend(toLngLat(pt)); });
-        map.fitBounds(b, { padding: 80, maxZoom: 13, duration: 600 });
+        var b = new google.maps.LatLngBounds();
+        visibleBounds.forEach(function(pt){ b.extend({ lat: pt[0], lng: pt[1] }); });
+        map.fitBounds(b, 80);
       } else if (bounds.length) {
-        map.fitBounds(COSTA_DEL_SOL_BOUNDS, { padding: 20, duration: 600 });
+        map.fitBounds(costaDelSolBounds(), 20);
       }
     }
   }
@@ -3779,30 +3729,38 @@ html.ai-chat-on .lead-dock { display: none; }
     mapModal.hidden = false;
     document.body.style.overflow = 'hidden';
     if (!map) mapModalLoading.hidden = false;
-    loadMapLibre().then(function(){
+    loadGoogleMaps().then(function(){
       mapModalLoading.hidden = true;
       initMap(function(){
         // Dubbele requestAnimationFrame i.p.v. een gegokte setTimeout-duur:
-        // zo wachten we exact tot de browser de "mapModal.hidden = false"-
-        // reflow echt heeft afgerond en geschilderd, voor we de container
-        // opmeten. Met een vaste timeout (bv. 50ms) mat map.resize() soms nog
-        // de oude/kleinere afmeting - waardoor fitBounds een te ver uitgezoomd
-        // beeld berekende (heel Spanje/Marokko i.p.v. de Costa del Sol).
+        // zo wachten we tot de browser de "mapModal.hidden = false"-reflow
+        // echt heeft afgerond en geschilderd, voor we de container opmeten -
+        // Google detecteert containergrootte-wijzigingen niet automatisch,
+        // 'resize' moet expliciet getriggerd worden op het juiste moment.
         requestAnimationFrame(function(){
           requestAnimationFrame(function(){
-            map.resize();
+            google.maps.event.trigger(map, 'resize');
             // Vaste standaardweergave op de Costa del Sol i.p.v. fitBounds over
             // alle markers - anders trekt een enkel project op Tenerife/Ibiza/
             // Mallorca de kaart helemaal open tot heel West-Europa/Noord-Afrika.
             // Die eilandprojecten blijf je gewoon bereiken via de locatiefilter
             // of door zelf uit te zoomen.
-            map.fitBounds(COSTA_DEL_SOL_BOUNDS, { padding: 20, duration: 0 });
+            map.fitBounds(costaDelSolBounds(), 20);
             applyFilters(); // her-sync markers/telling nu de kaart zichtbaar is
           });
         });
       });
     });
   }
+  // Vangnet voor een echte venster-resize terwijl de kaart open staat -
+  // Google detecteert een container-groottewijziging niet automatisch.
+  window.addEventListener('resize', function(){
+    if (!map || mapModal.hidden) return;
+    google.maps.event.trigger(map, 'resize');
+    if (!drawing && !hasActiveFilter()) {
+      map.fitBounds(costaDelSolBounds(), 20);
+    }
+  });
   function closeMap() {
     cancelDrawing();
     mapModal.hidden = true;
@@ -3847,11 +3805,11 @@ html.ai-chat-on .lead-dock { display: none; }
     applyFilters();
     updateAreaChip();
   }
-  var EMPTY_GEOJSON = { type: 'FeatureCollection', features: [] };
   function clearDrawLayers() {
-    if (!map || !map.getSource('draw-points')) return;
-    map.getSource('draw-points').setData(EMPTY_GEOJSON);
-    map.getSource('draw-polygon').setData(EMPTY_GEOJSON);
+    if (!map) return;
+    drawPointMarkers.forEach(function(m){ m.setMap(null); });
+    drawPointMarkers = [];
+    if (drawPolygon) drawPolygon.setPath([]);
   }
   function cancelDrawing() {
     if (!drawing) return;
