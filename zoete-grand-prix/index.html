@@ -151,7 +151,7 @@ a { color: inherit; text-decoration: none; }
   align-items: center;
   justify-content: center;
   gap: clamp(1.5rem, 5vw, 3.5rem);
-  margin-top: clamp(2rem, 5vw, 3rem);
+  padding: 0 clamp(1.5rem, 5vw, 3rem);
 }
 .logo-strip__item {
   display: flex;
@@ -163,13 +163,23 @@ a { color: inherit; text-decoration: none; }
   border-radius: 50%;
   overflow: hidden;
   padding: clamp(0.6rem, 1.4vw, 0.9rem);
-  opacity: 0;
-  animation: logo-converge-center 0.7s var(--ease) 0.65s forwards,
-             logo-lock-ring 0.5s var(--ease) 1.3s forwards;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.35);
   transition: transform 0.3s var(--ease), box-shadow 0.3s var(--ease);
 }
-.logo-strip__item:nth-child(1) { animation-name: logo-converge-left, logo-lock-ring; animation-delay: 0.55s, 1.3s; }
-.logo-strip__item:nth-child(3) { animation-name: logo-converge-right, logo-lock-ring; animation-delay: 0.55s, 1.3s; }
+/* Focal moment: de drie merken sluiten zich aaneen. Zit nu onderaan de
+   pagina, dus scroll-getriggerd via .reveal i.p.v. bij het laden. */
+.logo-strip.is-visible .logo-strip__item {
+  animation: logo-converge-center 0.7s var(--ease) 0.1s backwards,
+             logo-lock-ring 0.5s var(--ease) 0.75s forwards;
+}
+.logo-strip.is-visible .logo-strip__item:nth-child(1) {
+  animation-name: logo-converge-left, logo-lock-ring;
+  animation-delay: 0s, 0.75s;
+}
+.logo-strip.is-visible .logo-strip__item:nth-child(3) {
+  animation-name: logo-converge-right, logo-lock-ring;
+  animation-delay: 0s, 0.75s;
+}
 .logo-strip__item:hover,
 .logo-strip__item:focus-visible {
   transform: translateY(-6px) scale(1.05);
@@ -196,7 +206,7 @@ a { color: inherit; text-decoration: none; }
   position: relative;
   min-height: 62vh;
   display: flex;
-  align-items: flex-start;
+  align-items: flex-end;
   justify-content: center;
   overflow: hidden;
   isolation: isolate;
@@ -214,30 +224,11 @@ a { color: inherit; text-decoration: none; }
 }
 .brand-col:hover .brand-col__photo,
 .brand-col:focus-visible .brand-col__photo { transform: scale(1.06); }
-/* Placeholder tot de echte foto's aangeleverd zijn — vervang per merk
-   via data-brand="..." in brand-col__photo, of zet er een
-   background-image met de definitieve foto op. */
-.brand-col__photo--placeholder {
-  background: repeating-linear-gradient(135deg, var(--bg-el) 0 2px, var(--bg) 2px 26px);
-}
-.brand-col__photo--placeholder::after {
-  content: 'Foto volgt';
-  position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-family: var(--font);
-  font-size: 0.65rem;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: var(--text-muted);
-}
 .brand-col__overlay {
   position: absolute;
   inset: 0;
   z-index: -1;
-  background: linear-gradient(to bottom, rgba(14,19,24,0.8) 0%, rgba(14,19,24,0.35) 32%, rgba(14,19,24,0.12) 55%, rgba(14,19,24,0.55) 100%);
+  background: linear-gradient(to bottom, rgba(14,19,24,0.15) 0%, rgba(14,19,24,0.08) 40%, rgba(14,19,24,0.55) 70%, rgba(14,19,24,0.92) 100%);
 }
 .brand-col__content {
   position: relative;
@@ -245,7 +236,7 @@ a { color: inherit; text-decoration: none; }
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: clamp(2.5rem, 7vw, 4rem) 1.5rem 0;
+  padding: 0 1.5rem clamp(2.5rem, 6vw, 4rem);
   text-align: center;
 }
 .brand-col__logo {
@@ -280,6 +271,22 @@ a { color: inherit; text-decoration: none; }
   text-transform: uppercase;
   color: var(--gold-dim);
   margin-top: 0.3rem;
+}
+.brand-col__desc {
+  max-width: 26ch;
+  font-size: 0.8rem;
+  line-height: 1.6;
+  color: var(--text-muted);
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+  transition: max-height 0.4s var(--ease), opacity 0.3s var(--ease), margin-top 0.4s var(--ease);
+}
+.brand-col:hover .brand-col__desc,
+.brand-col:focus-visible .brand-col__desc {
+  max-height: 6rem;
+  opacity: 1;
+  margin-top: 0.85rem;
 }
 
 /* ── Inline CTA ── */
@@ -323,10 +330,7 @@ a { color: inherit; text-decoration: none; }
 .btn:hover { background: var(--cta-hover); }
 .btn:active { transform: scale(0.98); }
 
-/* ── IIS badge & footer ── */
-.iis-bar { display: flex; align-items: center; justify-content: center; padding: 2rem 1rem; }
-.iis-logo { height: clamp(120px, 20vw, 160px); width: auto; opacity: 0.7; transition: opacity 0.3s; }
-.iis-logo:hover { opacity: 1; }
+/* ── Footer ── */
 footer {
   padding: clamp(2rem, 4vw, 3rem) clamp(1.5rem, 5vw, 3rem);
   text-align: center;
@@ -373,7 +377,10 @@ footer a { color: var(--gold-dim); text-underline-offset: 2px; }
   .page-eyebrow, .page-header__title, .page-header__intro {
     animation: none; opacity: 1;
   }
-  .logo-strip__item {
+  .logo-strip__item,
+  .logo-strip.is-visible .logo-strip__item,
+  .logo-strip.is-visible .logo-strip__item:nth-child(1),
+  .logo-strip.is-visible .logo-strip__item:nth-child(3) {
     animation: none; opacity: 1; transform: none; box-shadow: 0 8px 30px rgba(0,0,0,0.35);
   }
   .logo-strip__item:hover, .logo-strip__item:focus-visible { transform: none; }
@@ -384,7 +391,7 @@ footer a { color: var(--gold-dim); text-underline-offset: 2px; }
     transition: opacity 0.25s ease !important;
     transform: none !important;
   }
-  .brand-col__photo, .brand-col__logo { transition-duration: 0.15s; }
+  .brand-col__photo, .brand-col__logo, .brand-col__desc { transition-duration: 0.15s; }
   .brand-col:hover .brand-col__photo,
   .brand-col:focus-visible .brand-col__photo { transform: none; }
   .brand-col:hover .brand-col__logo,
@@ -405,28 +412,12 @@ footer a { color: var(--gold-dim); text-underline-offset: 2px; }
       INVESTINSPAIN sluit zich met trots aan bij de Zoete Grand Prix als Silver Partner
       voor de editie van 2026.
     </p>
-    <div class="logo-strip">
-      <a class="logo-strip__item" href="https://www.homeinspain.be" target="_blank" rel="noopener" aria-label="HOMEINSPAIN">
-        <img src="https://projects.investinspain.be/images/zoete-grand-prix/logo-homeinspain.webp" alt="HOMEINSPAIN.BE logo">
-      </a>
-      <a class="logo-strip__item" href="https://www.investinspain.be" target="_blank" rel="noopener" aria-label="INVESTINSPAIN">
-        <img src="https://projects.investinspain.be/images/zoete-grand-prix/logo-investinspain.webp" alt="INVESTINSPAIN.BE logo">
-      </a>
-      <a class="logo-strip__item" href="https://www.sailinspain.be" target="_blank" rel="noopener" aria-label="SAILINSPAIN">
-        <img src="https://projects.investinspain.be/images/zoete-grand-prix/logo-sailinspain.webp" alt="SAILINSPAIN.BE logo">
-      </a>
-    </div>
-    <div class="video-frame video-frame--hero">
-      <video autoplay muted loop playsinline preload="auto">
-        <source src="https://projects.investinspain.be/videos/zoete-grand-prix/introductie.mp4" type="video/mp4">
-      </video>
-    </div>
   </div>
 </header>
 
 <section class="brand-columns">
   <a class="brand-col" href="https://www.homeinspain.be" target="_blank" rel="noopener" aria-label="HOMEINSPAIN — homeinspain.be">
-    <div class="brand-col__photo brand-col__photo--placeholder" data-brand="homeinspain"></div>
+    <div class="brand-col__photo" style="background-image:url('https://projects.investinspain.be/images/zoete-grand-prix/photo-homeinspain.webp')"></div>
     <div class="brand-col__overlay" aria-hidden="true"></div>
     <div class="brand-col__content">
       <div class="brand-col__logo">
@@ -434,10 +425,11 @@ footer a { color: var(--gold-dim); text-underline-offset: 2px; }
       </div>
       <span class="brand-col__name">HOMEINSPAIN</span>
       <span class="brand-col__url">homeinspain.be</span>
+      <p class="brand-col__desc">Volledige interieurinrichting van woningen — van ontwerp tot plaatsing — vanuit de showroom in België.</p>
     </div>
   </a>
   <a class="brand-col" href="https://www.investinspain.be" target="_blank" rel="noopener" aria-label="INVESTINSPAIN — investinspain.be">
-    <div class="brand-col__photo brand-col__photo--placeholder" data-brand="investinspain"></div>
+    <div class="brand-col__photo" style="background-image:url('https://projects.investinspain.be/images/zoete-grand-prix/photo-investinspain.webp');background-position:92% 62%"></div>
     <div class="brand-col__overlay" aria-hidden="true"></div>
     <div class="brand-col__content">
       <div class="brand-col__logo">
@@ -445,10 +437,11 @@ footer a { color: var(--gold-dim); text-underline-offset: 2px; }
       </div>
       <span class="brand-col__name">INVESTINSPAIN</span>
       <span class="brand-col__url">investinspain.be</span>
+      <p class="brand-col__desc">Advies bij de aankoop en investering in Spaans vastgoed aan de Costa del Sol.</p>
     </div>
   </a>
   <a class="brand-col" href="https://www.sailinspain.be" target="_blank" rel="noopener" aria-label="SAILINSPAIN — sailinspain.be">
-    <div class="brand-col__photo brand-col__photo--placeholder" data-brand="sailinspain"></div>
+    <div class="brand-col__photo" style="background-image:url('https://projects.investinspain.be/images/zoete-grand-prix/photo-sailinspain.webp')"></div>
     <div class="brand-col__overlay" aria-hidden="true"></div>
     <div class="brand-col__content">
       <div class="brand-col__logo">
@@ -456,8 +449,19 @@ footer a { color: var(--gold-dim); text-underline-offset: 2px; }
       </div>
       <span class="brand-col__name">SAILINSPAIN</span>
       <span class="brand-col__url">sailinspain.be</span>
+      <p class="brand-col__desc">Exclusieve maritieme ervaringen aan de Costa del Sol.</p>
     </div>
   </a>
+</section>
+
+<div class="spacer"></div>
+
+<section class="content reveal">
+  <div class="video-frame">
+    <video autoplay muted loop playsinline preload="auto">
+      <source src="https://projects.investinspain.be/videos/zoete-grand-prix/introductie.mp4" type="video/mp4">
+    </video>
+  </div>
 </section>
 
 <div class="spacer"></div>
@@ -472,9 +476,19 @@ footer a { color: var(--gold-dim); text-underline-offset: 2px; }
 
 <div class="spacer"></div>
 
-<div class="iis-bar">
-  <img src="https://investinspain.be/wp-content/uploads/2026/05/Logo-investinspain.png" alt="INVESTINSPAIN.BE logo" class="iis-logo">
+<div class="logo-strip reveal">
+  <a class="logo-strip__item" href="https://www.homeinspain.be" target="_blank" rel="noopener" aria-label="HOMEINSPAIN">
+    <img src="https://projects.investinspain.be/images/zoete-grand-prix/logo-homeinspain.webp" alt="HOMEINSPAIN.BE logo">
+  </a>
+  <a class="logo-strip__item" href="https://www.investinspain.be" target="_blank" rel="noopener" aria-label="INVESTINSPAIN">
+    <img src="https://projects.investinspain.be/images/zoete-grand-prix/logo-investinspain.webp" alt="INVESTINSPAIN.BE logo">
+  </a>
+  <a class="logo-strip__item" href="https://www.sailinspain.be" target="_blank" rel="noopener" aria-label="SAILINSPAIN">
+    <img src="https://projects.investinspain.be/images/zoete-grand-prix/logo-sailinspain.webp" alt="SAILINSPAIN.BE logo">
+  </a>
 </div>
+
+<div class="spacer--sm"></div>
 
 <footer>
   <p>&copy; 2026 INVESTINSPAIN.BE — Alle rechten voorbehouden</p>
