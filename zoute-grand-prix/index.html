@@ -35,10 +35,22 @@
   --font: 'Sora', system-ui, -apple-system, sans-serif;
   --ease: cubic-bezier(0.16, 1, 0.3, 1);
 }
-html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+  /* Ambient aurora over de hele pagina (viewport-vast via background-attachment) */
+  background-color: var(--bg);
+  background-image:
+    radial-gradient(58vw 44vw at 6% -4%, rgba(196, 169, 125, 0.30), transparent 60%),
+    radial-gradient(54vw 44vw at 100% 16%, rgba(45, 106, 122, 0.34), transparent 60%),
+    radial-gradient(50vw 40vw at 2% 52%, rgba(196, 169, 125, 0.16), transparent 58%),
+    radial-gradient(56vw 46vw at 98% 90%, rgba(45, 106, 122, 0.28), transparent 60%);
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+}
 body {
   font-family: var(--font);
-  background: var(--bg);
+  background: transparent;
   color: var(--text);
   line-height: 1.65;
   font-weight: 300;
@@ -70,25 +82,14 @@ a { color: inherit; text-decoration: none; }
   to   { opacity: 1; clip-path: inset(0 0 0 0 round 20px); transform: scale(1); }
 }
 
-/* ── Header (aurora glow, zelfde recept als /projecten/) ── */
+/* ── Header ── */
 .page-header {
   position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
   padding: clamp(2.5rem, 7vw, 5rem) clamp(1.5rem, 5vw, 3rem);
-  overflow: hidden;
-  background: var(--bg);
-}
-.hero-aurora {
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  pointer-events: none;
-  background:
-    radial-gradient(480px 320px at 25% 30%, rgba(196, 169, 125, 0.28), transparent 62%),
-    radial-gradient(560px 380px at 78% 68%, rgba(45, 106, 122, 0.3), transparent 62%),
-    radial-gradient(380px 280px at 50% 85%, rgba(196, 169, 125, 0.14), transparent 65%);
+  background: transparent;
 }
 .page-eyebrow {
   display: block;
@@ -100,8 +101,7 @@ a { color: inherit; text-decoration: none; }
   opacity: 0;
   animation: fade-up 0.9s var(--ease) 0.2s forwards;
 }
-.hero-grid__toprow .page-eyebrow { margin-bottom: 0; }
-@media (min-width: 900px) { .hero-grid__toprow .page-eyebrow { padding-top: 0.15rem; } }
+.hero-grid__head .page-eyebrow { margin-bottom: 0.5rem; }
 
 /* ── Hero: introductievideo naast de partnershiptekst ── */
 .hero-grid {
@@ -125,41 +125,41 @@ a { color: inherit; text-decoration: none; }
   .hero-grid__video { width: clamp(230px, 25vw, 310px); }
 }
 .hero-grid__text { flex: 1; }
-.hero-grid__toprow {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.9rem;
+.hero-grid__head {
+  position: relative;
+  margin-bottom: 0.7rem;
   opacity: 0;
   animation: fade-up 0.9s var(--ease) 0.35s forwards;
-}
-@media (min-width: 900px) {
-  .hero-grid__toprow {
-    flex-direction: row;
-    align-items: flex-start;
-    justify-content: space-between;
-    gap: clamp(1rem, 3vw, 2rem);
-  }
 }
 .hero-grid__title {
   font-size: clamp(1.45rem, 3.2vw, 2rem);
   font-weight: 300;
   letter-spacing: 0.06em;
   color: var(--gold);
-  margin: 1rem 0;
+  margin: 0;
 }
 .hero-grid__badge {
-  flex: 0 0 auto;
-  height: clamp(72px, 11vw, 118px);
+  display: block;
+  height: clamp(84px, 12vw, 128px);
   width: auto;
+  margin: 0.9rem auto 0;
   /* Bronlogo is zwart lijnwerk op transparant; omkeren zodat het op de
      donkere hero als een licht partner-zegel leest. */
   filter: invert(1);
   opacity: 0.9;
 }
+@media (min-width: 900px) {
+  .hero-grid__badge { position: absolute; top: -0.35rem; right: 0; margin: 0; }
+  .hero-lead::before {
+    content: "";
+    float: right;
+    width: clamp(104px, 12vw, 136px);
+    height: 3rem;
+  }
+}
 .hero-lead {
   font-size: clamp(0.9rem, 1.7vw, 1.02rem);
-  line-height: 1.85;
+  line-height: 1.7;
   color: var(--text-muted);
   opacity: 0;
   animation: fade-up 0.9s var(--ease) 0.5s forwards;
@@ -392,7 +392,7 @@ footer a { color: var(--gold-dim); text-underline-offset: 2px; }
    informatie dragen — blijven staan, alleen sneller. ── */
 @media (prefers-reduced-motion: reduce) {
   .frame { animation: none; opacity: 1; }
-  .page-eyebrow, .hero-grid__toprow, .hero-lead {
+  .page-eyebrow, .hero-grid__head, .hero-lead {
     animation: none; opacity: 1;
   }
   .video-frame--hero {
@@ -419,7 +419,6 @@ footer a { color: var(--gold-dim); text-underline-offset: 2px; }
 <div class="frame" aria-hidden="true"></div>
 
 <header class="page-header">
-  <div class="hero-aurora" aria-hidden="true"></div>
   <div class="hero-grid">
     <div class="hero-grid__video">
       <div class="video-frame video-frame--hero">
@@ -429,11 +428,11 @@ footer a { color: var(--gold-dim); text-underline-offset: 2px; }
       </div>
     </div>
     <div class="hero-grid__text">
-      <div class="hero-grid__toprow">
+      <div class="hero-grid__head">
         <span class="page-eyebrow">Silver Partner · Zoute Grand Prix 2026</span>
+        <h1 class="hero-grid__title">INVESTINSPAIN Groep</h1>
         <img class="hero-grid__badge" src="/images/zoute-grand-prix/logo-zoute-grand-prix.webp" alt="Zoute Grand Prix 2026 logo">
       </div>
-      <h1 class="hero-grid__title">INVESTINSPAIN Groep</h1>
       <p class="hero-lead">
         INVESTINSPAIN sluit zich met trots aan bij de Zoute Grand Prix als Silver
         Partner voor de editie van 2026. De INVESTINSPAIN group ondersteunt hun
