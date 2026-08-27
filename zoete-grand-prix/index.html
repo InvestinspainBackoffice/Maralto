@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Zoete Grand Prix 2026 — INVESTINSPAIN Groep</title>
+<meta name="description" content="INVESTINSPAIN sluit zich aan bij de Zoete Grand Prix 2026 als Silver Partner. Ontdek INVESTINSPAIN, HOMEINSPAIN en SAILINSPAIN — één geïntegreerde partner voor investeren, wonen en genieten in Spanje.">
+<meta property="og:title" content="INVESTINSPAIN Groep — Silver Partner Zoete Grand Prix 2026">
+<meta property="og:description" content="INVESTINSPAIN, HOMEINSPAIN en SAILINSPAIN: investeren, wonen en genieten in Spanje, onder één dak.">
+<meta property="og:image" content="https://investinspain.be/wp-content/uploads/2026/05/Logo-investinspain.png">
+<meta property="og:type" content="website">
+<meta name="robots" content="noindex, follow">
+<!-- Vercel Web Analytics - cookieless, geen persoonsgegevens, dus geen consent nodig -->
+<script defer src="/_vercel/insights/script.js"></script>
+<!-- Vercel Speed Insights - cookieless performance-metingen, geen consent nodig -->
+<script defer src="/_vercel/speed-insights/script.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://investinspain.be">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root {
+  --bg: #0E1318;
+  --bg-el: #131920;
+  --text: #EDE8E0;
+  --text-muted: #8A96A3;
+  --gold: #C4A97D;
+  --gold-dim: #9E8968;
+  --line: #1F2830;
+  --line-light: #2A3644;
+  --cta: #2D6A7A;
+  --cta-hover: #387F91;
+  --white: #FEFCF9;
+  --font: 'Sora', system-ui, -apple-system, sans-serif;
+  --ease: cubic-bezier(0.16, 1, 0.3, 1);
+}
+html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+body {
+  font-family: var(--font);
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.65;
+  font-weight: 300;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+img { display: block; max-width: 100%; height: auto; }
+a { color: inherit; text-decoration: none; }
+
+.frame {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 100;
+  border: 1px solid var(--line);
+  opacity: 0;
+  animation: frame-in 1.5s var(--ease) 0.5s forwards;
+}
+@keyframes frame-in { to { opacity: 1; } }
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Header (aurora glow, zelfde recept als /projecten/) ── */
+.page-header {
+  position: relative;
+  min-height: clamp(360px, 58vh, 520px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(3rem, 9vw, 4.5rem) clamp(1.5rem, 5vw, 3rem) clamp(2rem, 5vw, 3rem);
+  text-align: center;
+  overflow: hidden;
+  background: var(--bg);
+}
+.hero-aurora {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(480px 320px at 25% 30%, rgba(196, 169, 125, 0.28), transparent 62%),
+    radial-gradient(560px 380px at 78% 68%, rgba(45, 106, 122, 0.3), transparent 62%),
+    radial-gradient(380px 280px at 50% 85%, rgba(196, 169, 125, 0.14), transparent 65%);
+}
+.page-header__content { position: relative; z-index: 2; }
+.page-eyebrow {
+  display: block;
+  font-size: 0.65rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 0.9rem;
+  opacity: 0;
+  animation: fade-up 0.9s var(--ease) 0.2s forwards;
+}
+.page-header__title {
+  font-size: clamp(2.1rem, 6.5vw, 3.6rem);
+  font-weight: 300;
+  letter-spacing: 0.08em;
+  color: var(--gold);
+  opacity: 0;
+  animation: fade-up 0.9s var(--ease) 0.35s forwards;
+}
+.page-header__intro {
+  max-width: 56ch;
+  margin: 1.5rem auto 0;
+  font-size: clamp(0.9rem, 1.8vw, 1.05rem);
+  color: var(--text-muted);
+  opacity: 0;
+  animation: fade-up 0.9s var(--ease) 0.5s forwards;
+}
+
+/* ── Logo-strip ── */
+.logo-strip {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(1.5rem, 5vw, 3.5rem);
+  margin-top: clamp(2rem, 5vw, 3rem);
+  opacity: 0;
+  animation: fade-up 0.9s var(--ease) 0.7s forwards;
+}
+.logo-strip__item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: clamp(84px, 12vw, 110px);
+  height: clamp(84px, 12vw, 110px);
+  background: var(--white);
+  border-radius: 50%;
+  padding: clamp(0.9rem, 2vw, 1.3rem);
+  box-shadow: 0 8px 30px rgba(0,0,0,0.35);
+}
+.logo-strip__item img { width: 100%; height: 100%; object-fit: contain; }
+
+/* ── Content blocks ── */
+.content { max-width: 720px; margin: 0 auto; padding: 0 clamp(1.5rem, 5vw, 3rem); }
+.content--wide { max-width: 1100px; margin: 0 auto; padding: 0 clamp(1.5rem, 5vw, 3rem); }
+.label {
+  font-size: 0.6rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--gold-dim);
+  margin-bottom: 1.5rem;
+  position: relative;
+  padding-left: 2rem;
+}
+.label::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 50%;
+  width: 1.2rem; height: 1px;
+  background: var(--gold-dim);
+}
+.heading {
+  font-size: clamp(1.6rem, 4vw, 2.4rem);
+  font-weight: 300;
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+.heading em { font-style: normal; color: var(--gold); }
+.body-text {
+  font-size: clamp(0.9rem, 1.8vw, 1.05rem);
+  color: var(--text-muted);
+  line-height: 1.8;
+}
+.body-text a { color: var(--gold); border-bottom: 1px solid var(--gold-dim); }
+.rule--gold {
+  height: 1px;
+  background: var(--gold-dim);
+  max-width: 60px;
+  margin: 0 auto;
+}
+.spacer { height: clamp(3rem, 8vw, 6rem); }
+.spacer--sm { height: clamp(1.5rem, 4vw, 3rem); }
+
+/* ── Business units ── */
+.units {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1px;
+  background: var(--line);
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+}
+@media (min-width: 860px) {
+  .units { grid-template-columns: repeat(3, 1fr); }
+}
+.unit {
+  background: var(--bg);
+  padding: clamp(2rem, 5vw, 3rem) clamp(1.5rem, 4vw, 2.25rem);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  transition: background 0.3s;
+}
+.unit:hover { background: var(--bg-el); }
+.unit__logo {
+  width: clamp(64px, 10vw, 80px);
+  height: clamp(64px, 10vw, 80px);
+  background: var(--white);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.9rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+}
+.unit__logo img { width: 100%; height: 100%; object-fit: contain; }
+.unit__name {
+  font-size: 1.1rem;
+  font-weight: 400;
+  letter-spacing: 0.05em;
+  color: var(--text);
+  margin-bottom: 0.4rem;
+}
+.unit__url {
+  font-size: 0.65rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--gold-dim);
+  margin-bottom: 1.25rem;
+}
+.unit__desc {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  line-height: 1.75;
+  max-width: 32ch;
+  margin-bottom: 1.5rem;
+}
+.unit__link {
+  font-size: 0.65rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--gold);
+  border-bottom: 1px solid var(--gold-dim);
+  padding-bottom: 2px;
+  transition: border-color 0.2s;
+}
+.unit__link:hover { border-color: var(--gold); }
+
+/* ── Inline CTA ── */
+.inline-cta {
+  background: var(--bg-el);
+  border: 1px solid var(--line);
+  padding: clamp(2rem, 5vw, 3.5rem) clamp(1.5rem, 5vw, 3rem);
+  text-align: center;
+  max-width: 720px;
+  margin: 0 auto;
+}
+.inline-cta h3 {
+  font-size: clamp(1.2rem, 3vw, 1.6rem);
+  font-weight: 300;
+  margin-bottom: 0.75rem;
+}
+.inline-cta h3 em { font-style: normal; color: var(--gold); }
+.inline-cta p {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  margin-bottom: 1.5rem;
+  max-width: 45ch;
+  margin-left: auto;
+  margin-right: auto;
+}
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 1rem 2.5rem;
+  background: var(--cta);
+  color: var(--white);
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  border: none;
+  cursor: pointer;
+  transition: background 0.3s, transform 0.2s;
+}
+.btn:hover { background: var(--cta-hover); }
+.btn:active { transform: scale(0.98); }
+
+/* ── IIS badge & footer ── */
+.iis-bar { display: flex; align-items: center; justify-content: center; padding: 2rem 1rem; }
+.iis-logo { height: clamp(120px, 20vw, 160px); width: auto; opacity: 0.7; transition: opacity 0.3s; }
+.iis-logo:hover { opacity: 1; }
+footer {
+  padding: clamp(2rem, 4vw, 3rem) clamp(1.5rem, 5vw, 3rem);
+  text-align: center;
+  font-size: 0.6rem;
+  color: var(--text-muted);
+  letter-spacing: 0.05em;
+  line-height: 2;
+}
+footer a { color: var(--gold-dim); text-underline-offset: 2px; }
+
+/* ── Reveal animation ── */
+.reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.9s var(--ease), transform 0.9s var(--ease); }
+.reveal.is-visible { opacity: 1; transform: translateY(0); }
+
+/* ── Introductievideo (bron is 9:16 portrait) ── */
+.video-frame {
+  max-width: clamp(260px, 32vw, 380px);
+  margin: 0 auto;
+  border: 1px solid var(--line-light);
+  background: var(--bg-el);
+  box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+}
+.video-frame video {
+  display: block;
+  width: 100%;
+  aspect-ratio: 9 / 16;
+  height: auto;
+  background: #000;
+}
+</style>
+</head>
+<body class="page-zoete-grand-prix">
+
+<div class="frame" aria-hidden="true"></div>
+
+<header class="page-header">
+  <div class="hero-aurora" aria-hidden="true"></div>
+  <div class="page-header__content">
+    <span class="page-eyebrow">Silver Partner · Zoete Grand Prix 2026</span>
+    <h1 class="page-header__title">INVESTINSPAIN GROEP</h1>
+    <p class="page-header__intro">
+      INVESTINSPAIN sluit zich met trots aan bij de Zoete Grand Prix als Silver Partner
+      voor de editie van 2026.
+    </p>
+    <div class="logo-strip">
+      <a class="logo-strip__item" href="https://www.investinspain.be" target="_blank" rel="noopener" aria-label="INVESTINSPAIN">
+        <img src="https://projects.investinspain.be/images/zoete-grand-prix/logo-investinspain.webp" alt="INVESTINSPAIN.BE logo">
+      </a>
+      <a class="logo-strip__item" href="https://www.homeinspain.be" target="_blank" rel="noopener" aria-label="HOMEINSPAIN">
+        <img src="https://projects.investinspain.be/images/zoete-grand-prix/logo-homeinspain.webp" alt="HOMEINSPAIN.BE logo">
+      </a>
+      <a class="logo-strip__item" href="https://www.sailinspain.be" target="_blank" rel="noopener" aria-label="SAILINSPAIN">
+        <img src="https://projects.investinspain.be/images/zoete-grand-prix/logo-sailinspain.webp" alt="SAILINSPAIN.BE logo">
+      </a>
+    </div>
+  </div>
+</header>
+
+<div class="spacer"></div>
+
+<section class="content reveal">
+  <span class="label">Over de partnership</span>
+  <p class="body-text">
+    Het INVESTINSPAIN group ondersteunt hun klanten in elk aspect van hun leven in
+    Zuid-Spanje. Via <a href="https://www.investinspain.be" target="_blank" rel="noopener">INVESTINSPAIN</a>
+    geven ze advies bij de aankoop en investering in Spaans vastgoed; via
+    <a href="https://www.homeinspain.be" target="_blank" rel="noopener">HOMEINSPAIN</a>
+    verzorgen ze de volledige interieurinrichting van woningen — van ontwerp tot
+    plaatsing — vanuit hun showroom in België; en via
+    <a href="https://www.sailinspain.be" target="_blank" rel="noopener">SAILINSPAIN</a>
+    bieden ze exclusieve maritieme ervaringen aan de Costa del Sol. Samen vormen ze
+    één geïntegreerde partner om te investeren, te wonen en te genieten in Spanje!
+  </p>
+</section>
+
+<div class="spacer"></div>
+
+<section class="content reveal">
+  <div class="video-frame">
+    <video controls preload="metadata" playsinline>
+      <source src="https://projects.investinspain.be/videos/zoete-grand-prix/introductie.mp4" type="video/mp4">
+      Je browser ondersteunt geen video-weergave.
+      <a href="https://projects.investinspain.be/videos/zoete-grand-prix/introductie.mp4">Bekijk de video hier</a>.
+    </video>
+  </div>
+</section>
+
+<div class="spacer"></div>
+
+<section class="reveal">
+  <div class="content--wide">
+    <h2 class="heading">Drie merken, <em>één ambitie</em></h2>
+    <div class="rule--gold"></div>
+  </div>
+  <div class="spacer--sm"></div>
+  <div class="units">
+    <article class="unit">
+      <div class="unit__logo">
+        <img src="https://projects.investinspain.be/images/zoete-grand-prix/logo-investinspain.webp" alt="INVESTINSPAIN logo">
+      </div>
+      <h3 class="unit__name">INVESTINSPAIN</h3>
+      <span class="unit__url">investinspain.be</span>
+      <p class="unit__desc">
+        Advies bij de aankoop en investering in Spaans vastgoed aan de Costa del Sol.
+      </p>
+      <a class="unit__link" href="https://www.investinspain.be" target="_blank" rel="noopener">Bezoek website →</a>
+    </article>
+    <article class="unit">
+      <div class="unit__logo">
+        <img src="https://projects.investinspain.be/images/zoete-grand-prix/logo-homeinspain.webp" alt="HOMEINSPAIN logo">
+      </div>
+      <h3 class="unit__name">HOMEINSPAIN</h3>
+      <span class="unit__url">homeinspain.be</span>
+      <p class="unit__desc">
+        Volledige interieurinrichting van woningen — van ontwerp tot plaatsing —
+        vanuit de showroom in België.
+      </p>
+      <a class="unit__link" href="https://www.homeinspain.be" target="_blank" rel="noopener">Bezoek website →</a>
+    </article>
+    <article class="unit">
+      <div class="unit__logo">
+        <img src="https://projects.investinspain.be/images/zoete-grand-prix/logo-sailinspain.webp" alt="SAILINSPAIN logo">
+      </div>
+      <h3 class="unit__name">SAILINSPAIN</h3>
+      <span class="unit__url">sailinspain.be</span>
+      <p class="unit__desc">
+        Exclusieve maritieme ervaringen aan de Costa del Sol.
+      </p>
+      <a class="unit__link" href="https://www.sailinspain.be" target="_blank" rel="noopener">Bezoek website →</a>
+    </article>
+  </div>
+</section>
+
+<div class="spacer"></div>
+
+<section class="content reveal">
+  <div class="inline-cta">
+    <h3>Investeren, wonen en <em>genieten</em> in Spanje</h3>
+    <p>Eén geïntegreerde partner voor alles wat met Zuid-Spanje te maken heeft — ontdek onze projecten of neem contact op.</p>
+    <a class="btn" href="https://projects.investinspain.be/">Bekijk onze projecten</a>
+  </div>
+</section>
+
+<div class="spacer"></div>
+
+<div class="iis-bar">
+  <img src="https://investinspain.be/wp-content/uploads/2026/05/Logo-investinspain.png" alt="INVESTINSPAIN.BE logo" class="iis-logo">
+</div>
+
+<footer>
+  <p>&copy; 2026 INVESTINSPAIN.BE — Alle rechten voorbehouden</p>
+</footer>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  var revealEls = document.querySelectorAll('.reveal');
+  if (!('IntersectionObserver' in window)) {
+    revealEls.forEach(function (el) { el.classList.add('is-visible'); });
+    return;
+  }
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (entry) {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('is-visible');
+        io.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.15 });
+  revealEls.forEach(function (el) { io.observe(el); });
+});
+</script>
+
+</body>
+</html>
