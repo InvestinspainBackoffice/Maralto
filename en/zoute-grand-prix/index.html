@@ -63,28 +63,6 @@ a { color: inherit; text-decoration: none; }
   to { opacity: 1; transform: translateY(0); }
 }
 
-/* ── Focal moment: drie merken sluiten zich aaneen ──
-   De sleutel-iconen in elk logo verwijzen naar één sluitend geheel; de
-   entree-animatie speelt dat letterlijk na — HIS en SIS komen van
-   weerszijden aanzwenken, IIS (het hoofdmerk) rijst op in het midden,
-   en bij het samenkomen tikt er één keer een gouden sluitring aan af. */
-@keyframes logo-converge-left {
-  from { opacity: 0; transform: translate(-38px, 10px) rotate(-10deg) scale(0.85); }
-  to   { opacity: 1; transform: translate(0, 0) rotate(0) scale(1); }
-}
-@keyframes logo-converge-center {
-  from { opacity: 0; transform: translateY(20px) scale(0.8); }
-  to   { opacity: 1; transform: translateY(0) scale(1); }
-}
-@keyframes logo-converge-right {
-  from { opacity: 0; transform: translate(38px, 10px) rotate(10deg) scale(0.85); }
-  to   { opacity: 1; transform: translate(0, 0) rotate(0) scale(1); }
-}
-@keyframes logo-lock-ring {
-  0%   { box-shadow: 0 8px 30px rgba(0,0,0,0.35), 0 0 0 0 rgba(196,169,125,0.55); }
-  70%  { box-shadow: 0 8px 30px rgba(0,0,0,0.35), 0 0 0 9px rgba(196,169,125,0); }
-  100% { box-shadow: 0 8px 30px rgba(0,0,0,0.35), 0 0 0 9px rgba(196,169,125,0); }
-}
 /* ── Video: "onthulling" i.p.v. gewoon faden — de opening laat het
    frame open klappen zoals het doek in de video zelf. ── */
 @keyframes curtain-reveal {
@@ -145,14 +123,31 @@ a { color: inherit; text-decoration: none; }
   .hero-grid__video { width: clamp(230px, 25vw, 310px); }
 }
 .hero-grid__text { flex: 1; }
+.hero-grid__head {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(0.9rem, 3vw, 1.75rem);
+  margin: 0.4rem 0 1rem;
+  opacity: 0;
+  animation: fade-up 0.9s var(--ease) 0.35s forwards;
+}
+@media (min-width: 900px) { .hero-grid__head { justify-content: flex-start; } }
 .hero-grid__title {
   font-size: clamp(1.45rem, 3.2vw, 2rem);
   font-weight: 300;
   letter-spacing: 0.06em;
   color: var(--gold);
-  margin: 0.4rem 0 1rem;
-  opacity: 0;
-  animation: fade-up 0.9s var(--ease) 0.35s forwards;
+  margin: 0;
+}
+.hero-grid__badge {
+  flex: 0 0 auto;
+  height: clamp(64px, 10vw, 104px);
+  width: auto;
+  /* Bronlogo is zwart lijnwerk op transparant; omkeren zodat het op de
+     donkere hero als een licht partner-zegel leest. */
+  filter: invert(1);
+  opacity: 0.9;
 }
 .hero-lead {
   font-size: clamp(0.9rem, 1.7vw, 1.02rem);
@@ -163,60 +158,8 @@ a { color: inherit; text-decoration: none; }
 }
 .hero-lead a { color: var(--gold); border-bottom: 1px solid var(--gold-dim); }
 
-/* ── Logo-strip ── */
-.logo-strip {
-  position: relative;
-  z-index: 2;
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: center;
-  gap: clamp(1.5rem, 5vw, 3.5rem);
-  padding: 0 clamp(1.5rem, 5vw, 3rem);
-}
-.logo-strip__item {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: clamp(128px, 18vw, 172px);
-  height: clamp(128px, 18vw, 172px);
-  background: var(--white);
-  border-radius: 50%;
-  overflow: hidden;
-  padding: clamp(0.6rem, 1.4vw, 0.9rem);
-  box-shadow: 0 8px 30px rgba(0,0,0,0.35);
-  transition: transform 0.3s var(--ease), box-shadow 0.3s var(--ease);
-}
-/* Focal moment: de drie merken sluiten zich aaneen. Zit nu onderaan de
-   pagina, dus scroll-getriggerd via .reveal i.p.v. bij het laden. */
-.logo-strip.is-visible .logo-strip__item {
-  animation: logo-converge-center 0.7s var(--ease) 0.1s backwards,
-             logo-lock-ring 0.5s var(--ease) 0.75s forwards;
-}
-.logo-strip.is-visible .logo-strip__item:nth-child(1) {
-  animation-name: logo-converge-left, logo-lock-ring;
-  animation-delay: 0s, 0.75s;
-}
-.logo-strip.is-visible .logo-strip__item:nth-child(3) {
-  animation-name: logo-converge-right, logo-lock-ring;
-  animation-delay: 0s, 0.75s;
-}
-.logo-strip__item:hover,
-.logo-strip__item:focus-visible {
-  transform: translateY(-6px) scale(1.05);
-  box-shadow: 0 16px 36px rgba(0,0,0,0.45), 0 0 0 3px rgba(196,169,125,0.45);
-}
-.logo-strip__item img { width: 100%; height: 100%; object-fit: contain; }
-
 /* ── Content blocks ── */
 .content { max-width: 720px; margin: 0 auto; padding: 0 clamp(1.5rem, 5vw, 3rem); }
-.partnership-text {
-  font-size: clamp(0.9rem, 1.8vw, 1.05rem);
-  color: var(--text-muted);
-  line-height: 1.85;
-  text-align: center;
-}
-.partnership-text a { color: var(--gold); border-bottom: 1px solid var(--gold-dim); }
 .spacer { height: clamp(3rem, 8vw, 6rem); }
 .spacer--sm { height: clamp(1.5rem, 4vw, 3rem); }
 
@@ -224,26 +167,29 @@ a { color: inherit; text-decoration: none; }
    INVESTINSPAIN bovenaan, HOMEINSPAIN linksonder, SAILINSPAIN rechtsonder —
    de drie merken die samen één sluitend geheel vormen. ── */
 .brand-triangle {
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: clamp(1.25rem, 3vw, 2.25rem);
-  max-width: 860px;
+  gap: clamp(1.5rem, 4vw, 3rem);
+  max-width: 1040px;
   margin: 0 auto;
-  padding: clamp(2.5rem, 7vw, 5rem) clamp(1.5rem, 5vw, 3rem);
+  padding: clamp(3rem, 8vw, 6rem) clamp(1.5rem, 5vw, 3rem);
 }
 .brand-triangle__row {
+  position: relative;
+  z-index: 1;
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
-  gap: clamp(1.5rem, 7vw, 5.5rem);
+  gap: clamp(1rem, 5vw, 4.5rem);
 }
 .brand-node {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.9rem;
-  width: clamp(150px, 34vw, 300px);
+  gap: 1rem;
+  width: clamp(150px, 38vw, 360px);
 }
 .brand-node__disc {
   position: relative;
@@ -271,22 +217,23 @@ a { color: inherit; text-decoration: none; }
 .brand-node__scrim {
   position: absolute;
   inset: 0;
-  background: radial-gradient(circle at 50% 42%, rgba(14,19,24,0.22), rgba(14,19,24,0.78));
+  background:
+    radial-gradient(circle at 50% 45%, rgba(14,19,24,0) 34%, rgba(14,19,24,0.12) 60%, rgba(14,19,24,0.55) 100%);
 }
 .brand-node__logo {
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 54%;
-  height: 54%;
+  width: 43%;
+  height: 43%;
   background: var(--white);
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 11%;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.45);
+  padding: 10%;
+  box-shadow: 0 8px 26px rgba(0,0,0,0.4);
   transition: transform 0.4s var(--ease);
 }
 .brand-node:hover .brand-node__logo,
@@ -298,6 +245,42 @@ a { color: inherit; text-decoration: none; }
   letter-spacing: 0.1em;
   color: var(--text);
 }
+/* ── Verbindingslijnen: de drie merken hangen zichtbaar samen ── */
+.brand-triangle__links {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  pointer-events: none;
+  z-index: 0;
+}
+.brand-triangle__links line { fill: none; stroke-linecap: round; }
+.bt-line--base {
+  stroke: var(--gold-dim);
+  stroke-width: 1.25;
+  opacity: 0;
+  stroke-dasharray: var(--len, 600);
+  stroke-dashoffset: var(--len, 600);
+  transition: stroke-dashoffset 1.2s var(--ease), opacity 0.7s var(--ease);
+}
+.brand-triangle.is-visible .bt-line--base { opacity: 0.4; stroke-dashoffset: 0; }
+.bt-line--flow {
+  stroke: var(--gold);
+  stroke-width: 2;
+  stroke-dasharray: 3 220;
+  opacity: 0;
+  filter: drop-shadow(0 0 5px rgba(196,169,125,0.7));
+  transition: opacity 0.6s var(--ease) 1s;
+}
+.brand-triangle.is-visible .bt-line--flow {
+  opacity: 0.85;
+  animation: bt-flow 3.4s linear infinite;
+  animation-delay: 1s;
+}
+@keyframes bt-flow { from { stroke-dashoffset: 223; } to { stroke-dashoffset: 0; } }
+/* Gestapelde layout (smalle schermen): geen driehoek, dus geen lijnen. */
+.brand-triangle--stack .brand-triangle__links { display: none; }
 
 /* ── Inline CTA ── */
 .inline-cta {
@@ -382,16 +365,9 @@ footer a { color: var(--gold-dim); text-underline-offset: 2px; }
    informatie dragen — blijven staan, alleen sneller. ── */
 @media (prefers-reduced-motion: reduce) {
   .frame { animation: none; opacity: 1; }
-  .page-eyebrow, .hero-grid__title, .hero-lead {
+  .page-eyebrow, .hero-grid__head, .hero-lead {
     animation: none; opacity: 1;
   }
-  .logo-strip__item,
-  .logo-strip.is-visible .logo-strip__item,
-  .logo-strip.is-visible .logo-strip__item:nth-child(1),
-  .logo-strip.is-visible .logo-strip__item:nth-child(3) {
-    animation: none; opacity: 1; transform: none; box-shadow: 0 8px 30px rgba(0,0,0,0.35);
-  }
-  .logo-strip__item:hover, .logo-strip__item:focus-visible { transform: none; }
   .video-frame--hero {
     animation: none; opacity: 1; clip-path: none; transform: none;
   }
@@ -399,6 +375,8 @@ footer a { color: var(--gold-dim); text-underline-offset: 2px; }
     transition: opacity 0.25s ease !important;
     transform: none !important;
   }
+  .brand-triangle__links .bt-line--base { transition: opacity 0.2s ease; stroke-dashoffset: 0; }
+  .brand-triangle.is-visible .bt-line--flow { animation: none; opacity: 0; }
   .brand-node__photo, .brand-node__logo, .brand-node__disc { transition-duration: 0.15s; }
   .brand-node:hover .brand-node__photo,
   .brand-node:focus-visible .brand-node__photo { transform: none; }
@@ -425,7 +403,10 @@ footer a { color: var(--gold-dim); text-underline-offset: 2px; }
     </div>
     <div class="hero-grid__text">
       <span class="page-eyebrow">Silver Partner · Zoute Grand Prix 2026</span>
-      <h1 class="hero-grid__title">INVESTINSPAIN Group</h1>
+      <div class="hero-grid__head">
+        <h1 class="hero-grid__title">INVESTINSPAIN Group</h1>
+        <img class="hero-grid__badge" src="/images/zoute-grand-prix/logo-zoute-grand-prix.webp" alt="Zoute Grand Prix 2026 logo">
+      </div>
       <p class="hero-lead">
         INVESTINSPAIN proudly joins the Zoute Grand Prix as Silver Partner for the
         2026 edition. The INVESTINSPAIN group supports their clients in every aspect
@@ -446,6 +427,11 @@ footer a { color: var(--gold-dim); text-underline-offset: 2px; }
 </header>
 
 <section class="brand-triangle reveal" aria-label="The three brands of the INVESTINSPAIN Group">
+  <svg class="brand-triangle__links" aria-hidden="true" preserveAspectRatio="none" fill="none">
+    <line class="bt-line--base"></line><line class="bt-line--flow"></line>
+    <line class="bt-line--base"></line><line class="bt-line--flow"></line>
+    <line class="bt-line--base"></line><line class="bt-line--flow"></line>
+  </svg>
   <div class="brand-triangle__row">
     <a class="brand-node" href="https://www.investinspain.be" target="_blank" rel="noopener" aria-label="INVESTINSPAIN — investinspain.be">
       <span class="brand-node__disc">
@@ -486,20 +472,6 @@ footer a { color: var(--gold-dim); text-underline-offset: 2px; }
   </div>
 </section>
 
-<div class="spacer"></div>
-
-<div class="logo-strip reveal">
-  <a class="logo-strip__item" href="https://www.homeinspain.be" target="_blank" rel="noopener" aria-label="HOMEINSPAIN">
-    <img src="/images/zoute-grand-prix/logo-homeinspain.webp" alt="HOMEINSPAIN.BE logo">
-  </a>
-  <a class="logo-strip__item" href="https://www.investinspain.be" target="_blank" rel="noopener" aria-label="INVESTINSPAIN">
-    <img src="/images/zoute-grand-prix/logo-investinspain.webp" alt="INVESTINSPAIN.BE logo">
-  </a>
-  <a class="logo-strip__item" href="https://www.sailinspain.be" target="_blank" rel="noopener" aria-label="SAILINSPAIN">
-    <img src="/images/zoute-grand-prix/logo-sailinspain.webp" alt="SAILINSPAIN.BE logo">
-  </a>
-</div>
-
 <div class="spacer--sm"></div>
 
 <footer>
@@ -509,19 +481,54 @@ footer a { color: var(--gold-dim); text-underline-offset: 2px; }
 <script>
 document.addEventListener('DOMContentLoaded', function () {
   var revealEls = document.querySelectorAll('.reveal');
-  if (!('IntersectionObserver' in window)) {
+  var hasIO = 'IntersectionObserver' in window;
+  if (!hasIO) {
     revealEls.forEach(function (el) { el.classList.add('is-visible'); });
-    return;
+  } else {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+          io.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.15 });
+    revealEls.forEach(function (el) { io.observe(el); });
   }
-  var io = new IntersectionObserver(function (entries) {
-    entries.forEach(function (entry) {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('is-visible');
-        io.unobserve(entry.target);
-      }
-    });
-  }, { threshold: 0.15 });
-  revealEls.forEach(function (el) { io.observe(el); });
+
+  // ── Verbindingslijnen tussen de drie merk-medaillons uitmeten ──
+  var triangle = document.querySelector('.brand-triangle');
+  var svg = triangle && triangle.querySelector('.brand-triangle__links');
+  if (triangle && svg) {
+    var discs = triangle.querySelectorAll('.brand-node__disc');
+    var lines = svg.querySelectorAll('line');
+    var pairs = [[0, 1], [0, 2], [1, 2]];
+    function layoutLinks() {
+      if (discs.length < 3) return;
+      var box = triangle.getBoundingClientRect();
+      var pts = [].map.call(discs, function (d) {
+        var r = d.getBoundingClientRect();
+        return { x: r.left - box.left + r.width / 2, y: r.top - box.top + r.height / 2 };
+      });
+      var stacked = Math.abs(pts[1].x - pts[2].x) < 24;
+      triangle.classList.toggle('brand-triangle--stack', stacked);
+      svg.setAttribute('viewBox', '0 0 ' + box.width + ' ' + box.height);
+      pairs.forEach(function (p, i) {
+        var a = pts[p[0]], b = pts[p[1]];
+        var len = Math.hypot(b.x - a.x, b.y - a.y);
+        [].forEach.call(lines, function (ln, k) {
+          if (Math.floor(k / 2) !== i) return;
+          ln.setAttribute('x1', a.x); ln.setAttribute('y1', a.y);
+          ln.setAttribute('x2', b.x); ln.setAttribute('y2', b.y);
+          ln.style.setProperty('--len', len.toFixed(1));
+        });
+      });
+    }
+    layoutLinks();
+    window.addEventListener('resize', layoutLinks);
+    window.addEventListener('load', layoutLinks);
+    if (!hasIO) triangle.classList.add('is-visible');
+  }
 });
 </script>
 
