@@ -325,6 +325,14 @@ footer a { color: var(--gold-dim); text-underline-offset: 2px; }
   height: auto;
   background: #000;
 }
+.video-frame--hero {
+  position: relative;
+  z-index: 2;
+  max-width: clamp(210px, 28vw, 300px);
+  margin: clamp(2rem, 5vw, 3rem) auto 0;
+  opacity: 0;
+  animation: fade-up 0.9s var(--ease) 0.85s forwards;
+}
 </style>
 </head>
 <body class="page-zoete-grand-prix">
@@ -351,6 +359,11 @@ footer a { color: var(--gold-dim); text-underline-offset: 2px; }
         <img src="https://projects.investinspain.be/images/zoete-grand-prix/logo-sailinspain.webp" alt="SAILINSPAIN.BE logo">
       </a>
     </div>
+    <div class="video-frame video-frame--hero">
+      <video autoplay muted loop playsinline preload="auto">
+        <source src="https://projects.investinspain.be/videos/zoete-grand-prix/introductie.mp4" type="video/mp4">
+      </video>
+    </div>
   </div>
 </header>
 
@@ -369,18 +382,6 @@ footer a { color: var(--gold-dim); text-underline-offset: 2px; }
     bieden ze exclusieve maritieme ervaringen aan de Costa del Sol. Samen vormen ze
     één geïntegreerde partner om te investeren, te wonen en te genieten in Spanje!
   </p>
-</section>
-
-<div class="spacer"></div>
-
-<section class="content reveal">
-  <div class="video-frame">
-    <video autoplay muted loop playsinline preload="auto">
-      <source src="https://projects.investinspain.be/videos/zoete-grand-prix/introductie.mp4" type="video/mp4">
-      Je browser ondersteunt geen video-weergave.
-      <a href="https://projects.investinspain.be/videos/zoete-grand-prix/introductie.mp4">Bekijk de video hier</a>.
-    </video>
-  </div>
 </section>
 
 <div class="spacer"></div>
