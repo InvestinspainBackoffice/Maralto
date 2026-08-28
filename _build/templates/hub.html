@@ -281,12 +281,6 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   opacity: 0;
   animation: fade-up 0.9s var(--ease) 0.6s forwards;
 }
-/* De filterbalk en de "Bekijk op kaart"-rij eronder hebben allebei
-   z-index 2 en een eigen stapelcontext (door hun animatie-transform); de
-   rij komt later in de DOM en wint dus. Zolang de budget-popover openstaat
-   moet de balk erboven: een z-index op de popover zelf helpt niet, die zit
-   binnen de stapelcontext van de balk gevangen. */
-.filter-bar.has-open-pop { z-index: 4; }
 .filter-select select {
   appearance: none;
   -webkit-appearance: none;
@@ -330,10 +324,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
    dubbele schuifknop die ook met toetsenbord en screenreader werkt. De
    inputs zelf zijn onzichtbaar (alleen hun duimpjes vangen muis/vinger),
    de zichtbare rail + gevulde balk zijn aparte divs eronder. */
-/* z-index op de wrapper zelf: de popover moet boven de knoppenrij eronder
-   ("Bekijk op kaart", z-index 2) uitkomen, en die zit in een eigen
-   stapelcontext - een z-index op alleen .price-pop volstaat dan niet. */
-.filter-price { position: relative; z-index: 30; }
+.filter-price { position: relative; }
 .price-trigger {
   display: flex;
   align-items: center;
@@ -359,11 +350,13 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 .price-trigger:hover .price-trigger__icon, .price-trigger[aria-expanded="true"] .price-trigger__icon { color: var(--gold); }
 .price-trigger.is-set { color: var(--gold); border-color: var(--gold-dim); }
 
+/* position:fixed én in <body> gehangen (zie JS): de filterbalk zit in
+   .page-header met overflow:hidden - daarbinnen werd de onderkant van de
+   popover, juist de schuifbalk zelf, weggeknipt. Die overflow moet blijven
+   (hij vangt ook de brede titel op), dus verhuist de popover naar buiten. */
 .price-pop {
-  position: absolute;
-  z-index: 20;
-  top: calc(100% + 0.5rem);
-  left: 0;
+  position: fixed;
+  z-index: 60;
   width: min(340px, calc(100vw - 2.5rem));
   background: var(--bg-el);
   border: 1px solid var(--line-light);
@@ -1769,17 +1762,31 @@ __PROJECT_CARDS__
     applyFilters();
   }
 
-  var filterBar = priceTrigger.closest('.filter-bar');
+  // De popover woont in <body>, buiten de overflow:hidden van .page-header
+  // (anders wordt de schuifbalk onderaan weggeknipt). Positie wordt dus zelf
+  // berekend t.o.v. de knop.
+  document.body.appendChild(pricePop);
+
+  function positionPricePop() {
+    var r = priceTrigger.getBoundingClientRect();
+    var breedte = pricePop.offsetWidth;
+    var links = Math.min(r.left, window.innerWidth - breedte - 12);
+    pricePop.style.left = Math.max(12, links) + 'px';
+    pricePop.style.top = (r.bottom + 8) + 'px';
+  }
+
   function openPricePop() {
     pricePop.hidden = false;
+    positionPricePop();
     priceTrigger.setAttribute('aria-expanded', 'true');
-    if (filterBar) filterBar.classList.add('has-open-pop');
   }
   function closePricePop() {
     pricePop.hidden = true;
     priceTrigger.setAttribute('aria-expanded', 'false');
-    if (filterBar) filterBar.classList.remove('has-open-pop');
   }
+  // Meebewegen zolang hij openstaat: hij hangt niet meer aan de knop vast.
+  window.addEventListener('scroll', function(){ if (!pricePop.hidden) positionPricePop(); }, { passive: true });
+  window.addEventListener('resize', function(){ if (!pricePop.hidden) positionPricePop(); });
   function resetPrice() {
     priceLo = 0; priceHi = PRICE_LAST;
     priceMinEl.value = 0; priceMaxEl.value = PRICE_LAST;
