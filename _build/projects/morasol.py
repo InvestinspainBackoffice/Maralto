@@ -40,7 +40,7 @@ HUB = {
     "LOCATION": "Manilva",
     "PRICE": PRICE_FROM,
     "THUMB": "https://projects.investinspain.be/images/morasol/thumb.webp",
-    "LAT": 36.321681748191,
-    "LNG": -5.2482868359576,
+    "LAT": 36.321682,
+    "LNG": -5.248287,
     "HREF": "/morasol/",
 }

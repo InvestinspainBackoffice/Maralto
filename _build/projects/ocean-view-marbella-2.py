@@ -33,4 +33,14 @@ DATA_EN = {
     "OG_DESCRIPTION": "44 residences with heated pool, concierge service and 24h security in the hills of Marbella near a protected nature reserve.",
     "HERO_BG_ALT": "Ocean View Marbella — leisure club with heated pool and sea views",
 }
-# NOTE: geen HUB-dict - dit project komt (voorlopig) niet op de projectenoverzichtspagina
+
+# Gebruikt door de /projecten/ overzichtspagina (kaart + kaartjes)
+HUB = {
+    "NAME": PROJECT_NAME,
+    "LOCATION": "Marbella",
+    "PRICE": PRICE_FROM,
+    "THUMB": "https://projects.investinspain.be/images/ocean-view-marbella-2/hero.webp",
+    "LAT": 36.522047,
+    "LNG": -4.738716,
+    "HREF": "/ocean-view-marbella-2/",
+}

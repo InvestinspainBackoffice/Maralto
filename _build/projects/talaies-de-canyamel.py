@@ -34,4 +34,14 @@ DATA_EN = {
     "HERO_BG_ALT": "Talaies de Canyamel — apartments on the coast of Mallorca",
 }
 
-# NOTE: geen HUB-dict - dit project komt (voorlopig) niet op de projectenoverzichtspagina
+
+# Gebruikt door de /projecten/ overzichtspagina (kaart + kaartjes)
+HUB = {
+    "NAME": PROJECT_NAME,
+    "LOCATION": "Canyamel, Mallorca",
+    "PRICE": PRICE_FROM,
+    "THUMB": "https://projects.investinspain.be/images/talaies-de-canyamel/hero.webp",
+    "LAT": 39.655679,
+    "LNG": 3.437994,
+    "HREF": "/talaies-de-canyamel/",
+}

@@ -34,5 +34,13 @@ DATA_EN = {
     "HERO_BG_ALT": "Alexandra's Dream — luxury apartment complex in Mijas",
 }
 
-# NOTE: geen HUB-dict - dit project komt (voorlopig) niet op de
-# projectenoverzichtspagina, op uitdrukkelijk verzoek.
+# Gebruikt door de /projecten/ overzichtspagina (kaart + kaartjes)
+HUB = {
+    "NAME": PROJECT_NAME,
+    "LOCATION": "Mijas",
+    "PRICE": PRICE_FROM,
+    "THUMB": "https://projects.investinspain.be/images/alexandras-dream/hero.webp",
+    "LAT": 36.512536,
+    "LNG": -4.654089,
+    "HREF": "/alexandras-dream/",
+}

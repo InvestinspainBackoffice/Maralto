@@ -34,5 +34,13 @@ DATA_EN = {
     "HERO_BG_ALT": "Oleo — modern villa with sea views in Mijas",
 }
 
-# NOTE: geen HUB-dict - dit project komt (voorlopig) niet op de
-# projectenoverzichtspagina, op uitdrukkelijk verzoek.
+# Gebruikt door de /projecten/ overzichtspagina (kaart + kaartjes)
+HUB = {
+    "NAME": PROJECT_NAME,
+    "LOCATION": "Mijas",
+    "PRICE": PRICE_FROM,
+    "THUMB": "https://projects.investinspain.be/images/oleo/hero.webp",
+    "LAT": 36.565573,
+    "LNG": -4.59913,
+    "HREF": "/oleo/",
+}

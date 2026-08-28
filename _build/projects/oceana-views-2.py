@@ -34,5 +34,13 @@ DATA_EN = {
     "HERO_BG_ALT": "Oceana Views — apartment with sea views in Cancelada",
 }
 
-# NOTE: geen HUB-dict - dit project komt (voorlopig) niet op de
-# projectenoverzichtspagina, op uitdrukkelijk verzoek.
+# Gebruikt door de /projecten/ overzichtspagina (kaart + kaartjes)
+HUB = {
+    "NAME": PROJECT_NAME,
+    "LOCATION": "Cancelada",
+    "PRICE": PRICE_FROM,
+    "THUMB": "https://projects.investinspain.be/images/oceana-views-2/hero.webp",
+    "LAT": 36.468499,
+    "LNG": -5.060473,
+    "HREF": "/oceana-views-2/",
+}

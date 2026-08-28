@@ -34,4 +34,14 @@ DATA_EN = {
     "HERO_BG_ALT": "Nova Marina — modern apartment complex in Fuengirola",
 }
 
-# NOTE: geen HUB-dict - dit project komt (voorlopig) niet op de projectenoverzichtspagina
+
+# Gebruikt door de /projecten/ overzichtspagina (kaart + kaartjes)
+HUB = {
+    "NAME": PROJECT_NAME,
+    "LOCATION": "Fuengirola",
+    "PRICE": PRICE_FROM,
+    "THUMB": "https://projects.investinspain.be/images/nova-marina-fuengirola/hero.webp",
+    "LAT": 36.541438,
+    "LNG": -4.62106,
+    "HREF": "/nova-marina-fuengirola/",
+}

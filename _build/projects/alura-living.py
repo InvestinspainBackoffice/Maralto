@@ -39,7 +39,7 @@ HUB = {
     "LOCATION": "Casares",
     "PRICE": "Vanaf € 440.000",
     "THUMB": "https://projects.investinspain.be/images/alura-living/hero.webp",
-    "LAT": 36.3835,
-    "LNG": -5.2247,
+    "LAT": 36.38349,
+    "LNG": -5.22473,
     "HREF": "/alura-living/",
 }

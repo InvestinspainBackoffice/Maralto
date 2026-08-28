@@ -33,4 +33,14 @@ DATA_EN = {
     "OG_DESCRIPTION": "28 stylish residences with spacious terraces, high-quality materials and energy-efficient aerothermal system in a gated community in Estepona.",
     "HERO_BG_ALT": "Aires del Mar — modern apartment complex in Estepona",
 }
-# NOTE: geen HUB-dict - dit project komt (voorlopig) niet op de projectenoverzichtspagina
+
+# Gebruikt door de /projecten/ overzichtspagina (kaart + kaartjes)
+HUB = {
+    "NAME": PROJECT_NAME,
+    "LOCATION": "Estepona",
+    "PRICE": PRICE_FROM,
+    "THUMB": "https://projects.investinspain.be/images/aires-del-mar/hero.webp",
+    "LAT": 36.434135,
+    "LNG": -5.145979,
+    "HREF": "/aires-del-mar/",
+}

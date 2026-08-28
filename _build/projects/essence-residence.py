@@ -40,7 +40,7 @@ HUB = {
     "LOCATION": "Estepona",
     "PRICE": PRICE_FROM,
     "THUMB": "https://projects.investinspain.be/images/essence-residence/thumb.webp",
-    "LAT": 36.4680914,
-    "LNG": -5.0495274,
+    "LAT": 36.468091,
+    "LNG": -5.049527,
     "HREF": "/essence-residence/",
 }

@@ -34,5 +34,13 @@ DATA_EN = {
     "HERO_BG_ALT": "Calanova Homes — luxury golf villa with sea views in Mijas Costa",
 }
 
-# NOTE: geen HUB-dict - dit project komt (voorlopig) niet op de
-# projectenoverzichtspagina, op uitdrukkelijk verzoek.
+# Gebruikt door de /projecten/ overzichtspagina (kaart + kaartjes)
+HUB = {
+    "NAME": PROJECT_NAME,
+    "LOCATION": "Mijas Costa",
+    "PRICE": PRICE_FROM,
+    "THUMB": "https://projects.investinspain.be/images/calanova-homes/hero.webp",
+    "LAT": 36.513634,
+    "LNG": -4.718017,
+    "HREF": "/calanova-homes/",
+}

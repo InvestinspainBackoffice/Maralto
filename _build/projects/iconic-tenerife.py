@@ -33,3 +33,14 @@ DATA_EN = {
     "OG_DESCRIPTION": "Iconic Tenerife: luxury apartments and sky penthouses with panoramic sea views, modern architecture and first-class amenities in the Canary Islands. From € 1,005,000.",
     "HERO_BG_ALT": "Iconic Tenerife aerial exterior with sea views",
 }
+
+# Gebruikt door de /projecten/ overzichtspagina (kaart + kaartjes)
+HUB = {
+    "NAME": PROJECT_NAME,
+    "LOCATION": "Tenerife",
+    "PRICE": PRICE_FROM,
+    "THUMB": "https://projects.investinspain.be/images/iconic-tenerife/hero.webp",
+    "LAT": 28.134004,
+    "LNG": -16.784921,
+    "HREF": "/iconic-tenerife/",
+}

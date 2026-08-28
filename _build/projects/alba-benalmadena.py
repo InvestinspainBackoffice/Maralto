@@ -33,3 +33,14 @@ DATA_EN = {
     "OG_DESCRIPTION": "Alba Benalmádena in Torremuelle: modern apartments and townhouses with spectacular sea views, infinity pool, gym and landscaped gardens. From € 678,000.",
     "HERO_BG_ALT": "Alba Benalmádena exterior with panoramic sea views",
 }
+
+# Gebruikt door de /projecten/ overzichtspagina (kaart + kaartjes)
+HUB = {
+    "NAME": PROJECT_NAME,
+    "LOCATION": "Benalmádena",
+    "PRICE": PRICE_FROM,
+    "THUMB": "https://projects.investinspain.be/images/alba-benalmadena/hero.webp",
+    "LAT": 36.585403,
+    "LNG": -4.562159,
+    "HREF": "/alba-benalmadena/",
+}

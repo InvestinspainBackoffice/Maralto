@@ -34,5 +34,13 @@ DATA_EN = {
     "HERO_BG_ALT": "Cala Swing Mijas — modern apartment complex next to golf and sea",
 }
 
-# NOTE: geen HUB-dict - dit project komt (voorlopig) niet op de
-# projectenoverzichtspagina, op uitdrukkelijk verzoek.
+# Gebruikt door de /projecten/ overzichtspagina (kaart + kaartjes)
+HUB = {
+    "NAME": PROJECT_NAME,
+    "LOCATION": "La Cala de Mijas",
+    "PRICE": PRICE_FROM,
+    "THUMB": "https://projects.investinspain.be/images/cala-swing-mijas/hero.webp",
+    "LAT": 36.509395,
+    "LNG": -4.698286,
+    "HREF": "/cala-swing-mijas/",
+}

@@ -34,4 +34,14 @@ DATA_EN = {
     "HERO_BG_ALT": "Santa Elena — modern apartments near Fuengirola centre",
 }
 
-# NOTE: geen HUB-dict - dit project komt (voorlopig) niet op de projectenoverzichtspagina
+
+# Gebruikt door de /projecten/ overzichtspagina (kaart + kaartjes)
+HUB = {
+    "NAME": PROJECT_NAME,
+    "LOCATION": "Fuengirola",
+    "PRICE": PRICE_FROM,
+    "THUMB": "https://projects.investinspain.be/images/santa-elena/hero.webp",
+    "LAT": 36.549533,
+    "LNG": -4.62698,
+    "HREF": "/santa-elena/",
+}

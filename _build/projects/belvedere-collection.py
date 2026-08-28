@@ -34,4 +34,14 @@ DATA_EN = {
     "HERO_BG_ALT": "Belvedere Collection — exclusive residential complex in Fuengirola",
 }
 
-# NOTE: geen HUB-dict - dit project komt (voorlopig) niet op de projectenoverzichtspagina
+
+# Gebruikt door de /projecten/ overzichtspagina (kaart + kaartjes)
+HUB = {
+    "NAME": PROJECT_NAME,
+    "LOCATION": "Fuengirola",
+    "PRICE": PRICE_FROM,
+    "THUMB": "https://projects.investinspain.be/images/belvedere-collection/hero.webp",
+    "LAT": 36.575451,
+    "LNG": -4.609818,
+    "HREF": "/belvedere-collection/",
+}

@@ -40,7 +40,7 @@ HUB = {
     "LOCATION": "Manilva",
     "PRICE": PRICE_FROM,
     "THUMB": "https://projects.investinspain.be/images/nubay/thumb.webp",
-    "LAT": 36.368092531788,
-    "LNG": -5.22610050921,
+    "LAT": 36.368093,
+    "LNG": -5.226101,
     "HREF": "/nubay/",
 }

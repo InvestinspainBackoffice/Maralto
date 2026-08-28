@@ -34,5 +34,13 @@ DATA_EN = {
     "HERO_BG_ALT": "Almazara Gardens — facade view of the complex in mountainous setting",
 }
 
-# NOTE: geen HUB-dict - dit project komt (voorlopig) niet op de
-# projectenoverzichtspagina, op uitdrukkelijk verzoek.
+# Gebruikt door de /projecten/ overzichtspagina (kaart + kaartjes)
+HUB = {
+    "NAME": PROJECT_NAME,
+    "LOCATION": "Istán",
+    "PRICE": PRICE_FROM,
+    "THUMB": "https://projects.investinspain.be/images/almazara-gardens/hero.webp",
+    "LAT": 36.546552,
+    "LNG": -4.949515,
+    "HREF": "/almazara-gardens/",
+}

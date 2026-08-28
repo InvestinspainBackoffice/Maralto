@@ -14,7 +14,7 @@ DATA = {
     "HERO_BG": "https://projects.investinspain.be/images/villa-batur/hero.webp",
     "HERO_BG_ALT": "Exterieur van Villa Batur met zeezicht in Marbella",
     "HERO_NAME": "Villa Batur",
-    "HERO_LOCATION": "MARBELLA, COSTA DEL SOL",
+    "HERO_LOCATION": "SOTOGRANDE",
     "HERO_PRICE": PRICE_FROM,
     "PRICE_FROM": PRICE_FROM,
     "WA_TEXT_ENCODED": quote(WA_MESSAGE),
@@ -36,7 +36,7 @@ DATA_EN = {
 
 HUB = {
     "NAME": "Villa Batur",
-    "LOCATION": "Marbella",
+    "LOCATION": "Sotogrande",
     "PRICE": "Prijs op aanvraag",
     "THUMB": "https://projects.investinspain.be/images/villa-batur/hero.webp",
     "LAT": 36.285039,

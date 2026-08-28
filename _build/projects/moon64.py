@@ -34,4 +34,14 @@ DATA_EN = {
     "HERO_BG_ALT": "Moon64 — modern apartments in Los Hidalgos, Manilva",
 }
 
-# NOTE: geen HUB-dict - dit project komt (voorlopig) niet op de projectenoverzichtspagina
+
+# Gebruikt door de /projecten/ overzichtspagina (kaart + kaartjes)
+HUB = {
+    "NAME": PROJECT_NAME,
+    "LOCATION": "Los Hidalgos, Manilva",
+    "PRICE": PRICE_FROM,
+    "THUMB": "https://projects.investinspain.be/images/moon64/hero.webp",
+    "LAT": 36.349384,
+    "LNG": -5.238762,
+    "HREF": "/moon64/",
+}

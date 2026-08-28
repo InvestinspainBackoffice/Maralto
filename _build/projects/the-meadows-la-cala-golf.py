@@ -39,7 +39,7 @@ HUB = {
     "LOCATION": "La Cala",
     "PRICE": "Vanaf € 995.000",
     "THUMB": "https://projects.investinspain.be/images/the-meadows-la-cala-golf/hero.webp",
-    "LAT": 36.5561,
-    "LNG": -4.8159,
+    "LAT": 36.542797,
+    "LNG": -4.727643,
     "HREF": "/the-meadows-la-cala-golf/",
 }

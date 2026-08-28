@@ -39,7 +39,7 @@ HUB = {
     "LOCATION": "Nueva Andalucía",
     "PRICE": "Vanaf € 1.950.000",
     "THUMB": "https://projects.investinspain.be/images/vasari-villas/hero.webp",
-    "LAT": 36.4756,
-    "LNG": -5.0218,
+    "LAT": 36.475623,
+    "LNG": -5.021838,
     "HREF": "/vasari-villas/",
 }

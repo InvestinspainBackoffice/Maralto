@@ -34,5 +34,13 @@ DATA_EN = {
     "HERO_BG_ALT": "Vangård — facade view of the building in Fuengirola",
 }
 
-# NOTE: geen HUB-dict - dit project komt (voorlopig) niet op de
-# projectenoverzichtspagina, op uitdrukkelijk verzoek.
+# Gebruikt door de /projecten/ overzichtspagina (kaart + kaartjes)
+HUB = {
+    "NAME": PROJECT_NAME,
+    "LOCATION": "Fuengirola",
+    "PRICE": PRICE_FROM,
+    "THUMB": "https://projects.investinspain.be/images/vangard/hero.webp",
+    "LAT": 36.556679,
+    "LNG": -4.624234,
+    "HREF": "/vangard/",
+}

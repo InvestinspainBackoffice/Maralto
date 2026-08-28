@@ -34,4 +34,14 @@ DATA_EN = {
     "HERO_BG_ALT": "Aloha Forest — modern apartments with sea views in Nueva Andalucía",
 }
 
-# NOTE: geen HUB-dict - dit project komt (voorlopig) niet op de projectenoverzichtspagina
+
+# Gebruikt door de /projecten/ overzichtspagina (kaart + kaartjes)
+HUB = {
+    "NAME": PROJECT_NAME,
+    "LOCATION": "Nueva Andalucía",
+    "PRICE": PRICE_FROM,
+    "THUMB": "https://projects.investinspain.be/images/aloha-forest/hero.webp",
+    "LAT": 36.512234,
+    "LNG": -4.957376,
+    "HREF": "/aloha-forest/",
+}

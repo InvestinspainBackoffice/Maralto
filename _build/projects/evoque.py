@@ -34,4 +34,14 @@ DATA_EN = {
     "HERO_BG_ALT": "EVOQUE — modern apartments in Higuerón, Fuengirola",
 }
 
-# NOTE: geen HUB-dict - dit project komt (voorlopig) niet op de projectenoverzichtspagina
+
+# Gebruikt door de /projecten/ overzichtspagina (kaart + kaartjes)
+HUB = {
+    "NAME": PROJECT_NAME,
+    "LOCATION": "Higuerón, Fuengirola",
+    "PRICE": PRICE_FROM,
+    "THUMB": "https://projects.investinspain.be/images/evoque/hero.webp",
+    "LAT": 36.584768,
+    "LNG": -4.606419,
+    "HREF": "/evoque/",
+}

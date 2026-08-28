@@ -39,7 +39,7 @@ HUB = {
     "LOCATION": "Mijas",
     "PRICE": "Vanaf € 405.000",
     "THUMB": "https://projects.investinspain.be/images/lakun/hero.webp",
-    "LAT": 36.5229,
-    "LNG": -4.6613,
+    "LAT": 36.537179,
+    "LNG": -4.636552,
     "HREF": "/lakun/",
 }

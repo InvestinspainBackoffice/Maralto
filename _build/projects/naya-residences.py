@@ -33,3 +33,14 @@ DATA_EN = {
     "OG_DESCRIPTION": "Naya Residences in Atalaya, Estepona: contemporary apartments with sea views, spacious terraces and quality finishes near the beach and golf. From € 735,000.",
     "HERO_BG_ALT": "Naya Residences Estepona exterior with sea views",
 }
+
+# Gebruikt door de /projecten/ overzichtspagina (kaart + kaartjes)
+HUB = {
+    "NAME": PROJECT_NAME,
+    "LOCATION": "Estepona",
+    "PRICE": PRICE_FROM,
+    "THUMB": "https://projects.investinspain.be/images/naya-residences/hero.webp",
+    "LAT": 36.481322,
+    "LNG": -5.021394,
+    "HREF": "/naya-residences/",
+}

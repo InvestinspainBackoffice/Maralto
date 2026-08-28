@@ -35,4 +35,14 @@ DATA_EN = {
     "HERO_NAME": "Lantana Villas",
 }
 
-# NOTE: geen HUB-dict - dit project komt (voorlopig) niet op de projectenoverzichtspagina
+
+# Gebruikt door de /projecten/ overzichtspagina (kaart + kaartjes)
+HUB = {
+    "NAME": PROJECT_NAME,
+    "LOCATION": "Calahonda",
+    "PRICE": PRICE_FROM,
+    "THUMB": "https://projects.investinspain.be/images/lantana-villas/hero.webp",
+    "LAT": 36.489656,
+    "LNG": -4.722085,
+    "HREF": "/lantana-villas/",
+}

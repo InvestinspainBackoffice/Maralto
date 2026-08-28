@@ -34,4 +34,14 @@ DATA_EN = {
     "HERO_BG_ALT": "Oceana Gardens — modern apartment complex in Cancelada",
 }
 
-# NOTE: geen HUB-dict - dit project komt (voorlopig) niet op de projectenoverzichtspagina
+
+# Gebruikt door de /projecten/ overzichtspagina (kaart + kaartjes)
+HUB = {
+    "NAME": PROJECT_NAME,
+    "LOCATION": "Cancelada",
+    "PRICE": PRICE_FROM,
+    "THUMB": "https://projects.investinspain.be/images/oceana-gardens-1/hero.webp",
+    "LAT": 36.46652,
+    "LNG": -5.058488,
+    "HREF": "/oceana-gardens-1/",
+}

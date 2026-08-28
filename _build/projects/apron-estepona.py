@@ -34,5 +34,13 @@ DATA_EN = {
     "HERO_BG_ALT": "Apron Estepona — facade of the townhouses with garden at dusk",
 }
 
-# NOTE: geen HUB-dict - dit project komt (voorlopig) niet op de
-# projectenoverzichtspagina, op uitdrukkelijk verzoek.
+# Gebruikt door de /projecten/ overzichtspagina (kaart + kaartjes)
+HUB = {
+    "NAME": PROJECT_NAME,
+    "LOCATION": "Estepona",
+    "PRICE": PRICE_FROM,
+    "THUMB": "https://projects.investinspain.be/images/apron-estepona/hero.webp",
+    "LAT": 36.407143,
+    "LNG": -5.21308,
+    "HREF": "/apron-estepona/",
+}

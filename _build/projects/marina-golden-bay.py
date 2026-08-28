@@ -34,4 +34,14 @@ DATA_EN = {
     "HERO_BG_ALT": "Marina Golden Bay — modern apartment complex near Benalmádena marina",
 }
 
-# NOTE: geen HUB-dict - dit project komt (voorlopig) niet op de projectenoverzichtspagina
+
+# Gebruikt door de /projecten/ overzichtspagina (kaart + kaartjes)
+HUB = {
+    "NAME": PROJECT_NAME,
+    "LOCATION": "Benalmádena",
+    "PRICE": PRICE_FROM,
+    "THUMB": "https://projects.investinspain.be/images/marina-golden-bay/hero.webp",
+    "LAT": 36.598403,
+    "LNG": -4.515546,
+    "HREF": "/marina-golden-bay/",
+}

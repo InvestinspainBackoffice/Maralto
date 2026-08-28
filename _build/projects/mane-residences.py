@@ -33,3 +33,14 @@ DATA_EN = {
     "OG_DESCRIPTION": "New build apartments with 2-3 bedrooms and panoramic sea views in Benalmádena. Discover Mane Residences via INVESTINSPAIN.BE.",
     "HERO_BG_ALT": "Mane Residences Benalmádena exterior sea views",
 }
+
+# Gebruikt door de /projecten/ overzichtspagina (kaart + kaartjes)
+HUB = {
+    "NAME": PROJECT_NAME,
+    "LOCATION": "Benalmádena",
+    "PRICE": PRICE_FROM,
+    "THUMB": "https://projects.investinspain.be/images/mane-residences/hero.webp",
+    "LAT": 36.602349,
+    "LNG": -4.562922,
+    "HREF": "/mane-residences/",
+}

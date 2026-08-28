@@ -35,3 +35,14 @@ DATA_EN = {
     "OG_DESCRIPTION": "61 apartments and penthouses in exclusive Selwo, Estepona. Striking architecture, premium materials, private garage. From € 419,000.",
     "HERO_BG_ALT": "Vanian Views terrace apartment Selwo Estepona",
 }
+
+# Gebruikt door de /projecten/ overzichtspagina (kaart + kaartjes)
+HUB = {
+    "NAME": PROJECT_NAME,
+    "LOCATION": "Selwo, Estepona",
+    "PRICE": PRICE_FROM,
+    "THUMB": "https://projects.investinspain.be/images/vanian-views/hero.webp",
+    "LAT": 36.464249,
+    "LNG": -5.082937,
+    "HREF": "/vanian-views/",
+}

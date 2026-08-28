@@ -34,4 +34,14 @@ DATA_EN = {
     "HERO_BG_ALT": "Lagumare41 — modern apartment complex with gardens in Estepona",
 }
 
-# NOTE: geen HUB-dict - dit project komt (voorlopig) niet op de projectenoverzichtspagina
+
+# Gebruikt door de /projecten/ overzichtspagina (kaart + kaartjes)
+HUB = {
+    "NAME": PROJECT_NAME,
+    "LOCATION": "Estepona",
+    "PRICE": PRICE_FROM,
+    "THUMB": "https://projects.investinspain.be/images/lagumare41/hero.webp",
+    "LAT": 36.436986,
+    "LNG": -5.110333,
+    "HREF": "/lagumare41/",
+}

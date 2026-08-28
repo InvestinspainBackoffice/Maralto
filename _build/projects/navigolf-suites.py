@@ -34,4 +34,14 @@ DATA_EN = {
     "HERO_BG_ALT": "Navigolf Suites — modern apartment complex with golf views in Mijas",
 }
 
-# NOTE: geen HUB-dict - dit project komt (voorlopig) niet op de projectenoverzichtspagina
+
+# Gebruikt door de /projecten/ overzichtspagina (kaart + kaartjes)
+HUB = {
+    "NAME": PROJECT_NAME,
+    "LOCATION": "Mijas",
+    "PRICE": PRICE_FROM,
+    "THUMB": "https://projects.investinspain.be/images/navigolf-suites/hero.webp",
+    "LAT": 36.504034,
+    "LNG": -4.687868,
+    "HREF": "/navigolf-suites/",
+}

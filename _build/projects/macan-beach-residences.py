@@ -14,7 +14,7 @@ DATA = {
     "HERO_BG": "https://projects.investinspain.be/images/macan-beach-residences/hero.webp",
     "HERO_BG_ALT": "Macan Beach Residences — strandappartementen met spectaculair zeezicht",
     "HERO_NAME": "Macan Beach Residences",
-    "HERO_LOCATION": "TORRE DEL MAR",
+    "HERO_LOCATION": "BENALMÁDENA",
     "HERO_PRICE": PRICE_FROM,
     "PRICE_FROM": PRICE_FROM,
     "WA_TEXT_ENCODED": quote(WA_MESSAGE),
@@ -34,4 +34,14 @@ DATA_EN = {
     "HERO_BG_ALT": "Macan Beach Residences — beachfront apartments with spectacular sea views",
 }
 
-# NOTE: geen HUB-dict - dit project komt (voorlopig) niet op de projectenoverzichtspagina
+
+# Gebruikt door de /projecten/ overzichtspagina (kaart + kaartjes)
+HUB = {
+    "NAME": PROJECT_NAME,
+    "LOCATION": "Benalmádena",
+    "PRICE": PRICE_FROM,
+    "THUMB": "https://projects.investinspain.be/images/macan-beach-residences/hero.webp",
+    "LAT": 36.582408,
+    "LNG": -4.558846,
+    "HREF": "/macan-beach-residences/",
+}

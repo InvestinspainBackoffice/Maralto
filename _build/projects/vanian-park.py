@@ -40,7 +40,7 @@ HUB = {
     "LOCATION": "Estepona",
     "PRICE": PRICE_FROM,
     "THUMB": "https://projects.investinspain.be/images/vanian-park/thumb.webp",
-    "LAT": 36.461726779115,
-    "LNG": -5.0844278829287,
+    "LAT": 36.461727,
+    "LNG": -5.084428,
     "HREF": "/vanian-park/",
 }

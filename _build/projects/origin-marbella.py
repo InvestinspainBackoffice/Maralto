@@ -33,3 +33,14 @@ DATA_EN = {
     "OG_DESCRIPTION": "Origin Marbella: contemporary apartments with communal pool, gym, coworking and spacious terraces in the hills near Marbella. Outstanding value for money. From € 545,000.",
     "HERO_BG_ALT": "Origin Marbella communal pool and terrace",
 }
+
+# Gebruikt door de /projecten/ overzichtspagina (kaart + kaartjes)
+HUB = {
+    "NAME": PROJECT_NAME,
+    "LOCATION": "Marbella",
+    "PRICE": PRICE_FROM,
+    "THUMB": "https://projects.investinspain.be/images/origin-marbella/hero.webp",
+    "LAT": 36.524698,
+    "LNG": -4.841469,
+    "HREF": "/origin-marbella/",
+}

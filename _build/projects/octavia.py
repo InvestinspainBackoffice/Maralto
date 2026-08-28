@@ -39,7 +39,7 @@ HUB = {
     "LOCATION": "Málaga",
     "PRICE": "Vanaf € 2.150.000",
     "THUMB": "https://projects.investinspain.be/images/octavia/hero.webp",
-    "LAT": 36.6905,
-    "LNG": -4.4421,
+    "LAT": 36.690501,
+    "LNG": -4.442141,
     "HREF": "/octavia/",
 }

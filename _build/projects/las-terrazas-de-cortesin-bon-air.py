@@ -34,4 +34,14 @@ DATA_EN = {
     "HERO_BG_ALT": "Bon Air — exclusive apartment complex with pool in Casares",
 }
 
-# NOTE: geen HUB-dict - dit project komt (voorlopig) niet op de projectenoverzichtspagina
+
+# Gebruikt door de /projecten/ overzichtspagina (kaart + kaartjes)
+HUB = {
+    "NAME": PROJECT_NAME,
+    "LOCATION": "Casares",
+    "PRICE": PRICE_FROM,
+    "THUMB": "https://projects.investinspain.be/images/las-terrazas-de-cortesin-bon-air/hero.webp",
+    "LAT": 36.40101,
+    "LNG": -5.215576,
+    "HREF": "/las-terrazas-de-cortesin-bon-air/",
+}

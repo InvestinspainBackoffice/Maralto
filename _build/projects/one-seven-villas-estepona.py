@@ -39,7 +39,7 @@ HUB = {
     "LOCATION": "Estepona",
     "PRICE": "Vanaf € 1.450.000",
     "THUMB": "https://projects.investinspain.be/images/one-seven-villas-estepona/hero.webp",
-    "LAT": 36.4304,
-    "LNG": -5.1355,
+    "LAT": 36.414903,
+    "LNG": -5.212213,
     "HREF": "/one-seven-villas-estepona/",
 }

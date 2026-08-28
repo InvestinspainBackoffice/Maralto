@@ -33,3 +33,14 @@ DATA_EN = {
     "OG_DESCRIPTION": "108 new build apartments with 2-3 bedrooms in Mijas. 6 buildings, gated community, communal pool. Discover Bahía via INVESTINSPAIN.BE.",
     "HERO_BG_ALT": "Bahía Mijas exterior apartments",
 }
+
+# Gebruikt door de /projecten/ overzichtspagina (kaart + kaartjes)
+HUB = {
+    "NAME": PROJECT_NAME,
+    "LOCATION": "Mijas",
+    "PRICE": PRICE_FROM,
+    "THUMB": "https://projects.investinspain.be/images/bahia/hero.webp",
+    "LAT": 36.510938,
+    "LNG": -4.710128,
+    "HREF": "/bahia/",
+}

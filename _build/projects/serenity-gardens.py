@@ -34,4 +34,14 @@ DATA_EN = {
     "HERO_BG_ALT": "Serenity Gardens — modern apartment complex in Estepona",
 }
 
-# NOTE: geen HUB-dict - dit project komt (voorlopig) niet op de projectenoverzichtspagina
+
+# Gebruikt door de /projecten/ overzichtspagina (kaart + kaartjes)
+HUB = {
+    "NAME": PROJECT_NAME,
+    "LOCATION": "Estepona",
+    "PRICE": PRICE_FROM,
+    "THUMB": "https://projects.investinspain.be/images/serenity-gardens/hero.webp",
+    "LAT": 36.396834,
+    "LNG": -5.20237,
+    "HREF": "/serenity-gardens/",
+}

@@ -39,7 +39,7 @@ HUB = {
     "LOCATION": "Estepona",
     "PRICE": "Vanaf € 710.000",
     "THUMB": "https://projects.investinspain.be/images/las-mesas-infinity-homes/hero.webp",
-    "LAT": 36.4249,
-    "LNG": -5.1580,
+    "LAT": 36.424902,
+    "LNG": -5.158013,
     "HREF": "/las-mesas-infinity-homes/",
 }

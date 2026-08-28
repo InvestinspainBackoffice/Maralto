@@ -34,5 +34,13 @@ DATA_EN = {
     "HERO_BG_ALT": "Amaris Villas — modern design villa with sea views in Estepona",
 }
 
-# NOTE: geen HUB-dict - dit project komt (voorlopig) niet op de
-# projectenoverzichtspagina, op uitdrukkelijk verzoek.
+# Gebruikt door de /projecten/ overzichtspagina (kaart + kaartjes)
+HUB = {
+    "NAME": PROJECT_NAME,
+    "LOCATION": "Estepona",
+    "PRICE": PRICE_FROM,
+    "THUMB": "https://projects.investinspain.be/images/amaris-villas/hero.webp",
+    "LAT": 36.421852,
+    "LNG": -5.200932,
+    "HREF": "/amaris-villas/",
+}

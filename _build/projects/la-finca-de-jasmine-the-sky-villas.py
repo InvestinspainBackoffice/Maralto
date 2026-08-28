@@ -39,7 +39,7 @@ HUB = {
     "LOCATION": "Marbella",
     "PRICE": "Vanaf € 2.900.000",
     "THUMB": "https://projects.investinspain.be/images/la-finca-de-jasmine-the-sky-villas/hero.webp",
-    "LAT": 36.6296,
-    "LNG": -4.9369,
+    "LAT": 36.499598,
+    "LNG": -5.035987,
     "HREF": "/la-finca-de-jasmine-the-sky-villas/",
 }

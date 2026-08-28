@@ -34,5 +34,13 @@ DATA_EN = {
     "HERO_BG_ALT": "Azahar de Estepona — modern complex with sea views",
 }
 
-# NOTE: geen HUB-dict - dit project komt (voorlopig) niet op de
-# projectenoverzichtspagina, op uitdrukkelijk verzoek.
+# Gebruikt door de /projecten/ overzichtspagina (kaart + kaartjes)
+HUB = {
+    "NAME": PROJECT_NAME,
+    "LOCATION": "Estepona",
+    "PRICE": PRICE_FROM,
+    "THUMB": "https://projects.investinspain.be/images/azahar-de-estepona-2/hero.webp",
+    "LAT": 36.412399,
+    "LNG": -5.192056,
+    "HREF": "/azahar-de-estepona-2/",
+}

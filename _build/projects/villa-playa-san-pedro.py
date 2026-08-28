@@ -33,3 +33,14 @@ DATA_EN = {
     "OG_DESCRIPTION": "Exclusive frontline beach villa in San Pedro de Alcántara, within walking distance of Puerto Banús. Direct beach access. Discover this unique property via INVESTINSPAIN.BE.",
     "HERO_BG_ALT": "Villa Playa San Pedro frontline beach villa main entrance night",
 }
+
+# Gebruikt door de /projecten/ overzichtspagina (kaart + kaartjes)
+HUB = {
+    "NAME": PROJECT_NAME,
+    "LOCATION": "San Pedro de Alcántara",
+    "PRICE": PRICE_FROM,
+    "THUMB": "https://projects.investinspain.be/images/villa-playa-san-pedro/hero.webp",
+    "LAT": 36.478926,
+    "LNG": -4.97508,
+    "HREF": "/villa-playa-san-pedro/",
+}

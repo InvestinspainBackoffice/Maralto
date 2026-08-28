@@ -39,7 +39,7 @@ HUB = {
     "LOCATION": "Casares",
     "PRICE": "Vanaf € 380.000",
     "THUMB": "https://projects.investinspain.be/images/bliss-homes/hero.webp",
-    "LAT": 36.393760,
+    "LAT": 36.39376,
     "LNG": -5.227498,
     "HREF": "/bliss-homes/",
 }

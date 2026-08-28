@@ -39,7 +39,7 @@ HUB = {
     "LOCATION": "Manilva",
     "PRICE": "Vanaf € 530.000",
     "THUMB": "https://projects.investinspain.be/images/kristina-views/hero.webp",
-    "LAT": 36.3492,
-    "LNG": -5.2515,
+    "LAT": 36.349208,
+    "LNG": -5.251538,
     "HREF": "/kristina-views/",
 }

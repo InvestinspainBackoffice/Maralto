@@ -34,5 +34,13 @@ DATA_EN = {
     "HERO_BG_ALT": "The Valley — approach bridge to the townhouses through greenery",
 }
 
-# NOTE: geen HUB-dict - dit project komt (voorlopig) niet op de
-# projectenoverzichtspagina, op uitdrukkelijk verzoek.
+# Gebruikt door de /projecten/ overzichtspagina (kaart + kaartjes)
+HUB = {
+    "NAME": PROJECT_NAME,
+    "LOCATION": "Elviria",
+    "PRICE": PRICE_FROM,
+    "THUMB": "https://projects.investinspain.be/images/the-valley/hero.webp",
+    "LAT": 36.510045,
+    "LNG": -4.77755,
+    "HREF": "/the-valley/",
+}

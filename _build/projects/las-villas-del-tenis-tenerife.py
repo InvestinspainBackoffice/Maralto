@@ -33,3 +33,14 @@ DATA_EN = {
     "OG_DESCRIPTION": "Las Villas del Tenis at Abama Resort in Tenerife: luxury villas with private pool, sea views and access to all 5-star resort amenities. From € 2,050,000.",
     "HERO_BG_ALT": "Las Villas del Tenis Tenerife exterior at Abama Resort",
 }
+
+# Gebruikt door de /projecten/ overzichtspagina (kaart + kaartjes)
+HUB = {
+    "NAME": PROJECT_NAME,
+    "LOCATION": "Tenerife",
+    "PRICE": PRICE_FROM,
+    "THUMB": "https://projects.investinspain.be/images/las-villas-del-tenis-tenerife/hero.webp",
+    "LAT": 28.17194,
+    "LNG": -16.785994,
+    "HREF": "/las-villas-del-tenis-tenerife/",
+}

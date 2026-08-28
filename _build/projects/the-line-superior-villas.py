@@ -39,7 +39,7 @@ HUB = {
     "LOCATION": "Mijas",
     "PRICE": "Vanaf € 3.000.000",
     "THUMB": "https://projects.investinspain.be/images/the-line-superior-villas/hero.webp",
-    "LAT": 36.5093,
-    "LNG": -4.6716,
+    "LAT": 36.509257,
+    "LNG": -4.671614,
     "HREF": "/the-line-superior-villas/",
 }

@@ -35,3 +35,14 @@ DATA_EN = {
     "OG_DESCRIPTION": "16 exclusive apartments with spectacular 180° sea views in La Cala de Mijas. Private pool or jacuzzi, gated community, exceptional finish. From € 775,000.",
     "HERO_BG_ALT": "Boutique Project pool La Cala de Mijas sea views",
 }
+
+# Gebruikt door de /projecten/ overzichtspagina (kaart + kaartjes)
+HUB = {
+    "NAME": PROJECT_NAME,
+    "LOCATION": "La Cala de Mijas",
+    "PRICE": PRICE_FROM,
+    "THUMB": "https://projects.investinspain.be/images/boutique-project/hero.webp",
+    "LAT": 36.509116,
+    "LNG": -4.708943,
+    "HREF": "/boutique-project/",
+}

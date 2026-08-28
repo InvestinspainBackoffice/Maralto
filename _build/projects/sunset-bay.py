@@ -33,3 +33,14 @@ DATA_EN = {
     "OG_DESCRIPTION": "41 new build apartments 300m from the beach in Estepona. 1, 2 and 3 bedrooms with sea views. Discover Sunset Bay via INVESTINSPAIN.BE.",
     "HERO_BG_ALT": "Sunset Bay Estepona exterior apartments beachside",
 }
+
+# Gebruikt door de /projecten/ overzichtspagina (kaart + kaartjes)
+HUB = {
+    "NAME": PROJECT_NAME,
+    "LOCATION": "Estepona",
+    "PRICE": PRICE_FROM,
+    "THUMB": "https://projects.investinspain.be/images/sunset-bay/hero.webp",
+    "LAT": 36.41096,
+    "LNG": -5.188609,
+    "HREF": "/sunset-bay/",
+}

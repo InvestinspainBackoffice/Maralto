@@ -33,4 +33,14 @@ DATA_EN = {
     "OG_DESCRIPTION": "55 luxury townhouses with golf and sea views in Casares del Sol, within walking distance of Azata Golf and Finca Cortesín.",
     "HERO_BG_ALT": "Spinto Blu — overview of the townhouse complex with golf and sea views in Casares",
 }
-# NOTE: geen HUB-dict - dit project komt (voorlopig) niet op de projectenoverzichtspagina
+
+# Gebruikt door de /projecten/ overzichtspagina (kaart + kaartjes)
+HUB = {
+    "NAME": PROJECT_NAME,
+    "LOCATION": "Casares",
+    "PRICE": PRICE_FROM,
+    "THUMB": "https://projects.investinspain.be/images/spinto-blu/hero.webp",
+    "LAT": 36.387519,
+    "LNG": -5.217742,
+    "HREF": "/spinto-blu/",
+}

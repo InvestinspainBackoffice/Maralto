@@ -40,7 +40,7 @@ HUB = {
     "LOCATION": "Estepona",
     "PRICE": PRICE_FROM,
     "THUMB": "https://projects.investinspain.be/images/haiku-estepona/thumb.webp",
-    "LAT": 36.466856444687,
-    "LNG": -5.0597456901361,
+    "LAT": 36.466856,
+    "LNG": -5.059746,
     "HREF": "/haiku-estepona/",
 }

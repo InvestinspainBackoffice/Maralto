@@ -40,7 +40,7 @@ HUB = {
     "LOCATION": "Nueva Andalucía",
     "PRICE": PRICE_FROM,
     "THUMB": "https://projects.investinspain.be/images/ocho-de-oro/thumb.webp",
-    "LAT": 36.5238841,
-    "LNG": -4.9696537,
+    "LAT": 36.509372,
+    "LNG": -4.885658,
     "HREF": "/ocho-de-oro/",
 }

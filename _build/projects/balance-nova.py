@@ -34,5 +34,13 @@ DATA_EN = {
     "HERO_BG_ALT": "Balance Nova — building with pool and palm trees",
 }
 
-# NOTE: geen HUB-dict - dit project komt (voorlopig) niet op de
-# projectenoverzichtspagina, op uitdrukkelijk verzoek.
+# Gebruikt door de /projecten/ overzichtspagina (kaart + kaartjes)
+HUB = {
+    "NAME": PROJECT_NAME,
+    "LOCATION": "Mijas",
+    "PRICE": PRICE_FROM,
+    "THUMB": "https://projects.investinspain.be/images/balance-nova/hero.webp",
+    "LAT": 36.522042,
+    "LNG": -4.651249,
+    "HREF": "/balance-nova/",
+}

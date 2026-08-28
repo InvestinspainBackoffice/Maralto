@@ -33,3 +33,14 @@ DATA_EN = {
     "OG_DESCRIPTION": "The KOS in Benalmádena: ecological luxury townhouses and sky top villas with sea views, 3 infinity pools, indoor pool, spa, gym and coworking. Living in harmony with nature. From € 1,100,000.",
     "HERO_BG_ALT": "The KOS Benalmádena exterior sustainable luxury townhouses",
 }
+
+# Gebruikt door de /projecten/ overzichtspagina (kaart + kaartjes)
+HUB = {
+    "NAME": PROJECT_NAME,
+    "LOCATION": "Benalmádena",
+    "PRICE": PRICE_FROM,
+    "THUMB": "https://projects.investinspain.be/images/the-kos/hero.webp",
+    "LAT": 36.571471,
+    "LNG": -4.598245,
+    "HREF": "/the-kos/",
+}

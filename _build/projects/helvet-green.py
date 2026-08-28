@@ -33,4 +33,14 @@ DATA_EN = {
     "OG_DESCRIPTION": "103 bright apartments with Mediterranean gardens, natural pool and relaxation areas in Mijas, east of Marbella.",
     "HERO_BG_ALT": "Helvet Green — apartment complex with Mediterranean gardens in Mijas",
 }
-# NOTE: geen HUB-dict - dit project komt (voorlopig) niet op de projectenoverzichtspagina
+
+# Gebruikt door de /projecten/ overzichtspagina (kaart + kaartjes)
+HUB = {
+    "NAME": PROJECT_NAME,
+    "LOCATION": "Mijas",
+    "PRICE": PRICE_FROM,
+    "THUMB": "https://projects.investinspain.be/images/helvet-green/hero.webp",
+    "LAT": 36.551093,
+    "LNG": -4.659861,
+    "HREF": "/helvet-green/",
+}

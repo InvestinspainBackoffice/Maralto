@@ -33,3 +33,14 @@ DATA_EN = {
     "OG_DESCRIPTION": "Just 25 exclusive homes with 3-4 bedrooms and private pools in El Higuerón, Fuengirola. Architecture in harmony with nature, panoramic sea views.",
     "HERO_BG_ALT": "Organic El Higuerón Fuengirola homes with sea views and private pool",
 }
+
+# Gebruikt door de /projecten/ overzichtspagina (kaart + kaartjes)
+HUB = {
+    "NAME": PROJECT_NAME,
+    "LOCATION": "Higuerón, Fuengirola",
+    "PRICE": PRICE_FROM,
+    "THUMB": "https://projects.investinspain.be/images/organic/hero.webp",
+    "LAT": 36.577985,
+    "LNG": -4.602902,
+    "HREF": "/organic/",
+}

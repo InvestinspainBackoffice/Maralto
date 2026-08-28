@@ -39,5 +39,13 @@ DATA_EN = {
     "PRICE_AMOUNT": "€ 525,000",
 }
 
-# NOTE: geen HUB-dict - dit project komt (voorlopig) niet op de
-# projectenoverzichtspagina, op uitdrukkelijk verzoek.
+# Gebruikt door de /projecten/ overzichtspagina (kaart + kaartjes)
+HUB = {
+    "NAME": PROJECT_NAME,
+    "LOCATION": "Estepona",
+    "PRICE": PRICE_FROM,
+    "THUMB": "https://projects.investinspain.be/images/isea-estepona/hero.webp",
+    "LAT": 36.407892,
+    "LNG": -5.192772,
+    "HREF": "/isea-estepona/",
+}

@@ -63,9 +63,9 @@
 <link rel="preconnect" href="https://unpkg.com" crossorigin>
 <link rel="preload" as="image" href="https://projects.investinspain.be/images/maralto/thumb.webp" fetchpriority="high">
 <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600&display=swap" rel="stylesheet">
-<!-- Leaflet (CSS+JS) laadt pas zodra de bezoeker de kaart-overlay opent
-     (zie loadLeaflet() in de JS onderaan) - de kaart staat nu standaard
-     dicht, dus dit hoeft de eerste render niet meer te blokkeren. -->
+<!-- Google Maps JS laadt pas zodra de bezoeker de kaart-overlay opent (zie
+     loadGoogleMaps() in de JS onderaan) - de kaart staat nu standaard dicht,
+     dus dit hoeft de eerste render niet meer te blokkeren. -->
 <style>
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
 :root {
@@ -210,18 +210,22 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   box-shadow: 0 20px 60px rgba(0,0,0,0.5);
   filter: saturate(0.9);
 }
-.leaflet-popup-content-wrapper {
-  background: var(--bg-el);
-  border: 1px solid var(--line-light);
-  border-radius: 0;
-  box-shadow: 0 8px 30px rgba(0,0,0,0.5);
-  padding: 0;
-  overflow: hidden;
+/* Google Maps' InfoWindow-DOM is niet officieel gedocumenteerd, maar deze
+   klassen zijn al jaren stabiel gebleken over API-versies heen. */
+.gm-style-iw-c {
+  background: var(--bg-el) !important;
+  border: 1px solid var(--line-light) !important;
+  border-radius: 0 !important;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.5) !important;
+  padding: 0 !important;
+  max-width: 220px !important;
 }
-.leaflet-popup-tip { background: var(--bg-el); box-shadow: none; }
-/* Standaard Leaflet-marge weggehaald zodat de foto edge-to-edge loopt;
-   de tekst-body krijgt zijn eigen padding (zie .map-popup__body). */
-.leaflet-popup-content { margin: 0; font-family: var(--font); }
+.gm-style-iw-d { overflow: hidden !important; padding: 0 !important; }
+/* Het driehoekige "staartje" onder de InfoWindow verbergen i.p.v. herkleuren -
+   eenvoudiger dan Google's interne tail-opbouw natrekken over versies heen. */
+.gm-style-iw-tail, .gm-style-iw-t::after { display: none !important; }
+.gm-ui-hover-effect { top: 4px !important; right: 4px !important; opacity: 1 !important; }
+.gm-ui-hover-effect > span { background-color: var(--text) !important; }
 .map-popup__img { display: block; width: 100%; height: 110px; object-fit: cover; }
 .map-popup__body { padding: 0.75rem 0.9rem 0.9rem; }
 .map-popup__name { font-size: 0.9rem; color: var(--text); margin-bottom: 0.15rem; }
@@ -234,66 +238,22 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   border-bottom: 1px solid var(--gold-dim);
   padding-bottom: 1px;
 }
-.leaflet-popup-close-button {
-  color: var(--text) !important;
-  background: rgba(14,19,24,0.55) !important;
-  border-radius: 50%;
-  width: 20px !important; height: 20px !important;
-  top: 6px !important; right: 6px !important;
-}
-.leaflet-container { background: var(--bg) !important; font-family: var(--font) !important; }
-/* Blijft aanwezig (OpenStreetMap/CARTO vereisen attributie), maar zo
-   onopvallend mogelijk: piepklein en bijna doorzichtig in de hoek. */
-.leaflet-control-attribution {
-  background: transparent !important;
-  color: rgba(138,150,163,0.35) !important;
-  font-size: 8px !important;
-  line-height: 1.2;
-  padding: 1px 4px !important;
-}
-.leaflet-control-attribution a { color: rgba(158,137,104,0.4) !important; }
-.leaflet-control-attribution svg { display: none; }
-.leaflet-control-zoom a {
-  background: var(--bg-el) !important;
-  color: var(--text) !important;
-  border-color: var(--line-light) !important;
-}
-.marker-pin {
-  width: 14px; height: 14px;
-  border-radius: 50%;
-  background: var(--gold);
-  border: 2px solid var(--bg);
-  box-shadow: 0 0 0 2px var(--gold-dim);
-}
-.marker-tooltip {
+/* Zoomknoppen donker gestyled. Google rendert die als <button> met een
+   WITTE achtergrond; de omhullende div is doorzichtig. De kleur moet dus op
+   de knop zelf - anders staat het (geinverteerde, dus witte) +/- icoon op
+   wit en zie je de knoppen niet.
+   Google's copyright/logo-attributie in de hoeken blijft overal ongemoeid -
+   die mag niet verborgen worden (verplicht in hun gebruiksvoorwaarden). */
+.gm-bundled-control button.gm-control-active {
   background: var(--bg-el) !important;
   border: 1px solid var(--line-light) !important;
-  border-radius: 0 !important;
-  box-shadow: 0 6px 20px rgba(0,0,0,0.5) !important;
-  color: var(--text) !important;
-  font-family: var(--font);
-  font-size: 0.75rem;
-  padding: 0.4rem 0.7rem !important;
+  box-shadow: none !important;
 }
-.marker-tooltip::before { border-top-color: var(--line-light) !important; }
-
-/* ── Aanraakhint (mobiel): 1 vinger scrollt de pagina, tik om de kaart te bedienen ── */
-.map-touch-hint {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background: rgba(14,19,24,0.8);
-  color: var(--text);
-  font-size: 0.68rem;
-  letter-spacing: 0.05em;
-  padding: 0.65rem 1.2rem;
-  border: 1px solid var(--line-light);
-  white-space: nowrap;
-  pointer-events: none;
-  z-index: 500;
-  transition: opacity 0.3s;
-}
+.gm-bundled-control button.gm-control-active + button.gm-control-active { border-top: none !important; }
+.gm-bundled-control button.gm-control-active:hover { background: #1b2430 !important; }
+/* Het scheidingslijntje dat Google tussen + en - zet, in onze lijnkleur. */
+.gm-bundled-control .gmnoprint > div > div { background: var(--line-light) !important; }
+.gm-bundled-control button.gm-control-active img { filter: invert(1) brightness(1.9); }
 
 /* ── Eyebrow boven de titel ── */
 .page-eyebrow {
@@ -1210,17 +1170,45 @@ html.ai-chat-on .lead-dock { display: none; }
           <option value="">All locations</option>
         <option value="Benahavís">Benahavís</option>
         <option value="Benalmádena">Benalmádena</option>
+        <option value="Cabopino, Marbella">Cabopino, Marbella</option>
+        <option value="Calahonda">Calahonda</option>
         <option value="Cancelada">Cancelada</option>
+        <option value="Canyamel, Mallorca">Canyamel, Mallorca</option>
         <option value="Casares">Casares</option>
+        <option value="Costa Adeje, Tenerife">Costa Adeje, Tenerife</option>
+        <option value="El Campanario, Estepona">El Campanario, Estepona</option>
         <option value="Elviria">Elviria</option>
         <option value="Estepona">Estepona</option>
+        <option value="Fuengirola">Fuengirola</option>
+        <option value="Golden Mile, Marbella">Golden Mile, Marbella</option>
+        <option value="Guía de Isora, Tenerife">Guía de Isora, Tenerife</option>
+        <option value="Higuerón, Benalmádena">Higuerón, Benalmádena</option>
+        <option value="Higuerón, Fuengirola">Higuerón, Fuengirola</option>
+        <option value="Ibiza">Ibiza</option>
+        <option value="Istán">Istán</option>
+        <option value="La Alcaidesa">La Alcaidesa</option>
+        <option value="La Cala Golf, Mijas">La Cala Golf, Mijas</option>
+        <option value="La Cala de Mijas">La Cala de Mijas</option>
+        <option value="La Herradura">La Herradura</option>
+        <option value="La Quinta, Marbella">La Quinta, Marbella</option>
+        <option value="Las Lagunas de Mijas">Las Lagunas de Mijas</option>
+        <option value="Los Hidalgos, Manilva">Los Hidalgos, Manilva</option>
+        <option value="Los Monteros, Marbella">Los Monteros, Marbella</option>
         <option value="Manilva">Manilva</option>
         <option value="Marbella">Marbella</option>
+        <option value="Marbella Oost">Marbella Oost</option>
         <option value="Mijas">Mijas</option>
         <option value="Mijas Costa">Mijas Costa</option>
+        <option value="Mijas Pueblo">Mijas Pueblo</option>
         <option value="Nueva Andalucía">Nueva Andalucía</option>
+        <option value="Ojén">Ojén</option>
+        <option value="Palm Mar, Tenerife">Palm Mar, Tenerife</option>
         <option value="Real de la Quinta">Real de la Quinta</option>
         <option value="San Pedro de Alcántara">San Pedro de Alcántara</option>
+        <option value="Selwo, Estepona">Selwo, Estepona</option>
+        <option value="Sotogrande">Sotogrande</option>
+        <option value="Tenerife">Tenerife</option>
+        <option value="Torremolinos">Torremolinos</option>
         </select>
       </div>
       <div class="filter-select">
@@ -1281,6 +1269,16 @@ html.ai-chat-on .lead-dock { display: none; }
         <div class="project-card__price">From € 400.000</div>
       </div>
     </a>
+    <a class="project-card" href="/en/absolute-estepona/" data-location="Estepona" data-price-band="600k-1m">
+      <div class="project-card__img-wrap">
+        <img class="project-card__img" src="https://projects.investinspain.be/images/absolute-estepona/hero.webp" alt="Absolute Estepona" loading="lazy" decoding="async">
+      </div>
+      <div class="project-card__body">
+        <div class="project-card__name">Absolute Estepona</div>
+        <div class="project-card__location">Estepona</div>
+        <div class="project-card__price">From € 645.000</div>
+      </div>
+    </a>
     <a class="project-card" href="/en/adagio/" data-location="Cancelada" data-price-band="400k-600k">
       <div class="project-card__img-wrap">
         <img class="project-card__img" src="https://projects.investinspain.be/images/adagio/thumb.webp" alt="Adagio" loading="lazy" decoding="async">
@@ -1291,6 +1289,116 @@ html.ai-chat-on .lead-dock { display: none; }
         <div class="project-card__price">From € 512.000</div>
       </div>
     </a>
+    <a class="project-card" href="/en/aire/" data-location="Cancelada" data-price-band="400k-600k">
+      <div class="project-card__img-wrap">
+        <img class="project-card__img" src="https://projects.investinspain.be/images/aire/hero.webp" alt="Aire" loading="lazy" decoding="async">
+      </div>
+      <div class="project-card__body">
+        <div class="project-card__name">Aire</div>
+        <div class="project-card__location">Cancelada</div>
+        <div class="project-card__price">From € 472.000</div>
+      </div>
+    </a>
+    <a class="project-card" href="/en/aires-del-mar/" data-location="Estepona" data-price-band="600k-1m">
+      <div class="project-card__img-wrap">
+        <img class="project-card__img" src="https://projects.investinspain.be/images/aires-del-mar/hero.webp" alt="Aires del Mar" loading="lazy" decoding="async">
+      </div>
+      <div class="project-card__body">
+        <div class="project-card__name">Aires del Mar</div>
+        <div class="project-card__location">Estepona</div>
+        <div class="project-card__price">From € 611.751</div>
+      </div>
+    </a>
+    <a class="project-card" href="/en/alba-benalmadena/" data-location="Benalmádena" data-price-band="600k-1m">
+      <div class="project-card__img-wrap">
+        <img class="project-card__img" src="https://projects.investinspain.be/images/alba-benalmadena/hero.webp" alt="Alba Benalmádena" loading="lazy" decoding="async">
+      </div>
+      <div class="project-card__body">
+        <div class="project-card__name">Alba Benalmádena</div>
+        <div class="project-card__location">Benalmádena</div>
+        <div class="project-card__price">From € 678.000</div>
+      </div>
+    </a>
+    <a class="project-card" href="/en/alcaidesa-homes/" data-location="La Alcaidesa" data-price-band="600k-1m">
+      <div class="project-card__img-wrap">
+        <img class="project-card__img" src="https://projects.investinspain.be/images/alcaidesa-homes/hero.webp" alt="Alcaidesa Homes" loading="lazy" decoding="async">
+      </div>
+      <div class="project-card__body">
+        <div class="project-card__name">Alcaidesa Homes</div>
+        <div class="project-card__location">La Alcaidesa</div>
+        <div class="project-card__price">From € 643.000</div>
+      </div>
+    </a>
+    <a class="project-card" href="/en/alexandras-dream/" data-location="Mijas" data-price-band="600k-1m">
+      <div class="project-card__img-wrap">
+        <img class="project-card__img" src="https://projects.investinspain.be/images/alexandras-dream/hero.webp" alt="Alexandra&#x27;s Dream" loading="lazy" decoding="async">
+      </div>
+      <div class="project-card__body">
+        <div class="project-card__name">Alexandra&#x27;s Dream</div>
+        <div class="project-card__location">Mijas</div>
+        <div class="project-card__price">From € 950.000</div>
+      </div>
+    </a>
+    <a class="project-card" href="/en/almare/" data-location="La Cala de Mijas" data-price-band="400k-600k">
+      <div class="project-card__img-wrap">
+        <img class="project-card__img" src="https://projects.investinspain.be/images/almare/hero.webp" alt="Almare" loading="lazy" decoding="async">
+      </div>
+      <div class="project-card__body">
+        <div class="project-card__name">Almare</div>
+        <div class="project-card__location">La Cala de Mijas</div>
+        <div class="project-card__price">From € 582.000</div>
+      </div>
+    </a>
+    <a class="project-card" href="/en/almazara-gardens/" data-location="Istán" data-price-band="400k-600k">
+      <div class="project-card__img-wrap">
+        <img class="project-card__img" src="https://projects.investinspain.be/images/almazara-gardens/hero.webp" alt="Almazara Gardens" loading="lazy" decoding="async">
+      </div>
+      <div class="project-card__body">
+        <div class="project-card__name">Almazara Gardens</div>
+        <div class="project-card__location">Istán</div>
+        <div class="project-card__price">From € 460.000</div>
+      </div>
+    </a>
+    <a class="project-card" href="/en/almazara-views/" data-location="Istán" data-price-band="600k-1m">
+      <div class="project-card__img-wrap">
+        <img class="project-card__img" src="https://projects.investinspain.be/images/almazara-views/hero.webp" alt="Almazara Views" loading="lazy" decoding="async">
+      </div>
+      <div class="project-card__body">
+        <div class="project-card__name">Almazara Views</div>
+        <div class="project-card__location">Istán</div>
+        <div class="project-card__price">From € 620.000</div>
+      </div>
+    </a>
+    <a class="project-card" href="/en/almina-residences/" data-location="Estepona" data-price-band="600k-1m">
+      <div class="project-card__img-wrap">
+        <img class="project-card__img" src="https://projects.investinspain.be/images/almina-residences/hero.webp" alt="Almina Residences" loading="lazy" decoding="async">
+      </div>
+      <div class="project-card__body">
+        <div class="project-card__name">Almina Residences</div>
+        <div class="project-card__location">Estepona</div>
+        <div class="project-card__price">From € 669.465</div>
+      </div>
+    </a>
+    <a class="project-card" href="/en/aloha-forest/" data-location="Nueva Andalucía" data-price-band="1m-3m">
+      <div class="project-card__img-wrap">
+        <img class="project-card__img" src="https://projects.investinspain.be/images/aloha-forest/hero.webp" alt="Aloha Forest" loading="lazy" decoding="async">
+      </div>
+      <div class="project-card__body">
+        <div class="project-card__name">Aloha Forest</div>
+        <div class="project-card__location">Nueva Andalucía</div>
+        <div class="project-card__price">From € 1.176.270</div>
+      </div>
+    </a>
+    <a class="project-card" href="/en/alonia-manilva/" data-location="Manilva" data-price-band="200k-400k">
+      <div class="project-card__img-wrap">
+        <img class="project-card__img" src="https://projects.investinspain.be/images/alonia-manilva/hero.webp" alt="Alonia Manilva" loading="lazy" decoding="async">
+      </div>
+      <div class="project-card__body">
+        <div class="project-card__name">Alonia Manilva</div>
+        <div class="project-card__location">Manilva</div>
+        <div class="project-card__price">From € 301.000</div>
+      </div>
+    </a>
     <a class="project-card" href="/en/altezza-suites/" data-location="Estepona" data-price-band="600k-1m">
       <div class="project-card__img-wrap">
         <img class="project-card__img" src="https://projects.investinspain.be/images/altezza-suites/thumb.webp" alt="Altezza Suites" loading="lazy" decoding="async">
@@ -1299,6 +1407,106 @@ html.ai-chat-on .lead-dock { display: none; }
         <div class="project-card__name">Altezza Suites</div>
         <div class="project-card__location">Estepona</div>
         <div class="project-card__price">From € 795.000</div>
+      </div>
+    </a>
+    <a class="project-card" href="/en/altura-residences/" data-location="Estepona" data-price-band="3m-plus">
+      <div class="project-card__img-wrap">
+        <img class="project-card__img" src="https://projects.investinspain.be/images/altura-residences/hero.webp" alt="Altura Residences" loading="lazy" decoding="async">
+      </div>
+      <div class="project-card__body">
+        <div class="project-card__name">Altura Residences</div>
+        <div class="project-card__location">Estepona</div>
+        <div class="project-card__price">From € 3.995.000</div>
+      </div>
+    </a>
+    <a class="project-card" href="/en/amaranta-living/" data-location="Casares" data-price-band="400k-600k">
+      <div class="project-card__img-wrap">
+        <img class="project-card__img" src="https://projects.investinspain.be/images/amaranta-living/hero.webp" alt="Amaranta Living" loading="lazy" decoding="async">
+      </div>
+      <div class="project-card__body">
+        <div class="project-card__name">Amaranta Living</div>
+        <div class="project-card__location">Casares</div>
+        <div class="project-card__price">From € 446.000</div>
+      </div>
+    </a>
+    <a class="project-card" href="/en/amaris-villas/" data-location="Estepona" data-price-band="1m-3m">
+      <div class="project-card__img-wrap">
+        <img class="project-card__img" src="https://projects.investinspain.be/images/amaris-villas/hero.webp" alt="Amaris Villas" loading="lazy" decoding="async">
+      </div>
+      <div class="project-card__body">
+        <div class="project-card__name">Amaris Villas</div>
+        <div class="project-card__location">Estepona</div>
+        <div class="project-card__price">From € 1.520.000</div>
+      </div>
+    </a>
+    <a class="project-card" href="/en/anna-de-estepona/" data-location="Estepona" data-price-band="200k-400k">
+      <div class="project-card__img-wrap">
+        <img class="project-card__img" src="https://projects.investinspain.be/images/anna-de-estepona/hero.webp" alt="Anna de Estepona" loading="lazy" decoding="async">
+      </div>
+      <div class="project-card__body">
+        <div class="project-card__name">Anna de Estepona</div>
+        <div class="project-card__location">Estepona</div>
+        <div class="project-card__price">From € 380.000</div>
+      </div>
+    </a>
+    <a class="project-card" href="/en/apron-estepona/" data-location="Estepona" data-price-band="600k-1m">
+      <div class="project-card__img-wrap">
+        <img class="project-card__img" src="https://projects.investinspain.be/images/apron-estepona/hero.webp" alt="Apron Estepona" loading="lazy" decoding="async">
+      </div>
+      <div class="project-card__body">
+        <div class="project-card__name">Apron Estepona</div>
+        <div class="project-card__location">Estepona</div>
+        <div class="project-card__price">From € 834.000</div>
+      </div>
+    </a>
+    <a class="project-card" href="/en/arosa/" data-location="Mijas Costa" data-price-band="400k-600k">
+      <div class="project-card__img-wrap">
+        <img class="project-card__img" src="https://projects.investinspain.be/images/arosa/hero.webp" alt="Arosa" loading="lazy" decoding="async">
+      </div>
+      <div class="project-card__body">
+        <div class="project-card__name">Arosa</div>
+        <div class="project-card__location">Mijas Costa</div>
+        <div class="project-card__price">From € 550.000</div>
+      </div>
+    </a>
+    <a class="project-card" href="/en/astra-homes/" data-location="Fuengirola" data-price-band="200k-400k">
+      <div class="project-card__img-wrap">
+        <img class="project-card__img" src="https://projects.investinspain.be/images/astra-homes/hero.webp" alt="Astra Homes" loading="lazy" decoding="async">
+      </div>
+      <div class="project-card__body">
+        <div class="project-card__name">Astra Homes</div>
+        <div class="project-card__location">Fuengirola</div>
+        <div class="project-card__price">From € 343.000</div>
+      </div>
+    </a>
+    <a class="project-card" href="/en/atlantic-homes-tenerife/" data-location="Costa Adeje, Tenerife" data-price-band="400k-600k">
+      <div class="project-card__img-wrap">
+        <img class="project-card__img" src="https://projects.investinspain.be/images/atlantic-homes-tenerife/hero.webp" alt="Atlantic Homes" loading="lazy" decoding="async">
+      </div>
+      <div class="project-card__body">
+        <div class="project-card__name">Atlantic Homes</div>
+        <div class="project-card__location">Costa Adeje, Tenerife</div>
+        <div class="project-card__price">From € 500.000</div>
+      </div>
+    </a>
+    <a class="project-card" href="/en/atta-villas/" data-location="San Pedro de Alcántara" data-price-band="600k-1m">
+      <div class="project-card__img-wrap">
+        <img class="project-card__img" src="https://projects.investinspain.be/images/atta-villas/hero.webp" alt="ATTA Villas" loading="lazy" decoding="async">
+      </div>
+      <div class="project-card__body">
+        <div class="project-card__name">ATTA Villas</div>
+        <div class="project-card__location">San Pedro de Alcántara</div>
+        <div class="project-card__price">From € 830.000</div>
+      </div>
+    </a>
+    <a class="project-card" href="/en/attire-estepona/" data-location="Estepona" data-price-band="600k-1m">
+      <div class="project-card__img-wrap">
+        <img class="project-card__img" src="https://projects.investinspain.be/images/attire-estepona/hero.webp" alt="Attire Estepona" loading="lazy" decoding="async">
+      </div>
+      <div class="project-card__body">
+        <div class="project-card__name">Attire Estepona</div>
+        <div class="project-card__location">Estepona</div>
+        <div class="project-card__price">From € 601.000</div>
       </div>
     </a>
     <a class="project-card" href="/en/australy-aures/" data-location="Estepona" data-price-band="600k-1m">
@@ -1321,6 +1529,76 @@ html.ai-chat-on .lead-dock { display: none; }
         <div class="project-card__price">Coming soon</div>
       </div>
     </a>
+    <a class="project-card" href="/en/azahar-de-estepona-2/" data-location="Estepona" data-price-band="600k-1m">
+      <div class="project-card__img-wrap">
+        <img class="project-card__img" src="https://projects.investinspain.be/images/azahar-de-estepona-2/hero.webp" alt="Azahar de Estepona" loading="lazy" decoding="async">
+      </div>
+      <div class="project-card__body">
+        <div class="project-card__name">Azahar de Estepona</div>
+        <div class="project-card__location">Estepona</div>
+        <div class="project-card__price">From € 625.000</div>
+      </div>
+    </a>
+    <a class="project-card" href="/en/azulea/" data-location="Mijas" data-price-band="600k-1m">
+      <div class="project-card__img-wrap">
+        <img class="project-card__img" src="https://projects.investinspain.be/images/azulea/hero.webp" alt="Azulea" loading="lazy" decoding="async">
+      </div>
+      <div class="project-card__body">
+        <div class="project-card__name">Azulea</div>
+        <div class="project-card__location">Mijas</div>
+        <div class="project-card__price">From € 875.000</div>
+      </div>
+    </a>
+    <a class="project-card" href="/en/azurean/" data-location="Estepona" data-price-band="600k-1m">
+      <div class="project-card__img-wrap">
+        <img class="project-card__img" src="https://projects.investinspain.be/images/azurean/hero.webp" alt="Azurean" loading="lazy" decoding="async">
+      </div>
+      <div class="project-card__body">
+        <div class="project-card__name">Azurean</div>
+        <div class="project-card__location">Estepona</div>
+        <div class="project-card__price">From € 901.992</div>
+      </div>
+    </a>
+    <a class="project-card" href="/en/bahia/" data-location="Mijas" data-price-band="400k-600k">
+      <div class="project-card__img-wrap">
+        <img class="project-card__img" src="https://projects.investinspain.be/images/bahia/hero.webp" alt="Bahía" loading="lazy" decoding="async">
+      </div>
+      <div class="project-card__body">
+        <div class="project-card__name">Bahía</div>
+        <div class="project-card__location">Mijas</div>
+        <div class="project-card__price">From € 443.000</div>
+      </div>
+    </a>
+    <a class="project-card" href="/en/balance-nova/" data-location="Mijas" data-price-band="200k-400k">
+      <div class="project-card__img-wrap">
+        <img class="project-card__img" src="https://projects.investinspain.be/images/balance-nova/hero.webp" alt="Balance Nova" loading="lazy" decoding="async">
+      </div>
+      <div class="project-card__body">
+        <div class="project-card__name">Balance Nova</div>
+        <div class="project-card__location">Mijas</div>
+        <div class="project-card__price">From € 320.000</div>
+      </div>
+    </a>
+    <a class="project-card" href="/en/belvedere-collection/" data-location="Fuengirola" data-price-band="400k-600k">
+      <div class="project-card__img-wrap">
+        <img class="project-card__img" src="https://projects.investinspain.be/images/belvedere-collection/hero.webp" alt="Belvedere Collection" loading="lazy" decoding="async">
+      </div>
+      <div class="project-card__body">
+        <div class="project-card__name">Belvedere Collection</div>
+        <div class="project-card__location">Fuengirola</div>
+        <div class="project-card__price">From € 430.000</div>
+      </div>
+    </a>
+    <a class="project-card" href="/en/benjamins-dream/" data-location="Mijas Costa" data-price-band="600k-1m">
+      <div class="project-card__img-wrap">
+        <img class="project-card__img" src="https://projects.investinspain.be/images/benjamins-dream/hero.webp" alt="Benjamin&#x27;s Dream" loading="lazy" decoding="async">
+      </div>
+      <div class="project-card__body">
+        <div class="project-card__name">Benjamin&#x27;s Dream</div>
+        <div class="project-card__location">Mijas Costa</div>
+        <div class="project-card__price">From € 899.950</div>
+      </div>
+    </a>
     <a class="project-card" href="/en/beyond-homes/" data-location="Estepona" data-price-band="1m-3m">
       <div class="project-card__img-wrap">
         <img class="project-card__img" src="https://projects.investinspain.be/images/beyond-homes/thumb.webp" alt="Beyond Homes" loading="lazy" decoding="async">
@@ -1339,6 +1617,106 @@ html.ai-chat-on .lead-dock { display: none; }
         <div class="project-card__name">Birdie Hills</div>
         <div class="project-card__location">Estepona</div>
         <div class="project-card__price">From € 320.000</div>
+      </div>
+    </a>
+    <a class="project-card" href="/en/blue-marine/" data-location="Manilva" data-price-band="400k-600k">
+      <div class="project-card__img-wrap">
+        <img class="project-card__img" src="https://projects.investinspain.be/images/blue-marine/hero.webp" alt="Blue Marine" loading="lazy" decoding="async">
+      </div>
+      <div class="project-card__body">
+        <div class="project-card__name">Blue Marine</div>
+        <div class="project-card__location">Manilva</div>
+        <div class="project-card__price">From € 465.000</div>
+      </div>
+    </a>
+    <a class="project-card" href="/en/blume/" data-location="San Pedro de Alcántara" data-price-band="3m-plus">
+      <div class="project-card__img-wrap">
+        <img class="project-card__img" src="https://projects.investinspain.be/images/blume/hero.webp" alt="Blume" loading="lazy" decoding="async">
+      </div>
+      <div class="project-card__body">
+        <div class="project-card__name">Blume</div>
+        <div class="project-card__location">San Pedro de Alcántara</div>
+        <div class="project-card__price">From € 4.290.000</div>
+      </div>
+    </a>
+    <a class="project-card" href="/en/brightbay-villas/" data-location="La Herradura" data-price-band="1m-3m">
+      <div class="project-card__img-wrap">
+        <img class="project-card__img" src="https://projects.investinspain.be/images/brightbay-villas/hero.webp" alt="Brightbay Villas" loading="lazy" decoding="async">
+      </div>
+      <div class="project-card__body">
+        <div class="project-card__name">Brightbay Villas</div>
+        <div class="project-card__location">La Herradura</div>
+        <div class="project-card__price">From € 1.950.000</div>
+      </div>
+    </a>
+    <a class="project-card" href="/en/cala-serena-sun/" data-location="La Cala de Mijas" data-price-band="600k-1m">
+      <div class="project-card__img-wrap">
+        <img class="project-card__img" src="https://projects.investinspain.be/images/cala-serena-sun/hero.webp" alt="Cala Serena Sun" loading="lazy" decoding="async">
+      </div>
+      <div class="project-card__body">
+        <div class="project-card__name">Cala Serena Sun</div>
+        <div class="project-card__location">La Cala de Mijas</div>
+        <div class="project-card__price">From € 676.000</div>
+      </div>
+    </a>
+    <a class="project-card" href="/en/cala-swing-mijas/" data-location="La Cala de Mijas" data-price-band="200k-400k">
+      <div class="project-card__img-wrap">
+        <img class="project-card__img" src="https://projects.investinspain.be/images/cala-swing-mijas/hero.webp" alt="Cala Swing Mijas" loading="lazy" decoding="async">
+      </div>
+      <div class="project-card__body">
+        <div class="project-card__name">Cala Swing Mijas</div>
+        <div class="project-card__location">La Cala de Mijas</div>
+        <div class="project-card__price">From € 303.000</div>
+      </div>
+    </a>
+    <a class="project-card" href="/en/calanova-collection/" data-location="La Cala de Mijas" data-price-band="400k-600k">
+      <div class="project-card__img-wrap">
+        <img class="project-card__img" src="https://projects.investinspain.be/images/calanova-collection/hero.webp" alt="Calanova Collection" loading="lazy" decoding="async">
+      </div>
+      <div class="project-card__body">
+        <div class="project-card__name">Calanova Collection</div>
+        <div class="project-card__location">La Cala de Mijas</div>
+        <div class="project-card__price">From € 520.000</div>
+      </div>
+    </a>
+    <a class="project-card" href="/en/calanova-homes/" data-location="Mijas Costa" data-price-band="1m-3m">
+      <div class="project-card__img-wrap">
+        <img class="project-card__img" src="https://projects.investinspain.be/images/calanova-homes/hero.webp" alt="Calanova Homes" loading="lazy" decoding="async">
+      </div>
+      <div class="project-card__body">
+        <div class="project-card__name">Calanova Homes</div>
+        <div class="project-card__location">Mijas Costa</div>
+        <div class="project-card__price">From € 1.035.000</div>
+      </div>
+    </a>
+    <a class="project-card" href="/en/camojan-six/" data-location="Golden Mile, Marbella" data-price-band="3m-plus">
+      <div class="project-card__img-wrap">
+        <img class="project-card__img" src="https://projects.investinspain.be/images/camojan-six/hero.webp" alt="Camojan Six" loading="lazy" decoding="async">
+      </div>
+      <div class="project-card__body">
+        <div class="project-card__name">Camojan Six</div>
+        <div class="project-card__location">Golden Mile, Marbella</div>
+        <div class="project-card__price">From € 5.650.000</div>
+      </div>
+    </a>
+    <a class="project-card" href="/en/capri-estepona/" data-location="Estepona" data-price-band="400k-600k">
+      <div class="project-card__img-wrap">
+        <img class="project-card__img" src="https://projects.investinspain.be/images/capri-estepona/hero.webp" alt="Capri" loading="lazy" decoding="async">
+      </div>
+      <div class="project-card__body">
+        <div class="project-card__name">Capri</div>
+        <div class="project-card__location">Estepona</div>
+        <div class="project-card__price">€ 490.000</div>
+      </div>
+    </a>
+    <a class="project-card" href="/en/casares-bay/" data-location="Casares" data-price-band="400k-600k">
+      <div class="project-card__img-wrap">
+        <img class="project-card__img" src="https://projects.investinspain.be/images/casares-bay/hero.webp" alt="Casares Bay" loading="lazy" decoding="async">
+      </div>
+      <div class="project-card__body">
+        <div class="project-card__name">Casares Bay</div>
+        <div class="project-card__location">Casares</div>
+        <div class="project-card__price">From € 467.000</div>
       </div>
     </a>
     <a class="project-card" href="/en/casatalaya/" data-location="Benalmádena" data-price-band="600k-1m">
@@ -1361,6 +1739,36 @@ html.ai-chat-on .lead-dock { display: none; }
         <div class="project-card__price">From € 3.350.000</div>
       </div>
     </a>
+    <a class="project-card" href="/en/eagle-hills/" data-location="Estepona" data-price-band="200k-400k">
+      <div class="project-card__img-wrap">
+        <img class="project-card__img" src="https://projects.investinspain.be/images/eagle-hills/hero.webp" alt="Eagle Hills" loading="lazy" decoding="async">
+      </div>
+      <div class="project-card__body">
+        <div class="project-card__name">Eagle Hills</div>
+        <div class="project-card__location">Estepona</div>
+        <div class="project-card__price">From € 365.000</div>
+      </div>
+    </a>
+    <a class="project-card" href="/en/earth/" data-location="Golden Mile, Marbella" data-price-band="3m-plus">
+      <div class="project-card__img-wrap">
+        <img class="project-card__img" src="https://projects.investinspain.be/images/earth/hero.webp" alt="Earth" loading="lazy" decoding="async">
+      </div>
+      <div class="project-card__body">
+        <div class="project-card__name">Earth</div>
+        <div class="project-card__location">Golden Mile, Marbella</div>
+        <div class="project-card__price">From € 5.095.000</div>
+      </div>
+    </a>
+    <a class="project-card" href="/en/elysea-suites/" data-location="Mijas Costa" data-price-band="1m-3m">
+      <div class="project-card__img-wrap">
+        <img class="project-card__img" src="https://projects.investinspain.be/images/elysea-suites/hero.webp" alt="Elysea Suites" loading="lazy" decoding="async">
+      </div>
+      <div class="project-card__body">
+        <div class="project-card__name">Elysea Suites</div>
+        <div class="project-card__location">Mijas Costa</div>
+        <div class="project-card__price">From € 1.050.000</div>
+      </div>
+    </a>
     <a class="project-card" href="/en/emare/" data-location="Estepona" data-price-band="">
       <div class="project-card__img-wrap">
         <img class="project-card__img" src="https://projects.investinspain.be/images/emare/thumb.webp" alt="Emare" loading="lazy" decoding="async">
@@ -1369,6 +1777,46 @@ html.ai-chat-on .lead-dock { display: none; }
         <div class="project-card__name">Emare</div>
         <div class="project-card__location">Estepona</div>
         <div class="project-card__price">Sold out</div>
+      </div>
+    </a>
+    <a class="project-card" href="/en/emerald-view/" data-location="Mijas Pueblo" data-price-band="600k-1m">
+      <div class="project-card__img-wrap">
+        <img class="project-card__img" src="https://projects.investinspain.be/images/emerald-view/hero.webp" alt="Emerald View" loading="lazy" decoding="async">
+      </div>
+      <div class="project-card__body">
+        <div class="project-card__name">Emerald View</div>
+        <div class="project-card__location">Mijas Pueblo</div>
+        <div class="project-card__price">From € 695.000</div>
+      </div>
+    </a>
+    <a class="project-card" href="/en/enebros/" data-location="Marbella" data-price-band="1m-3m">
+      <div class="project-card__img-wrap">
+        <img class="project-card__img" src="https://projects.investinspain.be/images/enebros/hero.webp" alt="Enebros" loading="lazy" decoding="async">
+      </div>
+      <div class="project-card__body">
+        <div class="project-card__name">Enebros</div>
+        <div class="project-card__location">Marbella</div>
+        <div class="project-card__price">From € 1.600.000</div>
+      </div>
+    </a>
+    <a class="project-card" href="/en/epic-marbella/" data-location="Marbella" data-price-band="3m-plus">
+      <div class="project-card__img-wrap">
+        <img class="project-card__img" src="https://projects.investinspain.be/images/epic-marbella/hero.webp" alt="Epic Marbella" loading="lazy" decoding="async">
+      </div>
+      <div class="project-card__body">
+        <div class="project-card__name">Epic Marbella</div>
+        <div class="project-card__location">Marbella</div>
+        <div class="project-card__price">From € 3.750.000</div>
+      </div>
+    </a>
+    <a class="project-card" href="/en/equilibrio/" data-location="Estepona" data-price-band="600k-1m">
+      <div class="project-card__img-wrap">
+        <img class="project-card__img" src="https://projects.investinspain.be/images/equilibrio/hero.webp" alt="Equilibrio" loading="lazy" decoding="async">
+      </div>
+      <div class="project-card__body">
+        <div class="project-card__name">Equilibrio</div>
+        <div class="project-card__location">Estepona</div>
+        <div class="project-card__price">From € 620.000</div>
       </div>
     </a>
     <a class="project-card" href="/en/essence-residence/" data-location="Estepona" data-price-band="600k-1m">
@@ -1391,6 +1839,46 @@ html.ai-chat-on .lead-dock { display: none; }
         <div class="project-card__price">From € 302.000</div>
       </div>
     </a>
+    <a class="project-card" href="/en/evoque/" data-location="Higuerón, Fuengirola" data-price-band="400k-600k">
+      <div class="project-card__img-wrap">
+        <img class="project-card__img" src="https://projects.investinspain.be/images/evoque/hero.webp" alt="EVOQUE" loading="lazy" decoding="async">
+      </div>
+      <div class="project-card__body">
+        <div class="project-card__name">EVOQUE</div>
+        <div class="project-card__location">Higuerón, Fuengirola</div>
+        <div class="project-card__price">From € 490.000</div>
+      </div>
+    </a>
+    <a class="project-card" href="/en/golden-eight/" data-location="Cabopino, Marbella" data-price-band="1m-3m">
+      <div class="project-card__img-wrap">
+        <img class="project-card__img" src="https://projects.investinspain.be/images/golden-eight/hero.webp" alt="Golden Eight" loading="lazy" decoding="async">
+      </div>
+      <div class="project-card__body">
+        <div class="project-card__name">Golden Eight</div>
+        <div class="project-card__location">Cabopino, Marbella</div>
+        <div class="project-card__price">From € 1.750.000</div>
+      </div>
+    </a>
+    <a class="project-card" href="/en/grand-bay/" data-location="Manilva" data-price-band="200k-400k">
+      <div class="project-card__img-wrap">
+        <img class="project-card__img" src="https://projects.investinspain.be/images/grand-bay/hero.webp" alt="Grand Bay" loading="lazy" decoding="async">
+      </div>
+      <div class="project-card__body">
+        <div class="project-card__name">Grand Bay</div>
+        <div class="project-card__location">Manilva</div>
+        <div class="project-card__price">From € 390.000</div>
+      </div>
+    </a>
+    <a class="project-card" href="/en/greenity/" data-location="Mijas" data-price-band="200k-400k">
+      <div class="project-card__img-wrap">
+        <img class="project-card__img" src="https://projects.investinspain.be/images/greenity/hero.webp" alt="Greenity" loading="lazy" decoding="async">
+      </div>
+      <div class="project-card__body">
+        <div class="project-card__name">Greenity</div>
+        <div class="project-card__location">Mijas</div>
+        <div class="project-card__price">From € 332.000</div>
+      </div>
+    </a>
     <a class="project-card" href="/en/haiku-estepona/" data-location="Estepona" data-price-band="400k-600k">
       <div class="project-card__img-wrap">
         <img class="project-card__img" src="https://projects.investinspain.be/images/haiku-estepona/thumb.webp" alt="Haiku Estepona" loading="lazy" decoding="async">
@@ -1399,6 +1887,36 @@ html.ai-chat-on .lead-dock { display: none; }
         <div class="project-card__name">Haiku Estepona</div>
         <div class="project-card__location">Estepona</div>
         <div class="project-card__price">From € 500.000</div>
+      </div>
+    </a>
+    <a class="project-card" href="/en/helvet-green/" data-location="Mijas" data-price-band="200k-400k">
+      <div class="project-card__img-wrap">
+        <img class="project-card__img" src="https://projects.investinspain.be/images/helvet-green/hero.webp" alt="Helvet Green" loading="lazy" decoding="async">
+      </div>
+      <div class="project-card__body">
+        <div class="project-card__name">Helvet Green</div>
+        <div class="project-card__location">Mijas</div>
+        <div class="project-card__price">From € 248.000</div>
+      </div>
+    </a>
+    <a class="project-card" href="/en/higueron-bay-residences/" data-location="Higuerón, Benalmádena" data-price-band="400k-600k">
+      <div class="project-card__img-wrap">
+        <img class="project-card__img" src="https://projects.investinspain.be/images/higueron-bay-residences/hero.webp" alt="Higueron Bay Residences" loading="lazy" decoding="async">
+      </div>
+      <div class="project-card__body">
+        <div class="project-card__name">Higueron Bay Residences</div>
+        <div class="project-card__location">Higuerón, Benalmádena</div>
+        <div class="project-card__price">From € 570.000</div>
+      </div>
+    </a>
+    <a class="project-card" href="/en/iconic-tenerife/" data-location="Tenerife" data-price-band="1m-3m">
+      <div class="project-card__img-wrap">
+        <img class="project-card__img" src="https://projects.investinspain.be/images/iconic-tenerife/hero.webp" alt="Iconic Tenerife" loading="lazy" decoding="async">
+      </div>
+      <div class="project-card__body">
+        <div class="project-card__name">Iconic Tenerife</div>
+        <div class="project-card__location">Tenerife</div>
+        <div class="project-card__price">From € 1.005.000</div>
       </div>
     </a>
     <a class="project-card" href="/en/ikkil-bay/" data-location="Estepona" data-price-band="3m-plus">
@@ -1411,6 +1929,66 @@ html.ai-chat-on .lead-dock { display: none; }
         <div class="project-card__price">From € 3.003.000</div>
       </div>
     </a>
+    <a class="project-card" href="/en/isea-estepona/" data-location="Estepona" data-price-band="400k-600k">
+      <div class="project-card__img-wrap">
+        <img class="project-card__img" src="https://projects.investinspain.be/images/isea-estepona/hero.webp" alt="ISEA Estepona" loading="lazy" decoding="async">
+      </div>
+      <div class="project-card__body">
+        <div class="project-card__name">ISEA Estepona</div>
+        <div class="project-card__location">Estepona</div>
+        <div class="project-card__price">€ 525.000</div>
+      </div>
+    </a>
+    <a class="project-card" href="/en/isla-bela/" data-location="Marbella" data-price-band="600k-1m">
+      <div class="project-card__img-wrap">
+        <img class="project-card__img" src="https://projects.investinspain.be/images/isla-bela/hero.webp" alt="Isla Bela" loading="lazy" decoding="async">
+      </div>
+      <div class="project-card__body">
+        <div class="project-card__name">Isla Bela</div>
+        <div class="project-card__location">Marbella</div>
+        <div class="project-card__price">From € 820.000</div>
+      </div>
+    </a>
+    <a class="project-card" href="/en/kala-residences/" data-location="Fuengirola" data-price-band="600k-1m">
+      <div class="project-card__img-wrap">
+        <img class="project-card__img" src="https://projects.investinspain.be/images/kala-residences/hero.webp" alt="Kala Residences" loading="lazy" decoding="async">
+      </div>
+      <div class="project-card__body">
+        <div class="project-card__name">Kala Residences</div>
+        <div class="project-card__location">Fuengirola</div>
+        <div class="project-card__price">From € 995.000</div>
+      </div>
+    </a>
+    <a class="project-card" href="/en/la-algaba/" data-location="Casares" data-price-band="1m-3m">
+      <div class="project-card__img-wrap">
+        <img class="project-card__img" src="https://projects.investinspain.be/images/la-algaba/hero.webp" alt="La Algaba" loading="lazy" decoding="async">
+      </div>
+      <div class="project-card__body">
+        <div class="project-card__name">La Algaba</div>
+        <div class="project-card__location">Casares</div>
+        <div class="project-card__price">From € 1.510.000</div>
+      </div>
+    </a>
+    <a class="project-card" href="/en/lagumare41/" data-location="Estepona" data-price-band="400k-600k">
+      <div class="project-card__img-wrap">
+        <img class="project-card__img" src="https://projects.investinspain.be/images/lagumare41/hero.webp" alt="Lagumare41" loading="lazy" decoding="async">
+      </div>
+      <div class="project-card__body">
+        <div class="project-card__name">Lagumare41</div>
+        <div class="project-card__location">Estepona</div>
+        <div class="project-card__price">From € 478.000</div>
+      </div>
+    </a>
+    <a class="project-card" href="/en/lantana-villas/" data-location="Calahonda" data-price-band="1m-3m">
+      <div class="project-card__img-wrap">
+        <img class="project-card__img" src="https://projects.investinspain.be/images/lantana-villas/hero.webp" alt="Lantana Villa&#x27;s" loading="lazy" decoding="async">
+      </div>
+      <div class="project-card__body">
+        <div class="project-card__name">Lantana Villa&#x27;s</div>
+        <div class="project-card__location">Calahonda</div>
+        <div class="project-card__price">From € 1.650.000</div>
+      </div>
+    </a>
     <a class="project-card" href="/en/las-mesas-blue-horizon/" data-location="Estepona" data-price-band="600k-1m">
       <div class="project-card__img-wrap">
         <img class="project-card__img" src="https://projects.investinspain.be/images/las-mesas-blue-horizon/thumb.webp" alt="Las Mesas Blue Horizon" loading="lazy" decoding="async">
@@ -1419,6 +1997,126 @@ html.ai-chat-on .lead-dock { display: none; }
         <div class="project-card__name">Las Mesas Blue Horizon</div>
         <div class="project-card__location">Estepona</div>
         <div class="project-card__price">From € 705.000</div>
+      </div>
+    </a>
+    <a class="project-card" href="/en/las-mesas-sea-suites/" data-location="Estepona" data-price-band="400k-600k">
+      <div class="project-card__img-wrap">
+        <img class="project-card__img" src="https://projects.investinspain.be/images/las-mesas-sea-suites/hero.webp" alt="Las Mesas Sea Suites" loading="lazy" decoding="async">
+      </div>
+      <div class="project-card__body">
+        <div class="project-card__name">Las Mesas Sea Suites</div>
+        <div class="project-card__location">Estepona</div>
+        <div class="project-card__price">From € 580.000</div>
+      </div>
+    </a>
+    <a class="project-card" href="/en/las-terrazas-de-cortesin-bon-air/" data-location="Casares" data-price-band="400k-600k">
+      <div class="project-card__img-wrap">
+        <img class="project-card__img" src="https://projects.investinspain.be/images/las-terrazas-de-cortesin-bon-air/hero.webp" alt="Bon Air" loading="lazy" decoding="async">
+      </div>
+      <div class="project-card__body">
+        <div class="project-card__name">Bon Air</div>
+        <div class="project-card__location">Casares</div>
+        <div class="project-card__price">From € 584.500</div>
+      </div>
+    </a>
+    <a class="project-card" href="/en/las-villas-del-tenis-tenerife/" data-location="Tenerife" data-price-band="1m-3m">
+      <div class="project-card__img-wrap">
+        <img class="project-card__img" src="https://projects.investinspain.be/images/las-villas-del-tenis-tenerife/hero.webp" alt="Las Villas del Tenis" loading="lazy" decoding="async">
+      </div>
+      <div class="project-card__body">
+        <div class="project-card__name">Las Villas del Tenis</div>
+        <div class="project-card__location">Tenerife</div>
+        <div class="project-card__price">From € 2.050.000</div>
+      </div>
+    </a>
+    <a class="project-card" href="/en/las-villas-sotogrande/" data-location="Sotogrande" data-price-band="600k-1m">
+      <div class="project-card__img-wrap">
+        <img class="project-card__img" src="https://projects.investinspain.be/images/las-villas-sotogrande/hero.webp" alt="Las Villas Sotogrande" loading="lazy" decoding="async">
+      </div>
+      <div class="project-card__body">
+        <div class="project-card__name">Las Villas Sotogrande</div>
+        <div class="project-card__location">Sotogrande</div>
+        <div class="project-card__price">From € 954.000</div>
+      </div>
+    </a>
+    <a class="project-card" href="/en/living-gardens/" data-location="Torremolinos" data-price-band="200k-400k">
+      <div class="project-card__img-wrap">
+        <img class="project-card__img" src="https://projects.investinspain.be/images/living-gardens/hero.webp" alt="Living Gardens" loading="lazy" decoding="async">
+      </div>
+      <div class="project-card__body">
+        <div class="project-card__name">Living Gardens</div>
+        <div class="project-card__location">Torremolinos</div>
+        <div class="project-card__price">From € 350.000</div>
+      </div>
+    </a>
+    <a class="project-card" href="/en/lomas-del-rey/" data-location="Marbella" data-price-band="1m-3m">
+      <div class="project-card__img-wrap">
+        <img class="project-card__img" src="https://projects.investinspain.be/images/lomas-del-rey/hero.webp" alt="Lomas del Rey" loading="lazy" decoding="async">
+      </div>
+      <div class="project-card__body">
+        <div class="project-card__name">Lomas del Rey</div>
+        <div class="project-card__location">Marbella</div>
+        <div class="project-card__price">From € 1.395.000</div>
+      </div>
+    </a>
+    <a class="project-card" href="/en/looa-estepona/" data-location="Estepona" data-price-band="400k-600k">
+      <div class="project-card__img-wrap">
+        <img class="project-card__img" src="https://projects.investinspain.be/images/looa-estepona/hero.webp" alt="Looa Estepona" loading="lazy" decoding="async">
+      </div>
+      <div class="project-card__body">
+        <div class="project-card__name">Looa Estepona</div>
+        <div class="project-card__location">Estepona</div>
+        <div class="project-card__price">From € 489.000</div>
+      </div>
+    </a>
+    <a class="project-card" href="/en/los-jardines-de-abama-tenerife/" data-location="Tenerife" data-price-band="600k-1m">
+      <div class="project-card__img-wrap">
+        <img class="project-card__img" src="https://projects.investinspain.be/images/los-jardines-de-abama-tenerife/hero.webp" alt="Los Jardines de Abama" loading="lazy" decoding="async">
+      </div>
+      <div class="project-card__body">
+        <div class="project-card__name">Los Jardines de Abama</div>
+        <div class="project-card__location">Tenerife</div>
+        <div class="project-card__price">From € 980.000</div>
+      </div>
+    </a>
+    <a class="project-card" href="/en/macan-beach-residences/" data-location="Benalmádena" data-price-band="1m-3m">
+      <div class="project-card__img-wrap">
+        <img class="project-card__img" src="https://projects.investinspain.be/images/macan-beach-residences/hero.webp" alt="Macan Beach Residences" loading="lazy" decoding="async">
+      </div>
+      <div class="project-card__body">
+        <div class="project-card__name">Macan Beach Residences</div>
+        <div class="project-card__location">Benalmádena</div>
+        <div class="project-card__price">From € 1.040.000</div>
+      </div>
+    </a>
+    <a class="project-card" href="/en/mala-kai/" data-location="Estepona" data-price-band="600k-1m">
+      <div class="project-card__img-wrap">
+        <img class="project-card__img" src="https://projects.investinspain.be/images/mala-kai/hero.webp" alt="Mãla Kai" loading="lazy" decoding="async">
+      </div>
+      <div class="project-card__body">
+        <div class="project-card__name">Mãla Kai</div>
+        <div class="project-card__location">Estepona</div>
+        <div class="project-card__price">From € 725.000</div>
+      </div>
+    </a>
+    <a class="project-card" href="/en/mane-residences/" data-location="Benalmádena" data-price-band="600k-1m">
+      <div class="project-card__img-wrap">
+        <img class="project-card__img" src="https://projects.investinspain.be/images/mane-residences/hero.webp" alt="Mane Residences" loading="lazy" decoding="async">
+      </div>
+      <div class="project-card__body">
+        <div class="project-card__name">Mane Residences</div>
+        <div class="project-card__location">Benalmádena</div>
+        <div class="project-card__price">From € 614.000</div>
+      </div>
+    </a>
+    <a class="project-card" href="/en/marbella-club-hills-duplex/" data-location="Benahavís" data-price-band="600k-1m">
+      <div class="project-card__img-wrap">
+        <img class="project-card__img" src="https://projects.investinspain.be/images/marbella-club-hills-duplex/hero.webp" alt="Marbella Club Hills Duplex" loading="lazy" decoding="async">
+      </div>
+      <div class="project-card__body">
+        <div class="project-card__name">Marbella Club Hills Duplex</div>
+        <div class="project-card__location">Benahavís</div>
+        <div class="project-card__price">From € 995.000</div>
       </div>
     </a>
     <a class="project-card" href="/en/marbella-design-hills/" data-location="Marbella" data-price-band="">
@@ -1431,6 +2129,26 @@ html.ai-chat-on .lead-dock { display: none; }
         <div class="project-card__price">Price on request</div>
       </div>
     </a>
+    <a class="project-card" href="/en/mare/" data-location="San Pedro de Alcántara" data-price-band="600k-1m">
+      <div class="project-card__img-wrap">
+        <img class="project-card__img" src="https://projects.investinspain.be/images/mare/hero.webp" alt="MARE" loading="lazy" decoding="async">
+      </div>
+      <div class="project-card__body">
+        <div class="project-card__name">MARE</div>
+        <div class="project-card__location">San Pedro de Alcántara</div>
+        <div class="project-card__price">From € 720.000</div>
+      </div>
+    </a>
+    <a class="project-card" href="/en/marina-golden-bay/" data-location="Benalmádena" data-price-band="1m-3m">
+      <div class="project-card__img-wrap">
+        <img class="project-card__img" src="https://projects.investinspain.be/images/marina-golden-bay/hero.webp" alt="Marina Golden Bay" loading="lazy" decoding="async">
+      </div>
+      <div class="project-card__body">
+        <div class="project-card__name">Marina Golden Bay</div>
+        <div class="project-card__location">Benalmádena</div>
+        <div class="project-card__price">From € 1.038.000</div>
+      </div>
+    </a>
     <a class="project-card" href="/en/marine-hills/" data-location="Estepona" data-price-band="400k-600k">
       <div class="project-card__img-wrap">
         <img class="project-card__img" src="https://projects.investinspain.be/images/marine-hills/thumb.webp" alt="Marine Hills" loading="lazy" decoding="async">
@@ -1439,6 +2157,26 @@ html.ai-chat-on .lead-dock { display: none; }
         <div class="project-card__name">Marine Hills</div>
         <div class="project-card__location">Estepona</div>
         <div class="project-card__price">From € 464.000</div>
+      </div>
+    </a>
+    <a class="project-card" href="/en/medblue/" data-location="Los Monteros, Marbella" data-price-band="400k-600k">
+      <div class="project-card__img-wrap">
+        <img class="project-card__img" src="https://projects.investinspain.be/images/medblue/hero.webp" alt="Medblue" loading="lazy" decoding="async">
+      </div>
+      <div class="project-card__body">
+        <div class="project-card__name">Medblue</div>
+        <div class="project-card__location">Los Monteros, Marbella</div>
+        <div class="project-card__price">From € 509.000</div>
+      </div>
+    </a>
+    <a class="project-card" href="/en/moon64/" data-location="Los Hidalgos, Manilva" data-price-band="200k-400k">
+      <div class="project-card__img-wrap">
+        <img class="project-card__img" src="https://projects.investinspain.be/images/moon64/hero.webp" alt="Moon64" loading="lazy" decoding="async">
+      </div>
+      <div class="project-card__body">
+        <div class="project-card__name">Moon64</div>
+        <div class="project-card__location">Los Hidalgos, Manilva</div>
+        <div class="project-card__price">From € 381.800</div>
       </div>
     </a>
     <a class="project-card" href="/en/morasol/" data-location="Manilva" data-price-band="200k-400k">
@@ -1451,6 +2189,16 @@ html.ai-chat-on .lead-dock { display: none; }
         <div class="project-card__price">From € 351.520</div>
       </div>
     </a>
+    <a class="project-card" href="/en/mosher-collection/" data-location="Benalmádena" data-price-band="600k-1m">
+      <div class="project-card__img-wrap">
+        <img class="project-card__img" src="https://projects.investinspain.be/images/mosher-collection/hero.webp" alt="Mosher Collection" loading="lazy" decoding="async">
+      </div>
+      <div class="project-card__body">
+        <div class="project-card__name">Mosher Collection</div>
+        <div class="project-card__location">Benalmádena</div>
+        <div class="project-card__price">From € 820.000</div>
+      </div>
+    </a>
     <a class="project-card" href="/en/nacare/" data-location="Estepona" data-price-band="1m-3m">
       <div class="project-card__img-wrap">
         <img class="project-card__img" src="https://projects.investinspain.be/images/nacare/thumb.webp" alt="Nacaré" loading="lazy" decoding="async">
@@ -1459,6 +2207,56 @@ html.ai-chat-on .lead-dock { display: none; }
         <div class="project-card__name">Nacaré</div>
         <div class="project-card__location">Estepona</div>
         <div class="project-card__price">From € 2.500.000</div>
+      </div>
+    </a>
+    <a class="project-card" href="/en/natura-estepona/" data-location="Estepona" data-price-band="400k-600k">
+      <div class="project-card__img-wrap">
+        <img class="project-card__img" src="https://projects.investinspain.be/images/natura-estepona/hero.webp" alt="Natura Estepona" loading="lazy" decoding="async">
+      </div>
+      <div class="project-card__body">
+        <div class="project-card__name">Natura Estepona</div>
+        <div class="project-card__location">Estepona</div>
+        <div class="project-card__price">From € 525.000</div>
+      </div>
+    </a>
+    <a class="project-card" href="/en/naven/" data-location="Fuengirola" data-price-band="200k-400k">
+      <div class="project-card__img-wrap">
+        <img class="project-card__img" src="https://projects.investinspain.be/images/naven/hero.webp" alt="Naven" loading="lazy" decoding="async">
+      </div>
+      <div class="project-card__body">
+        <div class="project-card__name">Naven</div>
+        <div class="project-card__location">Fuengirola</div>
+        <div class="project-card__price">From € 375.000</div>
+      </div>
+    </a>
+    <a class="project-card" href="/en/navigolf-suites/" data-location="Mijas" data-price-band="600k-1m">
+      <div class="project-card__img-wrap">
+        <img class="project-card__img" src="https://projects.investinspain.be/images/navigolf-suites/hero.webp" alt="Navigolf Suites" loading="lazy" decoding="async">
+      </div>
+      <div class="project-card__body">
+        <div class="project-card__name">Navigolf Suites</div>
+        <div class="project-card__location">Mijas</div>
+        <div class="project-card__price">From € 650.000</div>
+      </div>
+    </a>
+    <a class="project-card" href="/en/naya-residences/" data-location="Estepona" data-price-band="600k-1m">
+      <div class="project-card__img-wrap">
+        <img class="project-card__img" src="https://projects.investinspain.be/images/naya-residences/hero.webp" alt="Naya Residences" loading="lazy" decoding="async">
+      </div>
+      <div class="project-card__body">
+        <div class="project-card__name">Naya Residences</div>
+        <div class="project-card__location">Estepona</div>
+        <div class="project-card__price">From € 735.000</div>
+      </div>
+    </a>
+    <a class="project-card" href="/en/nova-marina-fuengirola/" data-location="Fuengirola" data-price-band="400k-600k">
+      <div class="project-card__img-wrap">
+        <img class="project-card__img" src="https://projects.investinspain.be/images/nova-marina-fuengirola/hero.webp" alt="Nova Marina" loading="lazy" decoding="async">
+      </div>
+      <div class="project-card__body">
+        <div class="project-card__name">Nova Marina</div>
+        <div class="project-card__location">Fuengirola</div>
+        <div class="project-card__price">From € 520.000</div>
       </div>
     </a>
     <a class="project-card" href="/en/nubay/" data-location="Manilva" data-price-band="1m-3m">
@@ -1471,6 +2269,16 @@ html.ai-chat-on .lead-dock { display: none; }
         <div class="project-card__price">From € 1.050.000</div>
       </div>
     </a>
+    <a class="project-card" href="/en/nyra-residences/" data-location="Estepona" data-price-band="600k-1m">
+      <div class="project-card__img-wrap">
+        <img class="project-card__img" src="https://projects.investinspain.be/images/nyra-residences/hero.webp" alt="Nyra Residences" loading="lazy" decoding="async">
+      </div>
+      <div class="project-card__body">
+        <div class="project-card__name">Nyra Residences</div>
+        <div class="project-card__location">Estepona</div>
+        <div class="project-card__price">From € 668.000</div>
+      </div>
+    </a>
     <a class="project-card" href="/en/ocean-view-marbella/" data-location="Marbella" data-price-band="600k-1m">
       <div class="project-card__img-wrap">
         <img class="project-card__img" src="https://projects.investinspain.be/images/ocean-view-marbella/thumb.webp" alt="Ocean View Marbella" loading="lazy" decoding="async">
@@ -1481,6 +2289,56 @@ html.ai-chat-on .lead-dock { display: none; }
         <div class="project-card__price">From € 960.000</div>
       </div>
     </a>
+    <a class="project-card" href="/en/ocean-view-marbella-2/" data-location="Marbella" data-price-band="600k-1m">
+      <div class="project-card__img-wrap">
+        <img class="project-card__img" src="https://projects.investinspain.be/images/ocean-view-marbella-2/hero.webp" alt="Ocean View Marbella" loading="lazy" decoding="async">
+      </div>
+      <div class="project-card__body">
+        <div class="project-card__name">Ocean View Marbella</div>
+        <div class="project-card__location">Marbella</div>
+        <div class="project-card__price">From € 960.000</div>
+      </div>
+    </a>
+    <a class="project-card" href="/en/oceana-gardens/" data-location="Cancelada" data-price-band="400k-600k">
+      <div class="project-card__img-wrap">
+        <img class="project-card__img" src="https://projects.investinspain.be/images/oceana-gardens/hero.webp" alt="Oceana Gardens" loading="lazy" decoding="async">
+      </div>
+      <div class="project-card__body">
+        <div class="project-card__name">Oceana Gardens</div>
+        <div class="project-card__location">Cancelada</div>
+        <div class="project-card__price">From € 480.000</div>
+      </div>
+    </a>
+    <a class="project-card" href="/en/oceana-gardens-1/" data-location="Cancelada" data-price-band="400k-600k">
+      <div class="project-card__img-wrap">
+        <img class="project-card__img" src="https://projects.investinspain.be/images/oceana-gardens-1/hero.webp" alt="Oceana Gardens" loading="lazy" decoding="async">
+      </div>
+      <div class="project-card__body">
+        <div class="project-card__name">Oceana Gardens</div>
+        <div class="project-card__location">Cancelada</div>
+        <div class="project-card__price">From € 419.500</div>
+      </div>
+    </a>
+    <a class="project-card" href="/en/oceana-views/" data-location="Cancelada" data-price-band="400k-600k">
+      <div class="project-card__img-wrap">
+        <img class="project-card__img" src="https://projects.investinspain.be/images/oceana-views/hero.webp" alt="Oceana Views" loading="lazy" decoding="async">
+      </div>
+      <div class="project-card__body">
+        <div class="project-card__name">Oceana Views</div>
+        <div class="project-card__location">Cancelada</div>
+        <div class="project-card__price">€ 460.000 Incl. meubels</div>
+      </div>
+    </a>
+    <a class="project-card" href="/en/oceana-views-2/" data-location="Cancelada" data-price-band="400k-600k">
+      <div class="project-card__img-wrap">
+        <img class="project-card__img" src="https://projects.investinspain.be/images/oceana-views-2/hero.webp" alt="Oceana Views" loading="lazy" decoding="async">
+      </div>
+      <div class="project-card__body">
+        <div class="project-card__name">Oceana Views</div>
+        <div class="project-card__location">Cancelada</div>
+        <div class="project-card__price">From € 460.000</div>
+      </div>
+    </a>
     <a class="project-card" href="/en/ocho-de-oro/" data-location="Nueva Andalucía" data-price-band="3m-plus">
       <div class="project-card__img-wrap">
         <img class="project-card__img" src="https://projects.investinspain.be/images/ocho-de-oro/thumb.webp" alt="Ocho de Oro" loading="lazy" decoding="async">
@@ -1489,6 +2347,116 @@ html.ai-chat-on .lead-dock { display: none; }
         <div class="project-card__name">Ocho de Oro</div>
         <div class="project-card__location">Nueva Andalucía</div>
         <div class="project-card__price">From € 11.500.000</div>
+      </div>
+    </a>
+    <a class="project-card" href="/en/oleo/" data-location="Mijas" data-price-band="600k-1m">
+      <div class="project-card__img-wrap">
+        <img class="project-card__img" src="https://projects.investinspain.be/images/oleo/hero.webp" alt="Oleo" loading="lazy" decoding="async">
+      </div>
+      <div class="project-card__body">
+        <div class="project-card__name">Oleo</div>
+        <div class="project-card__location">Mijas</div>
+        <div class="project-card__price">From € 725.000</div>
+      </div>
+    </a>
+    <a class="project-card" href="/en/omnia/" data-location="El Campanario, Estepona" data-price-band="400k-600k">
+      <div class="project-card__img-wrap">
+        <img class="project-card__img" src="https://projects.investinspain.be/images/omnia/hero.webp" alt="Omnia" loading="lazy" decoding="async">
+      </div>
+      <div class="project-card__body">
+        <div class="project-card__name">Omnia</div>
+        <div class="project-card__location">El Campanario, Estepona</div>
+        <div class="project-card__price">From € 469.000</div>
+      </div>
+    </a>
+    <a class="project-card" href="/en/one-bali-villas/" data-location="La Cala de Mijas" data-price-band="1m-3m">
+      <div class="project-card__img-wrap">
+        <img class="project-card__img" src="https://projects.investinspain.be/images/one-bali-villas/hero.webp" alt="One Bali Villas" loading="lazy" decoding="async">
+      </div>
+      <div class="project-card__body">
+        <div class="project-card__name">One Bali Villas</div>
+        <div class="project-card__location">La Cala de Mijas</div>
+        <div class="project-card__price">From € 1.860.000</div>
+      </div>
+    </a>
+    <a class="project-card" href="/en/one-oak/" data-location="Torremolinos" data-price-band="400k-600k">
+      <div class="project-card__img-wrap">
+        <img class="project-card__img" src="https://projects.investinspain.be/images/one-oak/hero.webp" alt="One Oak" loading="lazy" decoding="async">
+      </div>
+      <div class="project-card__body">
+        <div class="project-card__name">One Oak</div>
+        <div class="project-card__location">Torremolinos</div>
+        <div class="project-card__price">From € 563.000</div>
+      </div>
+    </a>
+    <a class="project-card" href="/en/organic-higueron/" data-location="Fuengirola" data-price-band="600k-1m">
+      <div class="project-card__img-wrap">
+        <img class="project-card__img" src="https://projects.investinspain.be/images/organic-higueron/hero.webp" alt="Organic" loading="lazy" decoding="async">
+      </div>
+      <div class="project-card__body">
+        <div class="project-card__name">Organic</div>
+        <div class="project-card__location">Fuengirola</div>
+        <div class="project-card__price">From € 747.000</div>
+      </div>
+    </a>
+    <a class="project-card" href="/en/origin-marbella/" data-location="Marbella" data-price-band="400k-600k">
+      <div class="project-card__img-wrap">
+        <img class="project-card__img" src="https://projects.investinspain.be/images/origin-marbella/hero.webp" alt="Origin Marbella" loading="lazy" decoding="async">
+      </div>
+      <div class="project-card__body">
+        <div class="project-card__name">Origin Marbella</div>
+        <div class="project-card__location">Marbella</div>
+        <div class="project-card__price">From € 545.000</div>
+      </div>
+    </a>
+    <a class="project-card" href="/en/palma-real-suites-tenerife/" data-location="Palm Mar, Tenerife" data-price-band="600k-1m">
+      <div class="project-card__img-wrap">
+        <img class="project-card__img" src="https://projects.investinspain.be/images/palma-real-suites-tenerife/hero.webp" alt="Palma Real Suites" loading="lazy" decoding="async">
+      </div>
+      <div class="project-card__body">
+        <div class="project-card__name">Palma Real Suites</div>
+        <div class="project-card__location">Palm Mar, Tenerife</div>
+        <div class="project-card__price">From € 645.000</div>
+      </div>
+    </a>
+    <a class="project-card" href="/en/palo-alto-2-slaapkamer/" data-location="Ojén" data-price-band="">
+      <div class="project-card__img-wrap">
+        <img class="project-card__img" src="https://projects.investinspain.be/images/palo-alto-2-slaapkamer/hero.webp" alt="Palo Alto 2 slaapkamer" loading="lazy" decoding="async">
+      </div>
+      <div class="project-card__body">
+        <div class="project-card__name">Palo Alto 2 slaapkamer</div>
+        <div class="project-card__location">Ojén</div>
+        <div class="project-card__price">Price on request</div>
+      </div>
+    </a>
+    <a class="project-card" href="/en/privilege-by-marein/" data-location="San Pedro de Alcántara" data-price-band="3m-plus">
+      <div class="project-card__img-wrap">
+        <img class="project-card__img" src="https://projects.investinspain.be/images/privilege-by-marein/hero.webp" alt="Privilege By Marein" loading="lazy" decoding="async">
+      </div>
+      <div class="project-card__body">
+        <div class="project-card__name">Privilege By Marein</div>
+        <div class="project-card__location">San Pedro de Alcántara</div>
+        <div class="project-card__price">€ 10.000.000</div>
+      </div>
+    </a>
+    <a class="project-card" href="/en/privilege-suites/" data-location="Casares" data-price-band="600k-1m">
+      <div class="project-card__img-wrap">
+        <img class="project-card__img" src="https://projects.investinspain.be/images/privilege-suites/hero.webp" alt="Privilege Suites" loading="lazy" decoding="async">
+      </div>
+      <div class="project-card__body">
+        <div class="project-card__name">Privilege Suites</div>
+        <div class="project-card__location">Casares</div>
+        <div class="project-card__price">From € 620.000</div>
+      </div>
+    </a>
+    <a class="project-card" href="/en/rayos-del-sol/" data-location="Las Lagunas de Mijas" data-price-band="400k-600k">
+      <div class="project-card__img-wrap">
+        <img class="project-card__img" src="https://projects.investinspain.be/images/rayos-del-sol/hero.webp" alt="Rayos del Sol" loading="lazy" decoding="async">
+      </div>
+      <div class="project-card__body">
+        <div class="project-card__name">Rayos del Sol</div>
+        <div class="project-card__location">Las Lagunas de Mijas</div>
+        <div class="project-card__price">From € 520.000</div>
       </div>
     </a>
     <a class="project-card" href="/en/riviera-hill/" data-location="Mijas Costa" data-price-band="200k-400k">
@@ -1511,6 +2479,36 @@ html.ai-chat-on .lead-dock { display: none; }
         <div class="project-card__price">From € 1.150.000</div>
       </div>
     </a>
+    <a class="project-card" href="/en/royal-river/" data-location="Marbella" data-price-band="600k-1m">
+      <div class="project-card__img-wrap">
+        <img class="project-card__img" src="https://projects.investinspain.be/images/royal-river/hero.webp" alt="Royal River" loading="lazy" decoding="async">
+      </div>
+      <div class="project-card__body">
+        <div class="project-card__name">Royal River</div>
+        <div class="project-card__location">Marbella</div>
+        <div class="project-card__price">From € 698.000</div>
+      </div>
+    </a>
+    <a class="project-card" href="/en/sa-tanqueta/" data-location="Ibiza" data-price-band="400k-600k">
+      <div class="project-card__img-wrap">
+        <img class="project-card__img" src="https://projects.investinspain.be/images/sa-tanqueta/hero.webp" alt="Sa Tanqueta" loading="lazy" decoding="async">
+      </div>
+      <div class="project-card__body">
+        <div class="project-card__name">Sa Tanqueta</div>
+        <div class="project-card__location">Ibiza</div>
+        <div class="project-card__price">From € 570.000</div>
+      </div>
+    </a>
+    <a class="project-card" href="/en/sabinas/" data-location="La Quinta, Marbella" data-price-band="1m-3m">
+      <div class="project-card__img-wrap">
+        <img class="project-card__img" src="https://projects.investinspain.be/images/sabinas/hero.webp" alt="Sabinas" loading="lazy" decoding="async">
+      </div>
+      <div class="project-card__body">
+        <div class="project-card__name">Sabinas</div>
+        <div class="project-card__location">La Quinta, Marbella</div>
+        <div class="project-card__price">From € 1.395.000</div>
+      </div>
+    </a>
     <a class="project-card" href="/en/salvia/" data-location="San Pedro de Alcántara" data-price-band="600k-1m">
       <div class="project-card__img-wrap">
         <img class="project-card__img" src="https://projects.investinspain.be/images/salvia/thumb.webp" alt="Salvia" loading="lazy" decoding="async">
@@ -1529,6 +2527,56 @@ html.ai-chat-on .lead-dock { display: none; }
         <div class="project-card__name">Santa Clara Homes</div>
         <div class="project-card__location">Marbella</div>
         <div class="project-card__price">From € 1.345.000</div>
+      </div>
+    </a>
+    <a class="project-card" href="/en/santa-elena/" data-location="Fuengirola" data-price-band="200k-400k">
+      <div class="project-card__img-wrap">
+        <img class="project-card__img" src="https://projects.investinspain.be/images/santa-elena/hero.webp" alt="Santa Elena" loading="lazy" decoding="async">
+      </div>
+      <div class="project-card__body">
+        <div class="project-card__name">Santa Elena</div>
+        <div class="project-card__location">Fuengirola</div>
+        <div class="project-card__price">From € 374.950</div>
+      </div>
+    </a>
+    <a class="project-card" href="/en/serenity-alcaidesa/" data-location="La Alcaidesa" data-price-band="400k-600k">
+      <div class="project-card__img-wrap">
+        <img class="project-card__img" src="https://projects.investinspain.be/images/serenity-alcaidesa/hero.webp" alt="Serenity Alcaidesa" loading="lazy" decoding="async">
+      </div>
+      <div class="project-card__body">
+        <div class="project-card__name">Serenity Alcaidesa</div>
+        <div class="project-card__location">La Alcaidesa</div>
+        <div class="project-card__price">From € 549.000</div>
+      </div>
+    </a>
+    <a class="project-card" href="/en/serenity-gardens/" data-location="Estepona" data-price-band="400k-600k">
+      <div class="project-card__img-wrap">
+        <img class="project-card__img" src="https://projects.investinspain.be/images/serenity-gardens/hero.webp" alt="Serenity Gardens" loading="lazy" decoding="async">
+      </div>
+      <div class="project-card__body">
+        <div class="project-card__name">Serenity Gardens</div>
+        <div class="project-card__location">Estepona</div>
+        <div class="project-card__price">From € 405.000</div>
+      </div>
+    </a>
+    <a class="project-card" href="/en/serenity-hills-marbella/" data-location="Marbella" data-price-band="600k-1m">
+      <div class="project-card__img-wrap">
+        <img class="project-card__img" src="https://projects.investinspain.be/images/serenity-hills-marbella/hero.webp" alt="Serenity Hills Marbella" loading="lazy" decoding="async">
+      </div>
+      <div class="project-card__body">
+        <div class="project-card__name">Serenity Hills Marbella</div>
+        <div class="project-card__location">Marbella</div>
+        <div class="project-card__price">From € 850.000</div>
+      </div>
+    </a>
+    <a class="project-card" href="/en/siam-blue/" data-location="Costa Adeje, Tenerife" data-price-band="3m-plus">
+      <div class="project-card__img-wrap">
+        <img class="project-card__img" src="https://projects.investinspain.be/images/siam-blue/hero.webp" alt="Siam Blue" loading="lazy" decoding="async">
+      </div>
+      <div class="project-card__body">
+        <div class="project-card__name">Siam Blue</div>
+        <div class="project-card__location">Costa Adeje, Tenerife</div>
+        <div class="project-card__price">From € 3.650.000</div>
       </div>
     </a>
     <a class="project-card" href="/en/sierra-blanca-by-the-sea/" data-location="Estepona" data-price-band="1m-3m">
@@ -1551,6 +2599,36 @@ html.ai-chat-on .lead-dock { display: none; }
         <div class="project-card__price">From € 423.000</div>
       </div>
     </a>
+    <a class="project-card" href="/en/solaia-cancelada/" data-location="Cancelada" data-price-band="600k-1m">
+      <div class="project-card__img-wrap">
+        <img class="project-card__img" src="https://projects.investinspain.be/images/solaia-cancelada/hero.webp" alt="Solaia" loading="lazy" decoding="async">
+      </div>
+      <div class="project-card__body">
+        <div class="project-card__name">Solaia</div>
+        <div class="project-card__location">Cancelada</div>
+        <div class="project-card__price">From € 890.000</div>
+      </div>
+    </a>
+    <a class="project-card" href="/en/soleia-living-el-chaparral/" data-location="La Cala de Mijas" data-price-band="600k-1m">
+      <div class="project-card__img-wrap">
+        <img class="project-card__img" src="https://projects.investinspain.be/images/soleia-living-el-chaparral/hero.webp" alt="Soleia Living El Chaparral" loading="lazy" decoding="async">
+      </div>
+      <div class="project-card__body">
+        <div class="project-card__name">Soleia Living El Chaparral</div>
+        <div class="project-card__location">La Cala de Mijas</div>
+        <div class="project-card__price">From € 957.000</div>
+      </div>
+    </a>
+    <a class="project-card" href="/en/soleil/" data-location="Marbella" data-price-band="400k-600k">
+      <div class="project-card__img-wrap">
+        <img class="project-card__img" src="https://projects.investinspain.be/images/soleil/hero.webp" alt="Soleil" loading="lazy" decoding="async">
+      </div>
+      <div class="project-card__body">
+        <div class="project-card__name">Soleil</div>
+        <div class="project-card__location">Marbella</div>
+        <div class="project-card__price">From € 530.000</div>
+      </div>
+    </a>
     <a class="project-card" href="/en/solenne/" data-location="Benahavís" data-price-band="600k-1m">
       <div class="project-card__img-wrap">
         <img class="project-card__img" src="https://projects.investinspain.be/images/solenne/thumb.webp" alt="Solenne" loading="lazy" decoding="async">
@@ -1559,6 +2637,16 @@ html.ai-chat-on .lead-dock { display: none; }
         <div class="project-card__name">Solenne</div>
         <div class="project-card__location">Benahavís</div>
         <div class="project-card__price">From € 990.000</div>
+      </div>
+    </a>
+    <a class="project-card" href="/en/solum-tenerife/" data-location="Guía de Isora, Tenerife" data-price-band="600k-1m">
+      <div class="project-card__img-wrap">
+        <img class="project-card__img" src="https://projects.investinspain.be/images/solum-tenerife/hero.webp" alt="Solum" loading="lazy" decoding="async">
+      </div>
+      <div class="project-card__body">
+        <div class="project-card__name">Solum</div>
+        <div class="project-card__location">Guía de Isora, Tenerife</div>
+        <div class="project-card__price">From € 987.000</div>
       </div>
     </a>
     <a class="project-card" href="/en/soul-marbella/" data-location="Marbella" data-price-band="1m-3m">
@@ -1571,6 +2659,76 @@ html.ai-chat-on .lead-dock { display: none; }
         <div class="project-card__price">From € 1.500.000</div>
       </div>
     </a>
+    <a class="project-card" href="/en/soul-marbella-1/" data-location="Marbella Oost" data-price-band="1m-3m">
+      <div class="project-card__img-wrap">
+        <img class="project-card__img" src="https://projects.investinspain.be/images/soul-marbella-1/hero.webp" alt="Soul Marbella" loading="lazy" decoding="async">
+      </div>
+      <div class="project-card__body">
+        <div class="project-card__name">Soul Marbella</div>
+        <div class="project-card__location">Marbella Oost</div>
+        <div class="project-card__price">From € 1.500.000</div>
+      </div>
+    </a>
+    <a class="project-card" href="/en/south-sand/" data-location="Estepona" data-price-band="600k-1m">
+      <div class="project-card__img-wrap">
+        <img class="project-card__img" src="https://projects.investinspain.be/images/south-sand/hero.webp" alt="South Sand" loading="lazy" decoding="async">
+      </div>
+      <div class="project-card__body">
+        <div class="project-card__name">South Sand</div>
+        <div class="project-card__location">Estepona</div>
+        <div class="project-card__price">From € 702.000</div>
+      </div>
+    </a>
+    <a class="project-card" href="/en/spinto-blu/" data-location="Casares" data-price-band="1m-3m">
+      <div class="project-card__img-wrap">
+        <img class="project-card__img" src="https://projects.investinspain.be/images/spinto-blu/hero.webp" alt="Spinto Blu" loading="lazy" decoding="async">
+      </div>
+      <div class="project-card__body">
+        <div class="project-card__name">Spinto Blu</div>
+        <div class="project-card__location">Casares</div>
+        <div class="project-card__price">From € 1.200.000</div>
+      </div>
+    </a>
+    <a class="project-card" href="/en/spinto-hills/" data-location="Estepona" data-price-band="1m-3m">
+      <div class="project-card__img-wrap">
+        <img class="project-card__img" src="https://projects.investinspain.be/images/spinto-hills/hero.webp" alt="Spinto Hills" loading="lazy" decoding="async">
+      </div>
+      <div class="project-card__body">
+        <div class="project-card__name">Spinto Hills</div>
+        <div class="project-card__location">Estepona</div>
+        <div class="project-card__price">From € 2.150.000</div>
+      </div>
+    </a>
+    <a class="project-card" href="/en/sunset-bay/" data-location="Estepona" data-price-band="400k-600k">
+      <div class="project-card__img-wrap">
+        <img class="project-card__img" src="https://projects.investinspain.be/images/sunset-bay/hero.webp" alt="Sunset Bay" loading="lazy" decoding="async">
+      </div>
+      <div class="project-card__body">
+        <div class="project-card__name">Sunset Bay</div>
+        <div class="project-card__location">Estepona</div>
+        <div class="project-card__price">From € 452.000</div>
+      </div>
+    </a>
+    <a class="project-card" href="/en/symphony-suites/" data-location="Cancelada" data-price-band="400k-600k">
+      <div class="project-card__img-wrap">
+        <img class="project-card__img" src="https://projects.investinspain.be/images/symphony-suites/hero.webp" alt="Symphony Suites" loading="lazy" decoding="async">
+      </div>
+      <div class="project-card__body">
+        <div class="project-card__name">Symphony Suites</div>
+        <div class="project-card__location">Cancelada</div>
+        <div class="project-card__price">From € 494.900</div>
+      </div>
+    </a>
+    <a class="project-card" href="/en/talaies-de-canyamel/" data-location="Canyamel, Mallorca" data-price-band="400k-600k">
+      <div class="project-card__img-wrap">
+        <img class="project-card__img" src="https://projects.investinspain.be/images/talaies-de-canyamel/hero.webp" alt="Talaies de Canyamel" loading="lazy" decoding="async">
+      </div>
+      <div class="project-card__body">
+        <div class="project-card__name">Talaies de Canyamel</div>
+        <div class="project-card__location">Canyamel, Mallorca</div>
+        <div class="project-card__price">From € 436.000</div>
+      </div>
+    </a>
     <a class="project-card" href="/en/the-grove/" data-location="San Pedro de Alcántara" data-price-band="200k-400k">
       <div class="project-card__img-wrap">
         <img class="project-card__img" src="https://projects.investinspain.be/images/the-grove/thumb.webp" alt="The Grove" loading="lazy" decoding="async">
@@ -1579,6 +2737,16 @@ html.ai-chat-on .lead-dock { display: none; }
         <div class="project-card__name">The Grove</div>
         <div class="project-card__location">San Pedro de Alcántara</div>
         <div class="project-card__price">From € 390.000</div>
+      </div>
+    </a>
+    <a class="project-card" href="/en/the-kos/" data-location="Benalmádena" data-price-band="1m-3m">
+      <div class="project-card__img-wrap">
+        <img class="project-card__img" src="https://projects.investinspain.be/images/the-kos/hero.webp" alt="The KOS" loading="lazy" decoding="async">
+      </div>
+      <div class="project-card__body">
+        <div class="project-card__name">The KOS</div>
+        <div class="project-card__location">Benalmádena</div>
+        <div class="project-card__price">From € 1.100.000</div>
       </div>
     </a>
     <a class="project-card" href="/en/the-kove/" data-location="Mijas" data-price-band="400k-600k">
@@ -1591,6 +2759,26 @@ html.ai-chat-on .lead-dock { display: none; }
         <div class="project-card__price">From € 410.000</div>
       </div>
     </a>
+    <a class="project-card" href="/en/the-palms-at-estepona/" data-location="Estepona" data-price-band="200k-400k">
+      <div class="project-card__img-wrap">
+        <img class="project-card__img" src="https://projects.investinspain.be/images/the-palms-at-estepona/hero.webp" alt="The Palms at Estepona" loading="lazy" decoding="async">
+      </div>
+      <div class="project-card__body">
+        <div class="project-card__name">The Palms at Estepona</div>
+        <div class="project-card__location">Estepona</div>
+        <div class="project-card__price">From € 387.000</div>
+      </div>
+    </a>
+    <a class="project-card" href="/en/the-privilege/" data-location="Estepona" data-price-band="600k-1m">
+      <div class="project-card__img-wrap">
+        <img class="project-card__img" src="https://projects.investinspain.be/images/the-privilege/hero.webp" alt="The Privilege" loading="lazy" decoding="async">
+      </div>
+      <div class="project-card__body">
+        <div class="project-card__name">The Privilege</div>
+        <div class="project-card__location">Estepona</div>
+        <div class="project-card__price">From € 678.000</div>
+      </div>
+    </a>
     <a class="project-card" href="/en/the-sky-marbella/" data-location="Benahavís" data-price-band="1m-3m">
       <div class="project-card__img-wrap">
         <img class="project-card__img" src="https://projects.investinspain.be/images/the-sky-marbella/thumb.webp" alt="The Sky Marbella" loading="lazy" decoding="async">
@@ -1599,6 +2787,16 @@ html.ai-chat-on .lead-dock { display: none; }
         <div class="project-card__name">The Sky Marbella</div>
         <div class="project-card__location">Benahavís</div>
         <div class="project-card__price">From € 1.495.000</div>
+      </div>
+    </a>
+    <a class="project-card" href="/en/the-valley/" data-location="Elviria" data-price-band="1m-3m">
+      <div class="project-card__img-wrap">
+        <img class="project-card__img" src="https://projects.investinspain.be/images/the-valley/hero.webp" alt="The Valley" loading="lazy" decoding="async">
+      </div>
+      <div class="project-card__body">
+        <div class="project-card__name">The Valley</div>
+        <div class="project-card__location">Elviria</div>
+        <div class="project-card__price">From € 1.395.275</div>
       </div>
     </a>
     <a class="project-card" href="/en/the-view/" data-location="Benahavís" data-price-band="600k-1m">
@@ -1611,6 +2809,26 @@ html.ai-chat-on .lead-dock { display: none; }
         <div class="project-card__price">From € 899.000</div>
       </div>
     </a>
+    <a class="project-card" href="/en/tiara/" data-location="Benahavís" data-price-band="1m-3m">
+      <div class="project-card__img-wrap">
+        <img class="project-card__img" src="https://projects.investinspain.be/images/tiara/hero.webp" alt="Tiara" loading="lazy" decoding="async">
+      </div>
+      <div class="project-card__body">
+        <div class="project-card__name">Tiara</div>
+        <div class="project-card__location">Benahavís</div>
+        <div class="project-card__price">From € 1.550.000</div>
+      </div>
+    </a>
+    <a class="project-card" href="/en/tierra-viva/" data-location="Benahavís" data-price-band="3m-plus">
+      <div class="project-card__img-wrap">
+        <img class="project-card__img" src="https://projects.investinspain.be/images/tierra-viva/hero.webp" alt="Tierra Viva" loading="lazy" decoding="async">
+      </div>
+      <div class="project-card__body">
+        <div class="project-card__name">Tierra Viva</div>
+        <div class="project-card__location">Benahavís</div>
+        <div class="project-card__price">From € 8.236.532</div>
+      </div>
+    </a>
     <a class="project-card" href="/en/tyrian/" data-location="Estepona" data-price-band="3m-plus">
       <div class="project-card__img-wrap">
         <img class="project-card__img" src="https://projects.investinspain.be/images/tyrian/thumb.webp" alt="Tyrian" loading="lazy" decoding="async">
@@ -1619,6 +2837,56 @@ html.ai-chat-on .lead-dock { display: none; }
         <div class="project-card__name">Tyrian</div>
         <div class="project-card__location">Estepona</div>
         <div class="project-card__price">From € 3.550.000</div>
+      </div>
+    </a>
+    <a class="project-card" href="/en/unelma-estepona/" data-location="Estepona" data-price-band="400k-600k">
+      <div class="project-card__img-wrap">
+        <img class="project-card__img" src="https://projects.investinspain.be/images/unelma-estepona/hero.webp" alt="UNELMA Estepona" loading="lazy" decoding="async">
+      </div>
+      <div class="project-card__body">
+        <div class="project-card__name">UNELMA Estepona</div>
+        <div class="project-card__location">Estepona</div>
+        <div class="project-card__price">From € 525.000</div>
+      </div>
+    </a>
+    <a class="project-card" href="/en/upper101/" data-location="San Pedro de Alcántara" data-price-band="200k-400k">
+      <div class="project-card__img-wrap">
+        <img class="project-card__img" src="https://projects.investinspain.be/images/upper101/hero.webp" alt="Upper101" loading="lazy" decoding="async">
+      </div>
+      <div class="project-card__body">
+        <div class="project-card__name">Upper101</div>
+        <div class="project-card__location">San Pedro de Alcántara</div>
+        <div class="project-card__price">From € 320.000</div>
+      </div>
+    </a>
+    <a class="project-card" href="/en/valle-romano/" data-location="Estepona" data-price-band="200k-400k">
+      <div class="project-card__img-wrap">
+        <img class="project-card__img" src="https://projects.investinspain.be/images/valle-romano/hero.webp" alt="Valle Romano" loading="lazy" decoding="async">
+      </div>
+      <div class="project-card__body">
+        <div class="project-card__name">Valle Romano</div>
+        <div class="project-card__location">Estepona</div>
+        <div class="project-card__price">From € 385.000</div>
+      </div>
+    </a>
+    <a class="project-card" href="/en/vangard/" data-location="Fuengirola" data-price-band="400k-600k">
+      <div class="project-card__img-wrap">
+        <img class="project-card__img" src="https://projects.investinspain.be/images/vangard/hero.webp" alt="Vangård" loading="lazy" decoding="async">
+      </div>
+      <div class="project-card__body">
+        <div class="project-card__name">Vangård</div>
+        <div class="project-card__location">Fuengirola</div>
+        <div class="project-card__price">From € 565.250</div>
+      </div>
+    </a>
+    <a class="project-card" href="/en/vanian-gardens/" data-location="Estepona" data-price-band="400k-600k">
+      <div class="project-card__img-wrap">
+        <img class="project-card__img" src="https://projects.investinspain.be/images/vanian-gardens/hero.webp" alt="Vanian Gardens" loading="lazy" decoding="async">
+      </div>
+      <div class="project-card__body">
+        <div class="project-card__name">Vanian Gardens</div>
+        <div class="project-card__location">Estepona</div>
+        <div class="project-card__price">From € 432.000</div>
       </div>
     </a>
     <a class="project-card" href="/en/vanian-park/" data-location="Estepona" data-price-band="400k-600k">
@@ -1631,6 +2899,26 @@ html.ai-chat-on .lead-dock { display: none; }
         <div class="project-card__price">From € 469.000</div>
       </div>
     </a>
+    <a class="project-card" href="/en/vanian-views/" data-location="Selwo, Estepona" data-price-band="400k-600k">
+      <div class="project-card__img-wrap">
+        <img class="project-card__img" src="https://projects.investinspain.be/images/vanian-views/hero.webp" alt="Vanian Views" loading="lazy" decoding="async">
+      </div>
+      <div class="project-card__body">
+        <div class="project-card__name">Vanian Views</div>
+        <div class="project-card__location">Selwo, Estepona</div>
+        <div class="project-card__price">From € 419.000</div>
+      </div>
+    </a>
+    <a class="project-card" href="/en/veridian/" data-location="Fuengirola" data-price-band="600k-1m">
+      <div class="project-card__img-wrap">
+        <img class="project-card__img" src="https://projects.investinspain.be/images/veridian/hero.webp" alt="Veridian" loading="lazy" decoding="async">
+      </div>
+      <div class="project-card__body">
+        <div class="project-card__name">Veridian</div>
+        <div class="project-card__location">Fuengirola</div>
+        <div class="project-card__price">From € 797.000</div>
+      </div>
+    </a>
     <a class="project-card" href="/en/vesta-mare/" data-location="Manilva" data-price-band="400k-600k">
       <div class="project-card__img-wrap">
         <img class="project-card__img" src="https://projects.investinspain.be/images/vesta-mare/thumb.webp" alt="Vesta Mare" loading="lazy" decoding="async">
@@ -1639,6 +2927,36 @@ html.ai-chat-on .lead-dock { display: none; }
         <div class="project-card__name">Vesta Mare</div>
         <div class="project-card__location">Manilva</div>
         <div class="project-card__price">From € 435.000</div>
+      </div>
+    </a>
+    <a class="project-card" href="/en/villa-europa-6/" data-location="La Cala Golf, Mijas" data-price-band="1m-3m">
+      <div class="project-card__img-wrap">
+        <img class="project-card__img" src="https://projects.investinspain.be/images/villa-europa-6/hero.webp" alt="Villa Europa 6" loading="lazy" decoding="async">
+      </div>
+      <div class="project-card__body">
+        <div class="project-card__name">Villa Europa 6</div>
+        <div class="project-card__location">La Cala Golf, Mijas</div>
+        <div class="project-card__price">From € 1.515.000</div>
+      </div>
+    </a>
+    <a class="project-card" href="/en/villa-halo/" data-location="Sotogrande" data-price-band="3m-plus">
+      <div class="project-card__img-wrap">
+        <img class="project-card__img" src="https://projects.investinspain.be/images/villa-halo/hero.webp" alt="Villa Halo" loading="lazy" decoding="async">
+      </div>
+      <div class="project-card__body">
+        <div class="project-card__name">Villa Halo</div>
+        <div class="project-card__location">Sotogrande</div>
+        <div class="project-card__price">From € 9.800.000</div>
+      </div>
+    </a>
+    <a class="project-card" href="/en/villa-playa-san-pedro/" data-location="San Pedro de Alcántara" data-price-band="">
+      <div class="project-card__img-wrap">
+        <img class="project-card__img" src="https://projects.investinspain.be/images/villa-playa-san-pedro/hero.webp" alt="Villa Playa San Pedro" loading="lazy" decoding="async">
+      </div>
+      <div class="project-card__body">
+        <div class="project-card__name">Villa Playa San Pedro</div>
+        <div class="project-card__location">San Pedro de Alcántara</div>
+        <div class="project-card__price">Price on request</div>
       </div>
     </a>
     <a class="project-card" href="/en/vivace-villas/" data-location="Estepona" data-price-band="">
@@ -1651,6 +2969,16 @@ html.ai-chat-on .lead-dock { display: none; }
         <div class="project-card__price">Price on request</div>
       </div>
     </a>
+    <a class="project-card" href="/en/wyndham-grand-la-cala-golf-residences-2/" data-location="Mijas" data-price-band="1m-3m">
+      <div class="project-card__img-wrap">
+        <img class="project-card__img" src="https://projects.investinspain.be/images/wyndham-grand-la-cala-golf-residences-2/hero.webp" alt="Wyndham Grand La Cala Golf Residences" loading="lazy" decoding="async">
+      </div>
+      <div class="project-card__body">
+        <div class="project-card__name">Wyndham Grand La Cala Golf Residences</div>
+        <div class="project-card__location">Mijas</div>
+        <div class="project-card__price">From € 1.100.000</div>
+      </div>
+    </a>
     <a class="project-card" href="/en/zenity-azure/" data-location="Estepona" data-price-band="400k-600k">
       <div class="project-card__img-wrap">
         <img class="project-card__img" src="https://projects.investinspain.be/images/zenity-azure/thumb.webp" alt="Zenity Azure" loading="lazy" decoding="async">
@@ -1659,6 +2987,26 @@ html.ai-chat-on .lead-dock { display: none; }
         <div class="project-card__name">Zenity Azure</div>
         <div class="project-card__location">Estepona</div>
         <div class="project-card__price">From € 550.000</div>
+      </div>
+    </a>
+    <a class="project-card" href="/en/zenity-cyan/" data-location="Estepona" data-price-band="1m-3m">
+      <div class="project-card__img-wrap">
+        <img class="project-card__img" src="https://projects.investinspain.be/images/zenity-cyan/hero.webp" alt="Zenity Cyan" loading="lazy" decoding="async">
+      </div>
+      <div class="project-card__body">
+        <div class="project-card__name">Zenity Cyan</div>
+        <div class="project-card__location">Estepona</div>
+        <div class="project-card__price">From € 1.779.000</div>
+      </div>
+    </a>
+    <a class="project-card" href="/en/zenity-indigo/" data-location="Estepona" data-price-band="600k-1m">
+      <div class="project-card__img-wrap">
+        <img class="project-card__img" src="https://projects.investinspain.be/images/zenity-indigo/hero.webp" alt="Zenity Indigo" loading="lazy" decoding="async">
+      </div>
+      <div class="project-card__body">
+        <div class="project-card__name">Zenity Indigo</div>
+        <div class="project-card__location">Estepona</div>
+        <div class="project-card__price">From € 607.000</div>
       </div>
     </a>
     <a class="project-card" href="/en/zew-elviria/" data-location="Elviria" data-price-band="600k-1m">
@@ -1871,34 +3219,23 @@ html.ai-chat-on .lead-dock { display: none; }
 })();
 
 (function(){
-  /* ═══════════ LEAFLET (lazy geladen, pas bij openen kaart-overlay) ═══════════
-     De kaart staat standaard dicht - CSS + JS van een kaartbibliotheek
-     onvoorwaardelijk in elke pageload meenemen was pure render-blocking
-     overhead voor bezoekers die "Bekijk op kaart" nooit aanklikken. */
-  var leafletPromise = null;
-  function loadLeaflet() {
-    if (window.L) return Promise.resolve();
-    if (leafletPromise) return leafletPromise;
-    leafletPromise = new Promise(function(resolve){
-      var css = document.createElement('link');
-      css.rel = 'stylesheet';
-      css.href = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.css';
-      css.integrity = 'sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=';
-      css.crossOrigin = '';
-      // Vooraan in <head> ingevoegd (niet appendChild) - anders landt
-      // Leaflet's eigen stylesheet NA onze <style>-tag in de cascade en
-      // wint zijn witte standaard-popup het van onze eigen dark-mode
-      // overrides (zelfde specificiteit, later gedefinieerd wint).
-      document.head.insertBefore(css, document.head.firstChild);
-
+  /* ═══════════ GOOGLE MAPS (lazy geladen, pas bij openen kaart-overlay) ═══════════
+     De kaart staat standaard dicht - de kaart-JS onvoorwaardelijk in elke
+     pageload meenemen was pure render-blocking overhead voor bezoekers die
+     "Bekijk op kaart" nooit aanklikken. */
+  var googleMapsPromise = null;
+  function loadGoogleMaps() {
+    if (window.google && window.google.maps) return Promise.resolve();
+    if (googleMapsPromise) return googleMapsPromise;
+    googleMapsPromise = new Promise(function(resolve){
+      window.__onGoogleMapsLoaded = function(){ resolve(); };
       var script = document.createElement('script');
-      script.src = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js';
-      script.integrity = 'sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=';
-      script.crossOrigin = '';
-      script.onload = function(){ resolve(); };
+      // Geen Subresource Integrity mogelijk: Google's eigen loader-script
+      // is bewust dynamisch/versieloos en ondersteunt geen vaste hash.
+      script.src = 'https://maps.googleapis.com/maps/api/js?key=AIzaSyDXFRui_EYhiYQebkyCxcEBnU7cPtEMiCs&loading=async&callback=__onGoogleMapsLoaded';
       document.head.appendChild(script);
     });
-    return leafletPromise;
+    return googleMapsPromise;
   }
 
   var observer = new IntersectionObserver(function(entries){
@@ -1959,7 +3296,7 @@ html.ai-chat-on .lead-dock { display: none; }
   var resultCount = document.getElementById('resultCount');
   var pagination = document.getElementById('pagination');
   var cards = Array.prototype.slice.call(document.querySelectorAll('.project-card'));
-  var projects = [{"name": "Maralto", "location": "Estepona", "price": "From € 460.000", "priceNum": 460000, "priceBand": "400k-600k", "href": "/en/maralto/", "lat": 36.425704, "lng": -5.1626803, "thumb": "https://projects.investinspain.be/images/maralto/thumb.webp"}, {"name": "360°", "location": "Mijas", "price": "From € 400.000", "priceNum": 400000, "priceBand": "400k-600k", "href": "/en/360/", "lat": 36.5269758, "lng": -4.6646297, "thumb": "https://projects.investinspain.be/images/360/thumb.webp"}, {"name": "Adagio", "location": "Cancelada", "price": "From € 512.000", "priceNum": 512000, "priceBand": "400k-600k", "href": "/en/adagio/", "lat": 36.4651772, "lng": -5.0599806, "thumb": "https://projects.investinspain.be/images/adagio/thumb.webp"}, {"name": "Altezza Suites", "location": "Estepona", "price": "From € 795.000", "priceNum": 795000, "priceBand": "600k-1m", "href": "/en/altezza-suites/", "lat": 36.4770737, "lng": -5.0765539, "thumb": "https://projects.investinspain.be/images/altezza-suites/thumb.webp"}, {"name": "Australy Aures", "location": "Estepona", "price": "From € 688.000", "priceNum": 688000, "priceBand": "600k-1m", "href": "/en/australy-aures/", "lat": 36.46162316773, "lng": -5.0828572014322, "thumb": "https://projects.investinspain.be/images/australy-aures/thumb.webp"}, {"name": "Australy Thera", "location": "Estepona", "price": "Coming soon", "priceNum": null, "priceBand": "", "href": "/en/australy-thera/", "lat": 36.463867007738, "lng": -5.0873780250549, "thumb": "https://projects.investinspain.be/images/australy-thera/thumb.webp"}, {"name": "Beyond Homes", "location": "Estepona", "price": "From € 1.480.000", "priceNum": 1480000, "priceBand": "1m-3m", "href": "/en/beyond-homes/", "lat": 36.4186770196193, "lng": -5.173404476101808, "thumb": "https://projects.investinspain.be/images/beyond-homes/thumb.webp"}, {"name": "Birdie Hills", "location": "Estepona", "price": "From € 320.000", "priceNum": 320000, "priceBand": "200k-400k", "href": "/en/birdie-hills/", "lat": 36.408795614625, "lng": -5.2107139740973, "thumb": "https://projects.investinspain.be/images/birdie-hills/thumb.webp"}, {"name": "Casatalaya", "location": "Benalmádena", "price": "From € 900.000", "priceNum": 900000, "priceBand": "600k-1m", "href": "/en/casatalaya/", "lat": 36.580969929598, "lng": -4.5706188754204, "thumb": "https://projects.investinspain.be/images/casatalaya/thumb.webp"}, {"name": "Dunique", "location": "Marbella", "price": "From € 3.350.000", "priceNum": 3350000, "priceBand": "3m-plus", "href": "/en/dunique/", "lat": 36.5006105, "lng": -4.8113747, "thumb": "https://projects.investinspain.be/images/dunique/thumb.webp"}, {"name": "Emare", "location": "Estepona", "price": "Sold out", "priceNum": null, "priceBand": "", "href": "/en/emare/", "lat": 36.4395, "lng": -5.098, "thumb": "https://projects.investinspain.be/images/emare/thumb.webp"}, {"name": "Essence Residence", "location": "Estepona", "price": "From € 754.000", "priceNum": 754000, "priceBand": "600k-1m", "href": "/en/essence-residence/", "lat": 36.4680914, "lng": -5.0495274, "thumb": "https://projects.investinspain.be/images/essence-residence/thumb.webp"}, {"name": "Etherna Homes", "location": "Estepona", "price": "From € 302.000", "priceNum": 302000, "priceBand": "200k-400k", "href": "/en/etherna-homes/", "lat": 36.428940219532, "lng": -5.200425298379, "thumb": "https://projects.investinspain.be/images/etherna-homes/thumb.webp"}, {"name": "Haiku Estepona", "location": "Estepona", "price": "From € 500.000", "priceNum": 500000, "priceBand": "400k-600k", "href": "/en/haiku-estepona/", "lat": 36.466856444687, "lng": -5.0597456901361, "thumb": "https://projects.investinspain.be/images/haiku-estepona/thumb.webp"}, {"name": "Ikkil Bay", "location": "Estepona", "price": "From € 3.003.000", "priceNum": 3003000, "priceBand": "3m-plus", "href": "/en/ikkil-bay/", "lat": 36.417125823855, "lng": -5.1652550752558, "thumb": "https://projects.investinspain.be/images/ikkil-bay/thumb.webp"}, {"name": "Las Mesas Blue Horizon", "location": "Estepona", "price": "From € 705.000", "priceNum": 705000, "priceBand": "600k-1m", "href": "/en/las-mesas-blue-horizon/", "lat": 36.4262544, "lng": -5.1578951, "thumb": "https://projects.investinspain.be/images/las-mesas-blue-horizon/thumb.webp"}, {"name": "Marbella Design Hills", "location": "Marbella", "price": "Price on request", "priceNum": null, "priceBand": "", "href": "/en/marbella-design-hills/", "lat": 36.51075073, "lng": -4.94405865, "thumb": "https://projects.investinspain.be/images/marbella-design-hills/thumb.webp"}, {"name": "Marine Hills", "location": "Estepona", "price": "From € 464.000", "priceNum": 464000, "priceBand": "400k-600k", "href": "/en/marine-hills/", "lat": 36.4603322, "lng": -5.0854119, "thumb": "https://projects.investinspain.be/images/marine-hills/thumb.webp"}, {"name": "Morasol", "location": "Manilva", "price": "From € 351.520", "priceNum": 351520, "priceBand": "200k-400k", "href": "/en/morasol/", "lat": 36.321681748191, "lng": -5.2482868359576, "thumb": "https://projects.investinspain.be/images/morasol/thumb.webp"}, {"name": "Nacaré", "location": "Estepona", "price": "From € 2.500.000", "priceNum": 2500000, "priceBand": "1m-3m", "href": "/en/nacare/", "lat": 36.42980056060396, "lng": -5.134549942285611, "thumb": "https://projects.investinspain.be/images/nacare/thumb.webp"}, {"name": "Nubay", "location": "Manilva", "price": "From € 1.050.000", "priceNum": 1050000, "priceBand": "1m-3m", "href": "/en/nubay/", "lat": 36.368092531788, "lng": -5.22610050921, "thumb": "https://projects.investinspain.be/images/nubay/thumb.webp"}, {"name": "Ocean View Marbella", "location": "Marbella", "price": "From € 960.000", "priceNum": 960000, "priceBand": "600k-1m", "href": "/en/ocean-view-marbella/", "lat": 36.522046516712, "lng": -4.7387156894166, "thumb": "https://projects.investinspain.be/images/ocean-view-marbella/thumb.webp"}, {"name": "Ocho de Oro", "location": "Nueva Andalucía", "price": "From € 11.500.000", "priceNum": 11500000, "priceBand": "3m-plus", "href": "/en/ocho-de-oro/", "lat": 36.5238841, "lng": -4.9696537, "thumb": "https://projects.investinspain.be/images/ocho-de-oro/thumb.webp"}, {"name": "Riviera Hill", "location": "Mijas Costa", "price": "From € 290.000", "priceNum": 290000, "priceBand": "200k-400k", "href": "/en/riviera-hill/", "lat": 36.50408526137212, "lng": -4.713392670308849, "thumb": "https://projects.investinspain.be/images/riviera-hill/thumb.webp"}, {"name": "Romero", "location": "Real de la Quinta", "price": "From € 1.150.000", "priceNum": 1150000, "priceBand": "1m-3m", "href": "/en/romero/", "lat": 36.5353281, "lng": -4.9791269, "thumb": "https://projects.investinspain.be/images/romero/thumb.webp"}, {"name": "Salvia", "location": "San Pedro de Alcántara", "price": "From € 880.000", "priceNum": 880000, "priceBand": "600k-1m", "href": "/en/salvia/", "lat": 36.480207272882, "lng": -4.9903263749755, "thumb": "https://projects.investinspain.be/images/salvia/thumb.webp"}, {"name": "Santa Clara Homes", "location": "Marbella", "price": "From € 1.345.000", "priceNum": 1345000, "priceBand": "1m-3m", "href": "/en/santa-clara-homes/", "lat": 36.510965152537, "lng": -4.8326216557053, "thumb": "https://projects.investinspain.be/images/santa-clara-homes/thumb.webp"}, {"name": "Sierra Blanca by the Sea", "location": "Estepona", "price": "From € 2.950.000", "priceNum": 2950000, "priceBand": "1m-3m", "href": "/en/sierra-blanca-by-the-sea/", "lat": 36.430101, "lng": -5.123605, "thumb": "https://projects.investinspain.be/images/sierra-blanca-by-the-sea/thumb.webp"}, {"name": "Skye", "location": "Casares", "price": "From € 423.000", "priceNum": 423000, "priceBand": "400k-600k", "href": "/en/skye/", "lat": 36.395767123581, "lng": -5.2269923686981, "thumb": "https://projects.investinspain.be/images/skye/thumb.webp"}, {"name": "Solenne", "location": "Benahavís", "price": "From € 990.000", "priceNum": 990000, "priceBand": "600k-1m", "href": "/en/solenne/", "lat": 36.505856521457, "lng": -5.0096572906735, "thumb": "https://projects.investinspain.be/images/solenne/thumb.webp"}, {"name": "Soul Marbella", "location": "Marbella", "price": "From € 1.500.000", "priceNum": 1500000, "priceBand": "1m-3m", "href": "/en/soul-marbella/", "lat": 36.5124, "lng": -4.83, "thumb": "https://projects.investinspain.be/images/soul-marbella/thumb.webp"}, {"name": "The Grove", "location": "San Pedro de Alcántara", "price": "From € 390.000", "priceNum": 390000, "priceBand": "200k-400k", "href": "/en/the-grove/", "lat": 36.4873997, "lng": -4.9843947, "thumb": "https://projects.investinspain.be/images/the-grove/thumb.webp"}, {"name": "The Kove", "location": "Mijas", "price": "From € 410.000", "priceNum": 410000, "priceBand": "400k-600k", "href": "/en/the-kove/", "lat": 36.5208373, "lng": -4.6509914, "thumb": "https://projects.investinspain.be/images/the-kove/thumb.webp"}, {"name": "The Sky Marbella", "location": "Benahavís", "price": "From € 1.495.000", "priceNum": 1495000, "priceBand": "1m-3m", "href": "/en/the-sky-marbella/", "lat": 36.5226179, "lng": -4.9993343, "thumb": "https://projects.investinspain.be/images/the-sky-marbella/thumb.webp"}, {"name": "The View Marbella", "location": "Benahavís", "price": "From € 899.000", "priceNum": 899000, "priceBand": "600k-1m", "href": "/en/the-view/", "lat": 36.4666272, "lng": -5.0836161, "thumb": "https://projects.investinspain.be/images/the-view/thumb.webp"}, {"name": "Tyrian", "location": "Estepona", "price": "From € 3.550.000", "priceNum": 3550000, "priceBand": "3m-plus", "href": "/en/tyrian/", "lat": 36.428903398234844, "lng": -5.134858087115643, "thumb": "https://projects.investinspain.be/images/tyrian/thumb.webp"}, {"name": "Vanian Park", "location": "Estepona", "price": "From € 469.000", "priceNum": 469000, "priceBand": "400k-600k", "href": "/en/vanian-park/", "lat": 36.461726779115, "lng": -5.0844278829287, "thumb": "https://projects.investinspain.be/images/vanian-park/thumb.webp"}, {"name": "Vesta Mare", "location": "Manilva", "price": "From € 435.000", "priceNum": 435000, "priceBand": "400k-600k", "href": "/en/vesta-mare/", "lat": 36.3518754, "lng": -5.2332776, "thumb": "https://projects.investinspain.be/images/vesta-mare/thumb.webp"}, {"name": "Vivace Villas", "location": "Estepona", "price": "Price on request", "priceNum": null, "priceBand": "", "href": "/en/vivace-villas/", "lat": 36.423702016702, "lng": -5.19424670248, "thumb": "https://projects.investinspain.be/images/vivace-villas/thumb.webp"}, {"name": "Zenity Azure", "location": "Estepona", "price": "From € 550.000", "priceNum": 550000, "priceBand": "400k-600k", "href": "/en/zenity-azure/", "lat": 36.4139368, "lng": -5.1836025, "thumb": "https://projects.investinspain.be/images/zenity-azure/thumb.webp"}, {"name": "ZEW Elviria", "location": "Elviria", "price": "From € 770.000", "priceNum": 770000, "priceBand": "600k-1m", "href": "/en/zew-elviria/", "lat": 36.5075665, "lng": -4.787271, "thumb": "https://projects.investinspain.be/images/zew-elviria/thumb.webp"}];
+  var projects = [{"name": "Maralto", "location": "Estepona", "price": "From € 460.000", "priceNum": 460000, "priceBand": "400k-600k", "href": "/en/maralto/", "lat": 36.427159, "lng": -5.160831, "thumb": "https://projects.investinspain.be/images/maralto/thumb.webp"}, {"name": "360°", "location": "Mijas", "price": "From € 400.000", "priceNum": 400000, "priceBand": "400k-600k", "href": "/en/360/", "lat": 36.526976, "lng": -4.66463, "thumb": "https://projects.investinspain.be/images/360/thumb.webp"}, {"name": "Absolute Estepona", "location": "Estepona", "price": "From € 645.000", "priceNum": 645000, "priceBand": "600k-1m", "href": "/en/absolute-estepona/", "lat": 36.394165, "lng": -5.205772, "thumb": "https://projects.investinspain.be/images/absolute-estepona/hero.webp"}, {"name": "Adagio", "location": "Cancelada", "price": "From € 512.000", "priceNum": 512000, "priceBand": "400k-600k", "href": "/en/adagio/", "lat": 36.465177, "lng": -5.059981, "thumb": "https://projects.investinspain.be/images/adagio/thumb.webp"}, {"name": "Aire", "location": "Cancelada", "price": "From € 472.000", "priceNum": 472000, "priceBand": "400k-600k", "href": "/en/aire/", "lat": 36.4643, "lng": -5.06031, "thumb": "https://projects.investinspain.be/images/aire/hero.webp"}, {"name": "Aires del Mar", "location": "Estepona", "price": "From € 611.751", "priceNum": 611751, "priceBand": "600k-1m", "href": "/en/aires-del-mar/", "lat": 36.434135, "lng": -5.145979, "thumb": "https://projects.investinspain.be/images/aires-del-mar/hero.webp"}, {"name": "Alba Benalmádena", "location": "Benalmádena", "price": "From € 678.000", "priceNum": 678000, "priceBand": "600k-1m", "href": "/en/alba-benalmadena/", "lat": 36.585403, "lng": -4.562159, "thumb": "https://projects.investinspain.be/images/alba-benalmadena/hero.webp"}, {"name": "Alcaidesa Homes", "location": "La Alcaidesa", "price": "From € 643.000", "priceNum": 643000, "priceBand": "600k-1m", "href": "/en/alcaidesa-homes/", "lat": 36.245242, "lng": -5.316771, "thumb": "https://projects.investinspain.be/images/alcaidesa-homes/hero.webp"}, {"name": "Alexandra's Dream", "location": "Mijas", "price": "From € 950.000", "priceNum": 950000, "priceBand": "600k-1m", "href": "/en/alexandras-dream/", "lat": 36.512536, "lng": -4.654089, "thumb": "https://projects.investinspain.be/images/alexandras-dream/hero.webp"}, {"name": "Almare", "location": "La Cala de Mijas", "price": "From € 582.000", "priceNum": 582000, "priceBand": "400k-600k", "href": "/en/almare/", "lat": 36.511869, "lng": -4.679016, "thumb": "https://projects.investinspain.be/images/almare/hero.webp"}, {"name": "Almazara Gardens", "location": "Istán", "price": "From € 460.000", "priceNum": 460000, "priceBand": "400k-600k", "href": "/en/almazara-gardens/", "lat": 36.546552, "lng": -4.949515, "thumb": "https://projects.investinspain.be/images/almazara-gardens/hero.webp"}, {"name": "Almazara Views", "location": "Istán", "price": "From € 620.000", "priceNum": 620000, "priceBand": "600k-1m", "href": "/en/almazara-views/", "lat": 36.546707, "lng": -4.947803, "thumb": "https://projects.investinspain.be/images/almazara-views/hero.webp"}, {"name": "Almina Residences", "location": "Estepona", "price": "From € 669.465", "priceNum": 669465, "priceBand": "600k-1m", "href": "/en/almina-residences/", "lat": 36.436422, "lng": -5.111313, "thumb": "https://projects.investinspain.be/images/almina-residences/hero.webp"}, {"name": "Aloha Forest", "location": "Nueva Andalucía", "price": "From € 1.176.270", "priceNum": 1176270, "priceBand": "1m-3m", "href": "/en/aloha-forest/", "lat": 36.512234, "lng": -4.957376, "thumb": "https://projects.investinspain.be/images/aloha-forest/hero.webp"}, {"name": "Alonia Manilva", "location": "Manilva", "price": "From € 301.000", "priceNum": 301000, "priceBand": "200k-400k", "href": "/en/alonia-manilva/", "lat": 36.360999, "lng": -5.238665, "thumb": "https://projects.investinspain.be/images/alonia-manilva/hero.webp"}, {"name": "Altezza Suites", "location": "Estepona", "price": "From € 795.000", "priceNum": 795000, "priceBand": "600k-1m", "href": "/en/altezza-suites/", "lat": 36.477074, "lng": -5.076554, "thumb": "https://projects.investinspain.be/images/altezza-suites/thumb.webp"}, {"name": "Altura Residences", "location": "Estepona", "price": "From € 3.995.000", "priceNum": 3995000, "priceBand": "3m-plus", "href": "/en/altura-residences/", "lat": 36.519632, "lng": -5.002042, "thumb": "https://projects.investinspain.be/images/altura-residences/hero.webp"}, {"name": "Amaranta Living", "location": "Casares", "price": "From € 446.000", "priceNum": 446000, "priceBand": "400k-600k", "href": "/en/amaranta-living/", "lat": 36.39144, "lng": -5.223827, "thumb": "https://projects.investinspain.be/images/amaranta-living/hero.webp"}, {"name": "Amaris Villas", "location": "Estepona", "price": "From € 1.520.000", "priceNum": 1520000, "priceBand": "1m-3m", "href": "/en/amaris-villas/", "lat": 36.421852, "lng": -5.200932, "thumb": "https://projects.investinspain.be/images/amaris-villas/hero.webp"}, {"name": "Anna de Estepona", "location": "Estepona", "price": "From € 380.000", "priceNum": 380000, "priceBand": "200k-400k", "href": "/en/anna-de-estepona/", "lat": 36.433478, "lng": -5.155933, "thumb": "https://projects.investinspain.be/images/anna-de-estepona/hero.webp"}, {"name": "Apron Estepona", "location": "Estepona", "price": "From € 834.000", "priceNum": 834000, "priceBand": "600k-1m", "href": "/en/apron-estepona/", "lat": 36.407143, "lng": -5.21308, "thumb": "https://projects.investinspain.be/images/apron-estepona/hero.webp"}, {"name": "Arosa", "location": "Mijas Costa", "price": "From € 550.000", "priceNum": 550000, "priceBand": "400k-600k", "href": "/en/arosa/", "lat": 36.492099, "lng": -4.695652, "thumb": "https://projects.investinspain.be/images/arosa/hero.webp"}, {"name": "Astra Homes", "location": "Fuengirola", "price": "From € 343.000", "priceNum": 343000, "priceBand": "200k-400k", "href": "/en/astra-homes/", "lat": 36.561596, "lng": -4.622025, "thumb": "https://projects.investinspain.be/images/astra-homes/hero.webp"}, {"name": "Atlantic Homes", "location": "Costa Adeje, Tenerife", "price": "From € 500.000", "priceNum": 500000, "priceBand": "400k-600k", "href": "/en/atlantic-homes-tenerife/", "lat": 28.092237, "lng": -16.727822, "thumb": "https://projects.investinspain.be/images/atlantic-homes-tenerife/hero.webp"}, {"name": "ATTA Villas", "location": "San Pedro de Alcántara", "price": "From € 830.000", "priceNum": 830000, "priceBand": "600k-1m", "href": "/en/atta-villas/", "lat": 36.479952, "lng": -5.027157, "thumb": "https://projects.investinspain.be/images/atta-villas/hero.webp"}, {"name": "Attire Estepona", "location": "Estepona", "price": "From € 601.000", "priceNum": 601000, "priceBand": "600k-1m", "href": "/en/attire-estepona/", "lat": 36.409765, "lng": -5.216266, "thumb": "https://projects.investinspain.be/images/attire-estepona/hero.webp"}, {"name": "Australy Aures", "location": "Estepona", "price": "From € 688.000", "priceNum": 688000, "priceBand": "600k-1m", "href": "/en/australy-aures/", "lat": 36.461623, "lng": -5.082857, "thumb": "https://projects.investinspain.be/images/australy-aures/thumb.webp"}, {"name": "Australy Thera", "location": "Estepona", "price": "Coming soon", "priceNum": null, "priceBand": "", "href": "/en/australy-thera/", "lat": 36.463867, "lng": -5.087378, "thumb": "https://projects.investinspain.be/images/australy-thera/thumb.webp"}, {"name": "Azahar de Estepona", "location": "Estepona", "price": "From € 625.000", "priceNum": 625000, "priceBand": "600k-1m", "href": "/en/azahar-de-estepona-2/", "lat": 36.412399, "lng": -5.192056, "thumb": "https://projects.investinspain.be/images/azahar-de-estepona-2/hero.webp"}, {"name": "Azulea", "location": "Mijas", "price": "From € 875.000", "priceNum": 875000, "priceBand": "600k-1m", "href": "/en/azulea/", "lat": 36.511887, "lng": -4.659334, "thumb": "https://projects.investinspain.be/images/azulea/hero.webp"}, {"name": "Azurean", "location": "Estepona", "price": "From € 901.992", "priceNum": 901992, "priceBand": "600k-1m", "href": "/en/azurean/", "lat": 36.520234, "lng": -5.00609, "thumb": "https://projects.investinspain.be/images/azurean/hero.webp"}, {"name": "Bahía", "location": "Mijas", "price": "From € 443.000", "priceNum": 443000, "priceBand": "400k-600k", "href": "/en/bahia/", "lat": 36.510938, "lng": -4.710128, "thumb": "https://projects.investinspain.be/images/bahia/hero.webp"}, {"name": "Balance Nova", "location": "Mijas", "price": "From € 320.000", "priceNum": 320000, "priceBand": "200k-400k", "href": "/en/balance-nova/", "lat": 36.522042, "lng": -4.651249, "thumb": "https://projects.investinspain.be/images/balance-nova/hero.webp"}, {"name": "Belvedere Collection", "location": "Fuengirola", "price": "From € 430.000", "priceNum": 430000, "priceBand": "400k-600k", "href": "/en/belvedere-collection/", "lat": 36.575451, "lng": -4.609818, "thumb": "https://projects.investinspain.be/images/belvedere-collection/hero.webp"}, {"name": "Benjamin's Dream", "location": "Mijas Costa", "price": "From € 899.950", "priceNum": 899950, "priceBand": "600k-1m", "href": "/en/benjamins-dream/", "lat": 36.499519, "lng": -4.715596, "thumb": "https://projects.investinspain.be/images/benjamins-dream/hero.webp"}, {"name": "Beyond Homes", "location": "Estepona", "price": "From € 1.480.000", "priceNum": 1480000, "priceBand": "1m-3m", "href": "/en/beyond-homes/", "lat": 36.418677, "lng": -5.173404, "thumb": "https://projects.investinspain.be/images/beyond-homes/thumb.webp"}, {"name": "Birdie Hills", "location": "Estepona", "price": "From € 320.000", "priceNum": 320000, "priceBand": "200k-400k", "href": "/en/birdie-hills/", "lat": 36.408796, "lng": -5.210714, "thumb": "https://projects.investinspain.be/images/birdie-hills/thumb.webp"}, {"name": "Blue Marine", "location": "Manilva", "price": "From € 465.000", "priceNum": 465000, "priceBand": "400k-600k", "href": "/en/blue-marine/", "lat": 36.377182, "lng": -5.251131, "thumb": "https://projects.investinspain.be/images/blue-marine/hero.webp"}, {"name": "Blume", "location": "San Pedro de Alcántara", "price": "From € 4.290.000", "priceNum": 4290000, "priceBand": "3m-plus", "href": "/en/blume/", "lat": 36.481828, "lng": -4.974912, "thumb": "https://projects.investinspain.be/images/blume/hero.webp"}, {"name": "Brightbay Villas", "location": "La Herradura", "price": "From € 1.950.000", "priceNum": 1950000, "priceBand": "1m-3m", "href": "/en/brightbay-villas/", "lat": 36.723205, "lng": -3.729929, "thumb": "https://projects.investinspain.be/images/brightbay-villas/hero.webp"}, {"name": "Cala Serena Sun", "location": "La Cala de Mijas", "price": "From € 676.000", "priceNum": 676000, "priceBand": "600k-1m", "href": "/en/cala-serena-sun/", "lat": 36.507878, "lng": -4.683832, "thumb": "https://projects.investinspain.be/images/cala-serena-sun/hero.webp"}, {"name": "Cala Swing Mijas", "location": "La Cala de Mijas", "price": "From € 303.000", "priceNum": 303000, "priceBand": "200k-400k", "href": "/en/cala-swing-mijas/", "lat": 36.509395, "lng": -4.698286, "thumb": "https://projects.investinspain.be/images/cala-swing-mijas/hero.webp"}, {"name": "Calanova Collection", "location": "La Cala de Mijas", "price": "From € 520.000", "priceNum": 520000, "priceBand": "400k-600k", "href": "/en/calanova-collection/", "lat": 36.511904, "lng": -4.712802, "thumb": "https://projects.investinspain.be/images/calanova-collection/hero.webp"}, {"name": "Calanova Homes", "location": "Mijas Costa", "price": "From € 1.035.000", "priceNum": 1035000, "priceBand": "1m-3m", "href": "/en/calanova-homes/", "lat": 36.513634, "lng": -4.718017, "thumb": "https://projects.investinspain.be/images/calanova-homes/hero.webp"}, {"name": "Camojan Six", "location": "Golden Mile, Marbella", "price": "From € 5.650.000", "priceNum": 5650000, "priceBand": "3m-plus", "href": "/en/camojan-six/", "lat": 36.529306, "lng": -4.906508, "thumb": "https://projects.investinspain.be/images/camojan-six/hero.webp"}, {"name": "Capri", "location": "Estepona", "price": "€ 490.000", "priceNum": 490000, "priceBand": "400k-600k", "href": "/en/capri-estepona/", "lat": 36.470718, "lng": -5.073323, "thumb": "https://projects.investinspain.be/images/capri-estepona/hero.webp"}, {"name": "Casares Bay", "location": "Casares", "price": "From € 467.000", "priceNum": 467000, "priceBand": "400k-600k", "href": "/en/casares-bay/", "lat": 36.379806, "lng": -5.221852, "thumb": "https://projects.investinspain.be/images/casares-bay/hero.webp"}, {"name": "Casatalaya", "location": "Benalmádena", "price": "From € 900.000", "priceNum": 900000, "priceBand": "600k-1m", "href": "/en/casatalaya/", "lat": 36.58097, "lng": -4.570619, "thumb": "https://projects.investinspain.be/images/casatalaya/thumb.webp"}, {"name": "Dunique", "location": "Marbella", "price": "From € 3.350.000", "priceNum": 3350000, "priceBand": "3m-plus", "href": "/en/dunique/", "lat": 36.500611, "lng": -4.811375, "thumb": "https://projects.investinspain.be/images/dunique/thumb.webp"}, {"name": "Eagle Hills", "location": "Estepona", "price": "From € 365.000", "priceNum": 365000, "priceBand": "200k-400k", "href": "/en/eagle-hills/", "lat": 36.410944, "lng": -5.209626, "thumb": "https://projects.investinspain.be/images/eagle-hills/hero.webp"}, {"name": "Earth", "location": "Golden Mile, Marbella", "price": "From € 5.095.000", "priceNum": 5095000, "priceBand": "3m-plus", "href": "/en/earth/", "lat": 36.507855, "lng": -4.928872, "thumb": "https://projects.investinspain.be/images/earth/hero.webp"}, {"name": "Elysea Suites", "location": "Mijas Costa", "price": "From € 1.050.000", "priceNum": 1050000, "priceBand": "1m-3m", "href": "/en/elysea-suites/", "lat": 36.523026, "lng": -4.633786, "thumb": "https://projects.investinspain.be/images/elysea-suites/hero.webp"}, {"name": "Emare", "location": "Estepona", "price": "Sold out", "priceNum": null, "priceBand": "", "href": "/en/emare/", "lat": 36.448648, "lng": -5.086878, "thumb": "https://projects.investinspain.be/images/emare/thumb.webp"}, {"name": "Emerald View", "location": "Mijas Pueblo", "price": "From € 695.000", "priceNum": 695000, "priceBand": "600k-1m", "href": "/en/emerald-view/", "lat": 36.590507, "lng": -4.609891, "thumb": "https://projects.investinspain.be/images/emerald-view/hero.webp"}, {"name": "Enebros", "location": "Marbella", "price": "From € 1.600.000", "priceNum": 1600000, "priceBand": "1m-3m", "href": "/en/enebros/", "lat": 36.533226, "lng": -4.98951, "thumb": "https://projects.investinspain.be/images/enebros/hero.webp"}, {"name": "Epic Marbella", "location": "Marbella", "price": "From € 3.750.000", "priceNum": 3750000, "priceBand": "3m-plus", "href": "/en/epic-marbella/", "lat": 36.507136, "lng": -4.943738, "thumb": "https://projects.investinspain.be/images/epic-marbella/hero.webp"}, {"name": "Equilibrio", "location": "Estepona", "price": "From € 620.000", "priceNum": 620000, "priceBand": "600k-1m", "href": "/en/equilibrio/", "lat": 36.392567, "lng": -5.204194, "thumb": "https://projects.investinspain.be/images/equilibrio/hero.webp"}, {"name": "Essence Residence", "location": "Estepona", "price": "From € 754.000", "priceNum": 754000, "priceBand": "600k-1m", "href": "/en/essence-residence/", "lat": 36.468091, "lng": -5.049527, "thumb": "https://projects.investinspain.be/images/essence-residence/thumb.webp"}, {"name": "Etherna Homes", "location": "Estepona", "price": "From € 302.000", "priceNum": 302000, "priceBand": "200k-400k", "href": "/en/etherna-homes/", "lat": 36.42894, "lng": -5.200425, "thumb": "https://projects.investinspain.be/images/etherna-homes/thumb.webp"}, {"name": "EVOQUE", "location": "Higuerón, Fuengirola", "price": "From € 490.000", "priceNum": 490000, "priceBand": "400k-600k", "href": "/en/evoque/", "lat": 36.584768, "lng": -4.606419, "thumb": "https://projects.investinspain.be/images/evoque/hero.webp"}, {"name": "Golden Eight", "location": "Cabopino, Marbella", "price": "From € 1.750.000", "priceNum": 1750000, "priceBand": "1m-3m", "href": "/en/golden-eight/", "lat": 36.495028, "lng": -4.744592, "thumb": "https://projects.investinspain.be/images/golden-eight/hero.webp"}, {"name": "Grand Bay", "location": "Manilva", "price": "From € 390.000", "priceNum": 390000, "priceBand": "200k-400k", "href": "/en/grand-bay/", "lat": 36.322798, "lng": -5.256585, "thumb": "https://projects.investinspain.be/images/grand-bay/hero.webp"}, {"name": "Greenity", "location": "Mijas", "price": "From € 332.000", "priceNum": 332000, "priceBand": "200k-400k", "href": "/en/greenity/", "lat": 36.518166, "lng": -4.65352, "thumb": "https://projects.investinspain.be/images/greenity/hero.webp"}, {"name": "Haiku Estepona", "location": "Estepona", "price": "From € 500.000", "priceNum": 500000, "priceBand": "400k-600k", "href": "/en/haiku-estepona/", "lat": 36.466856, "lng": -5.059746, "thumb": "https://projects.investinspain.be/images/haiku-estepona/thumb.webp"}, {"name": "Helvet Green", "location": "Mijas", "price": "From € 248.000", "priceNum": 248000, "priceBand": "200k-400k", "href": "/en/helvet-green/", "lat": 36.551093, "lng": -4.659861, "thumb": "https://projects.investinspain.be/images/helvet-green/hero.webp"}, {"name": "Higueron Bay Residences", "location": "Higuerón, Benalmádena", "price": "From € 570.000", "priceNum": 570000, "priceBand": "400k-600k", "href": "/en/higueron-bay-residences/", "lat": 36.572264, "lng": -4.595811, "thumb": "https://projects.investinspain.be/images/higueron-bay-residences/hero.webp"}, {"name": "Iconic Tenerife", "location": "Tenerife", "price": "From € 1.005.000", "priceNum": 1005000, "priceBand": "1m-3m", "href": "/en/iconic-tenerife/", "lat": 28.134004, "lng": -16.784921, "thumb": "https://projects.investinspain.be/images/iconic-tenerife/hero.webp"}, {"name": "Ikkil Bay", "location": "Estepona", "price": "From € 3.003.000", "priceNum": 3003000, "priceBand": "3m-plus", "href": "/en/ikkil-bay/", "lat": 36.417126, "lng": -5.165255, "thumb": "https://projects.investinspain.be/images/ikkil-bay/thumb.webp"}, {"name": "ISEA Estepona", "location": "Estepona", "price": "€ 525.000", "priceNum": 525000, "priceBand": "400k-600k", "href": "/en/isea-estepona/", "lat": 36.407892, "lng": -5.192772, "thumb": "https://projects.investinspain.be/images/isea-estepona/hero.webp"}, {"name": "Isla Bela", "location": "Marbella", "price": "From € 820.000", "priceNum": 820000, "priceBand": "600k-1m", "href": "/en/isla-bela/", "lat": 36.496995, "lng": -4.966135, "thumb": "https://projects.investinspain.be/images/isla-bela/hero.webp"}, {"name": "Kala Residences", "location": "Fuengirola", "price": "From € 995.000", "priceNum": 995000, "priceBand": "600k-1m", "href": "/en/kala-residences/", "lat": 36.584146, "lng": -4.601868, "thumb": "https://projects.investinspain.be/images/kala-residences/hero.webp"}, {"name": "La Algaba", "location": "Casares", "price": "From € 1.510.000", "priceNum": 1510000, "priceBand": "1m-3m", "href": "/en/la-algaba/", "lat": 36.392727, "lng": -5.221706, "thumb": "https://projects.investinspain.be/images/la-algaba/hero.webp"}, {"name": "Lagumare41", "location": "Estepona", "price": "From € 478.000", "priceNum": 478000, "priceBand": "400k-600k", "href": "/en/lagumare41/", "lat": 36.436986, "lng": -5.110333, "thumb": "https://projects.investinspain.be/images/lagumare41/hero.webp"}, {"name": "Lantana Villa's", "location": "Calahonda", "price": "From € 1.650.000", "priceNum": 1650000, "priceBand": "1m-3m", "href": "/en/lantana-villas/", "lat": 36.489656, "lng": -4.722085, "thumb": "https://projects.investinspain.be/images/lantana-villas/hero.webp"}, {"name": "Las Mesas Blue Horizon", "location": "Estepona", "price": "From € 705.000", "priceNum": 705000, "priceBand": "600k-1m", "href": "/en/las-mesas-blue-horizon/", "lat": 36.426254, "lng": -5.157895, "thumb": "https://projects.investinspain.be/images/las-mesas-blue-horizon/thumb.webp"}, {"name": "Las Mesas Sea Suites", "location": "Estepona", "price": "From € 580.000", "priceNum": 580000, "priceBand": "400k-600k", "href": "/en/las-mesas-sea-suites/", "lat": 36.424648, "lng": -5.158481, "thumb": "https://projects.investinspain.be/images/las-mesas-sea-suites/hero.webp"}, {"name": "Bon Air", "location": "Casares", "price": "From € 584.500", "priceNum": 584500, "priceBand": "400k-600k", "href": "/en/las-terrazas-de-cortesin-bon-air/", "lat": 36.40101, "lng": -5.215576, "thumb": "https://projects.investinspain.be/images/las-terrazas-de-cortesin-bon-air/hero.webp"}, {"name": "Las Villas del Tenis", "location": "Tenerife", "price": "From € 2.050.000", "priceNum": 2050000, "priceBand": "1m-3m", "href": "/en/las-villas-del-tenis-tenerife/", "lat": 28.17194, "lng": -16.785994, "thumb": "https://projects.investinspain.be/images/las-villas-del-tenis-tenerife/hero.webp"}, {"name": "Las Villas Sotogrande", "location": "Sotogrande", "price": "From € 954.000", "priceNum": 954000, "priceBand": "600k-1m", "href": "/en/las-villas-sotogrande/", "lat": 36.291884, "lng": -5.31292, "thumb": "https://projects.investinspain.be/images/las-villas-sotogrande/hero.webp"}, {"name": "Living Gardens", "location": "Torremolinos", "price": "From € 350.000", "priceNum": 350000, "priceBand": "200k-400k", "href": "/en/living-gardens/", "lat": 36.621391, "lng": -4.516552, "thumb": "https://projects.investinspain.be/images/living-gardens/hero.webp"}, {"name": "Lomas del Rey", "location": "Marbella", "price": "From € 1.395.000", "priceNum": 1395000, "priceBand": "1m-3m", "href": "/en/lomas-del-rey/", "lat": 36.510343, "lng": -4.929954, "thumb": "https://projects.investinspain.be/images/lomas-del-rey/hero.webp"}, {"name": "Looa Estepona", "location": "Estepona", "price": "From € 489.000", "priceNum": 489000, "priceBand": "400k-600k", "href": "/en/looa-estepona/", "lat": 36.427255, "lng": -5.160471, "thumb": "https://projects.investinspain.be/images/looa-estepona/hero.webp"}, {"name": "Los Jardines de Abama", "location": "Tenerife", "price": "From € 980.000", "priceNum": 980000, "priceBand": "600k-1m", "href": "/en/los-jardines-de-abama-tenerife/", "lat": 28.171977, "lng": -16.787925, "thumb": "https://projects.investinspain.be/images/los-jardines-de-abama-tenerife/hero.webp"}, {"name": "Macan Beach Residences", "location": "Benalmádena", "price": "From € 1.040.000", "priceNum": 1040000, "priceBand": "1m-3m", "href": "/en/macan-beach-residences/", "lat": 36.582408, "lng": -4.558846, "thumb": "https://projects.investinspain.be/images/macan-beach-residences/hero.webp"}, {"name": "Mãla Kai", "location": "Estepona", "price": "From € 725.000", "priceNum": 725000, "priceBand": "600k-1m", "href": "/en/mala-kai/", "lat": 36.406676, "lng": -5.191147, "thumb": "https://projects.investinspain.be/images/mala-kai/hero.webp"}, {"name": "Mane Residences", "location": "Benalmádena", "price": "From € 614.000", "priceNum": 614000, "priceBand": "600k-1m", "href": "/en/mane-residences/", "lat": 36.602349, "lng": -4.562922, "thumb": "https://projects.investinspain.be/images/mane-residences/hero.webp"}, {"name": "Marbella Club Hills Duplex", "location": "Benahavís", "price": "From € 995.000", "priceNum": 995000, "priceBand": "600k-1m", "href": "/en/marbella-club-hills-duplex/", "lat": 36.493267, "lng": -5.06901, "thumb": "https://projects.investinspain.be/images/marbella-club-hills-duplex/hero.webp"}, {"name": "Marbella Design Hills", "location": "Marbella", "price": "Price on request", "priceNum": null, "priceBand": "", "href": "/en/marbella-design-hills/", "lat": 36.510751, "lng": -4.944059, "thumb": "https://projects.investinspain.be/images/marbella-design-hills/thumb.webp"}, {"name": "MARE", "location": "San Pedro de Alcántara", "price": "From € 720.000", "priceNum": 720000, "priceBand": "600k-1m", "href": "/en/mare/", "lat": 36.480234, "lng": -4.989064, "thumb": "https://projects.investinspain.be/images/mare/hero.webp"}, {"name": "Marina Golden Bay", "location": "Benalmádena", "price": "From € 1.038.000", "priceNum": 1038000, "priceBand": "1m-3m", "href": "/en/marina-golden-bay/", "lat": 36.598403, "lng": -4.515546, "thumb": "https://projects.investinspain.be/images/marina-golden-bay/hero.webp"}, {"name": "Marine Hills", "location": "Estepona", "price": "From € 464.000", "priceNum": 464000, "priceBand": "400k-600k", "href": "/en/marine-hills/", "lat": 36.460332, "lng": -5.085412, "thumb": "https://projects.investinspain.be/images/marine-hills/thumb.webp"}, {"name": "Medblue", "location": "Los Monteros, Marbella", "price": "From € 509.000", "priceNum": 509000, "priceBand": "400k-600k", "href": "/en/medblue/", "lat": 36.528867, "lng": -4.841576, "thumb": "https://projects.investinspain.be/images/medblue/hero.webp"}, {"name": "Moon64", "location": "Los Hidalgos, Manilva", "price": "From € 381.800", "priceNum": 381800, "priceBand": "200k-400k", "href": "/en/moon64/", "lat": 36.349384, "lng": -5.238762, "thumb": "https://projects.investinspain.be/images/moon64/hero.webp"}, {"name": "Morasol", "location": "Manilva", "price": "From € 351.520", "priceNum": 351520, "priceBand": "200k-400k", "href": "/en/morasol/", "lat": 36.321682, "lng": -5.248287, "thumb": "https://projects.investinspain.be/images/morasol/thumb.webp"}, {"name": "Mosher Collection", "location": "Benalmádena", "price": "From € 820.000", "priceNum": 820000, "priceBand": "600k-1m", "href": "/en/mosher-collection/", "lat": 36.600343, "lng": -4.56447, "thumb": "https://projects.investinspain.be/images/mosher-collection/hero.webp"}, {"name": "Nacaré", "location": "Estepona", "price": "From € 2.500.000", "priceNum": 2500000, "priceBand": "1m-3m", "href": "/en/nacare/", "lat": 36.429801, "lng": -5.13455, "thumb": "https://projects.investinspain.be/images/nacare/thumb.webp"}, {"name": "Natura Estepona", "location": "Estepona", "price": "From € 525.000", "priceNum": 525000, "priceBand": "400k-600k", "href": "/en/natura-estepona/", "lat": 36.407649, "lng": -5.190943, "thumb": "https://projects.investinspain.be/images/natura-estepona/hero.webp"}, {"name": "Naven", "location": "Fuengirola", "price": "From € 375.000", "priceNum": 375000, "priceBand": "200k-400k", "href": "/en/naven/", "lat": 36.559111, "lng": -4.613189, "thumb": "https://projects.investinspain.be/images/naven/hero.webp"}, {"name": "Navigolf Suites", "location": "Mijas", "price": "From € 650.000", "priceNum": 650000, "priceBand": "600k-1m", "href": "/en/navigolf-suites/", "lat": 36.504034, "lng": -4.687868, "thumb": "https://projects.investinspain.be/images/navigolf-suites/hero.webp"}, {"name": "Naya Residences", "location": "Estepona", "price": "From € 735.000", "priceNum": 735000, "priceBand": "600k-1m", "href": "/en/naya-residences/", "lat": 36.481322, "lng": -5.021394, "thumb": "https://projects.investinspain.be/images/naya-residences/hero.webp"}, {"name": "Nova Marina", "location": "Fuengirola", "price": "From € 520.000", "priceNum": 520000, "priceBand": "400k-600k", "href": "/en/nova-marina-fuengirola/", "lat": 36.541438, "lng": -4.62106, "thumb": "https://projects.investinspain.be/images/nova-marina-fuengirola/hero.webp"}, {"name": "Nubay", "location": "Manilva", "price": "From € 1.050.000", "priceNum": 1050000, "priceBand": "1m-3m", "href": "/en/nubay/", "lat": 36.368093, "lng": -5.226101, "thumb": "https://projects.investinspain.be/images/nubay/thumb.webp"}, {"name": "Nyra Residences", "location": "Estepona", "price": "From € 668.000", "priceNum": 668000, "priceBand": "600k-1m", "href": "/en/nyra-residences/", "lat": 36.480777, "lng": -5.029163, "thumb": "https://projects.investinspain.be/images/nyra-residences/hero.webp"}, {"name": "Ocean View Marbella", "location": "Marbella", "price": "From € 960.000", "priceNum": 960000, "priceBand": "600k-1m", "href": "/en/ocean-view-marbella/", "lat": 36.522047, "lng": -4.738716, "thumb": "https://projects.investinspain.be/images/ocean-view-marbella/thumb.webp"}, {"name": "Ocean View Marbella", "location": "Marbella", "price": "From € 960.000", "priceNum": 960000, "priceBand": "600k-1m", "href": "/en/ocean-view-marbella-2/", "lat": 36.522047, "lng": -4.738716, "thumb": "https://projects.investinspain.be/images/ocean-view-marbella-2/hero.webp"}, {"name": "Oceana Gardens", "location": "Cancelada", "price": "From € 480.000", "priceNum": 480000, "priceBand": "400k-600k", "href": "/en/oceana-gardens/", "lat": 36.467831, "lng": -5.060954, "thumb": "https://projects.investinspain.be/images/oceana-gardens/hero.webp"}, {"name": "Oceana Gardens", "location": "Cancelada", "price": "From € 419.500", "priceNum": 419500, "priceBand": "400k-600k", "href": "/en/oceana-gardens-1/", "lat": 36.46652, "lng": -5.058488, "thumb": "https://projects.investinspain.be/images/oceana-gardens-1/hero.webp"}, {"name": "Oceana Views", "location": "Cancelada", "price": "€ 460.000 Incl. meubels", "priceNum": 460000, "priceBand": "400k-600k", "href": "/en/oceana-views/", "lat": 36.46487, "lng": -5.05898, "thumb": "https://projects.investinspain.be/images/oceana-views/hero.webp"}, {"name": "Oceana Views", "location": "Cancelada", "price": "From € 460.000", "priceNum": 460000, "priceBand": "400k-600k", "href": "/en/oceana-views-2/", "lat": 36.468499, "lng": -5.060473, "thumb": "https://projects.investinspain.be/images/oceana-views-2/hero.webp"}, {"name": "Ocho de Oro", "location": "Nueva Andalucía", "price": "From € 11.500.000", "priceNum": 11500000, "priceBand": "3m-plus", "href": "/en/ocho-de-oro/", "lat": 36.509372, "lng": -4.885658, "thumb": "https://projects.investinspain.be/images/ocho-de-oro/thumb.webp"}, {"name": "Oleo", "location": "Mijas", "price": "From € 725.000", "priceNum": 725000, "priceBand": "600k-1m", "href": "/en/oleo/", "lat": 36.565573, "lng": -4.59913, "thumb": "https://projects.investinspain.be/images/oleo/hero.webp"}, {"name": "Omnia", "location": "El Campanario, Estepona", "price": "From € 469.000", "priceNum": 469000, "priceBand": "400k-600k", "href": "/en/omnia/", "lat": 36.476467, "lng": -5.021157, "thumb": "https://projects.investinspain.be/images/omnia/hero.webp"}, {"name": "One Bali Villas", "location": "La Cala de Mijas", "price": "From € 1.860.000", "priceNum": 1860000, "priceBand": "1m-3m", "href": "/en/one-bali-villas/", "lat": 36.508642, "lng": -4.710973, "thumb": "https://projects.investinspain.be/images/one-bali-villas/hero.webp"}, {"name": "One Oak", "location": "Torremolinos", "price": "From € 563.000", "priceNum": 563000, "priceBand": "400k-600k", "href": "/en/one-oak/", "lat": 36.617484, "lng": -4.517132, "thumb": "https://projects.investinspain.be/images/one-oak/hero.webp"}, {"name": "Organic", "location": "Fuengirola", "price": "From € 747.000", "priceNum": 747000, "priceBand": "600k-1m", "href": "/en/organic-higueron/", "lat": 36.577985, "lng": -4.602902, "thumb": "https://projects.investinspain.be/images/organic-higueron/hero.webp"}, {"name": "Origin Marbella", "location": "Marbella", "price": "From € 545.000", "priceNum": 545000, "priceBand": "400k-600k", "href": "/en/origin-marbella/", "lat": 36.524698, "lng": -4.841469, "thumb": "https://projects.investinspain.be/images/origin-marbella/hero.webp"}, {"name": "Palma Real Suites", "location": "Palm Mar, Tenerife", "price": "From € 645.000", "priceNum": 645000, "priceBand": "600k-1m", "href": "/en/palma-real-suites-tenerife/", "lat": 28.023239, "lng": -16.698709, "thumb": "https://projects.investinspain.be/images/palma-real-suites-tenerife/hero.webp"}, {"name": "Palo Alto 2 slaapkamer", "location": "Ojén", "price": "Price on request", "priceNum": null, "priceBand": "", "href": "/en/palo-alto-2-slaapkamer/", "lat": 36.544036, "lng": -4.862008, "thumb": "https://projects.investinspain.be/images/palo-alto-2-slaapkamer/hero.webp"}, {"name": "Privilege By Marein", "location": "San Pedro de Alcántara", "price": "€ 10.000.000", "priceNum": 10000000, "priceBand": "3m-plus", "href": "/en/privilege-by-marein/", "lat": 36.478828, "lng": -4.974943, "thumb": "https://projects.investinspain.be/images/privilege-by-marein/hero.webp"}, {"name": "Privilege Suites", "location": "Casares", "price": "From € 620.000", "priceNum": 620000, "priceBand": "600k-1m", "href": "/en/privilege-suites/", "lat": 36.377115, "lng": -5.223742, "thumb": "https://projects.investinspain.be/images/privilege-suites/hero.webp"}, {"name": "Rayos del Sol", "location": "Las Lagunas de Mijas", "price": "From € 520.000", "priceNum": 520000, "priceBand": "400k-600k", "href": "/en/rayos-del-sol/", "lat": 36.51184, "lng": -4.65339, "thumb": "https://projects.investinspain.be/images/rayos-del-sol/hero.webp"}, {"name": "Riviera Hill", "location": "Mijas Costa", "price": "From € 290.000", "priceNum": 290000, "priceBand": "200k-400k", "href": "/en/riviera-hill/", "lat": 36.504085, "lng": -4.713393, "thumb": "https://projects.investinspain.be/images/riviera-hill/thumb.webp"}, {"name": "Romero", "location": "Real de la Quinta", "price": "From € 1.150.000", "priceNum": 1150000, "priceBand": "1m-3m", "href": "/en/romero/", "lat": 36.535328, "lng": -4.979127, "thumb": "https://projects.investinspain.be/images/romero/thumb.webp"}, {"name": "Royal River", "location": "Marbella", "price": "From € 698.000", "priceNum": 698000, "priceBand": "600k-1m", "href": "/en/royal-river/", "lat": 36.512082, "lng": -4.847255, "thumb": "https://projects.investinspain.be/images/royal-river/hero.webp"}, {"name": "Sa Tanqueta", "location": "Ibiza", "price": "From € 570.000", "priceNum": 570000, "priceBand": "400k-600k", "href": "/en/sa-tanqueta/", "lat": 38.986333, "lng": 1.533689, "thumb": "https://projects.investinspain.be/images/sa-tanqueta/hero.webp"}, {"name": "Sabinas", "location": "La Quinta, Marbella", "price": "From € 1.395.000", "priceNum": 1395000, "priceBand": "1m-3m", "href": "/en/sabinas/", "lat": 36.527024, "lng": -4.986368, "thumb": "https://projects.investinspain.be/images/sabinas/hero.webp"}, {"name": "Salvia", "location": "San Pedro de Alcántara", "price": "From € 880.000", "priceNum": 880000, "priceBand": "600k-1m", "href": "/en/salvia/", "lat": 36.480207, "lng": -4.990326, "thumb": "https://projects.investinspain.be/images/salvia/thumb.webp"}, {"name": "Santa Clara Homes", "location": "Marbella", "price": "From € 1.345.000", "priceNum": 1345000, "priceBand": "1m-3m", "href": "/en/santa-clara-homes/", "lat": 36.510965, "lng": -4.832622, "thumb": "https://projects.investinspain.be/images/santa-clara-homes/thumb.webp"}, {"name": "Santa Elena", "location": "Fuengirola", "price": "From € 374.950", "priceNum": 374950, "priceBand": "200k-400k", "href": "/en/santa-elena/", "lat": 36.549533, "lng": -4.62698, "thumb": "https://projects.investinspain.be/images/santa-elena/hero.webp"}, {"name": "Serenity Alcaidesa", "location": "La Alcaidesa", "price": "From € 549.000", "priceNum": 549000, "priceBand": "400k-600k", "href": "/en/serenity-alcaidesa/", "lat": 36.247803, "lng": -5.330644, "thumb": "https://projects.investinspain.be/images/serenity-alcaidesa/hero.webp"}, {"name": "Serenity Gardens", "location": "Estepona", "price": "From € 405.000", "priceNum": 405000, "priceBand": "400k-600k", "href": "/en/serenity-gardens/", "lat": 36.396834, "lng": -5.20237, "thumb": "https://projects.investinspain.be/images/serenity-gardens/hero.webp"}, {"name": "Serenity Hills Marbella", "location": "Marbella", "price": "From € 850.000", "priceNum": 850000, "priceBand": "600k-1m", "href": "/en/serenity-hills-marbella/", "lat": 36.51029, "lng": -4.784994, "thumb": "https://projects.investinspain.be/images/serenity-hills-marbella/hero.webp"}, {"name": "Siam Blue", "location": "Costa Adeje, Tenerife", "price": "From € 3.650.000", "priceNum": 3650000, "priceBand": "3m-plus", "href": "/en/siam-blue/", "lat": 28.073812, "lng": -16.723237, "thumb": "https://projects.investinspain.be/images/siam-blue/hero.webp"}, {"name": "Sierra Blanca by the Sea", "location": "Estepona", "price": "From € 2.950.000", "priceNum": 2950000, "priceBand": "1m-3m", "href": "/en/sierra-blanca-by-the-sea/", "lat": 36.430101, "lng": -5.123605, "thumb": "https://projects.investinspain.be/images/sierra-blanca-by-the-sea/thumb.webp"}, {"name": "Skye", "location": "Casares", "price": "From € 423.000", "priceNum": 423000, "priceBand": "400k-600k", "href": "/en/skye/", "lat": 36.395767, "lng": -5.226992, "thumb": "https://projects.investinspain.be/images/skye/thumb.webp"}, {"name": "Solaia", "location": "Cancelada", "price": "From € 890.000", "priceNum": 890000, "priceBand": "600k-1m", "href": "/en/solaia-cancelada/", "lat": 36.465627, "lng": -5.048604, "thumb": "https://projects.investinspain.be/images/solaia-cancelada/hero.webp"}, {"name": "Soleia Living El Chaparral", "location": "La Cala de Mijas", "price": "From € 957.000", "priceNum": 957000, "priceBand": "600k-1m", "href": "/en/soleia-living-el-chaparral/", "lat": 36.513935, "lng": -4.663739, "thumb": "https://projects.investinspain.be/images/soleia-living-el-chaparral/hero.webp"}, {"name": "Soleil", "location": "Marbella", "price": "From € 530.000", "priceNum": 530000, "priceBand": "400k-600k", "href": "/en/soleil/", "lat": 36.523989, "lng": -4.843096, "thumb": "https://projects.investinspain.be/images/soleil/hero.webp"}, {"name": "Solenne", "location": "Benahavís", "price": "From € 990.000", "priceNum": 990000, "priceBand": "600k-1m", "href": "/en/solenne/", "lat": 36.505857, "lng": -5.009657, "thumb": "https://projects.investinspain.be/images/solenne/thumb.webp"}, {"name": "Solum", "location": "Guía de Isora, Tenerife", "price": "From € 987.000", "priceNum": 987000, "priceBand": "600k-1m", "href": "/en/solum-tenerife/", "lat": 28.182207, "lng": -16.819227, "thumb": "https://projects.investinspain.be/images/solum-tenerife/hero.webp"}, {"name": "Soul Marbella", "location": "Marbella", "price": "From € 1.500.000", "priceNum": 1500000, "priceBand": "1m-3m", "href": "/en/soul-marbella/", "lat": 36.507513, "lng": -4.829909, "thumb": "https://projects.investinspain.be/images/soul-marbella/thumb.webp"}, {"name": "Soul Marbella", "location": "Marbella Oost", "price": "From € 1.500.000", "priceNum": 1500000, "priceBand": "1m-3m", "href": "/en/soul-marbella-1/", "lat": 36.507513, "lng": -4.829909, "thumb": "https://projects.investinspain.be/images/soul-marbella-1/hero.webp"}, {"name": "South Sand", "location": "Estepona", "price": "From € 702.000", "priceNum": 702000, "priceBand": "600k-1m", "href": "/en/south-sand/", "lat": 36.422448, "lng": -5.161954, "thumb": "https://projects.investinspain.be/images/south-sand/hero.webp"}, {"name": "Spinto Blu", "location": "Casares", "price": "From € 1.200.000", "priceNum": 1200000, "priceBand": "1m-3m", "href": "/en/spinto-blu/", "lat": 36.387519, "lng": -5.217742, "thumb": "https://projects.investinspain.be/images/spinto-blu/hero.webp"}, {"name": "Spinto Hills", "location": "Estepona", "price": "From € 2.150.000", "priceNum": 2150000, "priceBand": "1m-3m", "href": "/en/spinto-hills/", "lat": 36.396847, "lng": -5.21533, "thumb": "https://projects.investinspain.be/images/spinto-hills/hero.webp"}, {"name": "Sunset Bay", "location": "Estepona", "price": "From € 452.000", "priceNum": 452000, "priceBand": "400k-600k", "href": "/en/sunset-bay/", "lat": 36.41096, "lng": -5.188609, "thumb": "https://projects.investinspain.be/images/sunset-bay/hero.webp"}, {"name": "Symphony Suites", "location": "Cancelada", "price": "From € 494.900", "priceNum": 494900, "priceBand": "400k-600k", "href": "/en/symphony-suites/", "lat": 36.461478, "lng": -5.054014, "thumb": "https://projects.investinspain.be/images/symphony-suites/hero.webp"}, {"name": "Talaies de Canyamel", "location": "Canyamel, Mallorca", "price": "From € 436.000", "priceNum": 436000, "priceBand": "400k-600k", "href": "/en/talaies-de-canyamel/", "lat": 39.655679, "lng": 3.437994, "thumb": "https://projects.investinspain.be/images/talaies-de-canyamel/hero.webp"}, {"name": "The Grove", "location": "San Pedro de Alcántara", "price": "From € 390.000", "priceNum": 390000, "priceBand": "200k-400k", "href": "/en/the-grove/", "lat": 36.4874, "lng": -4.984395, "thumb": "https://projects.investinspain.be/images/the-grove/thumb.webp"}, {"name": "The KOS", "location": "Benalmádena", "price": "From € 1.100.000", "priceNum": 1100000, "priceBand": "1m-3m", "href": "/en/the-kos/", "lat": 36.571471, "lng": -4.598245, "thumb": "https://projects.investinspain.be/images/the-kos/hero.webp"}, {"name": "The Kove", "location": "Mijas", "price": "From € 410.000", "priceNum": 410000, "priceBand": "400k-600k", "href": "/en/the-kove/", "lat": 36.520837, "lng": -4.650991, "thumb": "https://projects.investinspain.be/images/the-kove/thumb.webp"}, {"name": "The Palms at Estepona", "location": "Estepona", "price": "From € 387.000", "priceNum": 387000, "priceBand": "200k-400k", "href": "/en/the-palms-at-estepona/", "lat": 36.405899, "lng": -5.193693, "thumb": "https://projects.investinspain.be/images/the-palms-at-estepona/hero.webp"}, {"name": "The Privilege", "location": "Estepona", "price": "From € 678.000", "priceNum": 678000, "priceBand": "600k-1m", "href": "/en/the-privilege/", "lat": 36.427581, "lng": -5.155713, "thumb": "https://projects.investinspain.be/images/the-privilege/hero.webp"}, {"name": "The Sky Marbella", "location": "Benahavís", "price": "From € 1.495.000", "priceNum": 1495000, "priceBand": "1m-3m", "href": "/en/the-sky-marbella/", "lat": 36.522618, "lng": -4.999334, "thumb": "https://projects.investinspain.be/images/the-sky-marbella/thumb.webp"}, {"name": "The Valley", "location": "Elviria", "price": "From € 1.395.275", "priceNum": 1395275, "priceBand": "1m-3m", "href": "/en/the-valley/", "lat": 36.510045, "lng": -4.77755, "thumb": "https://projects.investinspain.be/images/the-valley/hero.webp"}, {"name": "The View Marbella", "location": "Benahavís", "price": "From € 899.000", "priceNum": 899000, "priceBand": "600k-1m", "href": "/en/the-view/", "lat": 36.466627, "lng": -5.083616, "thumb": "https://projects.investinspain.be/images/the-view/thumb.webp"}, {"name": "Tiara", "location": "Benahavís", "price": "From € 1.550.000", "priceNum": 1550000, "priceBand": "1m-3m", "href": "/en/tiara/", "lat": 36.520131, "lng": -4.999976, "thumb": "https://projects.investinspain.be/images/tiara/hero.webp"}, {"name": "Tierra Viva", "location": "Benahavís", "price": "From € 8.236.532", "priceNum": 8236532, "priceBand": "3m-plus", "href": "/en/tierra-viva/", "lat": 36.488978, "lng": -5.034742, "thumb": "https://projects.investinspain.be/images/tierra-viva/hero.webp"}, {"name": "Tyrian", "location": "Estepona", "price": "From € 3.550.000", "priceNum": 3550000, "priceBand": "3m-plus", "href": "/en/tyrian/", "lat": 36.428903, "lng": -5.134858, "thumb": "https://projects.investinspain.be/images/tyrian/thumb.webp"}, {"name": "UNELMA Estepona", "location": "Estepona", "price": "From € 525.000", "priceNum": 525000, "priceBand": "400k-600k", "href": "/en/unelma-estepona/", "lat": 36.463651, "lng": -5.069603, "thumb": "https://projects.investinspain.be/images/unelma-estepona/hero.webp"}, {"name": "Upper101", "location": "San Pedro de Alcántara", "price": "From € 320.000", "priceNum": 320000, "priceBand": "200k-400k", "href": "/en/upper101/", "lat": 36.488832, "lng": -4.985757, "thumb": "https://projects.investinspain.be/images/upper101/hero.webp"}, {"name": "Valle Romano", "location": "Estepona", "price": "From € 385.000", "priceNum": 385000, "priceBand": "200k-400k", "href": "/en/valle-romano/", "lat": 36.431279, "lng": -5.195053, "thumb": "https://projects.investinspain.be/images/valle-romano/hero.webp"}, {"name": "Vangård", "location": "Fuengirola", "price": "From € 565.250", "priceNum": 565250, "priceBand": "400k-600k", "href": "/en/vangard/", "lat": 36.556679, "lng": -4.624234, "thumb": "https://projects.investinspain.be/images/vangard/hero.webp"}, {"name": "Vanian Gardens", "location": "Estepona", "price": "From € 432.000", "priceNum": 432000, "priceBand": "400k-600k", "href": "/en/vanian-gardens/", "lat": 36.46006, "lng": -5.08312, "thumb": "https://projects.investinspain.be/images/vanian-gardens/hero.webp"}, {"name": "Vanian Park", "location": "Estepona", "price": "From € 469.000", "priceNum": 469000, "priceBand": "400k-600k", "href": "/en/vanian-park/", "lat": 36.461727, "lng": -5.084428, "thumb": "https://projects.investinspain.be/images/vanian-park/thumb.webp"}, {"name": "Vanian Views", "location": "Selwo, Estepona", "price": "From € 419.000", "priceNum": 419000, "priceBand": "400k-600k", "href": "/en/vanian-views/", "lat": 36.464249, "lng": -5.082937, "thumb": "https://projects.investinspain.be/images/vanian-views/hero.webp"}, {"name": "Veridian", "location": "Fuengirola", "price": "From € 797.000", "priceNum": 797000, "priceBand": "600k-1m", "href": "/en/veridian/", "lat": 36.575527, "lng": -4.602536, "thumb": "https://projects.investinspain.be/images/veridian/hero.webp"}, {"name": "Vesta Mare", "location": "Manilva", "price": "From € 435.000", "priceNum": 435000, "priceBand": "400k-600k", "href": "/en/vesta-mare/", "lat": 36.351875, "lng": -5.233278, "thumb": "https://projects.investinspain.be/images/vesta-mare/thumb.webp"}, {"name": "Villa Europa 6", "location": "La Cala Golf, Mijas", "price": "From € 1.515.000", "priceNum": 1515000, "priceBand": "1m-3m", "href": "/en/villa-europa-6/", "lat": 36.537716, "lng": -4.712357, "thumb": "https://projects.investinspain.be/images/villa-europa-6/hero.webp"}, {"name": "Villa Halo", "location": "Sotogrande", "price": "From € 9.800.000", "priceNum": 9800000, "priceBand": "3m-plus", "href": "/en/villa-halo/", "lat": 36.294796, "lng": -5.339494, "thumb": "https://projects.investinspain.be/images/villa-halo/hero.webp"}, {"name": "Villa Playa San Pedro", "location": "San Pedro de Alcántara", "price": "Price on request", "priceNum": null, "priceBand": "", "href": "/en/villa-playa-san-pedro/", "lat": 36.478926, "lng": -4.97508, "thumb": "https://projects.investinspain.be/images/villa-playa-san-pedro/hero.webp"}, {"name": "Vivace Villas", "location": "Estepona", "price": "Price on request", "priceNum": null, "priceBand": "", "href": "/en/vivace-villas/", "lat": 36.423702, "lng": -5.194247, "thumb": "https://projects.investinspain.be/images/vivace-villas/thumb.webp"}, {"name": "Wyndham Grand La Cala Golf Residences", "location": "Mijas", "price": "From € 1.100.000", "priceNum": 1100000, "priceBand": "1m-3m", "href": "/en/wyndham-grand-la-cala-golf-residences-2/", "lat": 36.539502, "lng": -4.711976, "thumb": "https://projects.investinspain.be/images/wyndham-grand-la-cala-golf-residences-2/hero.webp"}, {"name": "Zenity Azure", "location": "Estepona", "price": "From € 550.000", "priceNum": 550000, "priceBand": "400k-600k", "href": "/en/zenity-azure/", "lat": 36.413937, "lng": -5.183602, "thumb": "https://projects.investinspain.be/images/zenity-azure/thumb.webp"}, {"name": "Zenity Cyan", "location": "Estepona", "price": "From € 1.779.000", "priceNum": 1779000, "priceBand": "1m-3m", "href": "/en/zenity-cyan/", "lat": 36.414531, "lng": -5.18368, "thumb": "https://projects.investinspain.be/images/zenity-cyan/hero.webp"}, {"name": "Zenity Indigo", "location": "Estepona", "price": "From € 607.000", "priceNum": 607000, "priceBand": "600k-1m", "href": "/en/zenity-indigo/", "lat": 36.411763, "lng": -5.184476, "thumb": "https://projects.investinspain.be/images/zenity-indigo/hero.webp"}, {"name": "ZEW Elviria", "location": "Elviria", "price": "From € 770.000", "priceNum": 770000, "priceBand": "600k-1m", "href": "/en/zew-elviria/", "lat": 36.507567, "lng": -4.787271, "thumb": "https://projects.investinspain.be/images/zew-elviria/thumb.webp"}];
 
   var PAGE_SIZE = 24;
   var currentPage = 1;
@@ -2023,9 +3360,12 @@ html.ai-chat-on .lead-dock { display: none; }
     return withPrice.concat(withoutPrice);
   }
 
+  function hasActiveFilter() {
+    return Boolean(filterLocation.value || filterPrice.value || filterSearch.value.trim() || committedArea);
+  }
+
   function updateClearButton() {
-    var active = Boolean(filterLocation.value || filterPrice.value || filterSearch.value.trim() || committedArea);
-    filterClear.hidden = !active;
+    filterClear.hidden = !hasActiveFilter();
   }
 
   function applyFilters() {
@@ -2130,7 +3470,19 @@ html.ai-chat-on .lead-dock { display: none; }
   var areaChip = document.getElementById('areaChip');
   var mapModalList = document.getElementById('mapModalList');
 
-  var map, markers, bounds, icon, drawLayerGroup;
+  var map, markers, markerVisible, bounds, infoWindow, projHelper;
+  var drawPolygon, drawPointMarkers = [];
+  // Vaste standaardweergave van de kaart: een geografische begrenzing (geen
+  // vast zoomgetal!) rond de Costa del Sol-kust, Sotogrande tot Málaga.
+  // Een vast zoomgetal toont op een groot scherm (bredere/hogere #map-div)
+  // een veel groter gebied dan op een klein scherm bij exact dezelfde
+  // zoom - fitBounds op een vaste kader past zich wél aan de containergrootte
+  // aan en toont altijd hetzelfde stuk kust. Projecten op Tenerife/Ibiza/
+  // Mallorca vallen hier bewust buiten; die blijf je gewoon bereiken via de
+  // locatiefilter of door zelf uit te zoomen.
+  var COSTA_DEL_SOL_SW = { lat: 36.28, lng: -5.35 };
+  var COSTA_DEL_SOL_NE = { lat: 36.75, lng: -4.35 };
+  function costaDelSolBounds() { return new google.maps.LatLngBounds(COSTA_DEL_SOL_SW, COSTA_DEL_SOL_NE); }
   var drawing = false;
   var drawPoints = [];
   var currentSortedIdx = []; // laatst berekende (locatie/prijs/zoek/gebied-)filtering, vóór paginering
@@ -2144,9 +3496,11 @@ html.ai-chat-on .lead-dock { display: none; }
     var indices = currentSortedIdx;
     if (map && !mapModal.hidden && !activeArea()) {
       var viewBounds = map.getBounds();
-      indices = indices.filter(function(i){
-        return viewBounds.contains(L.latLng(projects[i].lat, projects[i].lng));
-      });
+      if (viewBounds) {
+        indices = indices.filter(function(i){
+          return viewBounds.contains({ lat: projects[i].lat, lng: projects[i].lng });
+        });
+      }
     }
     renderMapList(indices);
   }
@@ -2175,79 +3529,156 @@ html.ai-chat-on .lead-dock { display: none; }
     }).join('');
   }
 
-  function initMap() {
-    if (map) return;
+  // initMap is async (de kaartstijl moet eerst laden) en roept `done` pas
+  // aan zodra markers/teken-lagen echt klaarstaan; op een tweede open()
+  // bestaat de kaart al en wordt `done` meteen aangeroepen.
+  // Onzichtbare OverlayView, enkel om via getProjection() lat/lng naar
+  // pixelposities om te zetten (nodig voor de klik-declustering hieronder) -
+  // Google's eigen aanbevolen manier om aan zo'n projectie te komen.
+  function makeProjectionHelper() {
+    function Helper() {}
+    Helper.prototype = new google.maps.OverlayView();
+    Helper.prototype.onAdd = function(){};
+    Helper.prototype.onRemove = function(){};
+    Helper.prototype.draw = function(){};
+    var helper = new Helper();
+    helper.setMap(map);
+    return helper;
+  }
+
+  function popupHtml(p) {
+    return '<img class="map-popup__img" src="' + p.thumb + '" alt="' + p.name + '" loading="lazy">' +
+      '<div class="map-popup__body">' +
+        '<div class="map-popup__name">' + p.name + '</div>' +
+        '<div class="map-popup__meta">' + p.location + ' &middot; ' + p.price + '</div>' +
+        '<a class="map-popup__link" href="' + p.href + '">View project &rarr;</a>' +
+      '</div>';
+  }
+
+  // Ronde gouden pin als SVG, zelfde kleuren als de rest van de site -
+  // klassieke google.maps.Marker rendert via een afbeelding, niet via
+  // stijlbare DOM zoals de vorige MapLibre-versie, dus geen losse CSS-klasse
+  // meer voor het pinnetje.
+  // Als functies i.p.v. constanten: `google` bestaat pas nadat de Maps-JS
+  // geladen is (loadGoogleMaps), en deze IIFE draait al bij elke pageload,
+  // dus meteen bij het inladen `google.maps.Size` aanroepen zou altijd
+  // crashen vóór de kaart ooit geopend is.
+  function markerIcon() {
+    return {
+      url: 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(
+        '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">' +
+        '<circle cx="12" cy="12" r="10" fill="none" stroke="#9E8968" stroke-width="2"/>' +
+        '<circle cx="12" cy="12" r="7" fill="#C4A97D" stroke="#0E1318" stroke-width="2"/>' +
+        '</svg>'
+      ),
+      scaledSize: new google.maps.Size(24, 24),
+      anchor: new google.maps.Point(12, 12)
+    };
+  }
+  function drawPointIcon() {
+    return {
+      path: google.maps.SymbolPath.CIRCLE,
+      scale: 5,
+      fillColor: '#C4A97D',
+      fillOpacity: 1,
+      strokeColor: '#0E1318',
+      strokeWeight: 2
+    };
+  }
+  // Sobere, donkere kaartstijl in dezelfde kleuren als de rest van de site
+  // (Google levert zelf geen kant-en-klare "dark mode" zoals CARTO dat had).
+  var GOOGLE_MAP_DARK_STYLE = [
+    { elementType: 'geometry', stylers: [{ color: '#0e1318' }] },
+    { elementType: 'labels.icon', stylers: [{ visibility: 'off' }] },
+    // Plaatsnamen in neutraal grijs, niet in het goud van de site: op een
+    // kaart moeten die als gewone kaartlabels lezen, niet als accenten.
+    { elementType: 'labels.text.fill', stylers: [{ color: '#9aa0a6' }] },
+    { elementType: 'labels.text.stroke', stylers: [{ color: '#0e1318' }] },
+    { featureType: 'administrative', elementType: 'geometry', stylers: [{ color: '#2a3644' }] },
+    { featureType: 'administrative.land_parcel', stylers: [{ visibility: 'off' }] },
+    // Steden iets lichter grijs dan de rest, zodat ze nog wel opvallen.
+    { featureType: 'administrative.locality', elementType: 'labels.text.fill', stylers: [{ color: '#c6cbd1' }] },
+    { featureType: 'poi', stylers: [{ visibility: 'off' }] },
+    { featureType: 'road', elementType: 'geometry', stylers: [{ color: '#1c232c' }] },
+    { featureType: 'road', elementType: 'geometry.stroke', stylers: [{ color: '#0e1318' }] },
+    { featureType: 'road', elementType: 'labels.text.fill', stylers: [{ color: '#8b9096' }] },
+    { featureType: 'road.highway', elementType: 'geometry', stylers: [{ color: '#2a3644' }] },
+    { featureType: 'transit', stylers: [{ visibility: 'off' }] },
+    { featureType: 'water', elementType: 'geometry', stylers: [{ color: '#1a2530' }] },
+    { featureType: 'water', elementType: 'labels.text.fill', stylers: [{ color: '#4e5d6c' }] }
+  ];
+
+  // initMap is synchroon (in tegenstelling tot de vorige MapLibre-versie
+  // hoeft hier niet gewacht te worden op een async 'load'-event) - `done`
+  // wordt dus meteen aangeroepen. Op een tweede open() bestaat de kaart al
+  // en wordt `done` ook meteen aangeroepen.
+  function initMap(done) {
+    if (map) { done(); return; }
     // Op touch-toestellen zou 1 vinger op de kaart de kaart verslepen i.p.v.
-    // de pagina laten scrollen - dat maakt de kaart een scroll-val. Sleep-
-    // gedrag staat daarom pas aan na een eerste tik; tot dan glijdt een
-    // swipe gewoon door naar de pagina eronder.
-    var isTouch = ('ontouchstart' in window) || navigator.maxTouchPoints > 0;
-    map = L.map('map', { scrollWheelZoom: false, attributionControl: true, dragging: !isTouch });
-    L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
-      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
-      subdomains: 'abcd',
-      maxZoom: 19
-    }).addTo(map);
-
-    if (isTouch) {
-      var mapTouchHint = document.createElement('div');
-      mapTouchHint.className = 'map-touch-hint';
-      mapTouchHint.textContent = 'Tap to use the map';
-      document.getElementById('map').appendChild(mapTouchHint);
-      map.once('click', function() {
-        if (drawing) return;
-        map.dragging.enable();
-        mapTouchHint.style.opacity = '0';
-        setTimeout(function() { mapTouchHint.remove(); }, 300);
-      });
-    }
-
-    icon = L.divIcon({ className: '', html: '<div class="marker-pin"></div>', iconSize: [14,14] });
-    bounds = [];
-    markers = projects.map(function(p){
-      var marker = L.marker([p.lat, p.lng], { icon: icon });
-      marker.bindPopup(
-        '<img class="map-popup__img" src="' + p.thumb + '" alt="' + p.name + '" loading="lazy">' +
-        '<div class="map-popup__body">' +
-          '<div class="map-popup__name">' + p.name + '</div>' +
-          '<div class="map-popup__meta">' + p.location + ' &middot; ' + p.price + '</div>' +
-          '<a class="map-popup__link" href="' + p.href + '">View project &rarr;</a>' +
-        '</div>',
-        { maxWidth: 220 }
-      );
-      marker.bindTooltip(p.name, { direction: 'top', offset: [0, -8], className: 'marker-tooltip' });
-      bounds.push([p.lat, p.lng]);
-      return marker;
+    // de pagina laten scrollen - dat maakt de kaart een scroll-val.
+    // gestureHandling:'cooperative' lost dit op mét Google's eigen ingebouwde
+    // hint ("gebruik twee vingers"/"ctrl+scroll om te zoomen"), dus geen
+    // eigen aanraakhint-element meer nodig zoals bij de vorige kaartlagen.
+    map = new google.maps.Map(document.getElementById('map'), {
+      center: COSTA_DEL_SOL_SW, // voorlopig; openMap() roept meteen fitBounds aan
+      zoom: 10,
+      styles: GOOGLE_MAP_DARK_STYLE,
+      disableDefaultUI: true,
+      zoomControl: true,
+      gestureHandling: 'cooperative',
+      clickableIcons: false
     });
+
+    bounds = [];
+    markerVisible = [];
+    infoWindow = new google.maps.InfoWindow({ maxWidth: 220 });
+    projHelper = makeProjectionHelper();
 
     // Bij een klik op een marker die (op het huidige zoomniveau) tegen
     // andere markers aan zit, zoomt de kaart lichtjes in zodat ze uit
-    // elkaar getrokken worden. Staat de marker al vrij op zichzelf,
-    // dan blijft de kaart gewoon staan - alleen de popup opent.
+    // elkaar getrokken worden - de popup gaat sowieso altijd open.
     var CLUSTER_PX = 26;
-    markers.forEach(function(marker){
-      marker.on('click', function(){
+    markers = projects.map(function(p, i){
+      var marker = new google.maps.Marker({ position: { lat: p.lat, lng: p.lng }, icon: markerIcon(), title: p.name });
+      markerVisible[i] = false;
+      bounds.push([p.lat, p.lng]);
+
+      marker.addListener('click', function(){
         if (drawing) return;
-        var point = map.latLngToContainerPoint(marker.getLatLng());
-        var isClustered = markers.some(function(other){
-          if (other === marker || !map.hasLayer(other)) return false;
-          return point.distanceTo(map.latLngToContainerPoint(other.getLatLng())) < CLUSTER_PX;
+        infoWindow.setContent(popupHtml(p));
+        infoWindow.open({ anchor: marker, map: map });
+        var proj = projHelper.getProjection();
+        if (!proj) return;
+        var point = proj.fromLatLngToContainerPixel(marker.getPosition());
+        var isClustered = projects.some(function(other, j){
+          if (j === i || !markerVisible[j]) return false;
+          var op = proj.fromLatLngToContainerPixel(markers[j].getPosition());
+          return Math.hypot(point.x - op.x, point.y - op.y) < CLUSTER_PX;
         });
         if (isClustered) {
-          map.flyTo(marker.getLatLng(), Math.min(map.getZoom() + 2, 15), { duration: 0.5 });
+          map.panTo(marker.getPosition());
+          map.setZoom(Math.min(map.getZoom() + 2, 15));
         }
       });
+
+      return marker;
     });
 
-    drawLayerGroup = L.layerGroup().addTo(map);
+    // Teken-laag ("Teken gebied"): 1 polygoon (bijgewerkt via setPath) +
+    // losse puntmarkers, allebei leeg tot redrawPreview() ze vult.
+    drawPolygon = new google.maps.Polygon({
+      map: map, paths: [], strokeColor: '#C4A97D', strokeWeight: 2,
+      fillColor: '#C4A97D', fillOpacity: 0.15, clickable: false
+    });
+    drawPointMarkers = [];
 
-    // Lijst volgt mee zodra de bezoeker zelf pant/zoomt (zie updateMapList) -
-    // 'moveend' vat zowel pan als zoom in Leaflet.
-    map.on('moveend', updateMapList);
+    // Google's dichtstbijzijnde equivalent van Leaflet/MapLibre's 'moveend':
+    // 'idle' vuurt af zodra pan/zoom/resize helemaal tot rust zijn gekomen.
+    google.maps.event.addListener(map, 'idle', updateMapList);
 
-    map.on('click', function(e){
+    map.addListener('click', function(e){
       if (!drawing) return;
-      drawPoints.push([e.latlng.lat, e.latlng.lng]);
+      drawPoints.push([e.latLng.lat(), e.latLng.lng()]);
       redrawPreview();
       drawCountEl.textContent = String(drawPoints.length);
       drawDoneBtn.disabled = drawPoints.length < 3;
@@ -2255,16 +3686,16 @@ html.ai-chat-on .lead-dock { display: none; }
       // heeft (zie activeArea) - niet pas na "Klaar".
       applyFilters();
     });
+
+    done();
   }
 
   function redrawPreview() {
-    drawLayerGroup.clearLayers();
-    drawPoints.forEach(function(pt){
-      L.circleMarker(pt, { radius: 5, color: '#0E1318', weight: 2, fillColor: '#C4A97D', fillOpacity: 1 }).addTo(drawLayerGroup);
+    drawPointMarkers.forEach(function(m){ m.setMap(null); });
+    drawPointMarkers = drawPoints.map(function(pt){
+      return new google.maps.Marker({ position: { lat: pt[0], lng: pt[1] }, map: map, icon: drawPointIcon(), clickable: false });
     });
-    if (drawPoints.length >= 2) {
-      L.polygon(drawPoints, { color: '#C4A97D', weight: 2, fillColor: '#C4A97D', fillOpacity: 0.15 }).addTo(drawLayerGroup);
-    }
+    drawPolygon.setPath(drawPoints.map(function(pt){ return { lat: pt[0], lng: pt[1] }; }));
   }
 
   function syncMapMarkers(filteredIdx) {
@@ -2274,9 +3705,9 @@ html.ai-chat-on .lead-dock { display: none; }
     var visibleBounds = [];
     markers.forEach(function(marker, i){
       var show = Boolean(filteredSet[i]);
-      var onMap = map.hasLayer(marker);
-      if (show && !onMap) marker.addTo(map);
-      else if (!show && onMap) map.removeLayer(marker);
+      var onMap = markerVisible[i];
+      if (show && !onMap) { marker.setMap(map); markerVisible[i] = true; }
+      else if (!show && onMap) { marker.setMap(null); markerVisible[i] = false; }
       if (show) visibleBounds.push([projects[i].lat, projects[i].lng]);
     });
     mapModalCount.textContent = pluralize(filteredIdx.length);
@@ -2284,14 +3715,22 @@ html.ai-chat-on .lead-dock { display: none; }
     // onder de muis van de bezoeker weg net terwijl die een punt probeert
     // te plaatsen.
     if (!mapModal.hidden && !drawing) {
-      // Zoomt lichtjes in op de gefilterde regio; zonder resultaten of
-      // filters valt de kaart terug op het volledige overzicht.
-      if (visibleBounds.length === 1) {
-        map.flyTo(visibleBounds[0], 13, { duration: 0.6 });
+      // Zoomt enkel in op de gefilterde regio als er ook echt een filter
+      // actief is. Zonder filter (het volledige, ongefilterde overzicht)
+      // blijft de kaart op de vaste Costa del Sol-weergave staan - anders
+      // trekt een los project op Tenerife/Ibiza/Mallorca de kaart open tot
+      // heel West-Europa/Noord-Afrika.
+      if (!hasActiveFilter()) {
+        map.fitBounds(costaDelSolBounds(), 20);
+      } else if (visibleBounds.length === 1) {
+        map.panTo({ lat: visibleBounds[0][0], lng: visibleBounds[0][1] });
+        map.setZoom(13);
       } else if (visibleBounds.length > 1) {
-        map.flyToBounds(visibleBounds, { padding: [80,80], maxZoom: 13, duration: 0.6 });
+        var b = new google.maps.LatLngBounds();
+        visibleBounds.forEach(function(pt){ b.extend({ lat: pt[0], lng: pt[1] }); });
+        map.fitBounds(b, 80);
       } else if (bounds.length) {
-        map.flyToBounds(bounds, { padding: [80,80], maxZoom: 10, duration: 0.6 });
+        map.fitBounds(costaDelSolBounds(), 20);
       }
     }
   }
@@ -2300,17 +3739,38 @@ html.ai-chat-on .lead-dock { display: none; }
     mapModal.hidden = false;
     document.body.style.overflow = 'hidden';
     if (!map) mapModalLoading.hidden = false;
-    loadLeaflet().then(function(){
+    loadGoogleMaps().then(function(){
       mapModalLoading.hidden = true;
-      initMap();
-      setTimeout(function(){
-        map.invalidateSize();
-        if (bounds.length === 1) map.setView(bounds[0], 10);
-        else if (bounds.length > 1) map.fitBounds(bounds, { padding: [80,80], maxZoom: 10 });
-        applyFilters(); // her-sync markers/telling nu de kaart zichtbaar is
-      }, 50);
+      initMap(function(){
+        // Dubbele requestAnimationFrame i.p.v. een gegokte setTimeout-duur:
+        // zo wachten we tot de browser de "mapModal.hidden = false"-reflow
+        // echt heeft afgerond en geschilderd, voor we de container opmeten -
+        // Google detecteert containergrootte-wijzigingen niet automatisch,
+        // 'resize' moet expliciet getriggerd worden op het juiste moment.
+        requestAnimationFrame(function(){
+          requestAnimationFrame(function(){
+            google.maps.event.trigger(map, 'resize');
+            // Vaste standaardweergave op de Costa del Sol i.p.v. fitBounds over
+            // alle markers - anders trekt een enkel project op Tenerife/Ibiza/
+            // Mallorca de kaart helemaal open tot heel West-Europa/Noord-Afrika.
+            // Die eilandprojecten blijf je gewoon bereiken via de locatiefilter
+            // of door zelf uit te zoomen.
+            map.fitBounds(costaDelSolBounds(), 20);
+            applyFilters(); // her-sync markers/telling nu de kaart zichtbaar is
+          });
+        });
+      });
     });
   }
+  // Vangnet voor een echte venster-resize terwijl de kaart open staat -
+  // Google detecteert een container-groottewijziging niet automatisch.
+  window.addEventListener('resize', function(){
+    if (!map || mapModal.hidden) return;
+    google.maps.event.trigger(map, 'resize');
+    if (!drawing && !hasActiveFilter()) {
+      map.fitBounds(costaDelSolBounds(), 20);
+    }
+  });
   function closeMap() {
     cancelDrawing();
     mapModal.hidden = true;
@@ -2322,12 +3782,24 @@ html.ai-chat-on .lead-dock { display: none; }
     if (e.key === 'Escape' && !mapModal.hidden) closeMap();
   });
 
+  // Tijdens het tekenen mogen de project-markers geen klikken opvangen: met
+  // 177 pins op de kaart landt een teken-klik anders voortdurend op een pin
+  // i.p.v. op de kaart, waardoor er geen punt geplaatst wordt en het tekenen
+  // in de praktijk onbruikbaar is. Google's marker-klik gaat namelijk niet
+  // door naar de kaart eronder.
+  function setMarkersClickable(on) {
+    if (!markers) return;
+    markers.forEach(function(m){ m.setOptions({ clickable: on }); });
+  }
+
   function startDrawing() {
     // Teken tegen de volledige (niet-gebiedgefilterde) set markers, niet
     // tegen wat een vorige vorm al had ingeperkt.
     committedArea = null;
     drawPoints = [];
     drawing = true;
+    setMarkersClickable(false);
+    if (infoWindow) infoWindow.close();
     mapModal.classList.add('is-drawing');
     drawStartBtn.hidden = true;
     drawDoneBtn.hidden = false;
@@ -2345,6 +3817,7 @@ html.ai-chat-on .lead-dock { display: none; }
     if (drawPoints.length >= 3) committedArea = drawPoints.slice();
     drawing = false;
     drawPoints = [];
+    setMarkersClickable(true);
     mapModal.classList.remove('is-drawing');
     drawStartBtn.hidden = false;
     drawDoneBtn.hidden = true;
@@ -2355,21 +3828,28 @@ html.ai-chat-on .lead-dock { display: none; }
     applyFilters();
     updateAreaChip();
   }
+  function clearDrawLayers() {
+    if (!map) return;
+    drawPointMarkers.forEach(function(m){ m.setMap(null); });
+    drawPointMarkers = [];
+    if (drawPolygon) drawPolygon.setPath([]);
+  }
   function cancelDrawing() {
     if (!drawing) return;
     drawing = false;
     drawPoints = [];
+    setMarkersClickable(true);
     mapModal.classList.remove('is-drawing');
     drawStartBtn.hidden = false;
     drawDoneBtn.hidden = true;
     drawCancelBtn.hidden = true;
     mapModalHint.hidden = true;
-    if (drawLayerGroup && !committedArea) drawLayerGroup.clearLayers();
+    if (!committedArea) clearDrawLayers();
     applyFilters();
   }
   function clearCommittedArea() {
     committedArea = null;
-    if (drawLayerGroup) drawLayerGroup.clearLayers();
+    clearDrawLayers();
     areaClearBtn.hidden = true;
     updateAreaChip();
   }

@@ -33,3 +33,14 @@ DATA_EN = {
     "OG_DESCRIPTION": "Tierra Viva in Benahavís: 53 ultra-luxury villas with Lamborghini-inspired design, private infinity pool, sauna, Turkish bath and 24/7 gated community near Marbella's golf courses. From € 8,236,532.",
     "HERO_BG_ALT": "Tierra Viva Benahavís aerial view exclusive villas",
 }
+
+# Gebruikt door de /projecten/ overzichtspagina (kaart + kaartjes)
+HUB = {
+    "NAME": PROJECT_NAME,
+    "LOCATION": "Benahavís",
+    "PRICE": PRICE_FROM,
+    "THUMB": "https://projects.investinspain.be/images/tierra-viva/hero.webp",
+    "LAT": 36.488978,
+    "LNG": -5.034742,
+    "HREF": "/tierra-viva/",
+}

@@ -39,7 +39,7 @@ HUB = {
     "LOCATION": "Duquesa",
     "PRICE": "Vanaf € 1.200.000",
     "THUMB": "https://projects.investinspain.be/images/los-hidalgos-de-la-duquesa-villas/hero.webp",
-    "LAT": 36.3589,
-    "LNG": -5.2786,
+    "LAT": 36.349514,
+    "LNG": -5.235964,
     "HREF": "/los-hidalgos-de-la-duquesa-villas/",
 }

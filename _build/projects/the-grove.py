@@ -40,7 +40,7 @@ HUB = {
     "LOCATION": "San Pedro de Alcántara",
     "PRICE": PRICE_FROM,
     "THUMB": "https://projects.investinspain.be/images/the-grove/thumb.webp",
-    "LAT": 36.4873997,
-    "LNG": -4.9843947,
+    "LAT": 36.4874,
+    "LNG": -4.984395,
     "HREF": "/the-grove/",
 }

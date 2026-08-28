@@ -34,5 +34,13 @@ DATA_EN = {
     "HERO_BG_ALT": "Greenity — modern apartment complex in green Mijas",
 }
 
-# NOTE: geen HUB-dict - dit project komt (voorlopig) niet op de
-# projectenoverzichtspagina, op uitdrukkelijk verzoek.
+# Gebruikt door de /projecten/ overzichtspagina (kaart + kaartjes)
+HUB = {
+    "NAME": PROJECT_NAME,
+    "LOCATION": "Mijas",
+    "PRICE": PRICE_FROM,
+    "THUMB": "https://projects.investinspain.be/images/greenity/hero.webp",
+    "LAT": 36.518166,
+    "LNG": -4.65352,
+    "HREF": "/greenity/",
+}

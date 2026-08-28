@@ -34,4 +34,14 @@ DATA_EN = {
     "HERO_BG_ALT": "Blue Marine — modern apartment complex with sea views in Manilva",
 }
 
-# NOTE: geen HUB-dict - dit project komt (voorlopig) niet op de projectenoverzichtspagina
+
+# Gebruikt door de /projecten/ overzichtspagina (kaart + kaartjes)
+HUB = {
+    "NAME": PROJECT_NAME,
+    "LOCATION": "Manilva",
+    "PRICE": PRICE_FROM,
+    "THUMB": "https://projects.investinspain.be/images/blue-marine/hero.webp",
+    "LAT": 36.377182,
+    "LNG": -5.251131,
+    "HREF": "/blue-marine/",
+}

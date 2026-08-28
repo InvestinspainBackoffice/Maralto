@@ -34,5 +34,13 @@ DATA_EN = {
     "HERO_BG_ALT": "Attire Estepona — communal pool alongside the homes",
 }
 
-# NOTE: geen HUB-dict - dit project komt (voorlopig) niet op de
-# projectenoverzichtspagina, op uitdrukkelijk verzoek.
+# Gebruikt door de /projecten/ overzichtspagina (kaart + kaartjes)
+HUB = {
+    "NAME": PROJECT_NAME,
+    "LOCATION": "Estepona",
+    "PRICE": PRICE_FROM,
+    "THUMB": "https://projects.investinspain.be/images/attire-estepona/hero.webp",
+    "LAT": 36.409765,
+    "LNG": -5.216266,
+    "HREF": "/attire-estepona/",
+}

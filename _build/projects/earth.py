@@ -33,3 +33,14 @@ DATA_EN = {
     "OG_DESCRIPTION": "Earth on the Golden Mile in Marbella: garden apartments, semi-penthouses and penthouses surrounded by beautiful gardens, spa, heated pool, gym and yoga room. From € 5,095,000.",
     "HERO_BG_ALT": "Earth Golden Mile Marbella exterior luxury apartments and penthouses",
 }
+
+# Gebruikt door de /projecten/ overzichtspagina (kaart + kaartjes)
+HUB = {
+    "NAME": PROJECT_NAME,
+    "LOCATION": "Golden Mile, Marbella",
+    "PRICE": PRICE_FROM,
+    "THUMB": "https://projects.investinspain.be/images/earth/hero.webp",
+    "LAT": 36.507855,
+    "LNG": -4.928872,
+    "HREF": "/earth/",
+}

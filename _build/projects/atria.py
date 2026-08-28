@@ -14,7 +14,7 @@ DATA = {
     "HERO_BG": "https://projects.investinspain.be/images/atria/hero.webp",
     "HERO_BG_ALT": "Atria — moderne appartementen in Torremolinos",
     "HERO_NAME": "Atria",
-    "HERO_LOCATION": "TORREMOLINOS",
+    "HERO_LOCATION": "LA ALCAIDESA",
     "HERO_PRICE": PRICE_FROM,
     "PRICE_FROM": PRICE_FROM,
     "WA_TEXT_ENCODED": quote(WA_MESSAGE),
@@ -36,10 +36,10 @@ DATA_EN = {
 
 HUB = {
     "NAME": "Atria",
-    "LOCATION": "Torremolinos",
+    "LOCATION": "La Alcaidesa",
     "PRICE": "Vanaf € 550.000",
     "THUMB": "https://projects.investinspain.be/images/atria/hero.webp",
-    "LAT": 36.6281,
-    "LNG": -4.5032,
+    "LAT": 36.237538,
+    "LNG": -5.331402,
     "HREF": "/atria/",
 }

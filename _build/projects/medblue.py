@@ -34,4 +34,14 @@ DATA_EN = {
     "HERO_BG_ALT": "Medblue — exclusive apartment complex with sea views in Los Monteros, Marbella",
 }
 
-# NOTE: geen HUB-dict - dit project komt (voorlopig) niet op de projectenoverzichtspagina
+
+# Gebruikt door de /projecten/ overzichtspagina (kaart + kaartjes)
+HUB = {
+    "NAME": PROJECT_NAME,
+    "LOCATION": "Los Monteros, Marbella",
+    "PRICE": PRICE_FROM,
+    "THUMB": "https://projects.investinspain.be/images/medblue/hero.webp",
+    "LAT": 36.528867,
+    "LNG": -4.841576,
+    "HREF": "/medblue/",
+}

@@ -34,5 +34,13 @@ DATA_EN = {
     "HERO_BG_ALT": "Eagle Hills — facade view at sunset with cascading terraces",
 }
 
-# NOTE: geen HUB-dict - dit project komt (voorlopig) niet op de
-# projectenoverzichtspagina, op uitdrukkelijk verzoek.
+# Gebruikt door de /projecten/ overzichtspagina (kaart + kaartjes)
+HUB = {
+    "NAME": PROJECT_NAME,
+    "LOCATION": "Estepona",
+    "PRICE": PRICE_FROM,
+    "THUMB": "https://projects.investinspain.be/images/eagle-hills/hero.webp",
+    "LAT": 36.410944,
+    "LNG": -5.209626,
+    "HREF": "/eagle-hills/",
+}

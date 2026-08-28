@@ -33,3 +33,14 @@ DATA_EN = {
     "OG_DESCRIPTION": "Apartments with 2-3 bedrooms and unobstructed sea views in Manilva. Resort facilities: Turkish bath, jacuzzi, sauna, gym, coworking. Near Estepona and golf courses.",
     "HERO_BG_ALT": "PureSun Residences Manilva apartments with sea views",
 }
+
+# Gebruikt door de /projecten/ overzichtspagina (kaart + kaartjes)
+HUB = {
+    "NAME": PROJECT_NAME,
+    "LOCATION": "Manilva",
+    "PRICE": PRICE_FROM,
+    "THUMB": "https://projects.investinspain.be/images/puresun-residences/hero.webp",
+    "LAT": 36.366388,
+    "LNG": -5.238279,
+    "HREF": "/puresun-residences/",
+}

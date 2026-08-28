@@ -34,5 +34,13 @@ DATA_EN = {
     "HERO_BG_ALT": "Mosher Collection — residences set into the Rancho Domingo hillside",
 }
 
-# NOTE: geen HUB-dict - dit project komt (voorlopig) niet op de
-# projectenoverzichtspagina, op uitdrukkelijk verzoek.
+# Gebruikt door de /projecten/ overzichtspagina (kaart + kaartjes)
+HUB = {
+    "NAME": PROJECT_NAME,
+    "LOCATION": "Benalmádena",
+    "PRICE": PRICE_FROM,
+    "THUMB": "https://projects.investinspain.be/images/mosher-collection/hero.webp",
+    "LAT": 36.600343,
+    "LNG": -4.56447,
+    "HREF": "/mosher-collection/",
+}

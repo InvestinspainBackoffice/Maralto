@@ -14,7 +14,7 @@ DATA = {
     "HERO_BG": "https://projects.investinspain.be/images/sira-homes/hero.webp",
     "HERO_BG_ALT": "Sira Homes — moderne appartementen in Estepona",
     "HERO_NAME": "Sira Homes",
-    "HERO_LOCATION": "ESTEPONA",
+    "HERO_LOCATION": "ELVIRIA, MARBELLA",
     "HERO_PRICE": PRICE_FROM,
     "PRICE_FROM": PRICE_FROM,
     "WA_TEXT_ENCODED": quote(WA_MESSAGE),
@@ -36,10 +36,10 @@ DATA_EN = {
 
 HUB = {
     "NAME": "Sira Homes",
-    "LOCATION": "Estepona",
+    "LOCATION": "Elviria",
     "PRICE": "Vanaf € 425.000",
     "THUMB": "https://projects.investinspain.be/images/sira-homes/hero.webp",
-    "LAT": 36.4304,
-    "LNG": -5.1355,
+    "LAT": 36.510711,
+    "LNG": -4.776275,
     "HREF": "/sira-homes/",
 }

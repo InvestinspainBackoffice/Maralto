@@ -33,3 +33,14 @@ DATA_EN = {
     "OG_DESCRIPTION": "Solum in Tenerife: exclusive frontline apartments with 1 to 4 bedrooms and spectacular views over the Atlantic Ocean and the island of La Gomera. Sauna, Turkish bath, fitness and wellness. 50m from the beach. From € 987,000.",
     "HERO_BG_ALT": "Solum Tenerife frontline apartments exterior Atlantic Ocean views",
 }
+
+# Gebruikt door de /projecten/ overzichtspagina (kaart + kaartjes)
+HUB = {
+    "NAME": PROJECT_NAME,
+    "LOCATION": "Guía de Isora, Tenerife",
+    "PRICE": PRICE_FROM,
+    "THUMB": "https://projects.investinspain.be/images/solum-tenerife/hero.webp",
+    "LAT": 28.182207,
+    "LNG": -16.819227,
+    "HREF": "/solum-tenerife/",
+}

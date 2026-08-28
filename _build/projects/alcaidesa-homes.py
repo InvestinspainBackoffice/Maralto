@@ -34,4 +34,14 @@ DATA_EN = {
     "HERO_BG_ALT": "Alcaidesa Homes — modern apartment complex with views of Gibraltar",
 }
 
-# NOTE: geen HUB-dict - dit project komt (voorlopig) niet op de projectenoverzichtspagina
+
+# Gebruikt door de /projecten/ overzichtspagina (kaart + kaartjes)
+HUB = {
+    "NAME": PROJECT_NAME,
+    "LOCATION": "La Alcaidesa",
+    "PRICE": PRICE_FROM,
+    "THUMB": "https://projects.investinspain.be/images/alcaidesa-homes/hero.webp",
+    "LAT": 36.245242,
+    "LNG": -5.316771,
+    "HREF": "/alcaidesa-homes/",
+}

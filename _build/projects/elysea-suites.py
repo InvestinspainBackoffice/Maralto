@@ -34,4 +34,14 @@ DATA_EN = {
     "HERO_BG_ALT": "Elysea Suites — exclusive apartment complex in Mijas Costa",
 }
 
-# NOTE: geen HUB-dict - dit project komt (voorlopig) niet op de projectenoverzichtspagina
+
+# Gebruikt door de /projecten/ overzichtspagina (kaart + kaartjes)
+HUB = {
+    "NAME": PROJECT_NAME,
+    "LOCATION": "Mijas Costa",
+    "PRICE": PRICE_FROM,
+    "THUMB": "https://projects.investinspain.be/images/elysea-suites/hero.webp",
+    "LAT": 36.523026,
+    "LNG": -4.633786,
+    "HREF": "/elysea-suites/",
+}

@@ -34,5 +34,13 @@ DATA_EN = {
     "HERO_BG_ALT": "Anna de Estepona — modern apartments with pool in Estepona",
 }
 
-# NOTE: geen HUB-dict - dit project komt (voorlopig) niet op de
-# projectenoverzichtspagina, op uitdrukkelijk verzoek.
+# Gebruikt door de /projecten/ overzichtspagina (kaart + kaartjes)
+HUB = {
+    "NAME": PROJECT_NAME,
+    "LOCATION": "Estepona",
+    "PRICE": PRICE_FROM,
+    "THUMB": "https://projects.investinspain.be/images/anna-de-estepona/hero.webp",
+    "LAT": 36.433478,
+    "LNG": -5.155933,
+    "HREF": "/anna-de-estepona/",
+}

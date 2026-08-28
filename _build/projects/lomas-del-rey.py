@@ -33,3 +33,14 @@ DATA_EN = {
     "OG_DESCRIPTION": "Lomas del Rey in Marbella: luxury apartments in Andalusian style with panoramic sea views, 25,000 m² gardens, pools and 24/7 security within an exclusive complex. From € 1,395,000.",
     "HERO_BG_ALT": "Lomas del Rey Marbella exterior Andalusian style apartment complex",
 }
+
+# Gebruikt door de /projecten/ overzichtspagina (kaart + kaartjes)
+HUB = {
+    "NAME": PROJECT_NAME,
+    "LOCATION": "Marbella",
+    "PRICE": PRICE_FROM,
+    "THUMB": "https://projects.investinspain.be/images/lomas-del-rey/hero.webp",
+    "LAT": 36.510343,
+    "LNG": -4.929954,
+    "HREF": "/lomas-del-rey/",
+}

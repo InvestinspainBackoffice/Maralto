@@ -33,3 +33,14 @@ DATA_EN = {
     "OG_DESCRIPTION": "Sa Tanqueta on Ibiza: contemporary homes with private pool, terrace and peaceful green surroundings on one of the most sought-after islands of the Mediterranean. From € 570,000.",
     "HERO_BG_ALT": "Sa Tanqueta Ibiza exterior with pool",
 }
+
+# Gebruikt door de /projecten/ overzichtspagina (kaart + kaartjes)
+HUB = {
+    "NAME": PROJECT_NAME,
+    "LOCATION": "Ibiza",
+    "PRICE": PRICE_FROM,
+    "THUMB": "https://projects.investinspain.be/images/sa-tanqueta/hero.webp",
+    "LAT": 38.986333,
+    "LNG": 1.533689,
+    "HREF": "/sa-tanqueta/",
+}

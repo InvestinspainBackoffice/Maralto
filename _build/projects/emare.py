@@ -46,7 +46,7 @@ HUB = {
     "LOCATION": "Estepona",
     "PRICE": PRICE_FROM,
     "THUMB": "https://projects.investinspain.be/images/emare/thumb.webp",
-    "LAT": 36.4395,
-    "LNG": -5.0980,
+    "LAT": 36.448648,
+    "LNG": -5.086878,
     "HREF": "/emare/",
 }

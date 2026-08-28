@@ -39,7 +39,7 @@ HUB = {
     "LOCATION": "Casares",
     "PRICE": "Vanaf € 649.000",
     "THUMB": "https://projects.investinspain.be/images/the-place-by-alcazaba/hero.webp",
-    "LAT": 36.4185,
-    "LNG": -5.2232,
+    "LAT": 36.418474,
+    "LNG": -5.223242,
     "HREF": "/the-place-by-alcazaba/",
 }

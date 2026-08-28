@@ -40,7 +40,7 @@ HUB = {
     "LOCATION": "San Pedro de Alcántara",
     "PRICE": PRICE_FROM,
     "THUMB": "https://projects.investinspain.be/images/salvia/thumb.webp",
-    "LAT": 36.480207272882,
-    "LNG": -4.9903263749755,
+    "LAT": 36.480207,
+    "LNG": -4.990326,
     "HREF": "/salvia/",
 }

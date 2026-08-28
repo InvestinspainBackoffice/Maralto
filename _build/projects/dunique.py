@@ -40,7 +40,7 @@ HUB = {
     "LOCATION": "Marbella",
     "PRICE": PRICE_FROM,
     "THUMB": "https://projects.investinspain.be/images/dunique/thumb.webp",
-    "LAT": 36.5006105,
-    "LNG": -4.8113747,
+    "LAT": 36.500611,
+    "LNG": -4.811375,
     "HREF": "/dunique/",
 }

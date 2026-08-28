@@ -39,7 +39,7 @@ HUB = {
     "LOCATION": "Fuengirola",
     "PRICE": "Vanaf € 480.000",
     "THUMB": "https://projects.investinspain.be/images/torre-biznaga/hero.webp",
-    "LAT": 36.5417,
-    "LNG": -4.6297,
+    "LAT": 36.565482,
+    "LNG": -4.600495,
     "HREF": "/torre-biznaga/",
 }

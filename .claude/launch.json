@@ -2,10 +2,11 @@
   "version": "0.0.1",
   "configurations": [
     {
-      "name": "site",
+      "name": "hub-worktree-site",
       "runtimeExecutable": "node",
       "runtimeArgs": ["_build/devserver.js"],
-      "port": 4321
+      "port": 4321,
+      "autoPort": true
     }
   ]
 }

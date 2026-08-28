@@ -40,7 +40,7 @@ HUB = {
     "LOCATION": "Estepona",
     "PRICE": PRICE_FROM,
     "THUMB": "https://projects.investinspain.be/images/etherna-homes/thumb.webp",
-    "LAT": 36.428940219532,
-    "LNG": -5.200425298379,
+    "LAT": 36.42894,
+    "LNG": -5.200425,
     "HREF": "/etherna-homes/",
 }

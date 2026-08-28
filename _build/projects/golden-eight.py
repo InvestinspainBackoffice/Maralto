@@ -33,3 +33,14 @@ DATA_EN = {
     "OG_DESCRIPTION": "Golden Eight in Cabopino, Marbella: 8 exclusive apartments with panoramic sea views, premium finishes and architectural quality on the frontline. From € 1,750,000.",
     "HERO_BG_ALT": "Golden Eight Cabopino Marbella exterior with sea views",
 }
+
+# Gebruikt door de /projecten/ overzichtspagina (kaart + kaartjes)
+HUB = {
+    "NAME": PROJECT_NAME,
+    "LOCATION": "Cabopino, Marbella",
+    "PRICE": PRICE_FROM,
+    "THUMB": "https://projects.investinspain.be/images/golden-eight/hero.webp",
+    "LAT": 36.495028,
+    "LNG": -4.744592,
+    "HREF": "/golden-eight/",
+}

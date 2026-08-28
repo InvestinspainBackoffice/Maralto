@@ -34,4 +34,14 @@ DATA_EN = {
     "HERO_BG_ALT": "Living Gardens — modern apartment complex in Torremolinos",
 }
 
-# NOTE: geen HUB-dict - dit project komt (voorlopig) niet op de projectenoverzichtspagina
+
+# Gebruikt door de /projecten/ overzichtspagina (kaart + kaartjes)
+HUB = {
+    "NAME": PROJECT_NAME,
+    "LOCATION": "Torremolinos",
+    "PRICE": PRICE_FROM,
+    "THUMB": "https://projects.investinspain.be/images/living-gardens/hero.webp",
+    "LAT": 36.621391,
+    "LNG": -4.516552,
+    "HREF": "/living-gardens/",
+}

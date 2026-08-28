@@ -33,3 +33,14 @@ DATA_EN = {
     "OG_DESCRIPTION": "ATTA Villas in San Pedro de Alcántara: modern villas with private pool, generous terraces and luxury finishes in a prime location near Marbella. From € 830,000.",
     "HERO_BG_ALT": "ATTA Villas San Pedro de Alcántara exterior",
 }
+
+# Gebruikt door de /projecten/ overzichtspagina (kaart + kaartjes)
+HUB = {
+    "NAME": PROJECT_NAME,
+    "LOCATION": "San Pedro de Alcántara",
+    "PRICE": PRICE_FROM,
+    "THUMB": "https://projects.investinspain.be/images/atta-villas/hero.webp",
+    "LAT": 36.479952,
+    "LNG": -5.027157,
+    "HREF": "/atta-villas/",
+}

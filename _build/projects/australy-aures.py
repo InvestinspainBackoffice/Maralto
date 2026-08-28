@@ -40,7 +40,7 @@ HUB = {
     "LOCATION": "Estepona",
     "PRICE": PRICE_FROM,
     "THUMB": "https://projects.investinspain.be/images/australy-aures/thumb.webp",
-    "LAT": 36.46162316773,
-    "LNG": -5.0828572014322,
+    "LAT": 36.461623,
+    "LNG": -5.082857,
     "HREF": "/australy-aures/",
 }

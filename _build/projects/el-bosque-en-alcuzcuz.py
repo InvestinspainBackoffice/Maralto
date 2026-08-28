@@ -39,7 +39,7 @@ HUB = {
     "LOCATION": "Benahavís",
     "PRICE": "Vanaf € 8.250.000",
     "THUMB": "https://projects.investinspain.be/images/el-bosque-en-alcuzcuz/hero.webp",
-    "LAT": 36.5247,
-    "LNG": -5.0095,
+    "LAT": 36.524721,
+    "LNG": -5.009463,
     "HREF": "/el-bosque-en-alcuzcuz/",
 }

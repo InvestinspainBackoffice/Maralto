@@ -40,7 +40,7 @@ HUB = {
     "LOCATION": "Marbella",
     "PRICE": PRICE_FROM,
     "THUMB": "https://projects.investinspain.be/images/santa-clara-homes/thumb.webp",
-    "LAT": 36.510965152537,
-    "LNG": -4.8326216557053,
+    "LAT": 36.510965,
+    "LNG": -4.832622,
     "HREF": "/santa-clara-homes/",
 }

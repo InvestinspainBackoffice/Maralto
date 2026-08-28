@@ -14,7 +14,7 @@ DATA = {
     "HERO_BG": "https://projects.investinspain.be/images/zinnia/hero.webp",
     "HERO_BG_ALT": "Zinnia — moderne appartementen in Nerja",
     "HERO_NAME": "Zinnia",
-    "HERO_LOCATION": "NERJA",
+    "HERO_LOCATION": "SAN PEDRO DE ALCÁNTARA",
     "HERO_PRICE": PRICE_FROM,
     "PRICE_FROM": PRICE_FROM,
     "WA_TEXT_ENCODED": quote(WA_MESSAGE),
@@ -36,10 +36,10 @@ DATA_EN = {
 
 HUB = {
     "NAME": "Zinnia",
-    "LOCATION": "Nerja",
+    "LOCATION": "San Pedro de Alcántara",
     "PRICE": "Vanaf € 320.000",
     "THUMB": "https://projects.investinspain.be/images/zinnia/hero.webp",
-    "LAT": 36.7425,
-    "LNG": -3.8652,
+    "LAT": 36.485825,
+    "LNG": -4.984455,
     "HREF": "/zinnia/",
 }

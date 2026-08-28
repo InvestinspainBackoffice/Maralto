@@ -34,5 +34,13 @@ DATA_EN = {
     "HERO_BG_ALT": "Nyra Residences — modern apartments in the Golden Triangle Estepona",
 }
 
-# NOTE: geen HUB-dict - dit project komt (voorlopig) niet op de
-# projectenoverzichtspagina, op uitdrukkelijk verzoek.
+# Gebruikt door de /projecten/ overzichtspagina (kaart + kaartjes)
+HUB = {
+    "NAME": PROJECT_NAME,
+    "LOCATION": "Estepona",
+    "PRICE": PRICE_FROM,
+    "THUMB": "https://projects.investinspain.be/images/nyra-residences/hero.webp",
+    "LAT": 36.480777,
+    "LNG": -5.029163,
+    "HREF": "/nyra-residences/",
+}

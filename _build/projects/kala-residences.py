@@ -34,5 +34,13 @@ DATA_EN = {
     "HERO_BG_ALT": "Kala Residences — aerial view of the complex against the mountains",
 }
 
-# NOTE: geen HUB-dict - dit project komt (voorlopig) niet op de
-# projectenoverzichtspagina, op uitdrukkelijk verzoek.
+# Gebruikt door de /projecten/ overzichtspagina (kaart + kaartjes)
+HUB = {
+    "NAME": PROJECT_NAME,
+    "LOCATION": "Fuengirola",
+    "PRICE": PRICE_FROM,
+    "THUMB": "https://projects.investinspain.be/images/kala-residences/hero.webp",
+    "LAT": 36.584146,
+    "LNG": -4.601868,
+    "HREF": "/kala-residences/",
+}

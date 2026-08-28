@@ -34,5 +34,13 @@ DATA_EN = {
     "HERO_BG_ALT": "Grand Bay — aerial view of the complex with sea and Gibraltar views",
 }
 
-# NOTE: geen HUB-dict - dit project komt (voorlopig) niet op de
-# projectenoverzichtspagina, op uitdrukkelijk verzoek.
+# Gebruikt door de /projecten/ overzichtspagina (kaart + kaartjes)
+HUB = {
+    "NAME": PROJECT_NAME,
+    "LOCATION": "Manilva",
+    "PRICE": PRICE_FROM,
+    "THUMB": "https://projects.investinspain.be/images/grand-bay/hero.webp",
+    "LAT": 36.322798,
+    "LNG": -5.256585,
+    "HREF": "/grand-bay/",
+}

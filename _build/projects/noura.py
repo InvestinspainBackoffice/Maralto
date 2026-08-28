@@ -39,7 +39,7 @@ HUB = {
     "LOCATION": "Marbella",
     "PRICE": "Vanaf € 6.790.000",
     "THUMB": "https://projects.investinspain.be/images/noura/hero.webp",
-    "LAT": 36.5095,
-    "LNG": -4.9316,
+    "LAT": 36.509524,
+    "LNG": -4.931563,
     "HREF": "/noura/",
 }
