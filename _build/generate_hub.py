@@ -183,17 +183,9 @@ CHRONOLOGICAL = [
 ]
 HERO_ROTATION_COUNT = 5
 
-# Prijsbanden voor de filter op /projecten/. Grenzen in euro; de bovengrens
-# van elke band is exclusief (net als de "max" hieronder aangeeft). Exacte
-# grenzen zoals IIS ze zelf hanteert (aangeleverd aug 2026), niet afgeleid
-# van de generieke €200k-€10M-slider op de hoofdsite.
-PRICE_BANDS = [
-    ("200k-400k", "€ 200.000 – € 400.000", 200_000, 400_000),
-    ("400k-600k", "€ 400.000 – € 600.000", 400_000, 600_000),
-    ("600k-1m", "€ 600.000 – € 1.000.000", 600_000, 1_000_000),
-    ("1m-3m", "€ 1.000.000 – € 3.000.000", 1_000_000, 3_000_000),
-    ("3m-plus", "€ 3.000.000 en meer", 3_000_000, None),
-]
+# De prijsfilter op /projecten/ is een budget-slider (zie hub.html): die
+# werkt rechtstreeks op priceNum, dus vaste prijsbanden zijn hier niet meer
+# nodig.
 
 
 def parse_price_number(price_str):
@@ -204,15 +196,6 @@ def parse_price_number(price_str):
         return None
     digits = re.sub(r"[.,]", "", match.group(1))
     return int(digits) if digits else None
-
-
-def price_band_id(price_num):
-    if price_num is None:
-        return ""
-    for band_id, _label, lo, hi in PRICE_BANDS:
-        if (lo is None or price_num >= lo) and (hi is None or price_num < hi):
-            return band_id
-    return ""
 
 
 def load_hub_entries_by_slug():
@@ -248,8 +231,6 @@ def last_n_chronological(entries, n):
 
 
 def render_card(entry, index=99):
-    price_num = parse_price_number(entry["PRICE"])
-    band_id = price_band_id(price_num)
     # Sommige thumbnails hebben een storende watermerktekst onderaan de
     # bronfoto; die projecten zetten een SLUG-scoped regel in
     # __CARD_EXTRA_CSS__ (zie main()) om net dat stukje uit de crop te
@@ -264,7 +245,7 @@ def render_card(entry, index=99):
         else 'loading="eager"' if index < 2
         else 'loading="lazy"'
     )
-    return f"""    <a class="project-card{slug_class}" href="{entry['HREF']}" data-location="{html.escape(entry['LOCATION'])}" data-price-band="{band_id}">
+    return f"""    <a class="project-card{slug_class}" href="{entry['HREF']}" data-location="{html.escape(entry['LOCATION'])}">
       <div class="project-card__img-wrap">
         <img class="project-card__img" src="{entry['THUMB']}" alt="{html.escape(entry['NAME'])}" {img_attrs} decoding="async">
       </div>
@@ -303,13 +284,6 @@ def render_location_options(entries):
     )
 
 
-def render_price_options():
-    return "\n".join(
-        f'        <option value="{band_id}">{html.escape(label)}</option>'
-        for band_id, label, _lo, _hi in PRICE_BANDS
-    )
-
-
 def build(lang):
     by_slug = load_hub_entries_by_slug()
     if not by_slug:
@@ -337,7 +311,6 @@ def build(lang):
             "location": e["LOCATION"],
             "price": e["PRICE"],
             "priceNum": parse_price_number(e["PRICE"]),
-            "priceBand": price_band_id(parse_price_number(e["PRICE"])),
             "href": e["HREF"],
             "lat": e["LAT"],
             "lng": e["LNG"],
@@ -367,7 +340,6 @@ def build(lang):
     page = page.replace("__PROJECT_CARDS__", cards_html)
     page = page.replace("__HUB_FIRST_THUMB__", entries[0]["THUMB"])
     page = page.replace("__LOCATION_OPTIONS__", render_location_options(entries))
-    page = page.replace("__PRICE_OPTIONS__", render_price_options())
     page = page.replace("__MAP_MARKERS_JSON__", json.dumps(markers, ensure_ascii=False))
     page = page.replace("__GOOGLE_MAPS_API_KEY__", GOOGLE_MAPS_API_KEY)
     page = page.replace("__HERO_ROTATION_JSON__", json.dumps(hero_rotation, ensure_ascii=False))
