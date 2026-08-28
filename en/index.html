@@ -238,14 +238,22 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   border-bottom: 1px solid var(--gold-dim);
   padding-bottom: 1px;
 }
-/* Zoomknoppen donker gestyled. Google's copyright/logo-attributie in de
-   hoeken blijft overal ongemoeid - dat mag niet verborgen worden van
-   Google (verplicht in hun gebruiksvoorwaarden). */
-.gm-bundled-control .gmnoprint > div {
+/* Zoomknoppen donker gestyled. Google rendert die als <button> met een
+   WITTE achtergrond; de omhullende div is doorzichtig. De kleur moet dus op
+   de knop zelf - anders staat het (geinverteerde, dus witte) +/- icoon op
+   wit en zie je de knoppen niet.
+   Google's copyright/logo-attributie in de hoeken blijft overal ongemoeid -
+   die mag niet verborgen worden (verplicht in hun gebruiksvoorwaarden). */
+.gm-bundled-control button.gm-control-active {
   background: var(--bg-el) !important;
   border: 1px solid var(--line-light) !important;
+  box-shadow: none !important;
 }
-.gm-control-active img { filter: invert(1) brightness(1.6); }
+.gm-bundled-control button.gm-control-active + button.gm-control-active { border-top: none !important; }
+.gm-bundled-control button.gm-control-active:hover { background: #1b2430 !important; }
+/* Het scheidingslijntje dat Google tussen + en - zet, in onze lijnkleur. */
+.gm-bundled-control .gmnoprint > div > div { background: var(--line-light) !important; }
+.gm-bundled-control button.gm-control-active img { filter: invert(1) brightness(1.9); }
 
 /* ── Eyebrow boven de titel ── */
 .page-eyebrow {
@@ -3582,15 +3590,18 @@ html.ai-chat-on .lead-dock { display: none; }
   var GOOGLE_MAP_DARK_STYLE = [
     { elementType: 'geometry', stylers: [{ color: '#0e1318' }] },
     { elementType: 'labels.icon', stylers: [{ visibility: 'off' }] },
-    { elementType: 'labels.text.fill', stylers: [{ color: '#8a96a3' }] },
+    // Plaatsnamen in neutraal grijs, niet in het goud van de site: op een
+    // kaart moeten die als gewone kaartlabels lezen, niet als accenten.
+    { elementType: 'labels.text.fill', stylers: [{ color: '#9aa0a6' }] },
     { elementType: 'labels.text.stroke', stylers: [{ color: '#0e1318' }] },
     { featureType: 'administrative', elementType: 'geometry', stylers: [{ color: '#2a3644' }] },
     { featureType: 'administrative.land_parcel', stylers: [{ visibility: 'off' }] },
-    { featureType: 'administrative.locality', elementType: 'labels.text.fill', stylers: [{ color: '#c4a97d' }] },
+    // Steden iets lichter grijs dan de rest, zodat ze nog wel opvallen.
+    { featureType: 'administrative.locality', elementType: 'labels.text.fill', stylers: [{ color: '#c6cbd1' }] },
     { featureType: 'poi', stylers: [{ visibility: 'off' }] },
     { featureType: 'road', elementType: 'geometry', stylers: [{ color: '#1c232c' }] },
     { featureType: 'road', elementType: 'geometry.stroke', stylers: [{ color: '#0e1318' }] },
-    { featureType: 'road', elementType: 'labels.text.fill', stylers: [{ color: '#8a96a3' }] },
+    { featureType: 'road', elementType: 'labels.text.fill', stylers: [{ color: '#8b9096' }] },
     { featureType: 'road.highway', elementType: 'geometry', stylers: [{ color: '#2a3644' }] },
     { featureType: 'transit', stylers: [{ visibility: 'off' }] },
     { featureType: 'water', elementType: 'geometry', stylers: [{ color: '#1a2530' }] },
