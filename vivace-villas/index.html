@@ -2372,8 +2372,11 @@ html.ai-chat-on .lead-dock { display: none; }
 
 /* ═══════════ AI-CHATWIDGET ═══════════
    Op false zetten schakelt de chat uit en zet de lead-dock terug; de markup
-   van beide blijft staan, zodat terugschakelen één regel is. */
-var USE_AI_CHAT = true;
+   van beide blijft staan, zodat terugschakelen één regel is.
+   UIT sinds aug 2026: de chat is nog niet op punt, dus voorlopig weer het
+   aanvraagformulier (lead-dock). Terug aanzetten = deze regel op true
+   (ook in hub.html, die heeft zijn eigen kopie van deze schakelaar). */
+var USE_AI_CHAT = false;
 
 (function() {
   var fab = document.getElementById('chatFab');
