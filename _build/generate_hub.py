@@ -115,7 +115,7 @@ EXCLUDE = [
     "aida",
     "almazara-forest",
     "altura-160",
-    "aurea-villas",
+    # "aurea-villas" - terug in de hub sinds aug 2026 (op vraag)
     "beseven-villas",
     "bliss-homes",
     "estrella-del-mar-villas-marbella",
