@@ -2217,8 +2217,11 @@ __PROJECT_CARDS__
 /* ═══════════ AI-CHATWIDGET ═══════════
    Zelfde widget als op de projectpagina's, maar met een lege slug: de functie
    schakelt daarop over naar hub-modus en helpt kiezen in plaats van vragen
-   over één project te beantwoorden. Op false zetten herstelt de lead-dock. */
-var USE_AI_CHAT = true;
+   over één project te beantwoorden. Op false zetten herstelt de lead-dock.
+   UIT sinds aug 2026: de chat is nog niet op punt, dus voorlopig weer het
+   aanvraagformulier. Terug aanzetten = deze regel op true (ook in
+   tail.html, die heeft zijn eigen kopie van deze schakelaar). */
+var USE_AI_CHAT = false;
 
 (function() {
   var fab = document.getElementById('chatFab');
