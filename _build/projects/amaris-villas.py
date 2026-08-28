@@ -40,7 +40,7 @@ HUB = {
     "LOCATION": "Estepona",
     "PRICE": PRICE_FROM,
     "THUMB": "https://projects.investinspain.be/images/amaris-villas/hero.webp",
-    "LAT": 36.439006,
-    "LNG": -5.126186,
+    "LAT": 36.421852,
+    "LNG": -5.200932,
     "HREF": "/amaris-villas/",
 }

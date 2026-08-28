@@ -40,7 +40,7 @@ HUB = {
     "LOCATION": "Estepona",
     "PRICE": PRICE_FROM,
     "THUMB": "https://projects.investinspain.be/images/tyrian/thumb.webp",
-    "LAT": 36.428903398234844,
-    "LNG": -5.134858087115643,
+    "LAT": 36.428903,
+    "LNG": -5.134858,
     "HREF": "/tyrian/",
 }

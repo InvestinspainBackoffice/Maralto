@@ -41,7 +41,7 @@ HUB = {
     "LOCATION": "Casares",
     "PRICE": PRICE_FROM,
     "THUMB": "https://projects.investinspain.be/images/las-terrazas-de-cortesin-bon-air/hero.webp",
-    "LAT": 36.397359,
-    "LNG": -5.225527,
+    "LAT": 36.40101,
+    "LNG": -5.215576,
     "HREF": "/las-terrazas-de-cortesin-bon-air/",
 }

@@ -40,7 +40,7 @@ HUB = {
     "LOCATION": "La Cala de Mijas",
     "PRICE": PRICE_FROM,
     "THUMB": "https://projects.investinspain.be/images/cala-swing-mijas/hero.webp",
-    "LAT": 36.5561,
-    "LNG": -4.8159,
+    "LAT": 36.509395,
+    "LNG": -4.698286,
     "HREF": "/cala-swing-mijas/",
 }

@@ -40,7 +40,7 @@ HUB = {
     "LOCATION": "Tenerife",
     "PRICE": PRICE_FROM,
     "THUMB": "https://projects.investinspain.be/images/las-villas-del-tenis-tenerife/hero.webp",
-    "LAT": 28.05,
-    "LNG": -16.73,
+    "LAT": 28.17194,
+    "LNG": -16.785994,
     "HREF": "/las-villas-del-tenis-tenerife/",
 }

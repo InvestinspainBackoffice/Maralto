@@ -40,7 +40,7 @@ HUB = {
     "LOCATION": "La Cala de Mijas",
     "PRICE": PRICE_FROM,
     "THUMB": "https://projects.investinspain.be/images/almare/hero.webp",
-    "LAT": 36.5561,
-    "LNG": -4.8159,
+    "LAT": 36.511869,
+    "LNG": -4.679016,
     "HREF": "/almare/",
 }

@@ -40,7 +40,7 @@ HUB = {
     "LOCATION": "Mijas Costa",
     "PRICE": PRICE_FROM,
     "THUMB": "https://projects.investinspain.be/images/arosa/hero.webp",
-    "LAT": 36.512963,
-    "LNG": -4.686583,
+    "LAT": 36.492099,
+    "LNG": -4.695652,
     "HREF": "/arosa/",
 }

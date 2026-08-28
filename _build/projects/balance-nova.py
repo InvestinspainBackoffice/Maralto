@@ -40,7 +40,7 @@ HUB = {
     "LOCATION": "Mijas",
     "PRICE": PRICE_FROM,
     "THUMB": "https://projects.investinspain.be/images/balance-nova/hero.webp",
-    "LAT": 36.530481,
-    "LNG": -4.652558,
+    "LAT": 36.522042,
+    "LNG": -4.651249,
     "HREF": "/balance-nova/",
 }

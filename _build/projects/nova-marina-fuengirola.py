@@ -41,7 +41,7 @@ HUB = {
     "LOCATION": "Fuengirola",
     "PRICE": PRICE_FROM,
     "THUMB": "https://projects.investinspain.be/images/nova-marina-fuengirola/hero.webp",
-    "LAT": 36.570048,
-    "LNG": -4.609375,
+    "LAT": 36.541438,
+    "LNG": -4.62106,
     "HREF": "/nova-marina-fuengirola/",
 }

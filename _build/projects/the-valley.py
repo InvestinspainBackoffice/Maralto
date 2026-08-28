@@ -40,7 +40,7 @@ HUB = {
     "LOCATION": "Elviria",
     "PRICE": PRICE_FROM,
     "THUMB": "https://projects.investinspain.be/images/the-valley/hero.webp",
-    "LAT": 36.507567,
-    "LNG": -4.787271,
+    "LAT": 36.510045,
+    "LNG": -4.77755,
     "HREF": "/the-valley/",
 }

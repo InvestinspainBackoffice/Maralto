@@ -1957,12 +1957,24 @@ __PROJECT_CARDS__
     if (e.key === 'Escape' && !mapModal.hidden) closeMap();
   });
 
+  // Tijdens het tekenen mogen de project-markers geen klikken opvangen: met
+  // 177 pins op de kaart landt een teken-klik anders voortdurend op een pin
+  // i.p.v. op de kaart, waardoor er geen punt geplaatst wordt en het tekenen
+  // in de praktijk onbruikbaar is. Google's marker-klik gaat namelijk niet
+  // door naar de kaart eronder.
+  function setMarkersClickable(on) {
+    if (!markers) return;
+    markers.forEach(function(m){ m.setOptions({ clickable: on }); });
+  }
+
   function startDrawing() {
     // Teken tegen de volledige (niet-gebiedgefilterde) set markers, niet
     // tegen wat een vorige vorm al had ingeperkt.
     committedArea = null;
     drawPoints = [];
     drawing = true;
+    setMarkersClickable(false);
+    if (infoWindow) infoWindow.close();
     mapModal.classList.add('is-drawing');
     drawStartBtn.hidden = true;
     drawDoneBtn.hidden = false;
@@ -1980,6 +1992,7 @@ __PROJECT_CARDS__
     if (drawPoints.length >= 3) committedArea = drawPoints.slice();
     drawing = false;
     drawPoints = [];
+    setMarkersClickable(true);
     mapModal.classList.remove('is-drawing');
     drawStartBtn.hidden = false;
     drawDoneBtn.hidden = true;
@@ -2000,6 +2013,7 @@ __PROJECT_CARDS__
     if (!drawing) return;
     drawing = false;
     drawPoints = [];
+    setMarkersClickable(true);
     mapModal.classList.remove('is-drawing');
     drawStartBtn.hidden = false;
     drawDoneBtn.hidden = true;

@@ -40,7 +40,7 @@ HUB = {
     "LOCATION": "Cancelada",
     "PRICE": PRICE_FROM,
     "THUMB": "https://projects.investinspain.be/images/aire/hero.webp",
-    "LAT": 36.465177,
-    "LNG": -5.059981,
+    "LAT": 36.4643,
+    "LNG": -5.06031,
     "HREF": "/aire/",
 }

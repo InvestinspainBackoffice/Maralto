@@ -14,7 +14,7 @@ DATA = {
     "HERO_BG": "https://projects.investinspain.be/images/kosmos/hero.webp",
     "HERO_BG_ALT": "Kosmos — modern wellnessproject met zwembad in Oost-Marbella",
     "HERO_NAME": "Kosmos",
-    "HERO_LOCATION": "OOST-MARBELLA",
+    "HERO_LOCATION": "TORREMOLINOS",
     "HERO_PRICE": PRICE_FROM,
     "PRICE_FROM": PRICE_FROM,
     "WA_TEXT_ENCODED": quote(WA_MESSAGE),
@@ -36,10 +36,10 @@ DATA_EN = {
 
 HUB = {
     "NAME": "Kosmos",
-    "LOCATION": "Oost-Marbella",
+    "LOCATION": "Torremolinos",
     "PRICE": "Vanaf € 415.000",
     "THUMB": "https://projects.investinspain.be/images/kosmos/hero.webp",
-    "LAT": 36.6171,
-    "LNG": -4.5164,
+    "LAT": 36.617088,
+    "LNG": -4.51644,
     "HREF": "/kosmos/",
 }

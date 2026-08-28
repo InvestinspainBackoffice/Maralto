@@ -40,7 +40,7 @@ HUB = {
     "LOCATION": "Benahavís",
     "PRICE": PRICE_FROM,
     "THUMB": "https://projects.investinspain.be/images/solenne/thumb.webp",
-    "LAT": 36.505856521457,
-    "LNG": -5.0096572906735,
+    "LAT": 36.505857,
+    "LNG": -5.009657,
     "HREF": "/solenne/",
 }

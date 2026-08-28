@@ -39,7 +39,7 @@ HUB = {
     "LOCATION": "Benalmádena",
     "PRICE": "Vanaf € 465.000",
     "THUMB": "https://projects.investinspain.be/images/premier-residencial/hero.webp",
-    "LAT": 36.5942,
-    "LNG": -4.7195,
+    "LAT": 36.537161,
+    "LNG": -4.639528,
     "HREF": "/premier-residencial/",
 }

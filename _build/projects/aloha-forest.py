@@ -41,7 +41,7 @@ HUB = {
     "LOCATION": "Nueva Andalucía",
     "PRICE": PRICE_FROM,
     "THUMB": "https://projects.investinspain.be/images/aloha-forest/hero.webp",
-    "LAT": 36.499406,
-    "LNG": -4.986529,
+    "LAT": 36.512234,
+    "LNG": -4.957376,
     "HREF": "/aloha-forest/",
 }

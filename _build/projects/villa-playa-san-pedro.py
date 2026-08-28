@@ -40,7 +40,7 @@ HUB = {
     "LOCATION": "San Pedro de Alcántara",
     "PRICE": PRICE_FROM,
     "THUMB": "https://projects.investinspain.be/images/villa-playa-san-pedro/hero.webp",
-    "LAT": 36.486461,
-    "LNG": -4.991505,
+    "LAT": 36.478926,
+    "LNG": -4.97508,
     "HREF": "/villa-playa-san-pedro/",
 }

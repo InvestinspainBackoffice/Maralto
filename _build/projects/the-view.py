@@ -40,7 +40,7 @@ HUB = {
     "LOCATION": "Benahavís",
     "PRICE": PRICE_FROM,
     "THUMB": "https://projects.investinspain.be/images/the-view/thumb.webp",
-    "LAT": 36.4666272,
-    "LNG": -5.0836161,
+    "LAT": 36.466627,
+    "LNG": -5.083616,
     "HREF": "/the-view/",
 }

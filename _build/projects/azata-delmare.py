@@ -42,7 +42,7 @@ HUB = {
     "LOCATION": "Casares Costa",
     "PRICE": PRICE_FROM,
     "THUMB": "https://projects.investinspain.be/images/azata-delmare/hero.webp",
-    "LAT": 36.4235,
-    "LNG": -5.1994,
+    "LAT": 36.388762,
+    "LNG": -5.210014,
     "HREF": "/azata-delmare/",
 }

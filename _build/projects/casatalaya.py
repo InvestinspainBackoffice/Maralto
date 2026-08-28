@@ -40,7 +40,7 @@ HUB = {
     "LOCATION": "Benalmádena",
     "PRICE": PRICE_FROM,
     "THUMB": "https://projects.investinspain.be/images/casatalaya/thumb.webp",
-    "LAT": 36.580969929598,
-    "LNG": -4.5706188754204,
+    "LAT": 36.58097,
+    "LNG": -4.570619,
     "HREF": "/casatalaya/",
 }

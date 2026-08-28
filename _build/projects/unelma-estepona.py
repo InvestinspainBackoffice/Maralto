@@ -40,7 +40,7 @@ HUB = {
     "LOCATION": "Estepona",
     "PRICE": PRICE_FROM,
     "THUMB": "https://projects.investinspain.be/images/unelma-estepona/hero.webp",
-    "LAT": 36.439006,
-    "LNG": -5.126186,
+    "LAT": 36.463651,
+    "LNG": -5.069603,
     "HREF": "/unelma-estepona/",
 }

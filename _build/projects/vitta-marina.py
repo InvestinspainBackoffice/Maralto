@@ -42,7 +42,7 @@ HUB = {
     "LOCATION": "La Cala de Mijas",
     "PRICE": PRICE_FROM,
     "THUMB": "https://projects.investinspain.be/images/vitta-marina/hero.webp",
-    "LAT": 36.5561,
-    "LNG": -4.8159,
+    "LAT": 36.509608,
+    "LNG": -4.650319,
     "HREF": "/vitta-marina/",
 }

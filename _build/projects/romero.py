@@ -58,7 +58,7 @@ HUB = {
     # hover-zoom van .project-card:hover overschrijven, waardoor dit
     # kaartje als enige geen animatie toont.
     "THUMB_HOVER_EXTRA_CSS": "transform: scale(1.26) !important; transform-origin: center top;",
-    "LAT": 36.5353281,
-    "LNG": -4.9791269,
+    "LAT": 36.535328,
+    "LNG": -4.979127,
     "HREF": "/romero/",
 }

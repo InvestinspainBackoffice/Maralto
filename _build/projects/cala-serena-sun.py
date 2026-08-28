@@ -40,7 +40,7 @@ HUB = {
     "LOCATION": "La Cala de Mijas",
     "PRICE": PRICE_FROM,
     "THUMB": "https://projects.investinspain.be/images/cala-serena-sun/hero.webp",
-    "LAT": 36.5561,
-    "LNG": -4.8159,
+    "LAT": 36.507878,
+    "LNG": -4.683832,
     "HREF": "/cala-serena-sun/",
 }

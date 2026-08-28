@@ -40,7 +40,7 @@ HUB = {
     "LOCATION": "Mijas",
     "PRICE": PRICE_FROM,
     "THUMB": "https://projects.investinspain.be/images/alexandras-dream/hero.webp",
-    "LAT": 36.530481,
-    "LNG": -4.652558,
+    "LAT": 36.512536,
+    "LNG": -4.654089,
     "HREF": "/alexandras-dream/",
 }

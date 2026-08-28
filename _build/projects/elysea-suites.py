@@ -41,7 +41,7 @@ HUB = {
     "LOCATION": "Mijas Costa",
     "PRICE": PRICE_FROM,
     "THUMB": "https://projects.investinspain.be/images/elysea-suites/hero.webp",
-    "LAT": 36.512963,
-    "LNG": -4.686583,
+    "LAT": 36.523026,
+    "LNG": -4.633786,
     "HREF": "/elysea-suites/",
 }

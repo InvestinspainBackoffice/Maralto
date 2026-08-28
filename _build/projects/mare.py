@@ -40,7 +40,7 @@ HUB = {
     "LOCATION": "San Pedro de Alcántara",
     "PRICE": PRICE_FROM,
     "THUMB": "https://projects.investinspain.be/images/mare/hero.webp",
-    "LAT": 36.486461,
-    "LNG": -4.991505,
+    "LAT": 36.480234,
+    "LNG": -4.989064,
     "HREF": "/mare/",
 }

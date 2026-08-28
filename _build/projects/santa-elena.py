@@ -41,7 +41,7 @@ HUB = {
     "LOCATION": "Fuengirola",
     "PRICE": PRICE_FROM,
     "THUMB": "https://projects.investinspain.be/images/santa-elena/hero.webp",
-    "LAT": 36.570048,
-    "LNG": -4.609375,
+    "LAT": 36.549533,
+    "LNG": -4.62698,
     "HREF": "/santa-elena/",
 }

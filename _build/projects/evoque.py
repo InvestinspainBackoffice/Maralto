@@ -41,7 +41,7 @@ HUB = {
     "LOCATION": "Higuerón, Fuengirola",
     "PRICE": PRICE_FROM,
     "THUMB": "https://projects.investinspain.be/images/evoque/hero.webp",
-    "LAT": 36.593,
-    "LNG": -4.618,
+    "LAT": 36.584768,
+    "LNG": -4.606419,
     "HREF": "/evoque/",
 }

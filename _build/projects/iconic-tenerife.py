@@ -40,7 +40,7 @@ HUB = {
     "LOCATION": "Tenerife",
     "PRICE": PRICE_FROM,
     "THUMB": "https://projects.investinspain.be/images/iconic-tenerife/hero.webp",
-    "LAT": 28.05,
-    "LNG": -16.73,
+    "LAT": 28.134004,
+    "LNG": -16.784921,
     "HREF": "/iconic-tenerife/",
 }

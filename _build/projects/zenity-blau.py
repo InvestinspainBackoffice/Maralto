@@ -40,6 +40,6 @@ HUB = {
     "PRICE": "Vanaf € 434.000",
     "THUMB": "https://projects.investinspain.be/images/zenity-blau/hero.webp",
     "LAT": 36.414531,
-    "LNG": -5.183680,
+    "LNG": -5.18368,
     "HREF": "/zenity-blau/",
 }

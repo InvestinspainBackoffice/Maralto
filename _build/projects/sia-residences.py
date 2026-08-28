@@ -40,6 +40,6 @@ HUB = {
     "PRICE": "Prijs op aanvraag",
     "THUMB": "https://projects.investinspain.be/images/sia-residences/hero.webp",
     "LAT": 36.478762,
-    "LNG": -5.023610,
+    "LNG": -5.02361,
     "HREF": "/sia-residences/",
 }

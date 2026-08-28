@@ -40,7 +40,7 @@ HUB = {
     "LOCATION": "Marbella",
     "PRICE": PRICE_FROM,
     "THUMB": "https://projects.investinspain.be/images/serenity-hills-marbella/hero.webp",
-    "LAT": 36.502843,
-    "LNG": -4.913942,
+    "LAT": 36.51029,
+    "LNG": -4.784994,
     "HREF": "/serenity-hills-marbella/",
 }

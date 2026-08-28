@@ -40,7 +40,7 @@ HUB = {
     "LOCATION": "Mijas",
     "PRICE": PRICE_FROM,
     "THUMB": "https://projects.investinspain.be/images/azulea/hero.webp",
-    "LAT": 36.530481,
-    "LNG": -4.652558,
+    "LAT": 36.511887,
+    "LNG": -4.659334,
     "HREF": "/azulea/",
 }

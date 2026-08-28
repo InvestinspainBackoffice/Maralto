@@ -14,7 +14,7 @@ DATA = {
     "HERO_BG": "https://projects.investinspain.be/images/idyllic/hero.webp",
     "HERO_BG_ALT": "IDYLLIC — moderne appartementen in Marbella",
     "HERO_NAME": "IDYLLIC",
-    "HERO_LOCATION": "MARBELLA",
+    "HERO_LOCATION": "ESTEPONA",
     "HERO_PRICE": PRICE_FROM,
     "PRICE_FROM": PRICE_FROM,
     "WA_TEXT_ENCODED": quote(WA_MESSAGE),
@@ -36,10 +36,10 @@ DATA_EN = {
 
 HUB = {
     "NAME": "IDYLLIC",
-    "LOCATION": "Marbella",
+    "LOCATION": "Estepona",
     "PRICE": "Vanaf € 1.800.000",
     "THUMB": "https://projects.investinspain.be/images/idyllic/hero.webp",
-    "LAT": 36.5098,
-    "LNG": -4.9214,
+    "LAT": 36.411949,
+    "LNG": -5.190888,
     "HREF": "/idyllic/",
 }

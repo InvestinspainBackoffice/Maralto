@@ -40,7 +40,7 @@ HUB = {
     "LOCATION": "La Cala de Mijas",
     "PRICE": PRICE_FROM,
     "THUMB": "https://projects.investinspain.be/images/one-bali-villas/hero.webp",
-    "LAT": 36.5561,
-    "LNG": -4.8159,
+    "LAT": 36.508642,
+    "LNG": -4.710973,
     "HREF": "/one-bali-villas/",
 }

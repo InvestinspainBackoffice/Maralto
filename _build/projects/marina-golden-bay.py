@@ -41,7 +41,7 @@ HUB = {
     "LOCATION": "Benalmádena",
     "PRICE": PRICE_FROM,
     "THUMB": "https://projects.investinspain.be/images/marina-golden-bay/hero.webp",
-    "LAT": 36.587585,
-    "LNG": -4.645059,
+    "LAT": 36.598403,
+    "LNG": -4.515546,
     "HREF": "/marina-golden-bay/",
 }

@@ -41,7 +41,7 @@ HUB = {
     "LOCATION": "Mijas",
     "PRICE": PRICE_FROM,
     "THUMB": "https://projects.investinspain.be/images/navigolf-suites/hero.webp",
-    "LAT": 36.530481,
-    "LNG": -4.652558,
+    "LAT": 36.504034,
+    "LNG": -4.687868,
     "HREF": "/navigolf-suites/",
 }

@@ -40,7 +40,7 @@ HUB = {
     "LOCATION": "Golden Mile, Marbella",
     "PRICE": PRICE_FROM,
     "THUMB": "https://projects.investinspain.be/images/earth/hero.webp",
-    "LAT": 36.497,
-    "LNG": -4.937,
+    "LAT": 36.507855,
+    "LNG": -4.928872,
     "HREF": "/earth/",
 }

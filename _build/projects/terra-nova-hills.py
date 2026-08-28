@@ -14,7 +14,7 @@ DATA = {
     "HERO_BG": "https://projects.investinspain.be/images/terra-nova-hills/hero.webp",
     "HERO_BG_ALT": "Terra Nova Hills — moderne appartementen in Estepona",
     "HERO_NAME": "Terra Nova Hills",
-    "HERO_LOCATION": "ESTEPONA",
+    "HERO_LOCATION": "LA MAIRENA, OJÉN",
     "HERO_PRICE": PRICE_FROM,
     "PRICE_FROM": PRICE_FROM,
     "WA_TEXT_ENCODED": quote(WA_MESSAGE),
@@ -36,10 +36,10 @@ DATA_EN = {
 
 HUB = {
     "NAME": "Terra Nova Hills",
-    "LOCATION": "Estepona",
+    "LOCATION": "Ojén",
     "PRICE": "Vanaf € 395.000",
     "THUMB": "https://projects.investinspain.be/images/terra-nova-hills/hero.webp",
-    "LAT": 36.4452,
-    "LNG": -5.1502,
+    "LAT": 36.525488,
+    "LNG": -4.741119,
     "HREF": "/terra-nova-hills/",
 }

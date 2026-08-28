@@ -40,7 +40,7 @@ HUB = {
     "LOCATION": "Casares",
     "PRICE": PRICE_FROM,
     "THUMB": "https://projects.investinspain.be/images/la-algaba/hero.webp",
-    "LAT": 36.397359,
-    "LNG": -5.225527,
+    "LAT": 36.392727,
+    "LNG": -5.221706,
     "HREF": "/la-algaba/",
 }

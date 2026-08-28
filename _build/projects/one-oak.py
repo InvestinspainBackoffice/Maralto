@@ -41,7 +41,7 @@ HUB = {
     "LOCATION": "Torremolinos",
     "PRICE": PRICE_FROM,
     "THUMB": "https://projects.investinspain.be/images/one-oak/hero.webp",
-    "LAT": 36.6281,
-    "LNG": -4.5032,
+    "LAT": 36.617484,
+    "LNG": -4.517132,
     "HREF": "/one-oak/",
 }

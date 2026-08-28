@@ -41,7 +41,7 @@ HUB = {
     "LOCATION": "Manilva",
     "PRICE": PRICE_FROM,
     "THUMB": "https://projects.investinspain.be/images/blue-marine/hero.webp",
-    "LAT": 36.347712,
-    "LNG": -5.239791,
+    "LAT": 36.377182,
+    "LNG": -5.251131,
     "HREF": "/blue-marine/",
 }

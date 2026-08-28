@@ -39,7 +39,7 @@ HUB = {
     "LOCATION": "Estepona",
     "PRICE": "Prijs op aanvraag",
     "THUMB": "https://projects.investinspain.be/images/aby-estepona/hero.webp",
-    "LAT": 36.4304,
-    "LNG": -5.1355,
+    "LAT": 36.41263,
+    "LNG": -5.203588,
     "HREF": "/aby-estepona/",
 }

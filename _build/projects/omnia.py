@@ -41,7 +41,7 @@ HUB = {
     "LOCATION": "El Campanario, Estepona",
     "PRICE": PRICE_FROM,
     "THUMB": "https://projects.investinspain.be/images/omnia/hero.webp",
-    "LAT": 36.455,
-    "LNG": -5.045,
+    "LAT": 36.476467,
+    "LNG": -5.021157,
     "HREF": "/omnia/",
 }

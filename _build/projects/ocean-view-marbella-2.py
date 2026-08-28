@@ -40,7 +40,7 @@ HUB = {
     "LOCATION": "Marbella",
     "PRICE": PRICE_FROM,
     "THUMB": "https://projects.investinspain.be/images/ocean-view-marbella-2/hero.webp",
-    "LAT": 36.502843,
-    "LNG": -4.913942,
+    "LAT": 36.522047,
+    "LNG": -4.738716,
     "HREF": "/ocean-view-marbella-2/",
 }

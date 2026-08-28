@@ -41,7 +41,7 @@ HUB = {
     "LOCATION": "San Pedro de Alcántara",
     "PRICE": PRICE_FROM,
     "THUMB": "https://projects.investinspain.be/images/privilege-by-marein/hero.webp",
-    "LAT": 36.486461,
-    "LNG": -4.991505,
+    "LAT": 36.478828,
+    "LNG": -4.974943,
     "HREF": "/privilege-by-marein/",
 }

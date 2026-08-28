@@ -41,7 +41,7 @@ HUB = {
     "LOCATION": "Cancelada",
     "PRICE": PRICE_FROM,
     "THUMB": "https://projects.investinspain.be/images/solaia-cancelada/hero.webp",
-    "LAT": 36.465177,
-    "LNG": -5.059981,
+    "LAT": 36.465627,
+    "LNG": -5.048604,
     "HREF": "/solaia-cancelada/",
 }

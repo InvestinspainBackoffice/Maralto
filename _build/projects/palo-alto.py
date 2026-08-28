@@ -40,7 +40,7 @@ HUB = {
     "LOCATION": "Ojén",
     "PRICE": PRICE_FROM,
     "THUMB": "https://projects.investinspain.be/images/palo-alto/thumb.webp",
-    "LAT": 36.5450,
-    "LNG": -4.8950,
+    "LAT": 36.54154,
+    "LNG": -4.86154,
     "HREF": "/palo-alto/",
 }

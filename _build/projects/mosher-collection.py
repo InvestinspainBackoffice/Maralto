@@ -40,7 +40,7 @@ HUB = {
     "LOCATION": "Benalmádena",
     "PRICE": PRICE_FROM,
     "THUMB": "https://projects.investinspain.be/images/mosher-collection/hero.webp",
-    "LAT": 36.587585,
-    "LNG": -4.645059,
+    "LAT": 36.600343,
+    "LNG": -4.56447,
     "HREF": "/mosher-collection/",
 }

@@ -40,7 +40,7 @@ HUB = {
     "LOCATION": "Casares",
     "PRICE": PRICE_FROM,
     "THUMB": "https://projects.investinspain.be/images/amaranta-living/hero.webp",
-    "LAT": 36.397359,
-    "LNG": -5.225527,
+    "LAT": 36.39144,
+    "LNG": -5.223827,
     "HREF": "/amaranta-living/",
 }

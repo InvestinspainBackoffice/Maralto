@@ -39,7 +39,7 @@ HUB = {
     "LOCATION": "Marbella",
     "PRICE": "Vanaf € 4.150.000",
     "THUMB": "https://projects.investinspain.be/images/aura-cabopino/hero.webp",
-    "LAT": 36.4961,
-    "LNG": -4.7454,
+    "LAT": 36.496127,
+    "LNG": -4.745403,
     "HREF": "/aura-cabopino/",
 }

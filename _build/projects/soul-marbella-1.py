@@ -41,7 +41,7 @@ HUB = {
     "LOCATION": "Marbella Oost",
     "PRICE": PRICE_FROM,
     "THUMB": "https://projects.investinspain.be/images/soul-marbella-1/hero.webp",
-    "LAT": 36.568,
-    "LNG": -4.68355,
+    "LAT": 36.507513,
+    "LNG": -4.829909,
     "HREF": "/soul-marbella-1/",
 }

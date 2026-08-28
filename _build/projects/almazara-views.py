@@ -40,7 +40,7 @@ HUB = {
     "LOCATION": "Istán",
     "PRICE": PRICE_FROM,
     "THUMB": "https://projects.investinspain.be/images/almazara-views/hero.webp",
-    "LAT": 36.583,
-    "LNG": -4.973,
+    "LAT": 36.546707,
+    "LNG": -4.947803,
     "HREF": "/almazara-views/",
 }

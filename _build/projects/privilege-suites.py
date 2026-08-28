@@ -40,7 +40,7 @@ HUB = {
     "LOCATION": "Casares",
     "PRICE": PRICE_FROM,
     "THUMB": "https://projects.investinspain.be/images/privilege-suites/hero.webp",
-    "LAT": 36.397359,
-    "LNG": -5.225527,
+    "LAT": 36.377115,
+    "LNG": -5.223742,
     "HREF": "/privilege-suites/",
 }

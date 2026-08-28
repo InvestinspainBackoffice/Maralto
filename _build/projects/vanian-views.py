@@ -42,7 +42,7 @@ HUB = {
     "LOCATION": "Selwo, Estepona",
     "PRICE": PRICE_FROM,
     "THUMB": "https://projects.investinspain.be/images/vanian-views/hero.webp",
-    "LAT": 36.442,
-    "LNG": -5.038,
+    "LAT": 36.464249,
+    "LNG": -5.082937,
     "HREF": "/vanian-views/",
 }

@@ -40,7 +40,7 @@ HUB = {
     "LOCATION": "Benahavís",
     "PRICE": PRICE_FROM,
     "THUMB": "https://projects.investinspain.be/images/marbella-club-hills-duplex/hero.webp",
-    "LAT": 36.499363,
-    "LNG": -5.029471,
+    "LAT": 36.493267,
+    "LNG": -5.06901,
     "HREF": "/marbella-club-hills-duplex/",
 }

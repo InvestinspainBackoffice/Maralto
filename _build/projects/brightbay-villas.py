@@ -40,7 +40,7 @@ HUB = {
     "LOCATION": "La Herradura",
     "PRICE": PRICE_FROM,
     "THUMB": "https://projects.investinspain.be/images/brightbay-villas/hero.webp",
-    "LAT": 36.728,
-    "LNG": -3.733,
+    "LAT": 36.723205,
+    "LNG": -3.729929,
     "HREF": "/brightbay-villas/",
 }

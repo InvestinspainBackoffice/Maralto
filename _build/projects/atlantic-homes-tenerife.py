@@ -40,7 +40,7 @@ HUB = {
     "LOCATION": "Costa Adeje, Tenerife",
     "PRICE": PRICE_FROM,
     "THUMB": "https://projects.investinspain.be/images/atlantic-homes-tenerife/hero.webp",
-    "LAT": 28.1225,
-    "LNG": -16.726,
+    "LAT": 28.092237,
+    "LNG": -16.727822,
     "HREF": "/atlantic-homes-tenerife/",
 }

@@ -41,7 +41,7 @@ HUB = {
     "LOCATION": "Marbella",
     "PRICE": PRICE_FROM,
     "THUMB": "https://projects.investinspain.be/images/soleil/hero.webp",
-    "LAT": 36.502843,
-    "LNG": -4.913942,
+    "LAT": 36.523989,
+    "LNG": -4.843096,
     "HREF": "/soleil/",
 }

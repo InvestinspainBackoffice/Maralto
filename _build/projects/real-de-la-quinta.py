@@ -39,7 +39,7 @@ HUB = {
     "LOCATION": "Marbella",
     "PRICE": "Vanaf € 890.000",
     "THUMB": "https://projects.investinspain.be/images/real-de-la-quinta/hero.webp",
-    "LAT": 36.5105,
-    "LNG": -4.9211,
+    "LAT": 36.53312,
+    "LNG": -4.989748,
     "HREF": "/real-de-la-quinta/",
 }

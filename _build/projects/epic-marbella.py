@@ -40,7 +40,7 @@ HUB = {
     "LOCATION": "Marbella",
     "PRICE": PRICE_FROM,
     "THUMB": "https://projects.investinspain.be/images/epic-marbella/hero.webp",
-    "LAT": 36.502843,
-    "LNG": -4.913942,
+    "LAT": 36.507136,
+    "LNG": -4.943738,
     "HREF": "/epic-marbella/",
 }

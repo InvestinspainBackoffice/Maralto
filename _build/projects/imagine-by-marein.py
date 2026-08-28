@@ -39,7 +39,7 @@ HUB = {
     "LOCATION": "Estepona",
     "PRICE": "Vanaf € 2.195.000",
     "THUMB": "https://projects.investinspain.be/images/imagine-by-marein/hero.webp",
-    "LAT": 36.4663,
-    "LNG": -5.0444,
+    "LAT": 36.466348,
+    "LNG": -5.044448,
     "HREF": "/imagine-by-marein/",
 }

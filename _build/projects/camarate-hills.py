@@ -14,7 +14,7 @@ DATA = {
     "HERO_BG": "https://projects.investinspain.be/images/camarate-hills/hero.webp",
     "HERO_BG_ALT": "Camarate Hills — moderne appartementen in Marbella",
     "HERO_NAME": "Camarate Hills",
-    "HERO_LOCATION": "MARBELLA",
+    "HERO_LOCATION": "CASARES",
     "HERO_PRICE": PRICE_FROM,
     "PRICE_FROM": PRICE_FROM,
     "WA_TEXT_ENCODED": quote(WA_MESSAGE),
@@ -36,10 +36,10 @@ DATA_EN = {
 
 HUB = {
     "NAME": "Camarate Hills",
-    "LOCATION": "Marbella",
+    "LOCATION": "Casares",
     "PRICE": "Vanaf € 685.000",
     "THUMB": "https://projects.investinspain.be/images/camarate-hills/hero.webp",
-    "LAT": 36.5086,
-    "LNG": -4.9346,
+    "LAT": 36.395196,
+    "LNG": -5.211902,
     "HREF": "/camarate-hills/",
 }

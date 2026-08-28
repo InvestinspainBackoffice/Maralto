@@ -40,7 +40,7 @@ HUB = {
     "LOCATION": "San Pedro de Alcántara",
     "PRICE": PRICE_FROM,
     "THUMB": "https://projects.investinspain.be/images/atta-villas/hero.webp",
-    "LAT": 36.486461,
-    "LNG": -4.991505,
+    "LAT": 36.479952,
+    "LNG": -5.027157,
     "HREF": "/atta-villas/",
 }

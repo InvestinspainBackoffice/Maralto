@@ -40,7 +40,7 @@ HUB = {
     "LOCATION": "Cortijo Blanco, San Pedro",
     "PRICE": PRICE_FROM,
     "THUMB": "https://projects.investinspain.be/images/privilege-by-marein-villa/hero.webp",
-    "LAT": 36.478,
-    "LNG": -4.978,
+    "LAT": 36.478828,
+    "LNG": -4.974943,
     "HREF": "/privilege-by-marein-villa/",
 }

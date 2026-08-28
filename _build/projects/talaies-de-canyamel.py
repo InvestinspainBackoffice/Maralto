@@ -41,7 +41,7 @@ HUB = {
     "LOCATION": "Canyamel, Mallorca",
     "PRICE": PRICE_FROM,
     "THUMB": "https://projects.investinspain.be/images/talaies-de-canyamel/hero.webp",
-    "LAT": 39.6906,
-    "LNG": 3.4675,
+    "LAT": 39.655679,
+    "LNG": 3.437994,
     "HREF": "/talaies-de-canyamel/",
 }

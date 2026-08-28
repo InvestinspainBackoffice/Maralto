@@ -46,7 +46,7 @@ HUB = {
     "LOCATION": "Estepona",
     "PRICE": PRICE_FROM,
     "THUMB": "https://projects.investinspain.be/images/australy-thera/thumb.webp",
-    "LAT": 36.463867007738,
-    "LNG": -5.0873780250549,
+    "LAT": 36.463867,
+    "LNG": -5.087378,
     "HREF": "/australy-thera/",
 }

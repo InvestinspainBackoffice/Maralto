@@ -40,7 +40,7 @@ HUB = {
     "LOCATION": "Sierra Blanca, Marbella",
     "PRICE": PRICE_FROM,
     "THUMB": "https://projects.investinspain.be/images/elie-saab-villas/hero.webp",
-    "LAT": 36.517,
-    "LNG": -4.916,
+    "LAT": 36.521822,
+    "LNG": -4.891143,
     "HREF": "/elie-saab-villas/",
 }

@@ -39,7 +39,7 @@ HUB = {
     "LOCATION": "Fuengirola",
     "PRICE": "Vanaf € 669.000",
     "THUMB": "https://projects.investinspain.be/images/aura-higueron/hero.webp",
-    "LAT": 36.5854,
-    "LNG": -4.5960,
+    "LAT": 36.585386,
+    "LNG": -4.596024,
     "HREF": "/aura-higueron/",
 }

@@ -40,7 +40,7 @@ HUB = {
     "LOCATION": "Higuerón, Benalmádena",
     "PRICE": PRICE_FROM,
     "THUMB": "https://projects.investinspain.be/images/higueron-bay-residences/hero.webp",
-    "LAT": 36.593,
-    "LNG": -4.618,
+    "LAT": 36.572264,
+    "LNG": -4.595811,
     "HREF": "/higueron-bay-residences/",
 }

@@ -40,7 +40,7 @@ HUB = {
     "LOCATION": "Costa Adeje, Tenerife",
     "PRICE": PRICE_FROM,
     "THUMB": "https://projects.investinspain.be/images/siam-blue/hero.webp",
-    "LAT": 28.1225,
-    "LNG": -16.726,
+    "LAT": 28.073812,
+    "LNG": -16.723237,
     "HREF": "/siam-blue/",
 }

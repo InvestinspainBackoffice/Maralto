@@ -41,7 +41,7 @@ HUB = {
     "LOCATION": "La Alcaidesa",
     "PRICE": PRICE_FROM,
     "THUMB": "https://projects.investinspain.be/images/alcaidesa-homes/hero.webp",
-    "LAT": 36.245,
-    "LNG": -5.281,
+    "LAT": 36.245242,
+    "LNG": -5.316771,
     "HREF": "/alcaidesa-homes/",
 }

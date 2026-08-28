@@ -41,7 +41,7 @@ HUB = {
     "LOCATION": "Torremolinos",
     "PRICE": PRICE_FROM,
     "THUMB": "https://projects.investinspain.be/images/living-gardens/hero.webp",
-    "LAT": 36.6281,
-    "LNG": -4.5032,
+    "LAT": 36.621391,
+    "LNG": -4.516552,
     "HREF": "/living-gardens/",
 }

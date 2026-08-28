@@ -40,7 +40,7 @@ HUB = {
     "LOCATION": "Tenerife",
     "PRICE": PRICE_FROM,
     "THUMB": "https://projects.investinspain.be/images/los-jardines-de-abama-tenerife/hero.webp",
-    "LAT": 28.05,
-    "LNG": -16.73,
+    "LAT": 28.171977,
+    "LNG": -16.787925,
     "HREF": "/los-jardines-de-abama-tenerife/",
 }

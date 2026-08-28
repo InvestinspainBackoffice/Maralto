@@ -41,7 +41,7 @@ HUB = {
     "LOCATION": "Mijas",
     "PRICE": PRICE_FROM,
     "THUMB": "https://projects.investinspain.be/images/wyndham-grand-la-cala-golf-residences-2/hero.webp",
-    "LAT": 36.530481,
-    "LNG": -4.652558,
+    "LAT": 36.539502,
+    "LNG": -4.711976,
     "HREF": "/wyndham-grand-la-cala-golf-residences-2/",
 }

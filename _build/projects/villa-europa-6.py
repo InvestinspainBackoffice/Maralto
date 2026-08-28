@@ -41,7 +41,7 @@ HUB = {
     "LOCATION": "La Cala Golf, Mijas",
     "PRICE": PRICE_FROM,
     "THUMB": "https://projects.investinspain.be/images/villa-europa-6/hero.webp",
-    "LAT": 36.5252,
-    "LNG": -4.7434,
+    "LAT": 36.537716,
+    "LNG": -4.712357,
     "HREF": "/villa-europa-6/",
 }

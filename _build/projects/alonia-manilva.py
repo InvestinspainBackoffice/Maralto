@@ -41,7 +41,7 @@ HUB = {
     "LOCATION": "Manilva",
     "PRICE": PRICE_FROM,
     "THUMB": "https://projects.investinspain.be/images/alonia-manilva/hero.webp",
-    "LAT": 36.347712,
-    "LNG": -5.239791,
+    "LAT": 36.360999,
+    "LNG": -5.238665,
     "HREF": "/alonia-manilva/",
 }

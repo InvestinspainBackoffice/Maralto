@@ -40,7 +40,7 @@ HUB = {
     "LOCATION": "Benalmádena",
     "PRICE": PRICE_FROM,
     "THUMB": "https://projects.investinspain.be/images/the-kos/hero.webp",
-    "LAT": 36.587585,
-    "LNG": -4.645059,
+    "LAT": 36.571471,
+    "LNG": -4.598245,
     "HREF": "/the-kos/",
 }

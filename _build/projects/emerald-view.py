@@ -40,7 +40,7 @@ HUB = {
     "LOCATION": "Mijas Pueblo",
     "PRICE": PRICE_FROM,
     "THUMB": "https://projects.investinspain.be/images/emerald-view/hero.webp",
-    "LAT": 36.5958,
-    "LNG": -4.6372,
+    "LAT": 36.590507,
+    "LNG": -4.609891,
     "HREF": "/emerald-view/",
 }

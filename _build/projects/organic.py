@@ -40,7 +40,7 @@ HUB = {
     "LOCATION": "Higuerón, Fuengirola",
     "PRICE": PRICE_FROM,
     "THUMB": "https://projects.investinspain.be/images/organic/hero.webp",
-    "LAT": 36.593,
-    "LNG": -4.618,
+    "LAT": 36.577985,
+    "LNG": -4.602902,
     "HREF": "/organic/",
 }

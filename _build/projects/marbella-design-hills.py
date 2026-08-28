@@ -46,7 +46,7 @@ HUB = {
     "LOCATION": "Marbella",
     "PRICE": PRICE_FROM,
     "THUMB": "https://projects.investinspain.be/images/marbella-design-hills/thumb.webp",
-    "LAT": 36.51075073,
-    "LNG": -4.94405865,
+    "LAT": 36.510751,
+    "LNG": -4.944059,
     "HREF": "/marbella-design-hills/",
 }

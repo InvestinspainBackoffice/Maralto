@@ -40,7 +40,7 @@ HUB = {
     "LOCATION": "Guía de Isora, Tenerife",
     "PRICE": PRICE_FROM,
     "THUMB": "https://projects.investinspain.be/images/solum-tenerife/hero.webp",
-    "LAT": 28.245,
-    "LNG": -16.833,
+    "LAT": 28.182207,
+    "LNG": -16.819227,
     "HREF": "/solum-tenerife/",
 }

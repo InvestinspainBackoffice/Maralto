@@ -40,7 +40,7 @@ HUB = {
     "LOCATION": "Las Lagunas de Mijas",
     "PRICE": PRICE_FROM,
     "THUMB": "https://projects.investinspain.be/images/rayos-del-sol/hero.webp",
-    "LAT": 36.5075,
-    "LNG": -4.6472,
+    "LAT": 36.51184,
+    "LNG": -4.65339,
     "HREF": "/rayos-del-sol/",
 }

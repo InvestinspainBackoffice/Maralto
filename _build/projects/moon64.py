@@ -41,7 +41,7 @@ HUB = {
     "LOCATION": "Los Hidalgos, Manilva",
     "PRICE": PRICE_FROM,
     "THUMB": "https://projects.investinspain.be/images/moon64/hero.webp",
-    "LAT": 36.3735,
-    "LNG": -5.2432,
+    "LAT": 36.349384,
+    "LNG": -5.238762,
     "HREF": "/moon64/",
 }

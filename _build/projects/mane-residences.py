@@ -40,7 +40,7 @@ HUB = {
     "LOCATION": "Benalmádena",
     "PRICE": PRICE_FROM,
     "THUMB": "https://projects.investinspain.be/images/mane-residences/hero.webp",
-    "LAT": 36.587585,
-    "LNG": -4.645059,
+    "LAT": 36.602349,
+    "LNG": -4.562922,
     "HREF": "/mane-residences/",
 }

@@ -41,7 +41,7 @@ HUB = {
     "LOCATION": "Los Monteros, Marbella",
     "PRICE": PRICE_FROM,
     "THUMB": "https://projects.investinspain.be/images/medblue/hero.webp",
-    "LAT": 36.499,
-    "LNG": -4.816,
+    "LAT": 36.528867,
+    "LNG": -4.841576,
     "HREF": "/medblue/",
 }

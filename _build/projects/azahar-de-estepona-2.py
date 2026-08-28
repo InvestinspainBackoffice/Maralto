@@ -40,7 +40,7 @@ HUB = {
     "LOCATION": "Estepona",
     "PRICE": PRICE_FROM,
     "THUMB": "https://projects.investinspain.be/images/azahar-de-estepona-2/hero.webp",
-    "LAT": 36.439006,
-    "LNG": -5.126186,
+    "LAT": 36.412399,
+    "LNG": -5.192056,
     "HREF": "/azahar-de-estepona-2/",
 }

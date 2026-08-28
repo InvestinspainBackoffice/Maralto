@@ -42,7 +42,7 @@ HUB = {
     "LOCATION": "Calahonda",
     "PRICE": PRICE_FROM,
     "THUMB": "https://projects.investinspain.be/images/lantana-villas/hero.webp",
-    "LAT": 36.497016,
-    "LNG": -4.739722,
+    "LAT": 36.489656,
+    "LNG": -4.722085,
     "HREF": "/lantana-villas/",
 }

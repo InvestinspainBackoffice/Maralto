@@ -39,7 +39,7 @@ HUB = {
     "LOCATION": "Oost-Marbella",
     "PRICE": "Vanaf € 1.950.000",
     "THUMB": "https://projects.investinspain.be/images/the-list-rio-real/hero.webp",
-    "LAT": 36.5189,
-    "LNG": -4.8507,
+    "LAT": 36.51894,
+    "LNG": -4.850715,
     "HREF": "/the-list-rio-real/",
 }

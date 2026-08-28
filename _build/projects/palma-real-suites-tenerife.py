@@ -40,7 +40,7 @@ HUB = {
     "LOCATION": "Palm Mar, Tenerife",
     "PRICE": PRICE_FROM,
     "THUMB": "https://projects.investinspain.be/images/palma-real-suites-tenerife/hero.webp",
-    "LAT": 28.0645,
-    "LNG": -16.728,
+    "LAT": 28.023239,
+    "LNG": -16.698709,
     "HREF": "/palma-real-suites-tenerife/",
 }

@@ -41,7 +41,7 @@ HUB = {
     "LOCATION": "Benahavís",
     "PRICE": PRICE_FROM,
     "THUMB": "https://projects.investinspain.be/images/tiara/hero.webp",
-    "LAT": 36.499363,
-    "LNG": -5.029471,
+    "LAT": 36.520131,
+    "LNG": -4.999976,
     "HREF": "/tiara/",
 }

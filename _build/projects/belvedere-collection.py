@@ -41,7 +41,7 @@ HUB = {
     "LOCATION": "Fuengirola",
     "PRICE": PRICE_FROM,
     "THUMB": "https://projects.investinspain.be/images/belvedere-collection/hero.webp",
-    "LAT": 36.570048,
-    "LNG": -4.609375,
+    "LAT": 36.575451,
+    "LNG": -4.609818,
     "HREF": "/belvedere-collection/",
 }

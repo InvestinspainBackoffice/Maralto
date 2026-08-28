@@ -42,7 +42,7 @@ HUB = {
     "LOCATION": "Selwo, Estepona",
     "PRICE": PRICE_FROM,
     "THUMB": "https://projects.investinspain.be/images/australy-libella/hero.webp",
-    "LAT": 36.442,
-    "LNG": -5.038,
+    "LAT": 36.466529,
+    "LNG": -5.087821,
     "HREF": "/australy-libella/",
 }

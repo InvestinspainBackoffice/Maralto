@@ -40,7 +40,7 @@ HUB = {
     "LOCATION": "Sotogrande",
     "PRICE": PRICE_FROM,
     "THUMB": "https://projects.investinspain.be/images/las-villas-sotogrande/hero.webp",
-    "LAT": 36.283,
-    "LNG": -5.283,
+    "LAT": 36.291884,
+    "LNG": -5.31292,
     "HREF": "/las-villas-sotogrande/",
 }

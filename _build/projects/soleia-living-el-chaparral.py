@@ -40,7 +40,7 @@ HUB = {
     "LOCATION": "La Cala de Mijas",
     "PRICE": PRICE_FROM,
     "THUMB": "https://projects.investinspain.be/images/soleia-living-el-chaparral/hero.webp",
-    "LAT": 36.5561,
-    "LNG": -4.8159,
+    "LAT": 36.513935,
+    "LNG": -4.663739,
     "HREF": "/soleia-living-el-chaparral/",
 }

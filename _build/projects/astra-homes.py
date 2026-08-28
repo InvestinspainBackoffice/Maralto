@@ -40,7 +40,7 @@ HUB = {
     "LOCATION": "Fuengirola",
     "PRICE": PRICE_FROM,
     "THUMB": "https://projects.investinspain.be/images/astra-homes/hero.webp",
-    "LAT": 36.570048,
-    "LNG": -4.609375,
+    "LAT": 36.561596,
+    "LNG": -4.622025,
     "HREF": "/astra-homes/",
 }

@@ -40,7 +40,7 @@ HUB = {
     "LOCATION": "Manilva",
     "PRICE": PRICE_FROM,
     "THUMB": "https://projects.investinspain.be/images/puresun-residences/hero.webp",
-    "LAT": 36.347712,
-    "LNG": -5.239791,
+    "LAT": 36.366388,
+    "LNG": -5.238279,
     "HREF": "/puresun-residences/",
 }

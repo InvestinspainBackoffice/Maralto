@@ -40,7 +40,7 @@ HUB = {
     "LOCATION": "Arroyo Enmedio, Estepona",
     "PRICE": PRICE_FROM,
     "THUMB": "https://projects.investinspain.be/images/isea-estepona-iii/hero.webp",
-    "LAT": 36.465,
-    "LNG": -5.03,
+    "LAT": 36.407123,
+    "LNG": -5.195326,
     "HREF": "/isea-estepona-iii/",
 }

@@ -40,7 +40,7 @@ HUB = {
     "LOCATION": "Ibiza",
     "PRICE": PRICE_FROM,
     "THUMB": "https://projects.investinspain.be/images/sa-tanqueta/hero.webp",
-    "LAT": 38.9067,
-    "LNG": 1.4206,
+    "LAT": 38.986333,
+    "LNG": 1.533689,
     "HREF": "/sa-tanqueta/",
 }

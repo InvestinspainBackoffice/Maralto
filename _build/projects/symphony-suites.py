@@ -41,7 +41,7 @@ HUB = {
     "LOCATION": "Cancelada",
     "PRICE": PRICE_FROM,
     "THUMB": "https://projects.investinspain.be/images/symphony-suites/hero.webp",
-    "LAT": 36.465177,
-    "LNG": -5.059981,
+    "LAT": 36.461478,
+    "LNG": -5.054014,
     "HREF": "/symphony-suites/",
 }

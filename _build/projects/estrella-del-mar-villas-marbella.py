@@ -39,7 +39,7 @@ HUB = {
     "LOCATION": "Marbella Oost",
     "PRICE": "Vanaf € 1.200.000",
     "THUMB": "https://projects.investinspain.be/images/estrella-del-mar-villas-marbella/hero.webp",
-    "LAT": 36.495300,
+    "LAT": 36.4953,
     "LNG": -4.782585,
     "HREF": "/estrella-del-mar-villas-marbella/",
 }

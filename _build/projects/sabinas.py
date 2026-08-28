@@ -41,7 +41,7 @@ HUB = {
     "LOCATION": "La Quinta, Marbella",
     "PRICE": PRICE_FROM,
     "THUMB": "https://projects.investinspain.be/images/sabinas/hero.webp",
-    "LAT": 36.501,
-    "LNG": -4.981,
+    "LAT": 36.527024,
+    "LNG": -4.986368,
     "HREF": "/sabinas/",
 }

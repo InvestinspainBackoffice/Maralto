@@ -41,7 +41,7 @@ HUB = {
     "LOCATION": "Marbella",
     "PRICE": PRICE_FROM,
     "THUMB": "https://projects.investinspain.be/images/isla-bela/hero.webp",
-    "LAT": 36.502843,
-    "LNG": -4.913942,
+    "LAT": 36.496995,
+    "LNG": -4.966135,
     "HREF": "/isla-bela/",
 }

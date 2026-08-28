@@ -40,7 +40,7 @@ HUB = {
     "LOCATION": "Cabopino, Marbella",
     "PRICE": PRICE_FROM,
     "THUMB": "https://projects.investinspain.be/images/golden-eight/hero.webp",
-    "LAT": 36.484,
-    "LNG": -4.762,
+    "LAT": 36.495028,
+    "LNG": -4.744592,
     "HREF": "/golden-eight/",
 }

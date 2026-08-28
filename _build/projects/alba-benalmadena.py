@@ -40,7 +40,7 @@ HUB = {
     "LOCATION": "Benalmádena",
     "PRICE": PRICE_FROM,
     "THUMB": "https://projects.investinspain.be/images/alba-benalmadena/hero.webp",
-    "LAT": 36.587585,
-    "LNG": -4.645059,
+    "LAT": 36.585403,
+    "LNG": -4.562159,
     "HREF": "/alba-benalmadena/",
 }

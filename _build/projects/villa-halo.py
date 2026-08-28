@@ -40,7 +40,7 @@ HUB = {
     "LOCATION": "Sotogrande",
     "PRICE": PRICE_FROM,
     "THUMB": "https://projects.investinspain.be/images/villa-halo/hero.webp",
-    "LAT": 36.283,
-    "LNG": -5.283,
+    "LAT": 36.294796,
+    "LNG": -5.339494,
     "HREF": "/villa-halo/",
 }
