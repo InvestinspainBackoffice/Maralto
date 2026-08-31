@@ -134,6 +134,10 @@ def build_one(project_file, lang):
 
     # Taalwissel-link: verwijst naar dezelfde pagina in de andere taal.
     data["LANG_SWITCH_HREF"] = f"/{slug}/" if lang == "en" else f"/en/{slug}/"
+    # "Terug naar projecten"-link boven de hero: verwijst naar de
+    # overzichtspagina in dezelfde taal (die is zelf de hoofdpagina van
+    # het subdomein - zie generate_hub.py).
+    data["HOME_HREF"] = "/en/" if lang == "en" else "/"
     # Waar het leadformulier na een geslaagde inzending naartoe stuurt.
     data["THANKS_HREF"] = "/en/thank-you/" if lang == "en" else "/bedankt/"
 

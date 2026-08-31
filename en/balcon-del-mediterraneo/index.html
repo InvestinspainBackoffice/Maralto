@@ -105,6 +105,35 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 }
 @keyframes frame-in { to { opacity: 1; } }
 
+/* ── "Terug naar projecten" (linksboven, over de hero) ── */
+.back-link {
+  position: fixed;
+  top: clamp(1.25rem, 3vw, 2rem);
+  left: clamp(1.25rem, 3vw, 2rem);
+  z-index: 101;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.65rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--text);
+  opacity: 0;
+  animation: fade-up 0.9s var(--ease) 1s forwards;
+  transition: color 0.25s;
+}
+.back-link:hover { color: var(--gold); }
+.back-link svg {
+  width: 14px;
+  height: 14px;
+  stroke: currentColor;
+  stroke-width: 1.5;
+  fill: none;
+  flex-shrink: 0;
+  transition: transform 0.25s;
+}
+.back-link:hover svg { transform: translateX(-3px); }
+
 /* ── Hero ── */
 .hero {
   position: relative;
@@ -1369,6 +1398,11 @@ html.ai-chat-on .lead-dock { display: none; }
 <body class="page-balcon-del-mediterraneo">
 
 <div class="frame" aria-hidden="true"></div>
+
+<a class="back-link" href="/en/">
+  <svg viewBox="0 0 24 24"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg>
+  View all our projects
+</a>
 
 <!-- ═══════════ HERO ═══════════ -->
 <section class="hero">
