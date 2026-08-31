@@ -1,15 +1,15 @@
 from urllib.parse import quote
 
 PROJECT_NAME = "The Grove"
-PRICE_FROM = "Vanaf € 390.000"
+PRICE_FROM = "Vanaf € 527.500"
 WA_MESSAGE = f"Hallo, ik heb interesse in {PROJECT_NAME}. Kan ik meer informatie ontvangen?"
 
 DATA = {
     "SLUG": "the-grove",
     "TITLE": f"{PROJECT_NAME} San Pedro — INVESTINSPAIN.BE",
-    "META_DESCRIPTION": "The Grove: appartementen met 1-4 slaapkamers in San Pedro de Alcántara, met skypool en spa. Vanaf €390.000.",
+    "META_DESCRIPTION": "The Grove: appartementen met 1-4 slaapkamers in San Pedro de Alcántara, met skypool en spa. Vanaf €527.500.",
     "OG_TITLE": f"{PROJECT_NAME} San Pedro — Appartementen",
-    "OG_DESCRIPTION": "Ontdek The Grove: rooftop lounge met skypool, verwarmd binnenzwembad, gym en spa in San Pedro de Alcántara. Vanaf €390.000.",
+    "OG_DESCRIPTION": "Ontdek The Grove: rooftop lounge met skypool, verwarmd binnenzwembad, gym en spa in San Pedro de Alcántara. Vanaf €527.500.",
     "OG_IMAGE": "https://investinspain.be/wp-content/uploads/2026/08/The-Grove-06.webp",
     "HERO_BG": "https://investinspain.be/wp-content/uploads/2026/08/The-Grove-06.webp",
     "HERO_BG_ALT": "The Grove — appartementencomplex met zwembad en weelderige tuinen",
@@ -28,9 +28,9 @@ DATA = {
 }
 
 DATA_EN = {
-    "META_DESCRIPTION": "The Grove: 1-4 bedroom apartments in San Pedro de Alcántara, with skypool and spa. From €390,000.",
+    "META_DESCRIPTION": "The Grove: 1-4 bedroom apartments in San Pedro de Alcántara, with skypool and spa. From €527,500.",
     "OG_TITLE": f"{PROJECT_NAME} San Pedro — Apartments",
-    "OG_DESCRIPTION": "Discover The Grove: rooftop lounge with skypool, heated indoor pool, gym and spa in San Pedro de Alcántara. From €390,000.",
+    "OG_DESCRIPTION": "Discover The Grove: rooftop lounge with skypool, heated indoor pool, gym and spa in San Pedro de Alcántara. From €527,500.",
     "HERO_BG_ALT": "The Grove — apartment complex with pool and lush gardens",
 }
 
