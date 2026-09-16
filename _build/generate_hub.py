@@ -111,6 +111,10 @@ EXCLUDE = [
     "marbella-club-hills",          # uit hub: foto's mogen niet gebruikt worden (aug 2026)
     "palo-alto",                    # uit hub: foto's mogen niet gebruikt worden (aug 2026)
     "ikkil-bay",                    # voorlopig uit hub (sep 2026)
+    "ocean-view-marbella-2",        # dubbel van ocean-view-marbella, verschijnt 2x in hub (sep 2026)
+    "soul-marbella-1",              # dubbel van soul-marbella, verschijnt 2x in hub (sep 2026)
+    "oceana-views",                 # verkocht (sep 2026)
+    "oceana-views-2",               # verkocht, dubbel van oceana-views (sep 2026)
     # Batches 22-44: tijdelijk uit de hub (terug naar 44-project staat van vóór aug 2026)
     "abril",
     "aida",
