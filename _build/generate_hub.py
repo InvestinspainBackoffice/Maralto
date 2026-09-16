@@ -284,7 +284,9 @@ def entry_for_lang(entry, lang):
 def render_location_options(entries):
     locations = sorted({e["LOCATION"] for e in entries})
     return "\n".join(
-        f'        <option value="{html.escape(loc)}">{html.escape(loc)}</option>'
+        '            <label class="location-pop__item">'
+        f'<input type="checkbox" class="location-checkbox" value="{html.escape(loc)}">'
+        f'<span>{html.escape(loc)}</span></label>'
         for loc in locations
     )
 
